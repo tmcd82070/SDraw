@@ -1,4 +1,4 @@
-start.spinner <- function(){
+startSpinner <- function(){
 
 .spin.win <<- gtkDialogNew()
 
@@ -25,7 +25,7 @@ spinner$start()
 
 # ---------------------------------------
 
-stop.spinner <- function(){
+stopSpinner <- function(){
 
 if( exists( ".spin.win" )){
     .spin.win$Hide()

@@ -5,6 +5,7 @@ browse.for.shapefile <- function(){
     filt <- rbind( c( "All files (*.*)", "*.*"), c("Shapefiles (*.shp)", "*.shp") )
 
     #   Prompt the user for file name
+    .INPUT.DIR <- get(".INPUT.DIR", .GlobalEnv )
     print(.INPUT.DIR)
     in.fn <- choose.files(.INPUT.DIR, multi=FALSE, filters=filt)
 

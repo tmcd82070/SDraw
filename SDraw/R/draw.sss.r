@@ -4,7 +4,6 @@ draw.sss <- function(n,over.n,sframe.type,fn){
 #
 
     
-    require(spsurvey)  # for read.shape
 
     if( over.n > 0 ) warning( "Oversampling for systematic samples not allowed. Oversample set to zero." )
     
@@ -23,7 +22,7 @@ draw.sss <- function(n,over.n,sframe.type,fn){
             return()
         }
         
-        start.spinner()
+        startSpinner()
         
         #   Read the shape file
         pth.fn <- file.path(.INPUT.DIR, fn)
@@ -31,7 +30,7 @@ draw.sss <- function(n,over.n,sframe.type,fn){
         
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
         
-        stop.spinner()    
+        stopSpinner()    
     }
 
 #   Determin the sample type and call the appropriate function

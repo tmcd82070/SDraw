@@ -1,12 +1,8 @@
 .onAttach<-function(libname, pkgname){
 
-    library( RGtk2 )
-    library( sp )
-    library( spsurvey )
-
     v <- packageVersion("SDraw") 
 
-    packageStartupMessage( paste("SDraw - Sample Selection (vers ", v ,")", sep=""))  
+    packageStartupMessage( paste("SDraw - Sample Draws (vers ", v ,")", sep=""))  
 	packageStartupMessage("\nWEST Inc. (tmcdonald@west-inc.com)") 
 
 

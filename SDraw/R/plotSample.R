@@ -1,7 +1,5 @@
-plot.sample <- function(button){
+plotSample <- function(button){
 
-    require(sp)
-    require(spsurvey)   # just incase we get here via some path other than the GUI. E.g., call directly.
     
     fn <- .shape.in.entry$getText()
     outobj <- .out.r.entry$getText()

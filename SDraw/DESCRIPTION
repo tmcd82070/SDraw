@@ -1,10 +1,10 @@
 Package: SDraw
 Type: Package
 Title: Sample Draw
-Version: 1.01
-Date: 2013-05-18
+Version: 1.02
+Date: 2014-07-17
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
-Description: Draw samples of various types for environmental monitoring.  Input and output shapfiles.  Includes plotting routines.
-License: GNU public license
-Depends: RGtk2, sp, spsurvey
+Description: Sample draws especially suited for environmental monitoring.  Input and output shapfiles.  Includes plotting routines.
+License: GNU General Public License
+Depends: RGtk2, sp, spsurvey, utils

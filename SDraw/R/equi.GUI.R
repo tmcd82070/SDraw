@@ -3,7 +3,6 @@ equi.GUI <- function()   {
 #   Setup and run a GUI to take a BAS sample 
 #
 
-    require( RGtk2 )
 
     assign( ".INPUT.DIR", getwd(), pos=.GlobalEnv )
 
@@ -177,7 +176,7 @@ equi.GUI <- function()   {
 
     #   ---- Plot button
     plot.b <- gtkButton("Map")
-    gtkObjectAddCallback(plot.b, "clicked", plot.sample)
+    gtkObjectAddCallback(plot.b, "clicked", plotSample)
     gtkBoxPackEnd(bbox, plot.b, expand=FALSE)
 
     #   ---- View button

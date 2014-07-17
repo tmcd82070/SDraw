@@ -3,7 +3,7 @@ draw.grts <- function(n,over.n,sframe.type,fn){
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
 
-    start.spinner()
+    startSpinner()
     
     Equaldsgn <- list(None = list(panel = c(sample = n),
                                   seltype = "Equal",
@@ -32,7 +32,7 @@ draw.grts <- function(n,over.n,sframe.type,fn){
     attr(Equalsites, "frame.type") <- sframe.type
     attr(Equalsites, "shapefile") <- fn
 
-    stop.spinner()
+    stopSpinner()
     
     Equalsites
 }

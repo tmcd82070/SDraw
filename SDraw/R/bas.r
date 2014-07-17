@@ -14,7 +14,6 @@ bas <- function(n, sframe.type, fn){
 #   a different unit selected in the sample.
 #
 
-    require(spsurvey)
 
 #   Check whether the shapefile has been read already, and the sp object is laying around. 
     existing.fn <- paste( ".", fn, sep="" )
@@ -24,13 +23,14 @@ bas <- function(n, sframe.type, fn){
     } else {
         #   The shapefile is not laying around.  Read it.
 
+        .INPUT.DIR <- get(".INPUT.DIR", .GlobalEnv )
         pth.fn <- file.path(.INPUT.DIR, paste(fn,".shp",sep=""))
         if( !file.exists(pth.fn) ){
             error.message(paste("Shapefile", file.path(.INPUT.DIR, fn), "does not exist."))
             return()
         }
         
-        start.spinner()
+        startSpinner()
         
         #   Read the shape file
         pth.fn <- file.path(.INPUT.DIR, fn)
@@ -38,7 +38,7 @@ bas <- function(n, sframe.type, fn){
         
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
         
-        stop.spinner()    
+        stopSpinner()    
     }
 
     

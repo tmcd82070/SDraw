@@ -1,5 +1,4 @@
-run.sample <-
-function(button, dat){
+run.sample <- function(button, dat){
 
 
     n <- .n.entry$getText()
