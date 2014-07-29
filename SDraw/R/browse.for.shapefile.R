@@ -1,31 +1,28 @@
-browse.for.shapefile <- function(){
+browse.for.shapefile <- function(input.dir){
 #
 #
 
     filt <- rbind( c( "All files (*.*)", "*.*"), c("Shapefiles (*.shp)", "*.shp") )
 
     #   Prompt the user for file name
-    .INPUT.DIR <- get(".INPUT.DIR", .GlobalEnv )
-    print(.INPUT.DIR)
-    in.fn <- choose.files(.INPUT.DIR, multi=FALSE, filters=filt)
+    #.INPUT.DIR <- get(".INPUT.DIR", .GlobalEnv )
+    #print(.INPUT.DIR)
+    in.fn <- choose.files(input.dir, multi=FALSE, filters=filt)
 
-    #   Must do this on windows systems
+    #   Must do this on windows systems, but if we are on a non-Windows system
+    #   it should not hurt.
     in.fn <- gsub( "\\", .Platform$file.sep, in.fn, fixed=TRUE )
 
     #   Now trim off the directory for display in the dialog
     fn.list <-  strsplit( in.fn, .Platform$file.sep, fixed=TRUE )
 
-    #   Store input file
+    #   Get input file
     input.file <- fn.list[[1]][ length(fn.list[[1]]) ]
 
-    #   Reset the input directory
-
-    assign( ".INPUT.DIR", sub( paste(.Platform$file.sep, input.file, sep=""), "", in.fn ), pos=.GlobalEnv )
-
+    #   Return
+    input.dir <- sub( paste(.Platform$file.sep, input.file, sep=""), "", in.fn )
     input.file <- sub(".shp", "", input.file )
 
-    .shape.in.entry$setText(input.file)
+    ans <- list( input.dir=input.dir, input.file=input.file)
 
-
-    in.fn
 }

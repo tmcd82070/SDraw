@@ -1,8 +1,8 @@
-plotSample <- function(button){
+plotSample <- function(button, dat){
 
     
-    fn <- .shape.in.entry$getText()
-    outobj <- .out.r.entry$getText()
+    fn <- dat$shape.in.entry$getText()
+    outobj <- dat$out.r.entry$getText()
 
     if( nchar(fn) == 0 ){
         error.message("A shapefile name must be specified.")
@@ -16,16 +16,16 @@ plotSample <- function(button){
     } else {
         #   The shapefile is not laying around.  Read it.
 
-        pth.fn <- file.path(.INPUT.DIR, paste(fn,".shp",sep=""))
+        pth.fn <- file.path(dat$input.dir, paste(fn,".shp",sep=""))
         if( !file.exists(pth.fn) ){
-            error.message(paste("Shapefile", file.path(.INPUT.DIR, fn), "does not exist."))
+            error.message(paste("Shapefile", file.path(dat$input.dir, fn), "does not exist."))
             return()
         }
         
         start.spinner()
         
         #   Read the shape file
-        pth.fn <- file.path(.INPUT.DIR, fn)
+        pth.fn <- file.path(dat$input.dir, fn)
         shp <- read.shape( pth.fn )  # Assume sp is attached.  This takes a while.
         
         assign(existing.fn, shp, pos=.GlobalEnv)

@@ -4,37 +4,37 @@ equi.GUI <- function()   {
 #
 
 
-    assign( ".INPUT.DIR", getwd(), pos=.GlobalEnv )
+    INPUT.DIR <- getwd()
 
 
     #   ---- Define the main window
-    .win <<- gtkWindowNew("toplevel")
-    .win$setBorderWidth(8)
-    .win$setTitle("S-Draw : A sample drawing interface")
-    #gtkWindowSetIconFromFile(.win, filename = "s-draw.ico")  # need path to be correct here, or does not work, obviously
+    win <- gtkWindowNew("toplevel")
+    win$setBorderWidth(8)
+    win$setTitle("S-Draw : A sample drawing interface")
+    #gtkWindowSetIconFromFile(win, filename = "s-draw.ico")  # need path to be correct here, or does not work, obviously
 
     vbox1 <- gtkVBoxNew(FALSE, 8)
     vbox1$setBorderWidth(8)
-    .win$add(vbox1)
+    win$add(vbox1)
 
     # ================= Sample type frame ============================
     samp.types <- c("BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
             "SSS - Simple Systematic Sampling")
-    .samp.type.combo <<- gtkComboBoxNewText()
-    .samp.type.combo$show()
+    samp.type.combo <- gtkComboBoxNewText()
+    samp.type.combo$show()
     for( i in samp.types ){
-        .samp.type.combo$appendText( i )
+        samp.type.combo$appendText( i )
     }
-    .samp.type.combo$setActive(0)
+    samp.type.combo$setActive(0)
     
-#    print(gtkComboBoxGetActive(.samp.type.combo))
-#    print(gtkComboBoxGetWrapWidth(.samp.type.combo))
+#    print(gtkComboBoxGetActive(samp.type.combo))
+#    print(gtkComboBoxGetWrapWidth(samp.type.combo))
 
     samp.type.frame <- gtkFrameNew("Sample Type")
     samp.type.frame$setBorderWidth(8)
     combo.box <- gtkHBoxNew(FALSE, 8)
     combo.box$setBorderWidth(8)
-    gtkBoxPackStart(combo.box, .samp.type.combo )
+    gtkBoxPackStart(combo.box, samp.type.combo )
     samp.type.frame$add( combo.box )
 
     hbox2 <- gtkHBoxNew(FALSE, 8)
@@ -77,37 +77,41 @@ equi.GUI <- function()   {
 
     #   ---- Sample size text box
     #samp.size.box <- gtkHBox(FALSE, 10)
-    .n.entry <<- gtkEntry()
-    .n.entry$setText( "" )
+    n.entry <- gtkEntry()
+    n.entry$setText( "" )
     #gtkEntrySetText( n.entry, "")
 
     samp.size.label <- gtkLabel("Sample size (n):")
 
     gtkTableAttach(tbl,samp.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(tbl,.n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(tbl,n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
     #   ---- Input shape file box
-    .shape.in.entry <<- gtkEntry()
-    .shape.in.entry$setText( "" )
+    shape.in.entry <- gtkEntry()
+    shape.in.entry$setText( "" )
     #gtkEntrySetText( .shape.in.entry, "")
     shape.file.label <- gtkLabel("Shape file:")
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
-    gtkAddCallback(browse.b, "clicked", function(x){browse.for.shapefile()} )
+    gtkAddCallback(browse.b, "clicked", function(x){
+        ans <- browse.for.shapefile(INPUT.DIR)
+        INPUT.DIR <- ans$input.dir   #  If they changed dir, save it so it will pop open next time on this dir
+        shape.in.entry$setText(ans$input.file)
+    } )
     gtkBoxPackEnd(shape.file.box,browse.b)
-    gtkBoxPackStart(shape.file.box,.shape.in.entry)
+    gtkBoxPackStart(shape.file.box,shape.in.entry)
 
     gtkTableAttach(tbl,shape.file.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,shape.file.box, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
     #   ---- Output R object box
-    .out.r.entry <<- gtkEntry()
-    .out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
+    out.r.entry <- gtkEntry()
+    out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
     out.r.label <- gtkLabel("Output R object:")
 
     gtkTableAttach(tbl,out.r.label, 0, 1, 2, 3, xpadding=5, ypadding=5)
-    gtkTableAttach(tbl,.out.r.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
+    gtkTableAttach(tbl,out.r.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
 
 
     # =========================== Optional inputs frame ================================
@@ -126,20 +130,20 @@ equi.GUI <- function()   {
     opt.vbox$add(opt.tbl)
 
     #   ---- Over sample size text box
-    .over.entry <<- gtkEntry()
-    .over.entry$setText( "0" )
+    over.entry <- gtkEntry()
+    over.entry$setText( "0" )
     over.size.label <- gtkLabel("Over sample:")
 
     gtkTableAttach(opt.tbl,over.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,.over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
     #   ---- Seed text box
-    .seed.entry <<- gtkEntry()
-    .seed.entry$setText( "" )
+    seed.entry <- gtkEntry()
+    seed.entry$setText( "" )
     seed.label <- gtkLabel("Random number seed:")
 
     gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,.seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
     # =========================== Frame Type ================================
     samp.type.frame <- gtkFrameNew("Frame Type")
@@ -148,13 +152,13 @@ equi.GUI <- function()   {
     stype.box <- gtkVBoxNew(TRUE, 2)
     samp.type.frame$add( stype.box )
 
-    .area.rb <<- gtkRadioButton(label="Area\n(polygon shapefile)")
-    .line.rb <<- gtkRadioButtonNewWithLabelFromWidget(.area.rb,"Linear\n(line shapefile)")
-    disc.rb <- gtkRadioButtonNewWithLabelFromWidget(.area.rb,"Finite\n(point shapefile)")
+    area.rb <- gtkRadioButton(label="Area\n(polygon shapefile)")
+    line.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Linear\n(line shapefile)")
+    disc.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Finite\n(point shapefile)")
 
 
-    stype.box$packStart(.area.rb, TRUE, TRUE, 2)
-    stype.box$packStart(.line.rb, TRUE, TRUE, 2)
+    stype.box$packStart(area.rb, TRUE, TRUE, 2)
+    stype.box$packStart(line.rb, TRUE, TRUE, 2)
     stype.box$packStart(disc.rb, TRUE, TRUE, 2)
 
     # =========================== Bottom row of buttons ==================================
@@ -165,19 +169,40 @@ equi.GUI <- function()   {
 
     #   ---- Define box for row of buttons at bottom
     bbox <- gtkHButtonBox()
-    #gtkHButtonBoxSetSpacingDefault(10)
     bbox$SetLayout("Spread")                   # Layout can be c("Start", "Edge", "Spread", "End")
     bbox$SetBorderWidth(10)
 
     #   ---- Run button
     run.b <- gtkButton("Run")
-    gtkObjectAddCallback(run.b, "clicked", run.sample)
-    gtkBoxPackEnd(bbox, run.b, expand=FALSE)
+    gSignalConnect(run.b, "clicked", run.sample, data=list( 
+            samp.type.combo=samp.type.combo,
+            n.entry=n.entry,
+            shape.in.entry=shape.in.entry,
+            out.r.entry=out.r.entry,
+            over.entry=over.entry,
+            seed.entry=seed.entry, 
+            area.rb=area.rb,
+            line.rb=line.rb,
+            disc.rb=disc.rb,
+            input.dir=INPUT.DIR)
+    ) 
+    bbox$packEnd(run.b, expand=FALSE)
+
 
     #   ---- Plot button
     plot.b <- gtkButton("Map")
-    gtkObjectAddCallback(plot.b, "clicked", plotSample)
-    gtkBoxPackEnd(bbox, plot.b, expand=FALSE)
+    gSignalConnect(plot.b, "clicked", plotSample, data=list(
+            shape.in.entry=shape.in.entry,
+            out.r.entry=out.r.entry,
+            input.dir=INPUT.DIR)
+    )
+    bbox$packEnd(plot.b, expand=FALSE)
+
+#   Here!!! continue in the above vein.  Change to gSignalConnect with data passed to function
+#   Do the same for Browse button above.
+#   Restrict functions in namespace: include only bas, grts, sss.  Hide the rest.
+#   Take out frame type radio buttons.  Determine frame type from shape file.
+#   Change to rgdal's readOGR and writeOGR (from spsurvey's readshape())
 
     #   ---- View button
     view.b <- gtkButton("View Sample")
@@ -196,9 +221,12 @@ equi.GUI <- function()   {
     gtkBoxPackEnd(bbox, write.shp.b, expand=FALSE)
 
 
-    #   ---- Cancel button
+    #   ---- Done button
     cancel.b <- gtkButton("Done")
-    gtkObjectAddCallback(cancel.b, "clicked", cleanup)
+    gtkObjectAddCallback(cancel.b, "clicked", function(x){
+        win$Hide();
+        win$Destroy()
+    })
     gtkBoxPackEnd(bbox, cancel.b, expand=FALSE)
 
 
@@ -207,6 +235,6 @@ equi.GUI <- function()   {
 
 
     #   ---- Finally, show the window
-    .win$Show()
+    win$Show()
 
 }

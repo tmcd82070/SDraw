@@ -1,4 +1,4 @@
-draw.grts <- function(n,over.n,sframe.type,fn){
+draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
@@ -9,7 +9,7 @@ draw.grts <- function(n,over.n,sframe.type,fn){
                                   seltype = "Equal",
                                   over = over.n))
 
-    pth.fn <- file.path(.INPUT.DIR, fn)
+    pth.fn <- file.path(input.dir, fn)
 
     Equalsites <- grts(design=Equaldsgn,
             DesignID="EQUAL",

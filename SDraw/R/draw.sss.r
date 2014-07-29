@@ -1,4 +1,4 @@
-draw.sss <- function(n,over.n,sframe.type,fn){
+draw.sss <- function(n,over.n,sframe.type,fn,input.dir){
 #
 #   draw a sss sample.
 #
@@ -16,16 +16,16 @@ draw.sss <- function(n,over.n,sframe.type,fn){
     } else {
         #   The shapefile is not laying around.  Read it.
 
-        pth.fn <- file.path(.INPUT.DIR, paste(fn,".shp",sep=""))
+        pth.fn <- file.path(input.dir, paste(fn,".shp",sep=""))
         if( !file.exists(pth.fn) ){
-            error.message(paste("Shapefile", file.path(.INPUT.DIR, fn), "does not exist."))
+            error.message(paste("Shapefile", file.path(input.dir, fn), "does not exist."))
             return()
         }
         
         startSpinner()
         
         #   Read the shape file
-        pth.fn <- file.path(.INPUT.DIR, fn)
+        pth.fn <- file.path(input.dir, fn)
         shp <- read.shape( pth.fn )  # Assume spsurvey is attached.  This read can take a while.
         
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
