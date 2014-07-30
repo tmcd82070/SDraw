@@ -1,6 +1,6 @@
-view.sample <- function(x){
+view.sample <- function(x, dat){
 
-    samp.nm <- .out.r.entry$getText()
+    samp.nm <- dat$out.r.entry$getText()
 
     if( exists( samp.nm, envir=.GlobalEnv ) ){
         samp <- get( samp.nm, pos=.GlobalEnv )

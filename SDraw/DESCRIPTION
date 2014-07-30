@@ -7,4 +7,4 @@ Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Sample draws especially suited for environmental monitoring.  Input and output shapfiles.  Includes plotting routines.
 License: GNU General Public License
-Depends: RGtk2, sp, spsurvey, utils
+Depends: RGtk2, sp, spsurvey, utils, rgdal

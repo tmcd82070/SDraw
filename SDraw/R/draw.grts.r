@@ -3,7 +3,7 @@ draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
 
-    startSpinner()
+    cat("Drawing GRTS sample...This can take a while ...\n")
     
     Equaldsgn <- list(None = list(panel = c(sample = n),
                                   seltype = "Equal",
@@ -18,6 +18,7 @@ draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
             in.shape=pth.fn,
             shapefile=FALSE)
 
+    cat("Success.\n")
 
     #   Toss some variables that are not important for equal probability designs
     Equalsites <- Equalsites[,!(names(Equalsites) %in% c("mdcaty","wgt","stratum","panel"))]
@@ -32,7 +33,7 @@ draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
     attr(Equalsites, "frame.type") <- sframe.type
     attr(Equalsites, "shapefile") <- fn
 
-    stopSpinner()
+   
     
     Equalsites
 }

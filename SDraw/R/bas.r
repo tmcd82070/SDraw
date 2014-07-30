@@ -1,4 +1,4 @@
-bas <- function(n, sframe.type, fn){
+bas <- function(n, sframe.type, fn, input.dir){
 #
 #   Draw a BAS sample from the shapefile named in fn.
 #
@@ -22,23 +22,9 @@ bas <- function(n, sframe.type, fn){
         shp <- get(existing.fn)
     } else {
         #   The shapefile is not laying around.  Read it.
+        shp <- readShape(input.dir, fn)  # a wrapper for readOGR
 
-        .INPUT.DIR <- get(".INPUT.DIR", .GlobalEnv )
-        pth.fn <- file.path(.INPUT.DIR, paste(fn,".shp",sep=""))
-        if( !file.exists(pth.fn) ){
-            error.message(paste("Shapefile", file.path(.INPUT.DIR, fn), "does not exist."))
-            return()
-        }
-        
-        startSpinner()
-        
-        #   Read the shape file
-        pth.fn <- file.path(.INPUT.DIR, fn)
-        shp <- read.shape( pth.fn )  # Assume sp is attached.  This read can take a while.
-        
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
-        
-        stopSpinner()    
     }
 
     

@@ -1,4 +1,4 @@
-browse.for.shapefile <- function(input.dir){
+browse.for.shapefile <- function(input.dir,dat){
 #
 #
 
@@ -22,6 +22,8 @@ browse.for.shapefile <- function(input.dir){
     #   Return
     input.dir <- sub( paste(.Platform$file.sep, input.file, sep=""), "", in.fn )
     input.file <- sub(".shp", "", input.file )
+
+    dat$shape.in.entry$setText(input.file)
 
     ans <- list( input.dir=input.dir, input.file=input.file)
 

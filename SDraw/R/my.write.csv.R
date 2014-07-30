@@ -1,6 +1,6 @@
-my.write.csv <- function(x){
+my.write.csv <- function(x,dat){
 
-    samp.nm <- .out.r.entry$getText()
+    samp.nm <- dat$out.r.entry$getText()
 
     if( exists( samp.nm ) ){
         samp <- get( samp.nm )

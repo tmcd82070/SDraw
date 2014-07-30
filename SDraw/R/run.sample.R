@@ -63,7 +63,7 @@ run.sample <- function(button, dat){
     #   Actually draw the sample
     #   Remember that fn is the text string name of the shapefile, without .shp, and without path.
     samp <- switch( stype, 
-                "BAS " = draw.bas(n,over.n,sframe.type,fn),
+                "BAS " = draw.bas(n,over.n,sframe.type,fn,dat$input.dir),
                 "GRTS" = draw.grts(n,over.n,sframe.type,fn,dat$input.dir),
                 "SSS " = draw.sss(n,over.n,sframe.type,fn,dat$input.dir),
                          stop(paste("Unknown sample type:",stype)))

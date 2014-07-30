@@ -3,6 +3,7 @@ plotSample <- function(button, dat){
     
     fn <- dat$shape.in.entry$getText()
     outobj <- dat$out.r.entry$getText()
+    input.dir <- dat$input.dir
 
     if( nchar(fn) == 0 ){
         error.message("A shapefile name must be specified.")
@@ -15,22 +16,9 @@ plotSample <- function(button, dat){
         shp <- get(existing.fn)
     } else {
         #   The shapefile is not laying around.  Read it.
-
-        pth.fn <- file.path(dat$input.dir, paste(fn,".shp",sep=""))
-        if( !file.exists(pth.fn) ){
-            error.message(paste("Shapefile", file.path(dat$input.dir, fn), "does not exist."))
-            return()
-        }
-        
-        start.spinner()
-        
-        #   Read the shape file
-        pth.fn <- file.path(dat$input.dir, fn)
-        shp <- read.shape( pth.fn )  # Assume sp is attached.  This takes a while.
+        shp <- readShape(input.dir, fn)  # a wrapper for readOGR
         
         assign(existing.fn, shp, pos=.GlobalEnv)
-        
-        stop.spinner()
     }
     
     #   plot shape file

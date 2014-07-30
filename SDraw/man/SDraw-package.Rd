@@ -10,14 +10,15 @@
 SDraw is a GUI interface to a set of R functions that draw 
 Balanced-Acceptance-Samples (BAS) and Generalized-Random-Tesselation-Stratified (GRTS) samples. 
 Input sampling frames can be points (0-D, finite), lines (1-D, infinite), or polygons (2-D, infinit), 
-and are contained in shapefiles.  Functionality to visualize the frame and sample is included.
+and can be contained in ESRI shapefiles (SHP), Google Earth files (KML), Garmin files (GPX), 
+or CSV files.  Functionality to visualize the frame and sample is included.
 }
 \details{
 \tabular{ll}{
 Package: \tab BAS\cr
 Type: \tab Package\cr
-License: \tab GNU Public License\cr
-Dependencies: \tab RGtk2, sp, spsurvey\cr 
+License: \tab GNU General Public License\cr
+Dependencies: \tab RGtk2, sp, spsurvey, utils, rgdal\cr 
 }
 When SDraw is attached (via \code{library(SDraw)}, a new menu item appears in the (Windows) R interface.  This 
 menu ('SDraw') contains items which call dialog boxes that implement the interface to functions that 
@@ -45,9 +46,9 @@ the sample can be written to CSV or shapefiles.
 }
 \author{
 Trent McDonald \code{tmcdonald@west-inc.com} wrote the GUI interface parts and the BAS sampling routine. 
-The GRTS routine appears in package \code{spsurvey}.  All the difficult  
+The GRTS routine comes from package \code{spsurvey}.  All the difficult  
 routines of the GUI interface are in RGtk2, while routines to handle spatial 
-objects are in package \code{sp}.   
+objects are in package \code{sp} and \code{rgdal}.   
 
 }
 \references{

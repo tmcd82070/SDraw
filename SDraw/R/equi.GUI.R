@@ -32,22 +32,21 @@ equi.GUI <- function()   {
 
     samp.type.frame <- gtkFrameNew("Sample Type")
     samp.type.frame$setBorderWidth(8)
+    
     combo.box <- gtkHBoxNew(FALSE, 8)
     combo.box$setBorderWidth(8)
-    gtkBoxPackStart(combo.box, samp.type.combo )
+    combo.box$packStart( samp.type.combo )
     samp.type.frame$add( combo.box )
 
     hbox2 <- gtkHBoxNew(FALSE, 8)
     #hbox2$setBorderWidth(8)
-    gtkBoxPackStart(hbox2,samp.type.frame)
-    #hbox2$add(samp.type.frame)
+    hbox2$packStart(samp.type.frame)
 
 #    logo <- gtkImageNewFromFile("s_draw_banner.png")
-#    gtkBoxPackStart(hbox2,logo)
+#    hbox2$packStart(logo)
 
-    gtkBoxPackStart(vbox1,hbox2)
 
-    #vbox1$add(hbox2)
+    vbox1$packStart(hbox2)
 
 
 
@@ -89,18 +88,17 @@ equi.GUI <- function()   {
     #   ---- Input shape file box
     shape.in.entry <- gtkEntry()
     shape.in.entry$setText( "" )
-    #gtkEntrySetText( .shape.in.entry, "")
     shape.file.label <- gtkLabel("Shape file:")
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
-    gtkAddCallback(browse.b, "clicked", function(x){
-        ans <- browse.for.shapefile(INPUT.DIR)
-        INPUT.DIR <- ans$input.dir   #  If they changed dir, save it so it will pop open next time on this dir
-        shape.in.entry$setText(ans$input.file)
-    } )
-    gtkBoxPackEnd(shape.file.box,browse.b)
-    gtkBoxPackStart(shape.file.box,shape.in.entry)
+    gSignalConnect(browse.b, "clicked", function(x,dat){
+        INPUT.DIR <- browse.for.shapefile(INPUT.DIR,dat)
+    }, data=list(
+        shape.in.entry = shape.in.entry
+    ))
+    shape.file.box$packEnd(browse.b)
+    shape.file.box$packStart(shape.in.entry)
 
     gtkTableAttach(tbl,shape.file.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,shape.file.box, 1, 2, 1, 2, xpadding=5, ypadding=5)
@@ -198,40 +196,46 @@ equi.GUI <- function()   {
     )
     bbox$packEnd(plot.b, expand=FALSE)
 
-#   Here!!! continue in the above vein.  Change to gSignalConnect with data passed to function
-#   Do the same for Browse button above.
-#   Restrict functions in namespace: include only bas, grts, sss.  Hide the rest.
+#   Here!!! 
 #   Take out frame type radio buttons.  Determine frame type from shape file.
+#   Add radio buttons or dialog to set input and output format to a subset 
+#       of formats in ogrDrivers()$name (KML, CSV, GPX, ESRI Shapefile)
 #   Change to rgdal's readOGR and writeOGR (from spsurvey's readshape())
 
     #   ---- View button
     view.b <- gtkButton("View Sample")
-    gtkObjectAddCallback(view.b, "clicked", view.sample)
-    gtkBoxPackEnd(bbox, view.b, expand=FALSE)
+    gSignalConnect(view.b, "clicked", view.sample, data=list(
+            out.r.entry = out.r.entry
+    ))
+    bbox$packEnd( view.b, expand=FALSE)
 
 
     #   ---- Write to csv button
     write.csv.b <- gtkButton("Write CSV")
-    gtkObjectAddCallback(write.csv.b, "clicked", my.write.csv)
-    gtkBoxPackEnd(bbox, write.csv.b, expand=FALSE)
+    gSignalConnect(write.csv.b, "clicked", my.write.csv, data=list(
+            out.r.entry = out.r.entry
+    ))
+    bbox$packEnd( write.csv.b, expand=FALSE)
 
     #   ---- Write to Shapefile button
     write.shp.b <- gtkButton("Write Shapefile")
-    gtkObjectAddCallback(write.shp.b, "clicked", my.write.shp)
-    gtkBoxPackEnd(bbox, write.shp.b, expand=FALSE)
+    gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
+            out.r.entry = out.r.entry
+    ))
+    bbox$packEnd( write.shp.b, expand=FALSE)
 
 
     #   ---- Done button
     cancel.b <- gtkButton("Done")
-    gtkObjectAddCallback(cancel.b, "clicked", function(x){
+    gSignalConnect(cancel.b, "clicked", function(x){
         win$Hide();
         win$Destroy()
     })
-    gtkBoxPackEnd(bbox, cancel.b, expand=FALSE)
+    bbox$packEnd( cancel.b, expand=FALSE)
 
 
     #   ---- Pack the rows of buttons into the vertical box
-    gtkBoxPackEnd(vbox1, bbox, expand=FALSE)
+    vbox1$packEnd( bbox, expand=FALSE)
 
 
     #   ---- Finally, show the window

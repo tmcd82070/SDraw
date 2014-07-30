@@ -1,10 +1,10 @@
-draw.bas <- function(n,over.n,sframe.type,fn){
+draw.bas <- function(n,over.n,sframe.type,fn,input.dir){
 #
 #   draw a BAS sample.
 #
 
 
-    Equalsites <- bas(n+over.n,sframe.type,fn)
+    Equalsites <- bas(n+over.n,sframe.type,fn,input.dir)
 
     
     #   Add a column of sample/oversample for convieneince

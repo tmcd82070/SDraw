@@ -15,22 +15,9 @@ draw.sss <- function(n,over.n,sframe.type,fn,input.dir){
         shp <- get(existing.fn)
     } else {
         #   The shapefile is not laying around.  Read it.
-
-        pth.fn <- file.path(input.dir, paste(fn,".shp",sep=""))
-        if( !file.exists(pth.fn) ){
-            error.message(paste("Shapefile", file.path(input.dir, fn), "does not exist."))
-            return()
-        }
-        
-        startSpinner()
-        
-        #   Read the shape file
-        pth.fn <- file.path(input.dir, fn)
-        shp <- read.shape( pth.fn )  # Assume spsurvey is attached.  This read can take a while.
+        shp <- readShape(input.dir, fn)  # a wrapper for readOGR
         
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
-        
-        stopSpinner()    
     }
 
 #   Determin the sample type and call the appropriate function
