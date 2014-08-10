@@ -1,4 +1,4 @@
-bas.polygon <- function( n, shp ){
+bas.area <- function( n, shp ){
 #
 #   Take a BAS sample from a polygon.
 #

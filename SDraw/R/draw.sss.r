@@ -1,4 +1,4 @@
-draw.sss <- function(n,over.n,sframe.type,fn,input.dir){
+draw.sss <- function(n,over.n,fn){
 #
 #   draw a sss sample.
 #
@@ -9,38 +9,31 @@ draw.sss <- function(n,over.n,sframe.type,fn,input.dir){
     
 
 #   Check whether the shapefile has been read already, and the sp object is laying around. 
-    existing.fn <- paste( ".", fn, sep="" )
+    existing.fn <- fn
     if( exists(existing.fn) ){
         #   The shapefile has already been read, and it is laying around.  No need to re-read.
         shp <- get(existing.fn)
     } else {
         #   The shapefile is not laying around.  Read it.
+        input.dir <- get(".INPUT.DIR")
+
         shp <- readShape(input.dir, fn)  # a wrapper for readOGR
         
         assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
     }
 
 #   Determin the sample type and call the appropriate function
-    if( "SpatialPointsDataFrame" %in% class(shp) ){
-        if( sframe.type != "finite" ){
-            stop( paste( sframe.type, "sample type specified, but POINTS were found in", fn, "\n"))
-        }
+    if( length(grep("SpatialPoints", class(shp))) > 0 ){
 
         stop( "SSS samples of points not yet implemented in SDraw")
         #samp <- sss.finite( n, shp )
         
-    } else if ("SpatialLinesDataFrame" %in% class(shp) ){
-        if( sframe.type != "linear" ){
-            stop( paste( sframe.type, "sample type specified, but LINES were found in", fn, "\n"))
-        }
+    } else if (length(grep("SpatialLines", class(shp))) > 0 ){
 
         stop( "SSS samples of lines not yet implemented in SDraw")
         #samp <- sss.linear( n, shp )
     
-    } else if ("SpatialPolygonsDataFrame" %in% class(shp) ){
-        if( sframe.type != "area" ){
-            stop( paste( sframe.type, "sample type specified, but POLYGONS were found in", fn, "\n"))
-        }
+    } else if (length(grep("SpatialPolygons", class(shp))) > 0 ){
     
         samp <- sss.polygon( n, shp )
     

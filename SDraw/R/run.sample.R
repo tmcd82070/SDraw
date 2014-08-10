@@ -8,7 +8,6 @@ run.sample <- function(button, dat){
     over.n <- dat$over.entry$getText()
     seed <- dat$seed.entry$getText()
     stype <- dat$samp.type.combo$getActiveText()
-    #stype <- gtkComboBoxGetActiveText(.samp.type.combo)
     stype <- substring(stype, 1, 4)
 
     #   Set seed if there is a number present
@@ -17,14 +16,14 @@ run.sample <- function(button, dat){
         set.seed( seed )
     }
 
-    #   Get frame type 
-    if( dat$area.rb$getActive() ){
-        sframe.type <- "area"
-    } else if ( dat$line.rb$getActive() ){
-        sframe.type <- "linear"
-    } else {
-        sframe.type <- "finite"
-    }
+#    #   Get frame type 
+#    if( dat$area.rb$getActive() ){
+#        sframe.type <- "area"
+#    } else if ( dat$line.rb$getActive() ){
+#        sframe.type <- "linear"
+#    } else {
+#        sframe.type <- "finite"
+#    }
 
     
     #   Check input parameters
@@ -63,9 +62,9 @@ run.sample <- function(button, dat){
     #   Actually draw the sample
     #   Remember that fn is the text string name of the shapefile, without .shp, and without path.
     samp <- switch( stype, 
-                "BAS " = draw.bas(n,over.n,sframe.type,fn,dat$input.dir),
-                "GRTS" = draw.grts(n,over.n,sframe.type,fn,dat$input.dir),
-                "SSS " = draw.sss(n,over.n,sframe.type,fn,dat$input.dir),
+                "BAS " = draw.bas(n,over.n,fn),
+                "GRTS" = draw.grts(n,over.n,fn),
+                "SSS " = draw.sss(n,over.n,fn),
                          stop(paste("Unknown sample type:",stype)))
 
     #   Save the sample in global environment.  Type of sample is an attribute.                         

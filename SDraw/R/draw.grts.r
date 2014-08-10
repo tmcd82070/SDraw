@@ -1,4 +1,4 @@
-draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
+draw.grts <- function(n,over.n,fn){
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
@@ -9,14 +9,26 @@ draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
                                   seltype = "Equal",
                                   over = over.n))
 
-    pth.fn <- file.path(input.dir, fn)
+#    pth.fn <- file.path(input.dir, fn)
 
+    sp.obj <- get(fn, .GlobalEnv)
+    if( attr(sp.obj, "type") == "points" ){
+        sframe.type = "finite"
+    } else if( attr(sp.obj, "type") == "lines" ){
+        sframe.type = "linear"
+    } else if( attr(sp.obj, "type") == "polygons" ){
+        sframe.type = "area"
+    }
+    
     Equalsites <- grts(design=Equaldsgn,
             DesignID="EQUAL",
             type.frame=sframe.type,
-            src.frame="shapefile",
-            in.shape=pth.fn,
+            src.frame="sp.object",
+            sp.object=fn,
             shapefile=FALSE)
+
+#                in.shape=pth.fn,
+
 
     cat("Success.\n")
 
@@ -31,9 +43,7 @@ draw.grts <- function(n,over.n,sframe.type,fn,input.dir){
     attr(Equalsites, "n") <- n
     attr(Equalsites, "over.n") <- over.n
     attr(Equalsites, "frame.type") <- sframe.type
-    attr(Equalsites, "shapefile") <- fn
+    attr(Equalsites, "sp.object") <- fn
 
-   
-    
     Equalsites
 }

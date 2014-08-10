@@ -1,10 +1,14 @@
-draw.bas <- function(n,over.n,sframe.type,fn,input.dir){
+draw.bas <- function(n,over.n,fn){
 #
 #   draw a BAS sample.
 #
 
+#   Check whether the frame has been read already, and the sp object is laying around. 
+    shp <- getSpFrame( fn )
 
-    Equalsites <- bas(n+over.n,sframe.type,fn,input.dir)
+
+#   Draw the BAS sample
+    Equalsites <- bas(n+over.n,shp)
 
     
     #   Add a column of sample/oversample for convieneince
@@ -16,8 +20,8 @@ draw.bas <- function(n,over.n,sframe.type,fn,input.dir){
     attr(Equalsites, "sample.type") <- "BAS"
     attr(Equalsites, "n") <- n
     attr(Equalsites, "over.n") <- over.n
-    attr(Equalsites, "frame.type") <- sframe.type
-    attr(Equalsites, "shapefile") <- fn
+    attr(Equalsites, "frame.type") <- attr(shp,"type")
+    attr(Equalsites, "sp.object") <- fn
 
 
     Equalsites

@@ -1,9 +1,17 @@
 plotSample <- function(button, dat){
 
-    
+#    print(ls(envir=environment()))
+#    cat("*****\n")
+#    print(ls(envir=parent.env(environment())))
+#    cat("*****\n")
+#    
+#    SDrawPackageSpace <- as.environment( "package:SDraw" )
+#    print( ls(envir=as.environment("equi.GUI")) )
+        
     fn <- dat$shape.in.entry$getText()
     outobj <- dat$out.r.entry$getText()
-    input.dir <- dat$input.dir
+    
+    input.dir <- get(".INPUT.DIR", envir=.GlobalEnv ) 
 
     if( nchar(fn) == 0 ){
         error.message("A shapefile name must be specified.")

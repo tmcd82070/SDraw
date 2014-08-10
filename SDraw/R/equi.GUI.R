@@ -4,8 +4,6 @@ equi.GUI <- function()   {
 #
 
 
-    INPUT.DIR <- getwd()
-
 
     #   ---- Define the main window
     win <- gtkWindowNew("toplevel")
@@ -72,14 +70,12 @@ equi.GUI <- function()   {
     gtkTableSetRowSpacings(tbl,1)
     gtkTableSetColSpacings(tbl,5)
 
-    gtkBoxPackStart(req.vbox,tbl)
+    req.vbox$packStart(tbl)
 
     #   ---- Sample size text box
-    #samp.size.box <- gtkHBox(FALSE, 10)
     n.entry <- gtkEntry()
     n.entry$setText( "" )
-    #gtkEntrySetText( n.entry, "")
-
+ 
     samp.size.label <- gtkLabel("Sample size (n):")
 
     gtkTableAttach(tbl,samp.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
@@ -92,21 +88,23 @@ equi.GUI <- function()   {
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
-    gSignalConnect(browse.b, "clicked", function(x,dat){
-        INPUT.DIR <- browse.for.shapefile(INPUT.DIR,dat)
-    }, data=list(
+    gSignalConnect(browse.b, "clicked", SDraw:::browse.for.shapefile,data=list(
         shape.in.entry = shape.in.entry
     ))
+    
+   
     shape.file.box$packEnd(browse.b)
     shape.file.box$packStart(shape.in.entry)
 
     gtkTableAttach(tbl,shape.file.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,shape.file.box, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
+    
+
     #   ---- Output R object box
     out.r.entry <- gtkEntry()
     out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
-    out.r.label <- gtkLabel("Output R object:")
+    out.r.label <- gtkLabel("Sample's R name:")
 
     gtkTableAttach(tbl,out.r.label, 0, 1, 2, 3, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,out.r.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
@@ -143,22 +141,22 @@ equi.GUI <- function()   {
     gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
     gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
-    # =========================== Frame Type ================================
-    samp.type.frame <- gtkFrameNew("Frame Type")
-    hbox1$add(samp.type.frame)
-
-    stype.box <- gtkVBoxNew(TRUE, 2)
-    samp.type.frame$add( stype.box )
-
-    area.rb <- gtkRadioButton(label="Area\n(polygon shapefile)")
-    line.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Linear\n(line shapefile)")
-    disc.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Finite\n(point shapefile)")
-
-
-    stype.box$packStart(area.rb, TRUE, TRUE, 2)
-    stype.box$packStart(line.rb, TRUE, TRUE, 2)
-    stype.box$packStart(disc.rb, TRUE, TRUE, 2)
-
+#    # =========================== Frame Type ================================
+#    samp.type.frame <- gtkFrameNew("Frame Type")
+#    hbox1$add(samp.type.frame)
+#
+#    stype.box <- gtkVBoxNew(TRUE, 2)
+#    samp.type.frame$add( stype.box )
+#
+#    area.rb <- gtkRadioButton(label="Area\n(polygon shapefile)")
+#    line.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Linear\n(line shapefile)")
+#    disc.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Finite\n(point shapefile)")
+#
+#
+#    stype.box$packStart(area.rb, TRUE, TRUE, 2)
+#    stype.box$packStart(line.rb, TRUE, TRUE, 2)
+#    stype.box$packStart(disc.rb, TRUE, TRUE, 2)
+#
     # =========================== Bottom row of buttons ==================================
 
     #   ---- Separator
@@ -172,39 +170,37 @@ equi.GUI <- function()   {
 
     #   ---- Run button
     run.b <- gtkButton("Run")
-    gSignalConnect(run.b, "clicked", run.sample, data=list( 
+    gSignalConnect(run.b, "clicked", SDraw:::run.sample, data=list( 
             samp.type.combo=samp.type.combo,
             n.entry=n.entry,
             shape.in.entry=shape.in.entry,
             out.r.entry=out.r.entry,
             over.entry=over.entry,
-            seed.entry=seed.entry, 
-            area.rb=area.rb,
-            line.rb=line.rb,
-            disc.rb=disc.rb,
-            input.dir=INPUT.DIR)
+            seed.entry=seed.entry 
+            )
     ) 
     bbox$packEnd(run.b, expand=FALSE)
 
 
     #   ---- Plot button
     plot.b <- gtkButton("Map")
-    gSignalConnect(plot.b, "clicked", plotSample, data=list(
+    gSignalConnect(plot.b, "clicked", #function(x,dat){print(dat$input.dir)}, 
+    SDraw:::plotSample, 
+    data=list(
             shape.in.entry=shape.in.entry,
-            out.r.entry=out.r.entry,
-            input.dir=INPUT.DIR)
+            out.r.entry=out.r.entry
+            )
     )
     bbox$packEnd(plot.b, expand=FALSE)
 
-#   Here!!! 
-#   Take out frame type radio buttons.  Determine frame type from shape file.
-#   Add radio buttons or dialog to set input and output format to a subset 
-#       of formats in ogrDrivers()$name (KML, CSV, GPX, ESRI Shapefile)
-#   Change to rgdal's readOGR and writeOGR (from spsurvey's readshape())
+#   Here!!! #   Add dialog for write.shapefile to set output format to 
+
+#   a subset 
+#       of formats in ogrDrivers()$name (KML, CSV, GPX, ESRI Shapefile) 
 
     #   ---- View button
     view.b <- gtkButton("View Sample")
-    gSignalConnect(view.b, "clicked", view.sample, data=list(
+    gSignalConnect(view.b, "clicked", SDraw:::view.sample, data=list(
             out.r.entry = out.r.entry
     ))
     bbox$packEnd( view.b, expand=FALSE)
@@ -212,14 +208,14 @@ equi.GUI <- function()   {
 
     #   ---- Write to csv button
     write.csv.b <- gtkButton("Write CSV")
-    gSignalConnect(write.csv.b, "clicked", my.write.csv, data=list(
+    gSignalConnect(write.csv.b, "clicked", SDraw:::my.write.csv, data=list(
             out.r.entry = out.r.entry
     ))
     bbox$packEnd( write.csv.b, expand=FALSE)
 
     #   ---- Write to Shapefile button
     write.shp.b <- gtkButton("Write Shapefile")
-    gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
+    gSignalConnect(write.shp.b, "clicked", SDraw:::my.write.shp, data=list(
             out.r.entry = out.r.entry
     ))
     bbox$packEnd( write.shp.b, expand=FALSE)
