@@ -9,9 +9,9 @@ draw.grts <- function(n,over.n,fn){
                                   seltype = "Equal",
                                   over = over.n))
 
-#    pth.fn <- file.path(input.dir, fn)
+#   Check whether the frame has been read already, and the sp object is laying around. 
+    shp <- getSpFrame( fn )
 
-    sp.obj <- get(fn, .GlobalEnv)
     if( attr(sp.obj, "type") == "points" ){
         sframe.type = "finite"
     } else if( attr(sp.obj, "type") == "lines" ){
@@ -27,7 +27,6 @@ draw.grts <- function(n,over.n,fn){
             sp.object=fn,
             shapefile=FALSE)
 
-#                in.shape=pth.fn,
 
 
     cat("Success.\n")
@@ -42,8 +41,8 @@ draw.grts <- function(n,over.n,fn){
     attr(Equalsites, "sample.type") <- "GRTS"
     attr(Equalsites, "n") <- n
     attr(Equalsites, "over.n") <- over.n
-    attr(Equalsites, "frame.type") <- sframe.type
     attr(Equalsites, "sp.object") <- fn
+    attr(Equalsites, "frame.type") <- sframe.type
 
     Equalsites
 }

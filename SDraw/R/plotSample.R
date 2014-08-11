@@ -18,16 +18,8 @@ plotSample <- function(button, dat){
         return()
     }
     
-    existing.fn <- paste( ".", fn, sep="" )
-    if( exists(existing.fn) ){
-        #   The shapefile has already been read, and it is laying around.  No need to re-read.
-        shp <- get(existing.fn)
-    } else {
-        #   The shapefile is not laying around.  Read it.
-        shp <- readShape(input.dir, fn)  # a wrapper for readOGR
-        
-        assign(existing.fn, shp, pos=.GlobalEnv)
-    }
+    #   Check whether the frame has been read already, and the sp object is laying around. If not, read it.
+    shp <- getSpFrame( fn )
     
     #   plot shape file
     if( "SpatialPolygonsDataFrame" %in% class(shp) ){

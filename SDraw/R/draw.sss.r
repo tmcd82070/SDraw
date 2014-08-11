@@ -8,19 +8,9 @@ draw.sss <- function(n,over.n,fn){
     if( over.n > 0 ) warning( "Oversampling for systematic samples not allowed. Oversample set to zero." )
     
 
-#   Check whether the shapefile has been read already, and the sp object is laying around. 
-    existing.fn <- fn
-    if( exists(existing.fn) ){
-        #   The shapefile has already been read, and it is laying around.  No need to re-read.
-        shp <- get(existing.fn)
-    } else {
-        #   The shapefile is not laying around.  Read it.
-        input.dir <- get(".INPUT.DIR")
+#   Check whether the frame has been read already, and the sp object is laying around. 
+    shp <- getSpFrame( fn )
 
-        shp <- readShape(input.dir, fn)  # a wrapper for readOGR
-        
-        assign(existing.fn, shp, pos=.GlobalEnv)  # save a copy for future use
-    }
 
 #   Determin the sample type and call the appropriate function
     if( length(grep("SpatialPoints", class(shp))) > 0 ){

@@ -206,15 +206,15 @@ equi.GUI <- function()   {
     bbox$packEnd( view.b, expand=FALSE)
 
 
-    #   ---- Write to csv button
-    write.csv.b <- gtkButton("Write CSV")
-    gSignalConnect(write.csv.b, "clicked", SDraw:::my.write.csv, data=list(
-            out.r.entry = out.r.entry
-    ))
-    bbox$packEnd( write.csv.b, expand=FALSE)
+#    #   ---- Write to csv button
+#    write.csv.b <- gtkButton("Write CSV")
+#    gSignalConnect(write.csv.b, "clicked", SDraw:::my.write.csv, data=list(
+#            out.r.entry = out.r.entry
+#    ))
+#    bbox$packEnd( write.csv.b, expand=FALSE)
 
     #   ---- Write to Shapefile button
-    write.shp.b <- gtkButton("Write Shapefile")
+    write.shp.b <- gtkButton("Export")
     gSignalConnect(write.shp.b, "clicked", SDraw:::my.write.shp, data=list(
             out.r.entry = out.r.entry
     ))
