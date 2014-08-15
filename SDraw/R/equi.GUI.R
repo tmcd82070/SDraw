@@ -193,10 +193,6 @@ equi.GUI <- function()   {
     )
     bbox$packEnd(plot.b, expand=FALSE)
 
-#   Here!!! #   Add dialog for write.shapefile to set output format to 
-
-#   a subset 
-#       of formats in ogrDrivers()$name (KML, CSV, GPX, ESRI Shapefile) 
 
     #   ---- View button
     view.b <- gtkButton("View Sample")
