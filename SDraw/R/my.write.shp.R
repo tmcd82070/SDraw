@@ -43,9 +43,7 @@ my.write.shp <- function(x,dat){
 
             if( length(grep("SHP", out.format)) > 0 ){
                 path.n.filename <- extractPathFilename(path.n.filename)
-                print(path.n.filename$path)
-                print(path.n.filename$filename)
-                writeOGR( samp, path.n.filename$path, path.n.filename$filename, "ESRI Shapefile", morphToESRI=TRUE )
+                writeOGR( samp, path.n.filename$path, path.n.filename$file, "ESRI Shapefile", morphToESRI=TRUE )
             } else if( length(grep("CSV", out.format)) > 0 ){
                 samp$coord.x <- coordinates(samp)[,1]
                 samp$coord.y <- coordinates(samp)[,2]
