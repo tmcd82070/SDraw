@@ -43,13 +43,11 @@ my.write.shp <- function(x,dat){
 
             if( length(grep("SHP", out.format)) > 0 ){
                 path.n.filename <- extractPathFilename(path.n.filename)
-                print(path.n.filename$path)
-                print(path.n.filename$filename)
                 writeOGR( samp, path.n.filename$path, path.n.filename$filename, "ESRI Shapefile", morphToESRI=TRUE )
             } else if( length(grep("CSV", out.format)) > 0 ){
                 samp$coord.x <- coordinates(samp)[,1]
                 samp$coord.y <- coordinates(samp)[,2]
-                writeOGR( samp, path.n.filename, samp.nm, "CSV" )
+                writeOGR( samp, path.n.filename, "samplePoints "CSV" )
             } else if( length(grep("KML", out.format)) > 0 ){
                 pjs <- proj4string(samp)
                 if( !is.na(pjs) ){
@@ -62,19 +60,13 @@ my.write.shp <- function(x,dat){
                 #   than "geographical" = lat-long
                 writeOGR( samp, path.n.filename, samp.nm, "KML" )
             } else if( length(grep("GPX", out.format)) > 0 ){
-                pjs <- proj4string(samp)
-                if( !is.na(pjs) ){
-                    #   There is a projection defined.  Try to convert to lat-long, WGS84 as required by Google Earth
-                    if( (length(grep("proj=longlat",pjs,fixed=T))==0) | (length(grep("datum=WGS84",pjs,fixed=T))==0) ){
-                        samp <- spTransform( samp, CRS( "+init=epsg:4326" ))
-                    }
-                }            
-                writeOGR( samp, path.n.filename, samp.nm, "GPX", dataset_options="GPX_USE_EXTENSIONS=YES" )
+                writeOGR( samp, path, filename, "GPX" )
             } 
+            cat(paste("Sample", samp.nm, "written to file", filename, "\n in directory", path,"\n in", out.format,"format.\n"))
           
-        } else {
-            dialog$destroy()
         }
+        
+        dialog$destroy()
 
 
     } else {

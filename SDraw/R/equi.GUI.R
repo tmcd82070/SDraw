@@ -89,7 +89,8 @@ equi.GUI <- function()   {
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
     gSignalConnect(browse.b, "clicked", SDraw:::browse.for.shapefile,data=list(
-        shape.in.entry = shape.in.entry
+        shape.in.entry = shape.in.entry, 
+        parent.window = win
     ))
     
    
@@ -212,7 +213,8 @@ equi.GUI <- function()   {
     #   ---- Write to Shapefile button
     write.shp.b <- gtkButton("Export")
     gSignalConnect(write.shp.b, "clicked", SDraw:::my.write.shp, data=list(
-            out.r.entry = out.r.entry
+            out.r.entry = out.r.entry, 
+            parent.window = win            
     ))
     bbox$packEnd( write.shp.b, expand=FALSE)
 
