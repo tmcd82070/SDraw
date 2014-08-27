@@ -5,9 +5,9 @@ add.sdraw.menu <- function(){
 
 sys <-  Sys.info()["sysname"]
 if( sys == "Windows" & interactive() ){
-    winMenuAdd("S-Draw")
-    winMenuAddItem("S-Draw", "Equi-Probable Designs...", "equi.GUI()")
-    #winMenuAddItem("S-Draw", "Advanced Designs...", "advanced.GUI()")
+    winMenuAdd("SDraw")
+    winMenuAddItem("SDraw", "Equi-Probable Designs...", "equi.GUI()")
+    #winMenuAddItem("SDraw", "Advanced Designs...", "advanced.GUI()")
 } else {
     cat("This is a non-menu environment.\n")
     cat("Call one of the following functions:\n")

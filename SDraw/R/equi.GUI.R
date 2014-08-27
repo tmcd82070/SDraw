@@ -88,7 +88,7 @@ equi.GUI <- function()   {
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
-    gSignalConnect(browse.b, "clicked", SDraw:::browse.for.shapefile,data=list(
+    gSignalConnect(browse.b, "clicked", browse.for.shapefile,data=list(
         shape.in.entry = shape.in.entry, 
         parent.window = win
     ))
@@ -171,7 +171,7 @@ equi.GUI <- function()   {
 
     #   ---- Run button
     run.b <- gtkButton("Run")
-    gSignalConnect(run.b, "clicked", SDraw:::run.sample, data=list( 
+    gSignalConnect(run.b, "clicked", run.sample, data=list( 
             samp.type.combo=samp.type.combo,
             n.entry=n.entry,
             shape.in.entry=shape.in.entry,
@@ -186,7 +186,7 @@ equi.GUI <- function()   {
     #   ---- Plot button
     plot.b <- gtkButton("Map")
     gSignalConnect(plot.b, "clicked", #function(x,dat){print(dat$input.dir)}, 
-    SDraw:::plotSample, 
+    plotSample, 
     data=list(
             shape.in.entry=shape.in.entry,
             out.r.entry=out.r.entry
@@ -197,7 +197,7 @@ equi.GUI <- function()   {
 
     #   ---- View button
     view.b <- gtkButton("View Sample")
-    gSignalConnect(view.b, "clicked", SDraw:::view.sample, data=list(
+    gSignalConnect(view.b, "clicked", view.sample, data=list(
             out.r.entry = out.r.entry
     ))
     bbox$packEnd( view.b, expand=FALSE)
@@ -205,14 +205,14 @@ equi.GUI <- function()   {
 
 #    #   ---- Write to csv button
 #    write.csv.b <- gtkButton("Write CSV")
-#    gSignalConnect(write.csv.b, "clicked", SDraw:::my.write.csv, data=list(
+#    gSignalConnect(write.csv.b, "clicked", SDraw::my.write.csv, data=list(
 #            out.r.entry = out.r.entry
 #    ))
 #    bbox$packEnd( write.csv.b, expand=FALSE)
 
     #   ---- Write to Shapefile button
     write.shp.b <- gtkButton("Export")
-    gSignalConnect(write.shp.b, "clicked", SDraw:::my.write.shp, data=list(
+    gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
             out.r.entry = out.r.entry, 
             parent.window = win            
     ))

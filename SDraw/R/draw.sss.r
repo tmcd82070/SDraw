@@ -40,7 +40,7 @@ draw.sss <- function(n,over.n,fn){
     attr(samp, "sample.type") <- "SSS"
     attr(samp, "n") <- length(samp)
     attr(samp, "over.n") <- 0
-    attr(samp, "frame.type") <- sframe.type
+    attr(samp, "frame.type") <- attr(shp, "type")
     attr(samp, "shapefile") <- fn
 
     cat(paste("Realized SSS size =", length(samp), "\n"))

@@ -12,11 +12,11 @@ draw.grts <- function(n,over.n,fn){
 #   Check whether the frame has been read already, and the sp object is laying around. 
     shp <- getSpFrame( fn )
 
-    if( attr(sp.obj, "type") == "points" ){
+    if( attr(shp, "type") == "points" ){
         sframe.type = "finite"
-    } else if( attr(sp.obj, "type") == "lines" ){
+    } else if( attr(shp, "type") == "lines" ){
         sframe.type = "linear"
-    } else if( attr(sp.obj, "type") == "polygons" ){
+    } else if( attr(shp, "type") == "polygons" ){
         sframe.type = "area"
     }
     
@@ -24,7 +24,7 @@ draw.grts <- function(n,over.n,fn){
             DesignID="EQUAL",
             type.frame=sframe.type,
             src.frame="sp.object",
-            sp.object=fn,
+            sp.object=shp,
             shapefile=FALSE)
 
 

@@ -33,15 +33,15 @@ be drawn through two different dialogs available in the SDraw menu.
 
 The general work flow for drawning an equal probability sample from a 2-dimensional resource is as follows:
 \tabular{ll}{
-1: \tab Open 'Equi-probable Designs' item in SDraw menu\cr
-2: \tab Select BAS or GRTS sampling\cr
-3: \tab Input desired sample size into the 'Sample Size' box
-4: \tab Browse for shapefile containing a 2-D polygon from which to sample \cr
+1: \tab Open 'Equi-probable Designs' item under SDraw menu (or execute equi.GUI())\cr
+2: \tab Select sampling algorithm (BAS, GRTS, or SSS)\cr
+3: \tab Input desired sample size into the 'Sample Size' box\cr
+4: \tab Browse for shapefile containing a 2-D polygon of study area \cr
 5: \tab Hit 'Run'\cr
+6: \tab (optional) Hit 'Map'\cr
+7: \tab (optional) Hit 'Export'\cr
 } 
-Once the sample is drawn, the polygon frame and sample locations can be plotted and saved, 
-the sample can be inspected in R, or 
-the sample can be written to CSV or shapefiles. 
+
 
 }
 \author{
