@@ -13,11 +13,8 @@ halton <- function( n, dim=1, start=1 ){
 #        return(v[sapply(v,function(z){sum(z/1:z==z%/%1:z)==2})])
 #}
 # the first 100 primes.  I got these by calling the above function i.e. primes(1:545). 
-# NOTE: I am leaving out 2 as the first prime.  This is due to some correlation (lines) 
-# between coordinates of the Halton sequence when using base 2 and 3. If we start at 3, these 
-# correlations go away.
 first.primes <- c(  
-                   3,   5,   7,  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,  47,  53,  59,  61,
+              2,   3,   5,   7,  11,  13,  17,  19,  23,  29,  31,  37,  41,  43,  47,  53,  59,  61,
              67,  71,  73,  79,  83,  89,  97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 
             157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 
             257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 
