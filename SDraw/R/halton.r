@@ -36,29 +36,23 @@ if( length(start) != dim ){
 #    Bases of the first dim dimensions of the Halton sequence
 bases <- first.primes[ 1:dim ]
 
-#   The locations of the numbers we want Halton numbers for.  First Halton number is 1, second is 2, etc.  This is the
-#   position in the Halton sequence we need.  After this, pos is a nn X dim matrix where columns are the Halton numbers 
-#   we want. 
-pos <- sapply(start, FUN=function(x,k){ x:(x+k-1) }, k=n )
 
-#   Find halton sequence numbers
-ans <- matrix( NA, nrow(pos), dim )
-for( j in 1:dim ){
-    # the base j representation of pos (where j is prime)
-    xb <- dec2baseb( pos[,j], b=bases[j] )
-        
-    # reverse the digits = reflect around the decimal
-    if( ncol(xb) > 1 ){
-        xb <- t(apply(xb, 1, rev))
-    }
-    
-    # convert back to decimal
-    denom <- bases[j]^ncol(xb)
-    xb <- baseb2dec( xb, b=bases[j] )
-    ans[,j] <- xb / denom
+#   The locations of the numbers we want Halton numbers for.  First Halton number is 1, second is 2, etc.  This is the
+#   position in the Halton sequence we need.  After this, pos is a dim X n matrix where columns are the Halton numbers 
+#   we want. 
+pos <- t(sapply(start, FUN=function(x,k){ x:(x+k-1) }, k=n ))
+
+
+
+#   Find halton sequence numbers using the finite sum formula Blair cooked up
+n.sum.terms <- max(floor( log(start + n - 1)/ log(bases) ) + 1)  # number of digits in base b needed to represent maximum pos in each dim
+
+ans <- matrix( 0, nrow(pos), ncol(pos) )
+for( j in 0:n.sum.terms ){
+    ans <- ans + ((pos %/% bases^j) %% bases) / bases^(j+1)
 }
 
-ans
+t(ans)
 
 }   
     
