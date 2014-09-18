@@ -23,14 +23,15 @@ for( i in 1:length(shp) ){
     area <- area + shp@polygons[[i]]@area
 }
 
-#   Find fraction of the bounding box covered by the polygons
-p <- min(1, area / prod(diff(t(bb))))
+#   Find fraction of the square Halton box covered by the polygons
+p <- min(1, area / max(diff(t(bb)))^2 )
 
 #   Maximum number for random start.  Random start is uniform on integers between 1 and this number. 
 max.u <- 10e7
 
 #   Draw initial random start
 my.dim <- 2 # number of dimensions we are sampling
+m <- runif( 200 )   # burn 200 random numbers.   I have doubts about the randomness of the first few numbers of R's runif
 m <- ceiling(max.u * runif( my.dim ))
 
 #   Take initial number of Halton numbers that is approximately correct
@@ -41,8 +42,8 @@ n.init <- (n / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*n)  # term in sqr
 n.init <- ceiling(n.init)
 halt.samp <- halton( n.init, my.dim, m )
 
-#   Convert from [0,1] to [bbox]
-halt.samp <- bb[,"min"] + t(halt.samp) * c(diff(t(bb)))
+#   Convert from [0,1] to a square box covering [bb]
+halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
 halt.samp <- t(halt.samp)
 
 #   Check which are in the polygon, after first converting halt.samp to SpatialPoints
