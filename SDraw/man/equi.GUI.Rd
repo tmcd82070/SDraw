@@ -97,13 +97,13 @@ Trent McDonald (tmcdonald@west-inc.com)
 
 
 \seealso{
-\code{\link{draw.bas}}, \code{\link{draw.grts}}, \code{\link{draw.sss}}
+\code{\link{bas}}, \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{sss.area}}, 
+\code{\link{halton}}, \code{\link{draw.grts}}
 }
 
 \examples{
 equi.GUI()
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
+
 \keyword{ design }
 \keyword{ survey }

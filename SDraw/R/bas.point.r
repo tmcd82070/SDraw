@@ -1,4 +1,4 @@
-bas.finite <- function(n, shp){
+bas.point <- function(n, shp){
 #   Function to draw a bas sample from a shapefile
 #   containing a list of finite features.
 

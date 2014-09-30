@@ -3,9 +3,9 @@
 \alias{BAS}
 \alias{GRTS}
 \docType{package}
-\title{Selection of spatially balanced samples.
 
-}
+\title{Selection of spatially balanced samples.}
+
 \description{
 SDraw is a GUI interface to a set of R functions that draw 
 Balanced-Acceptance-Samples (BAS) and Generalized-Random-Tesselation-Stratified (GRTS) samples. 
@@ -13,9 +13,10 @@ Input sampling frames can be points (0-D, finite), lines (1-D, infinite), or pol
 and can be contained in ESRI shapefiles (SHP), Google Earth files (KML), Garmin files (GPX), 
 or CSV files.  Functionality to visualize the frame and sample is included.
 }
+
 \details{
 \tabular{ll}{
-Package: \tab BAS\cr
+Package: \tab SDraw\cr
 Type: \tab Package\cr
 License: \tab GNU General Public License\cr
 Dependencies: \tab RGtk2, sp, spsurvey, utils, rgdal\cr 
@@ -31,7 +32,7 @@ directly in code if needed.  BAS samples of n-dimensional resources (up to a max
 GRTS samples can be drawn from resources having at most 2 dimensions.  Both equal and un-equal probability samples can 
 be drawn through two different dialogs available in the SDraw menu.
 
-The general work flow for drawning an equal probability sample from a 2-dimensional resource is as follows:
+The general work flow for drawing an equal probability sample from a 2-dimensional resource is as follows:
 \tabular{ll}{
 1: \tab Open 'Equi-probable Designs' item under SDraw menu (or execute equi.GUI())\cr
 2: \tab Select sampling algorithm (BAS, GRTS, or SSS)\cr
@@ -52,19 +53,22 @@ objects are in package \code{sp} and \code{rgdal}.
 
 }
 \references{
-Robertson, et. al.
+Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) "BAS: Balanced Acceptance Sampling of Natural Resources", Biometrics, v69, p. 776-784.
 
-Stevens and Olsen
+Stevens, D. L., Jr. and A. R. Olsen (2004) "Spatially balanced sampling of natural resources." Journal of the American Statistical Association 99, 262-278.
 
 The monitoring book
 }
 
 
-\keyword{ package }
 \seealso{
-\code{\link[spsurvey:spsurvey-package]{spsurvey}} ~~
+documentation for package 'spsurvey' 
 }
 
 \examples{
-~~ simple examples of the most important functions ~~
+equi.GUI()   # Start the interface
+
+halton(20,2,floor(runif(2,max=100000))) # A random-start 2-D Halton sequence of length 20
 }
+
+\keyword{ package }

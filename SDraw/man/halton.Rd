@@ -1,6 +1,6 @@
 \name{halton}
 \alias{halton}
-.
+
 \title{
 Compute multi-dimensional Halton sequence.
 }
@@ -17,8 +17,8 @@ halton(n, dim = 1, start = 1)
 }
 \details{
     The Halton sequence is a sequence of \code{dim}-dimensional numbers where 
-    each dimension is a (1-dimensional) co-prime (all prime, no repeats) van der Corput sequence. Here, all 
-    van der Corput sequences use bases that are co-prime.  See references below. 
+    each dimension is a (1-dimensional) co-prime van der Corput sequence. Here, all 
+    van der Corput sequences use bases that are prime numbers.  See references below. 
     
     The first \code{dim} primes, starting at 2, are used for the bases of the Halton sequence. 
     For example, the 4-dimensional Halton sequence uses bases 2, 3, 5, and 7. 
@@ -31,9 +31,11 @@ A matrix of size \code{n} X \code{dim}.  Each column corresponds to a dimension.
 Each row is a \code{dim}-dimenisional Halton point. }
 
 \references{
-    van der Corput sequences are described here \link{\url{http://en.wikipedia.org/wiki/Van_der_Corput_sequence}}
+    van der Corput sequences are described here: \url{http://en.wikipedia.org/wiki/Van_der_Corput_sequence} 
     
-    Halton sequences are described here: \link{\url{http://en.wikipedia.org/wiki/Halton_sequence}}
+    Halton sequences are described here: \url{http://en.wikipedia.org/wiki/Halton_sequence}
+    
+    Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) BAS: "Balanced Acceptance Sampling of Natural Resources", Biometrics, v69, p. 776-784.
     }
 \author{
 Trent McDonald
@@ -41,12 +43,12 @@ Trent McDonald
 
 
 \seealso{
- \code{\link{dec2baseb}, \code{\link{baseb2dec}
+ \code{\link{bas}}
 }
 
 \examples{
 halton(10,2)
-halton(10,2, floor(runif(2,max=100000))) # random start Halton sequence
+halton(10,2, floor(runif(2,max=100000))) # A random-start 2-D Halton sequence of length 10
 }
 
 \keyword{ design }

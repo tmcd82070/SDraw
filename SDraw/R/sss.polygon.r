@@ -31,7 +31,7 @@ seq.y <- seq( bb["y","min"], bb["y","max"], by=delta ) + m.y
 
 grd <- expand.grid( x=seq.x, y=seq.y )
 df <- data.frame( row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)), pointType=rep("Sample", length(seq.x)*length(seq.y)) )
-grd <- SpatialPointsDataFrame( grd, data=df )
+grd <- SpatialPointsDataFrame( grd, proj4string=CRS(proj4string(shp)), data=df )
 
 #   Clip to shp
 shp@data <- data.frame( data.frame(shp), zzz=1 )   #  make sure data frame has at least one numeric column

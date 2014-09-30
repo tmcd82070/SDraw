@@ -1,4 +1,4 @@
-bas.area <- function( n, shp ){
+bas.polygon <- function( n, shp ){
 #
 #   Take a BAS sample from a polygon.
 #
@@ -48,7 +48,7 @@ halt.samp <- t(halt.samp)
 
 #   Check which are in the polygon, after first converting halt.samp to SpatialPoints
 crs.obj <- CRS(shp@proj4string@projargs)
-halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, bbox = bb, data=data.frame(siteID=1:nrow(halt.samp)) )
+halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(siteID=1:nrow(halt.samp)) )
 
 in.poly <- over( halt.pts, shp )
 

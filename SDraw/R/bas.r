@@ -14,17 +14,17 @@ bas <- function(n, shp){
 
 
     
-    if( length(grep("SpatialPoints", class(shp))) > 0 ){
+    if( regexpr("SpatialPoints", class(shp)[1]) > 0 ){
 
-        samp <- bas.finite( n, shp )
+        samp <- bas.point( n, shp )
         
-    } else if (length(grep("SpatialLines", class(shp))) > 0 ){
+    } else if (regexpr("SpatialLines", class(shp)[1]) > 0 ){
 
-        samp <- bas.linear( n, shp )
+        samp <- bas.line( n, shp )
     
-    } else if (length(grep("SpatialPolygons", class(shp))) > 0 ){
+    } else if (regexpr("SpatialPolygons", class(shp)[1]) > 0 ){
     
-        samp <- bas.area( n, shp )
+        samp <- bas.polygon( n, shp )
     
     } else {
         stop( "Unknown spatial object type" )
