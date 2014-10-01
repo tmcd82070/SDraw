@@ -1,89 +1,105 @@
 \name{sss.polygon}
 \alias{sss.polygon}
-%- Also NEED an '\alias' for EACH other topic documented here.
+
 \title{
-%%  ~~function to do ... ~~
+Draws a Simple Systematic Sample (SSS) from an area resource (polygons).
 }
+
 \description{
-%%  ~~ A concise (1-5 lines) description of what the function does. ~~
+Draws a systematic, or grid, sample from a SpatialPolygons object, where SpatialPolygons are defined in library 'sp'.
+Options are available to control the relative spacing in horizontal and vertical directions, whether a square or triangular grid is produced, and 
+whether the grid is randomly rotated. 
 }
+
 \usage{
-sss.polygon(n, shp)
+bas.polygon(n, shp, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE)
 }
-%- maybe also 'usage' for other objects documented here.
+
 \arguments{
   \item{n}{
-%%     ~~Describe \code{n} here~~
+Sample size.  Number of locations to draw from the set of all polygons contained in \code{shp}. 
 }
   \item{shp}{
-%%     ~~Describe \code{shp} here~~
+A SpatialPolygons or SpatialPolygonsDataFrame object. This object must contain at least 1 polygon.  If 
+it contains more than 1 polygon, the BAS sample is drawn from the union of all polygons.     
 }
+\item{spacing}{
+A vector of length 2 containing the RELATIVE spacing of grid points in the horizontal (X) and vertical (Y) directions.  See details. 
 }
+
+\item{triangular}{
+Boolean scaler specifying whether to produce a rectangular (\code{triangular==FALSE}) or triangular (\code{triangular==TRUE}) grid. 
+}
+
+\item{rand.dir}{
+Boolean scaler specifying whether to randomly orient the grid direction (\code{rand.dir==TRUE}) or not (\code{rand.dir==FALSE}).  If 
+FALSE, orientation of the grid is parallel to the X and Y axes.  If TRUE, the X axis of the grid is randomly rotated by an angle between -45 and 45
+degrees.  Note, relative spacing of the grid cells is computed prior to rotation. After rotation, the X axis of the grid could be close to 90 degress, 
+thereby nearly swapping the relative spacings.  
+}
+ 
+
+}
+
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+The projection system of the input shape object (\code{shp}) is checked.  If the projection system is 
+anything other than UTM (e.g., "longlat"), \code{shp} is converted to UTM prior to constructing the systematic grid.  
+UTM coordinate systems are necessary to obtain correct spacings (in UTM space).  
+At the end, if the orginal projection system was not UTM, the sample grid is projected back to the original.  
+This will make the output grid lines non-parrallel in the orginal system.  To get a 
+proper grid, with consistent spacing, in the orginal projection, you must start with UTM's.  The author STRONGLY recommends 
+converting \code{shp} to a UTM coordinate system prior to calling this function.   
+
+Absolute spacing (size of grid cells) is determined by \code{n}. By default, grid spacing is equal in X and Y directions, which produces square grid cells. 
+By default, grid spacing is \code{delta} (= \code{sqrt(A/n)}, where \code{A} = area of union of all polygons in \code{shp}. 
+
+Relative spacing is controled by the input \code{spacing} vector.  If \code{spacing = c(rx, ry)}, spacing in X and Y directions
+is \code{spacing*delta/rev(spacing)}. This assures area of each cell is \code{delta^2} while maintaining relative size specified. 
+
+In general, realized sample size is not fixed.  Across multiple calls, realized sample size will not always equal \code{n}.  
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
+A SpatialPointsDataFrame containing locations in the SSS sample, in arbitrary order.  If the input object 
+has an attached data frame (i.e., is a SpatialPolygonsDataFrame), attrributes of the polygon in which each point fell 
+is attached in the associated data frame.
 }
 
-%% ~Make other sections like Warning with \section{Warning }{....} ~
+
+\author{
+Trent McDonald}
+
 
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+\code{\link{bas.polygon}}
 }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
 
-## The function is currently defined as
-function (n, shp) 
-{
-    bb <- bbox(shp)
-    lx <- diff(bb["x", ])
-    ly <- diff(bb["y", ])
-    A <- sum(unlist(lapply(shp@polygons, function(x) {
-        x@area
-    })))
-    delta <- sqrt(A/n)
-    m.x <- runif(1, 0, delta)
-    m.y <- runif(1, 0, delta)
-    seq.x <- seq(bb["x", "min"], bb["x", "max"], by = delta) + 
-        m.x
-    seq.y <- seq(bb["y", "min"], bb["y", "max"], by = delta) + 
-        m.y
-    grd <- expand.grid(x = seq.x, y = seq.y)
-    df <- data.frame(row = rep(1:length(seq.y), each = length(seq.x)), 
-        col = rep(1:length(seq.x), length(seq.y)), pointType = rep("Sample", 
-            length(seq.x) * length(seq.y)))
-    grd <- SpatialPointsDataFrame(grd, proj4string = CRS(proj4string(shp)), 
-        data = df)
-    shp@data <- data.frame(data.frame(shp), zzz = 1)
-    tmp <- over(grd, shp)
-    keep <- !is.na(tmp$zzz)
-    tmp <- tmp[, !(names(tmp) \%in\% c("zzz"))]
-    tmp2 <- data.frame(grd)
-    tmp2 <- tmp2[, !(names(tmp2) \%in\% c("x", "y"))]
-    grd@data <- data.frame(tmp2, tmp)
-    grd <- grd[keep, ]
-    attr(grd, "spacing") <- delta
-    grd
-  }
+\examples{
+NL.samp <- sss.polygon( 100, Canadian_Province_NL )   # square grid oriented east-west
+plot( Canadian_Province_NL )
+points( NL.samp )
+
+NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(2,3) )   # rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
+plot( Canadian_Province_NL )
+points( NL.samp )
+
+NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(sqrt(2),1) )   # rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
+plot( Canadian_Province_NL )
+points( NL.samp )
+
+NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(1,sqrt(3)), rand.dir=TRUE )   # rectangular grid, random orientation, with y spacing = 3*(x spacing)
+plot( Canadian_Province_NL )
+points( NL.samp )
+
+NL.samp <- sss.polygon( 100, Canadian_Province_NL, triangular=TRUE )   # triangular grid oriented east-west
+plot( Canadian_Province_NL )
+points( NL.samp )
+
+NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(2,3), triangular=TRUE )   # triangular grid oriented east-west, with relative spacing c(.667,1.5)
+plot( Canadian_Province_NL )
+points( NL.samp )
+
 }
-% Add one or more standard keywords, see file 'KEYWORDS' in the
-% R documentation directory.
-\keyword{ ~kwd1 }
-\keyword{ ~kwd2 }% __ONLY ONE__ keyword per line
+
+
+\keyword{ design }
+\keyword{ survey }
