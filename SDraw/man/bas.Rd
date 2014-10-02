@@ -44,6 +44,7 @@ Trent McDonald
 }
 
 \examples{
+data(Canadian_Province_NL)
 bas( 100, Canadian_Province_NL )
 }
 

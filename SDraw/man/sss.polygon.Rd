@@ -12,7 +12,7 @@ whether the grid is randomly rotated.
 }
 
 \usage{
-bas.polygon(n, shp, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE)
+sss.polygon(n, shp, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE)
 }
 
 \arguments{
@@ -74,6 +74,9 @@ Trent McDonald}
 }
 
 \examples{
+require(sp)
+data(Canadian_Province_NL)
+
 NL.samp <- sss.polygon( 100, Canadian_Province_NL )   # square grid oriented east-west
 plot( Canadian_Province_NL )
 points( NL.samp )

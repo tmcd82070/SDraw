@@ -53,13 +53,16 @@ Trent McDonald
 }
 
 \examples{
+data(Canadian_Province_NL)
+
 #   Draw sample
 NL_sample <- grts.equi(100,100, Canadian_Province_NL)
 
 #   Plot
+require(sp)
 plot( Canadian_Province_NL )
-plot( NL_sample[ NL_sample$pointType == "Sample", ], pch=16, add=T )  # 'sample' locations
-plot( NL_sample[ NL_sample$pointType == "OverSample", ], pch=1, add=T )  # 'over sample' locations
+plot( NL_sample[ NL_sample$pointType == "Sample", ], pch=16, add=TRUE )  # 'sample' locations
+plot( NL_sample[ NL_sample$pointType == "OverSample", ], pch=1, add=TRUE )  # 'over sample' locations
 
 
 }

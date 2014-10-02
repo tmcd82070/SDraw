@@ -48,13 +48,16 @@ Trent McDonald
 }
 
 \examples{
+data(Canadian_Province_NL)
+
 #   Draw sample
 NL_sample <- bas.polygon(200, Canadian_Province_NL)  # Pretend 100 'sample' plus 100 'over sample' points
 
 #   Plot
+require(sp)
 plot( Canadian_Province_NL )
-plot( NL_sample[ NL_sample$siteID <= 100, ], pch=16, add=T )  # 'sample' locations
-plot( NL_sample[ NL_sample$siteID >  100, ], pch=1, add=T )  # 'over sample' locations
+plot( NL_sample[ NL_sample$siteID <= 100, ], pch=16, add=TRUE )  # 'sample' locations
+plot( NL_sample[ NL_sample$siteID >  100, ], pch=1, add=TRUE )  # 'over sample' locations
 
 }
 
