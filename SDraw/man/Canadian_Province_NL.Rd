@@ -18,13 +18,16 @@ The proj2string is "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,
 meaning among other things that the coordinates are decimal degrees of latitude and longitude. 
 
 The rectangular bounding box of the polygon is 
-        min       max
-x -67.81762 -52.61917
-y  46.60950  60.37024
+\tabular{lrr}{
+    \tab    min  \tab     max \cr
+x \tab -67.81762 \tab -52.61917 \cr
+y \tab 46.60950 \tab 60.37024 \cr
+}
 
 The associated data frame is: 
-  ObjectID PROV                      NAME     SQKM FIPS_ADMIN POP1996 DWELL1996
-0    65537   NF Newfoundland And Labrador 395344.4       CA05  551850    187423
+\tabular{rrrrrrr}{
+ObjectID \tab PROV \tab NAME \tab SQKM \tab FIPS_ADMIN \tab POP1996 \tab DWELL1996 \cr
+65537 \tab NF \tab Newfoundland And Labrador \tab 395344.4  \tab CA05 \tab 551850  \tab  187423 \cr
 }
 
 
