@@ -19,13 +19,11 @@ From metadata of the shapefile, attributes of the polygons are:
 
 \enumerate{
 \item  AREA = The size of the shape in square coverage units.  In the distributed file, coverage units represent square decimal degrees.
-\item  PERIMETER = The perimeter of shape in coverage units.  In the distributed file,
-        coverage units represent decimal degrees.
-\item  STATESP020 =     Internal feature number
+\item  PERIMETER = The perimeter of shape in coverage units.  In the distributed file, coverage units represent decimal degrees.
+\item  STATESP020 = Internal feature number
 \item  STATE = The name of the State or State equivalent.
 \item  STATE_FIPS = The 2-digit FIPS code of the State or State equivalent.
-\item  ORDER_ADM =  An ordinal value indicating the State’s order of admission to the United
-        States.
+\item  ORDER_ADM =  An ordinal value indicating the State's order of admission to the United States.
 \item  MONTH_ADM = The month when the State was admitted to the United States.
 \item  DAY_ADM = The day when the State was admitted to the United States.
 \item  YEAR_ADM = The year when the State was admitted to the United States.

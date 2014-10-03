@@ -1,5 +1,5 @@
 \name{WA.cities}
-\alias{WA.cites}
+\alias{WA.cities}
 \docType{data}
 \title{SpatialPointsDataFrame of cities in Washington state, USA
 }
@@ -8,7 +8,7 @@ A SpatialPointsDataFrame [package "sp"] containing the latitude-longitude locati
 cities in Washington state, USA.
 }
 
-\usage{data("WA.cites")}
+\usage{data("WA.cities")}
 
 \format{
 A SpatialPointsDataFrame containing one point for 815 cities in Washington state. Source
@@ -25,7 +25,7 @@ From metadata of the shapefile, attributes of the points are as follows:
 \item ANSICODE =  A unique identification number assigned by the U.S. Census Bureau.  This
     number can be used to link places in this data set with the Census Gazetteer data.
 \item FEATURE = The type of feature, as assigned by GNIS. Values are 'Census', 'Civil',
-    and 'Populated Place'.
+    and 'Populated Place'.  
 \item FEATURE2 = The status of the city or town. Values are -999 (missing), 'County Seat',
     and 'State Capital County Seat'.
 \item NAME = The name of the city or town.

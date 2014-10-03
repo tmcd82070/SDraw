@@ -29,6 +29,7 @@ The associated data frame is:
 ObjectID \tab PROV \tab NAME \tab SQKM \tab FIPS_ADMIN \tab POP1996 \tab DWELL1996 \cr
 65537 \tab NF \tab Newfoundland And Labrador \tab 395344.4  \tab CA05 \tab 551850  \tab  187423 \cr
 }
+}
 
 
 \examples{
