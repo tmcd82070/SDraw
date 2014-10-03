@@ -1,7 +1,10 @@
-\name{BAS-package}
+\name{SDraw-package}
+\alias{SDraw-package}
 \alias{BAS-package}
 \alias{BAS}
 \alias{GRTS}
+\alias{SDraw}
+
 \docType{package}
 
 \title{Selection of spatially balanced samples.}
@@ -25,12 +28,11 @@ When SDraw is attached (via \code{library(SDraw)}, a new menu item appears in th
 menu ('SDraw') contains items which call dialog boxes that implement the interface to functions that 
 actually do the work of drawing samples.   
 
-The functions that actually draw the samples are \code{bas.polygon} (for BAS samples) and \code{grts} (for GRTS samples).  
-\code{bas.polygon} is contained in SDraw.  \code{grts} is taken straight from package \code{spsurvey}.  The main 
+The functions that actually draw the samples are \code{bas} (for BAS samples) and \code{grts} (for GRTS samples) and \code{sss.polygon} (for Simple Systematic Samples).  
+\code{bas} and \code{sss.polygon} are contained in SDraw.  \code{grts} is taken straight from package \code{spsurvey}.  The main 
 purpose of SDraw is to provide a simple-to-use interface to these routines.  These routines, however, could be called
 directly in code if needed.  BAS samples of n-dimensional resources (up to a max of n = 99 dimensions) can be drawn. 
-GRTS samples can be drawn from resources having at most 2 dimensions.  Both equal and un-equal probability samples can 
-be drawn through two different dialogs available in the SDraw menu.
+GRTS samples can be drawn from resources having at most 2 dimensions.  
 
 The general work flow for drawing an equal probability sample from a 2-dimensional resource is as follows:
 \tabular{ll}{

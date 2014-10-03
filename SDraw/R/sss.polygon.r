@@ -4,12 +4,18 @@ sss.polygon <- function( n, shp, spacing=c(1,1), triangular=FALSE, rand.dir=FALS
 
 #   First, convert to UTM, if shp is not already
 ps <- proj4string(shp)
-if( regexpr("proj=utm", ps) < 0 ){
-    #   We have a system other than utm - convert
+if( regexpr("proj=longlat", ps) > 0 ){
+    #   We have a lat-long system  - convert
+    #   All other systems leave alone
     #   Compute an "okay" zone = zone of center of shp.
+    cat( paste("Converting from Lat-Long to UTM for sampling, then back.  This may cause non-parallel grid lines\n", 
+    "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
+    
     mean.x <- mean( bbox(shp)["x",] )
     utm.zone <- floor((mean.x + 180)/6) + 1;  # screw exceptions near Svalbaard.  Don't matter here.
-
+    
+    cat( paste("UTM Zone used for conversion =", utm.zone, "\n" ))
+    
     #   shp tranformed to UTM
     shp <- spTransform( shp, CRS(paste("+proj=utm +zone=", utm.zone, " +datum=WGS84", sep="")) )
 } else {
