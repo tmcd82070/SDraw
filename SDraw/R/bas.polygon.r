@@ -50,10 +50,12 @@ halt.samp <- t(halt.samp)
 crs.obj <- CRS(shp@proj4string@projargs)
 halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(siteID=1:nrow(halt.samp)) )
 
+
 in.poly <- over( halt.pts, shp )
 
+
 #   Reject the points outside the polygon, and attach other attributes if present
-keep <- !is.na(in.poly[,1])
+keep <- !is.na(in.poly)
 halt.pts@data <- data.frame( in.poly )
 halt.pts <- halt.pts[ keep, ]
 
