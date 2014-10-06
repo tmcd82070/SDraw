@@ -27,12 +27,16 @@ pixels <- SpatialPolygons( pixels, 1:nrow(pts), proj4string=CRS(proj4string(shp)
 #   Now that we have polygons around points, call bas.polygon
 samp <- bas.polygon( n, pixels )
 
+
 #   Snap the halton points to the pixel center points
-in.poly <- over( pixels, samp )
-print(sum(!is.na(in.poly)))
+pts <- pts[ samp$in.poly, ]
+pts <- SpatialPointsDataFrame( pts, data=data.frame(siteID=1:length(samp)), proj4string=CRS(proj4string(shp)) )
+if( regexpr( "DataFrame", class(shp) ) > 0){
+    #   Input shape has a data frame
+    df <- data.frame(shp)[samp$in.poly, ]
+    pts <- SpatialPointsDataFrame( pts, data=data.frame(data.frame(pts), df) )
+}
 
-samp <- pixels[ which(!is.na(in.poly)), ]
 
-samp
-
+pts
 }
