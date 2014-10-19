@@ -15,13 +15,12 @@ draw.sss <- function(n,over.n,fn){
 #   Determin the sample type and call the appropriate function
     if( length(grep("SpatialPoints", class(shp))) > 0 ){
 
-        stop( "SSS samples of points not yet implemented in SDraw")
+        stop( "SSS samples of points not implemented in SDraw")
         #samp <- sss.finite( n, shp )
         
     } else if (length(grep("SpatialLines", class(shp))) > 0 ){
 
-        stop( "SSS samples of lines not yet implemented in SDraw")
-        #samp <- sss.linear( n, shp )
+        samp <- sss.line( n, shp )
     
     } else if (length(grep("SpatialPolygons", class(shp))) > 0 ){
     

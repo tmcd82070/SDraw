@@ -24,18 +24,25 @@ for( i in 1:nrow(pts)){
 }
 pixels <- SpatialPolygons( pixels, 1:nrow(pts), proj4string=CRS(proj4string(shp))   )
 
+if( regexpr( "DataFrame", class(shp) ) > 0){
+    df <- data.frame(shp, row.names=row.names(pixels))  # coordinates are included here, by default
+} else {
+    df <- data.frame(pts, row.names=row.names(pixels))
+}
+
+pixels <- SpatialPolygonsDataFrame( pixels, data=df )
+
 #   Now that we have polygons around points, call bas.polygon
 samp <- bas.polygon( n, pixels )
 
 
-#   Snap the halton points to the pixel center points
-pts <- pts[ samp$in.poly, ]
-pts <- SpatialPointsDataFrame( pts, data=data.frame(siteID=1:length(samp)), proj4string=CRS(proj4string(shp)) )
-if( regexpr( "DataFrame", class(shp) ) > 0){
-    #   Input shape has a data frame
-    df <- data.frame(shp)[samp$in.poly, ]
-    pts <- SpatialPointsDataFrame( pts, data=data.frame(data.frame(pts), df) )
-}
+#   Snap the halton points to the pixel center points, which were a part of the input data frame
+cord.names <- dimnames(bbox(shp))[[1]]
+cords.df <- data.frame(samp)
+cords <- cords.df[,cord.names]
+cords.df <- cords.df[,!(names(cords.df) %in% c(cord.names,paste(cord.names,".1",sep="")))]  # Drop coordinates from attributes
+pts <- SpatialPointsDataFrame( cords, data=cords.df )
+
 
 
 pts

@@ -46,6 +46,20 @@ halt.samp <- halton( n.init, my.dim, m )
 halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
 halt.samp <- t(halt.samp)
 
+
+#   Make sure there is a non-missing attribute associated with each polygon in shp.
+#   This is because over() extracts attributes of shp, and missingness is used 
+#   to flag which points are outside a polygon.
+if( regexpr( "DataFrame", class(shp)) > 0 ){
+    #   Shp has a data frame
+    df <- data.frame( data.frame(shp), sp.object.ID=row.names(shp), polygon.num=1:length(shp) )
+} else {
+    df <- data.frame( sp.object.ID=row.names(shp), polygon.num=1:length(shp), row.names=row.names(shp) )
+}
+
+shp <- SpatialPolygonsDataFrame( shp, data=df )
+
+
 #   Check which are in the polygon, after first converting halt.samp to SpatialPoints
 crs.obj <- CRS(shp@proj4string@projargs)
 halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(siteID=1:nrow(halt.samp)) )
@@ -55,7 +69,7 @@ in.poly <- over( halt.pts, shp )
 
 
 #   Reject the points outside the polygon, and attach other attributes if present
-keep <- !is.na(in.poly)
+keep <- !is.na( in.poly$polygon.num )
 halt.pts@data <- data.frame( in.poly )
 halt.pts <- halt.pts[ keep, ]
 

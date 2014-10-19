@@ -45,14 +45,17 @@ Trent McDonald
 
 \examples{
 require(sp)
-data(Canadian_Province_NL)
-NL.samp <- bas( 100, Canadian_Province_NL )
-plot( Canadian_Province_NL )
+
+#   Sample Polygons: Example draw from landmass of Newfoundland.
+data(NL)
+NL.samp <- bas( 100, NL )
+plot( NL, col=rainbow(length(NL)) )
 plot( NL.samp, pch=16, add=TRUE )
 
-#   Sample Hawaii, then count number of points in 
-#   each polygons, and plot vs area of polygon.
-#   N should be proportional to area.
+#   Sample polygons: Example draw of spatial points from 
+#   the landmasses of Hawaii.  Count number of points in
+#   each polygon, and plot vs area.
+#   N should be proportional to length.
 data(HI)
 HI.samp <- bas( 100, HI )
 plot( HI, col=rainbow(length(HI)) )
@@ -65,6 +68,36 @@ HI.counts <- merge(HI.poly, HI.counts, all.x=TRUE)
 HI.counts$n[ is.na(HI.counts$n) ] <- 0
 plot( HI.counts$AREA, HI.counts$n )
 
+
+#   Sample lines: Example draw from coastline of Hawaii.  
+#   Count number of points on 
+#   each line. With a few exceptions, each line in the 
+#   HI.coast outlines one island.  Plot n vs length of line.
+#   N should be proportional to length.
+data(HI.coast)
+HI.samp <- bas( 50, HI.coast )
+plot( HI.coast, col=rainbow(length(HI.coast)) )
+points( HI.samp, pch=16 )
+
+#HI.sline <- data.frame(HI.coast)
+#HI.counts <- data.frame(table(HI.samp$Coastln010))
+#names(HI.counts) <- c("Coastln010", "n")
+#HI.counts <- merge(HI.sline, HI.counts, all.x=TRUE)
+#HI.counts$n[ is.na(HI.counts$n) ] <- 0
+#plot( HI.counts$Miles, HI.counts$n )
+
+
+#   Sample points: Example draw of cities in Washington
+#   Note: spatial balence of point frames with variable density 
+#   will look unbalanced when plotted in 2D.  However, consider that
+#   the voids (spaces between points) do not contain any points and 
+#   therefore cannot be sampled.  The selected sample is spatially 
+#   balanced when you consider these voids are empty.  
+data(WA.cities)
+WA.samp <- bas( 100, WA.cities )
+plot(WA.cities)
+points(WA.samp, col="red", pch=16 )
+ 
 }
 
 \keyword{ design }

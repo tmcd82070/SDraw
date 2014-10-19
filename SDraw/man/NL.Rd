@@ -1,14 +1,14 @@
-\name{Canadian_Province_NL}
-\alias{Canadian_Province_NL}
+\name{NL}
+\alias{NL}
 \docType{data}
-\title{Polygon map of Newfoundland 
+\title{Polygon map of Newfoundland, Canada 
 }
 \description{
-A SpatialPolygonsDataFrame [package "sp"] containing an outline of the Canadian province of 
+A SpatialPolygonsDataFrame [see package "sp"] containing an outline of the Canadian province of 
 Newfoundland.
 }
 
-\usage{data("Canadian_Province_NL")}
+\usage{data("NL")}
 
 \format{
 A SpatialPolygonsDataFrame containing one polygon outlining the Canadian province of Newfoundland.  
@@ -34,8 +34,8 @@ ObjectID \tab PROV \tab NAME \tab SQKM \tab FIPS_ADMIN \tab POP1996 \tab DWELL19
 
 \examples{
 require(sp)
-data(Canadian_Province_NL)
-plot(Canadian_Province_NL) 
+data(NL)
+plot(NL) 
 }
 
 \keyword{datasets}

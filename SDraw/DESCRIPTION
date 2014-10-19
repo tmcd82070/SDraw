@@ -8,4 +8,5 @@ Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Spatially balanced sample draws especially suited for environmental monitoring.  Draws BAS, GRTS, and SSS samples from points, lines, and polygons.
 License: GNU General Public License
 BugReports: https://github.com/tmcd82070/SDraw/issues
-Imports: RGtk2, sp, spsurvey, utils, rgdal
+Imports: RGtk2, spsurvey, utils, rgdal
+Depends: sp

@@ -75,30 +75,30 @@ Trent McDonald}
 
 \examples{
 require(sp)
-data(Canadian_Province_NL)
+data(NL)
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL )   # square grid oriented east-west
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL )   # square grid oriented east-west
+plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(2,3) )   # rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL, spacing=c(2,3) )   # rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
+plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(sqrt(2),1) )   # rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL, spacing=c(sqrt(2),1) )   # rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
+plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(1,sqrt(3)), rand.dir=TRUE )   # rectangular grid, random orientation, with y spacing = 3*(x spacing)
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL, spacing=c(1,sqrt(3)), rand.dir=TRUE )   # rectangular grid, random orientation, with y spacing = 3*(x spacing)
+plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL, triangular=TRUE )   # triangular grid oriented east-west
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL, triangular=TRUE )   # triangular grid oriented east-west
+plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, Canadian_Province_NL, spacing=c(2,3), triangular=TRUE )   # triangular grid oriented east-west, with relative spacing c(.667,1.5)
-plot( Canadian_Province_NL )
+NL.samp <- sss.polygon( 100, NL, spacing=c(2,3), triangular=TRUE )   # triangular grid oriented east-west, with relative spacing c(.667,1.5)
+plot( NL )
 points( NL.samp )
 
 }

@@ -25,7 +25,7 @@ grts.equi <- function( n, over.n, shp ){
     cat("Success.\n")
 
     #   Toss some variables that are not important for equal probability designs
-    Equalsites <- Equalsites[,!(names(Equalsites) %in% c("mdcaty","wgt","stratum","panel"))]
+    #Equalsites <- Equalsites[,!(names(Equalsites) %in% c("mdcaty","wgt","stratum","panel"))]
 
     #   Add a column of sample/oversample for convieneince
     Equalsites$pointType <- c(rep("Sample",n), rep("OverSample",over.n))

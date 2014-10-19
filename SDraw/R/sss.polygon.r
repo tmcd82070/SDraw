@@ -8,7 +8,7 @@ if( regexpr("proj=longlat", ps) > 0 ){
     #   We have a lat-long system  - convert
     #   All other systems leave alone
     #   Compute an "okay" zone = zone of center of shp.
-    cat( paste("Converting from Lat-Long to UTM for sampling, then back.  This may cause non-parallel grid lines\n", 
+    warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This may cause non-parallel grid lines\n", 
     "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
     
     mean.x <- mean( bbox(shp)["x",] )
