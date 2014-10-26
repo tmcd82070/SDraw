@@ -8,6 +8,7 @@ draw.grts <- function(n,over.n,fn){
 #   Check whether the frame has been read already, and the sp object is laying around. 
     shp <- getSpFrame( fn )
 
+
 #   Call the user visible routine that takes a SpatialX object
     ans <- grts.equi( n, over.n, shp )
 

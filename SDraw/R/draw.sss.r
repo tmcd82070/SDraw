@@ -12,28 +12,8 @@ draw.sss <- function(n,over.n,fn){
     shp <- getSpFrame( fn )
 
 
-#   Determin the sample type and call the appropriate function
-    if( length(grep("SpatialPoints", class(shp))) > 0 ){
-
-        stop( "SSS samples of points not implemented in SDraw")
-        #samp <- sss.finite( n, shp )
-        
-    } else if (length(grep("SpatialLines", class(shp))) > 0 ){
-
-        samp <- sss.line( n, shp )
-    
-    } else if (length(grep("SpatialPolygons", class(shp))) > 0 ){
-    
-        samp <- sss.polygon( n, shp )
-    
-    } else {
-        stop( "Unknown spatial object type" )
-    }
-    
-
-    
-    #   Add a column of sample/oversample for convieneince
-    #samp$pointType <- rep("Sample",n)
+#   Draw the sample
+    samp <- sss( n, shp )
 
     #   Store some attributes
     attr(samp, "sample.type") <- "SSS"

@@ -59,6 +59,17 @@ run.sample <- function(button, dat){
         over.n <- 0
     }
 
+#   Write out the command to console and history file.  Must do this 
+#   here, rather than in draw.XXX routines, because I want to write out 
+#   the assignment to the output object.
+    cat(">")
+    switch( stype, 
+        "BAS " = timestamp(paste(outobj, "<- bas(", n + over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
+        "GRTS" = timestamp(paste(outobj, "<- grts.equi(", n, ",", over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
+        "SSS " = timestamp(paste(outobj, "<- sss(", n , ",", fn, ")"), prefix="", suffix=" ## SDraw")
+    )
+
+
     #   Actually draw the sample
     #   Remember that fn is the text string name of the shapefile, without .shp, and without path.
     samp <- switch( stype, 

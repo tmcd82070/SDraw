@@ -6,7 +6,6 @@ draw.bas <- function(n,over.n,fn){
 #   Check whether the frame has been read already, and the sp object is laying around. 
     shp <- getSpFrame( fn )
 
-
 #   Draw the BAS sample
     Equalsites <- bas(n+over.n,shp)
 
