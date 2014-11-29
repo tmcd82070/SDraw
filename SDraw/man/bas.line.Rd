@@ -62,10 +62,11 @@ Trent McDonald
 
 \examples{
 #   Draw sample of Hawaii coastline
-data(HI.coast)
-samp <- bas.line( 100, HI.coast )
-plot(HI.coast, col=rainbow(length(HI.coast)))
-points( samp, pch=16 )
+#   This takes approximately 30 seconds to run
+#data(HI.coast)
+#samp <- bas.line( 100, HI.coast )
+#plot(HI.coast, col=rainbow(length(HI.coast)))
+#points( samp, pch=16 )
 
 }
 

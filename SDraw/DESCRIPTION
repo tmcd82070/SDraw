@@ -1,12 +1,12 @@
 Package: SDraw
 Type: Package
 Title: Sample Draw
-Version: 1.04
-Date: 2014-10-03
+Version: 1.4
+Date: 2014-10-30
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Spatially balanced sample draws especially suited for environmental monitoring.  Draws BAS, GRTS, and SSS samples from points, lines, and polygons.
 License: GNU General Public License
 BugReports: https://github.com/tmcd82070/SDraw/issues
 Imports: RGtk2, spsurvey, utils, rgdal
-Depends: sp
+Depends: sp 

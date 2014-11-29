@@ -77,27 +77,33 @@ Trent McDonald}
 require(sp)
 data(NL)
 
-NL.samp <- sss.polygon( 100, NL )   # square grid oriented east-west
+# A square grid oriented east-west
+NL.samp <- sss.polygon( 100, NL )   
 plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, NL, spacing=c(2,3) )   # rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
+# A rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
+NL.samp <- sss.polygon( 100, NL, spacing=c(2,3) )   
 plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, NL, spacing=c(sqrt(2),1) )   # rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
+# A rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
+NL.samp <- sss.polygon( 100, NL, spacing=c(sqrt(2),1) )   
 plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, NL, spacing=c(1,sqrt(3)), rand.dir=TRUE )   # rectangular grid, random orientation, with y spacing = 3*(x spacing)
+# A rectangular grid, random orientation, with y spacing = 3*(x spacing)
+NL.samp <- sss.polygon( 100, NL, spacing=c(1,sqrt(3)), rand.dir=TRUE )   
 plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, NL, triangular=TRUE )   # triangular grid oriented east-west
+# A triangular grid oriented east-west
+NL.samp <- sss.polygon( 100, NL, triangular=TRUE )   
 plot( NL )
 points( NL.samp )
 
-NL.samp <- sss.polygon( 100, NL, spacing=c(2,3), triangular=TRUE )   # triangular grid oriented east-west, with relative spacing c(.667,1.5)
+# A triangular grid oriented east-west, with relative spacing c(.667,1.5)
+NL.samp <- sss.polygon( 100, NL, spacing=c(2,3), triangular=TRUE )   
 plot( NL )
 points( NL.samp )
 

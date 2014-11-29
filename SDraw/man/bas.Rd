@@ -49,7 +49,7 @@ require(sp)
 #   Sample Polygons: Example draw from landmass of Newfoundland.
 data(NL)
 NL.samp <- bas( 100, NL )
-plot( NL, col=rainbow(length(NL)) )
+plot( NL )
 plot( NL.samp, pch=16, add=TRUE )
 
 #   Sample polygons: Example draw of spatial points from 
@@ -70,21 +70,11 @@ plot( HI.counts$AREA, HI.counts$n )
 
 
 #   Sample lines: Example draw from coastline of Hawaii.  
-#   Count number of points on 
-#   each line. With a few exceptions, each line in the 
-#   HI.coast outlines one island.  Plot n vs length of line.
-#   N should be proportional to length.
-data(HI.coast)
-HI.samp <- bas( 50, HI.coast )
-plot( HI.coast, col=rainbow(length(HI.coast)) )
-points( HI.samp, pch=16 )
-
-#HI.sline <- data.frame(HI.coast)
-#HI.counts <- data.frame(table(HI.samp$Coastln010))
-#names(HI.counts) <- c("Coastln010", "n")
-#HI.counts <- merge(HI.sline, HI.counts, all.x=TRUE)
-#HI.counts$n[ is.na(HI.counts$n) ] <- 0
-#plot( HI.counts$Miles, HI.counts$n )
+#   This takes approx 10 seconds to run.
+#data(HI.coast)
+#HI.samp <- bas( 50, HI.coast )
+#plot( HI.coast, col=rainbow(length(HI.coast)) )
+#points( HI.samp, pch=16 )
 
 
 #   Sample points: Example draw of cities in Washington
@@ -93,10 +83,11 @@ points( HI.samp, pch=16 )
 #   the voids (spaces between points) do not contain any points and 
 #   therefore cannot be sampled.  The selected sample is spatially 
 #   balanced when you consider these voids are empty.  
-data(WA.cities)
-WA.samp <- bas( 100, WA.cities )
-plot(WA.cities)
-points(WA.samp, col="red", pch=16 )
+#   This takes approx 10 seconds to run.
+#data(WA.cities)
+#WA.samp <- bas( 100, WA.cities )
+#plot(WA.cities)
+#points(WA.samp, col="red", pch=16 )
  
 }
 

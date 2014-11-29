@@ -81,15 +81,19 @@ equi.GUI <- function()   {
     gtkTableAttach(tbl,samp.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
-    #   ---- Input shape file box
+    #   ---- Input shape file and directory box
     shape.in.entry <- gtkEntry()
     shape.in.entry$setText( "" )
     shape.file.label <- gtkLabel("Shape file:")
+    
+    shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
+    shape.in.dir$setText( getwd() )
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
     gSignalConnect(browse.b, "clicked", browse.for.shapefile,data=list(
-        shape.in.entry = shape.in.entry, 
+        shape.in.entry = shape.in.entry,
+        shape.in.dir = shape.in.dir, 
         parent.window = win
     ))
     
@@ -107,7 +111,7 @@ equi.GUI <- function()   {
     out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
     out.r.label <- gtkLabel("Sample's R name:")
 
-    gtkTableAttach(tbl,out.r.label, 0, 1, 2, 3, xpadding=5, ypadding=5)
+    gtkTableAttach(tbl,out.r.label, 0, 1, 2, 3, xpadding=5, ypadding=5) 
     gtkTableAttach(tbl,out.r.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
 
 
@@ -175,6 +179,7 @@ equi.GUI <- function()   {
             samp.type.combo=samp.type.combo,
             n.entry=n.entry,
             shape.in.entry=shape.in.entry,
+            shape.in.dir=shape.in.dir,
             out.r.entry=out.r.entry,
             over.entry=over.entry,
             seed.entry=seed.entry 

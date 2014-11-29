@@ -51,13 +51,18 @@ Trent McDonald
 data(NL)
 
 #   Draw sample
-NL_sample <- bas.polygon(200, NL)  # Pretend 100 'sample' plus 100 'over sample' points
+#   Here, first 100 are 'sample' points.
+#   Second 100 are 'over sample' points
+NL_sample <- bas.polygon(200, NL)  
 
 #   Plot
 require(sp)
 plot( NL )
-plot( NL_sample[ NL_sample$siteID <= 100, ], pch=16, add=TRUE )  # 'sample' locations
-plot( NL_sample[ NL_sample$siteID >  100, ], pch=1, add=TRUE )  # 'over sample' locations
+
+# Plot 'sample' locations
+plot( NL_sample[ NL_sample$siteID <= 100, ], pch=16, add=TRUE ) 
+# Plot 'over sample' locations 
+plot( NL_sample[ NL_sample$siteID >  100, ], pch=1, add=TRUE )  
 
 }
 

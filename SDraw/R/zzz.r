@@ -18,7 +18,7 @@
 #    print(ls(env=SDrawNamespaceEnv, all=T)) 
 #    print(ls(env=SDrawPackageSpace, all=T)) 
 
-    assign(".INPUT.DIR", getwd(), envir=.GlobalEnv )
+#    assign(".INPUT.DIR", getwd(), envir=.GlobalEnv )
 #    print(ls(env=.GlobalEnv, all=T))
 
 }

@@ -1,0 +1,19 @@
+getSpFrame <- function( filename ){
+
+    if( exists(filename) ){
+        #   The shapefile has already been read, and it is laying around.  No need to re-read.
+        shp <- get(filename)
+    } else {
+        #   The shapefile is not laying around.  Read it.
+        file.n.path <- extractPathFilename( filename )
+        
+        #   Write the command to console and histry file
+        timestamp( paste( file.n.path$file, "<- readOGR(", file.n.path$path, ",", file.n.path$file, ")"), prefix="", suffix=" ## SDraw")
+        
+        shp <- readShape(file.n.path$path, file.n.path$file)  # a wrapper for readOGR
+
+        assign(filename, shp, pos=.GlobalEnv)  # save a copy for future use
+    }
+
+    shp
+}

@@ -19,7 +19,7 @@ browse.for.shapefile <- function(x, dat){
         path <- path.n.filename$path
 
         dat$shape.in.entry$setText(filename)
-        assign(".INPUT.DIR", path, envir=.GlobalEnv )
+        dat$shape.in.dir$setText(path)
     } else {
         dialog$destroy()
     }
