@@ -1,4 +1,4 @@
-draw.sss <- function(n,over.n,fn){
+draw.sss <- function(n,over.n,fn,dir){
 #
 #   draw a sss sample.
 #
@@ -9,7 +9,7 @@ draw.sss <- function(n,over.n,fn){
     
 
 #   Check whether the frame has been read already, and the sp object is laying around. 
-    shp <- getSpFrame( fn )
+    shp <- getSpFrame( fn, dir )
 
 
 #   Draw the sample

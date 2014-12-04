@@ -1,4 +1,4 @@
-draw.grts <- function(n,over.n,fn){
+draw.grts <- function(n,over.n,fn,dir){
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
@@ -6,7 +6,7 @@ draw.grts <- function(n,over.n,fn){
 #    cat("Drawing GRTS sample...This can take a while ...\n")
 
 #   Check whether the frame has been read already, and the sp object is laying around. 
-    shp <- getSpFrame( fn )
+    shp <- getSpFrame( fn, dir )
 
 
 #   Call the user visible routine that takes a SpatialX object

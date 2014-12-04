@@ -4,6 +4,7 @@ run.sample <- function(button, dat){
     #   Query the entry fields
     n <- dat$n.entry$getText()
     fn <- dat$shape.in.entry$getText()
+    in.dir <- dat$shape.in.dir$getText()
     outobj <- dat$out.r.entry$getText()
     over.n <- dat$over.entry$getText()
     seed <- dat$seed.entry$getText()
@@ -37,13 +38,13 @@ run.sample <- function(button, dat){
         return()
     }
 
-    if( exists( outobj, where=.GlobalEnv ) ){
-        #   Ideally, we could ask the user here if they want to overwrite.
-        #   This should be easy using RGtk windows, but I am in a rush.
-        #   For now, just save a backup copy
-        assign( paste(outobj, ".previous", sep=""), get(outobj, pos=.GlobalEnv), pos=.GlobalEnv)
-        cat( paste( "Old version of", outobj, "copied to", paste(outobj, ".previous", sep=""), "\n"))
-    }
+#    if( exists( outobj, where=.GlobalEnv ) ){
+#        #   Ideally, we could ask the user here if they want to overwrite.
+#        #   This should be easy using RGtk windows, but I am in a rush.
+#        #   For now, just save a backup copy
+#        assign( paste(outobj, ".previous", sep=""), get(outobj, pos=.GlobalEnv), pos=.GlobalEnv)
+#        cat( paste( "Old version of", outobj, "copied to", paste(outobj, ".previous", sep=""), "\n"))
+#    }
 
 
 
@@ -71,15 +72,16 @@ run.sample <- function(button, dat){
 
 
     #   Actually draw the sample
-    #   Remember that fn is the text string name of the shapefile, without .shp, and without path.
+    #   Remember that fn is the text string name of the shapefile with path, but without .shp.
     samp <- switch( stype, 
-                "BAS " = draw.bas(n,over.n,fn),
-                "GRTS" = draw.grts(n,over.n,fn),
-                "SSS " = draw.sss(n,over.n,fn),
+                "BAS " = draw.bas(n,over.n,fn,in.dir),
+                "GRTS" = draw.grts(n,over.n,fn,in.dir),
+                "SSS " = draw.sss(n,over.n,fn,in.dir),
                          stop(paste("Unknown sample type:",stype)))
 
-    #   Save the sample in global environment.  Type of sample is an attribute.                         
-    assign( outobj, samp, pos=.GlobalEnv )
+    #   Save the sample in global environment.  Type of sample is an attribute. 
+    SDrawPackageSpace <- as.environment( "package:SDraw" )
+    assign( outobj, samp, pos=SDrawPackageSpace )
 
     #   Tell user we are finished.
     cat("First 10 sample locations:\n")
