@@ -10,6 +10,7 @@ getSpFrame <- function( filename ){
 
         assign(filename, shp, pos=.GlobalEnv)  # save a copy for future use
     }
+	#this is another comment
 
     shp
 }
