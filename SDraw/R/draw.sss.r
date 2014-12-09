@@ -2,7 +2,7 @@ draw.sss <- function(n,over.n,fn,dir){
 #
 #   draw a sss sample.
 #
-
+#   Trent's comment
     
 
     if( over.n > 0 ) warning( "Oversampling for systematic samples not allowed. Oversample set to zero." )
