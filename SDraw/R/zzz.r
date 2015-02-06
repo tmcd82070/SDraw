@@ -1,4 +1,4 @@
-# Guy's comment on this function
+
 
 .onAttach<-function(libname, pkgname){
 
