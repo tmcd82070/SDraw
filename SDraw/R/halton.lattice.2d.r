@@ -1,4 +1,4 @@
-halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), J=NULL, N=10000, eta=c(1,1), bases=c(2,3)){
+halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
   # 
   # Return coordinates in a 2d Halton lattice, as a set of (x,y) vectors 
   #
@@ -14,20 +14,21 @@ halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), J=NULL, N=10000, eta=c(
   #   eta = 2X1 vector of number of points to add inside each Halton box.  e.g., if 
   #     eta = c(3,2), a small grid of 3 by 2 points is added inside each Halton box. eta[1] is for 
   #     dimension 1, eta[2] is for dimension 2, etc. 
+  #   triangular = boolean, if TRUE, construct a triangular grid. If FALSE, construct rectangluar grid.
   #   bases = 2X1 vector of Halton bases.  These must be co-prime. 
 
-  rng.x <- bbox[1,]
-  rng.y <- bbox[2,]
+  D <- nrow( bbox )   # number of dimensions
   
-  dx <- diff(rng.x)
-  dy <- diff(rng.y)
+  delta <- apply( bbox, 1, diff )   # size/extent of box in each dimension
   
   if(is.null(J)){
     # Set default values of J so Halton boxes are as close to squares as possible
-    n.x <- sqrt(N * dx/dy)
-    n.y <- sqrt(N * dy/dx)
-    # round the n closest to an integer
-    n <- c(n.x=n.x, n.y=n.y)
+    n <- rep(NA,D)
+    for( i in 1:D ){
+        n[i] <- ((delta[i]^(D-1))/prod(delta[-i]) * N)^(1/D)
+    }
+
+    print(n)
     
     # compute J which gives something close to n
     J <- round( log(n)/log(bases) )
@@ -42,9 +43,19 @@ halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), J=NULL, N=10000, eta=c(
     n <- bases^J
   }
   
-
-  print(prod(n))
-  print(n)
+  # Inflate n by eta (before this, n was number of halton boxes in each dimension, now it 
+  # will be number of points)
+  n <- eta * n
+  
+  # Construct sequences in each direction
+  coords <- matrix(NA, prod(n), D )
+  for( i in 1:2 ){
+    c.seq <- seq( 1, n[i] )
+    coords <- (c.seq - 0.5)/n[i]
+  }
+  x.coords <- 
+  
+  print(delta / n)
   cat("------\n")
   print(J)
   print( bases^J )
