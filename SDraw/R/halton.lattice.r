@@ -32,6 +32,8 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   
   if( length(eta) != D) stop("Dimensions must equal length of Eta parameter.")
   
+  if( triangular & (D!=2)) warning("Triangular grids for D!=2 not implemented. Rectangular grid produced.")
+  
   
   if(is.null(J)){
     # Compute n.boxes, because prod(eta) points are added inside each halton box and we desire N points
@@ -72,31 +74,40 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   
   # Expand the grid
   hl.coords <- expand.grid( coords )
+
+  # Make triangular if called for
+  if(triangular & (D==2)){
+    x.tweak <- rep(c(0.25,-0.25)*delta[1]/n[1], each=n[1])  # 2 rows
+    x.tweak <- rep( x.tweak, ceiling(n[2]/2) ) # correct length if n[2] even, too long by 1 row if n[2] odd
+    x.tweak <- x.tweak[1:prod(n)]
+    hl.coords[,1] <- hl.coords[,1] + x.tweak 
+  }
   
   # Add attributes
   attr(hl.coords,"J") <- J
   attr(hl.coords,"eta") <- eta
   attr(hl.coords,"bases") <- bases
   attr(hl.coords,"bbox") <- bbox
+  attr(hl.coords,"triangular") <- triangular
   
   hl.coords
 }
 
-# tmp <- halton.lattice(bbox(WA), N=220, J=c(3,2), eta=c(2,1))
-# 
-# tmp.J <- attr(tmp,"J")
-# tmp.b <- attr(tmp,"bases")
-# tmp.bb <- attr(tmp,"bbox") 
-# 
-# plot( tmp.bb[1,], tmp.bb[2,], type="n")
-# points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
-# 
-# 
-# for(d in 1:ncol(tmp)){
-#   tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
-#   if( d == 1){
-#       abline(v=tmp2)
-#   } else{
-#       abline(h=tmp2)
-#   }
-# }
+tmp <- halton.lattice(bbox(WA), N=220, J=c(4,2), eta=c(2,2), triangular=T)
+
+tmp.J <- attr(tmp,"J")
+tmp.b <- attr(tmp,"bases")
+tmp.bb <- attr(tmp,"bbox") 
+
+plot( tmp.bb[1,], tmp.bb[2,], type="n")
+points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
+
+
+for(d in 1:ncol(tmp)){
+  tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
+  if( d == 1){
+      abline(v=tmp2)
+  } else{
+      abline(h=tmp2)
+  }
+}
