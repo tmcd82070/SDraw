@@ -1,10 +1,10 @@
-halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
+halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1,nrow(bbox)), triangular=FALSE, bases=NULL){
   # 
   # Return coordinates in a 2d Halton lattice, as a set of (x,y) vectors 
   #
   # Input: 
-  #   bbox = bounding box for the Halton lattice. bbox[1,] = c(min, max) of dimension 1, bbox[2,] = c(min, max)
-  #     of dimension 2, etc. Default is the unit box [0,1]X[0,1]
+  #   bbox = Dx2 matrix equal to the bounding box for the Halton lattice. bbox[1,] = c(min, max) of dimension 1, bbox[2,] = c(min, max)
+  #     of dimension 2, etc. Default is the unit box [0,1]X[0,1].  Number rows is number of dimensions. 
   #   J = 2X1 vector of base powers.  J[1] is for dimention 1, J[2] for dimension 2, etc.
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
@@ -20,6 +20,12 @@ halton.lattice.2d <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=c(
   D <- nrow( bbox )   # number of dimensions
   
   delta <- apply( bbox, 1, diff )   # size/extent of box in each dimension
+  
+  if(is.null(bases)){
+    bases <- primes(D)
+  } else if(length(bases)!=D){
+    stop("Number of dimensions must equal length of bases. Make nrow(bbox) == length(bases)")
+  }
   
   if(is.null(J)){
     # Set default values of J so Halton boxes are as close to squares as possible
