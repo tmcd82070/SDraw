@@ -1,6 +1,6 @@
 halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1,nrow(bbox)), triangular=FALSE, bases=NULL){
   # 
-  # Return coordinates in a 2d Halton lattice, as a set of (x,y) vectors 
+  # Return coordinates in a D-dimensional Halton lattice, as a set of vectors in a data frame.
   #
   # Input: 
   #   bbox = Dx2 matrix equal to the bounding box for the Halton lattice. bbox[1,] = c(min, max) of dimension 1, bbox[2,] = c(min, max)
@@ -8,7 +8,7 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   #   J = DX1 vector of base powers.  J[1] is for dimention 1, J[2] for dimension 2, etc.
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
-  #   N = Approximate number of points to place in the lattice (dim(1)*dim(2)).  If J is specified, it 
+  #   N = Approximate number of points to place in the lattice total.  If J is specified, it 
   #     takes precedence.  If J is NULL, the algorithm attempts to place N points in the bounding box 
   #     using Halton boxes that are as close to square as possible.  This N is not exact, but is a target. 
   #   eta = DX1 vector of number of points to add inside each Halton box.  e.g., if 
@@ -93,21 +93,21 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   hl.coords
 }
 
-tmp <- halton.lattice(bbox(WA), N=220, J=c(4,2), eta=c(2,2), triangular=T)
-
-tmp.J <- attr(tmp,"J")
-tmp.b <- attr(tmp,"bases")
-tmp.bb <- attr(tmp,"bbox") 
-
-plot( tmp.bb[1,], tmp.bb[2,], type="n")
-points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
-
-
-for(d in 1:ncol(tmp)){
-  tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
-  if( d == 1){
-      abline(v=tmp2)
-  } else{
-      abline(h=tmp2)
-  }
-}
+# tmp <- halton.lattice(bbox(WA), N=220, J=c(4,2), eta=c(2,2), triangular=T)
+# 
+# tmp.J <- attr(tmp,"J")
+# tmp.b <- attr(tmp,"bases")
+# tmp.bb <- attr(tmp,"bbox") 
+# 
+# plot( tmp.bb[1,], tmp.bb[2,], type="n")
+# points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
+# 
+# 
+# for(d in 1:ncol(tmp)){
+#   tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
+#   if( d == 1){
+#       abline(v=tmp2)
+#   } else{
+#       abline(h=tmp2)
+#   }
+# }
