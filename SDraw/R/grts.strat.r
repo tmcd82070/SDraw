@@ -1,9 +1,10 @@
 grts.strat <- function( n, over.n, strat.var, sizes, shp ){
 
-
-strat.var <- c("st1","st2","st3")
-sizes <- c(50, 50, 30)
-selType=c("Equal")
+# these are data passed from the GUI
+# strat.name = "Stratum"
+# strat.var <- c("Large","Small")
+# sizes <- c(120, 30)
+# selType=c("Equal")
 
 #this makes a list of elements to be passed to the grts function
 Stratdsgn <- lapply(1:length(strat.var), function(x) list(panel=c(PanelOne=sizes[x]),seltype=selType))
@@ -29,9 +30,8 @@ names(Stratdsgn) <- strat.var
             type.frame=sframe.type,
             src.frame="sp.object",
             sp.object=shp,
-			stratum=                       #need to check stratum variable name
+			stratum="Stratum",   #need to use stratum variable name as taken from GUI
             shapefile=FALSE)
-
 
 
     cat("Success.\n")
