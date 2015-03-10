@@ -33,9 +33,7 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
   # A nicety: copy over the names of the coordinates.
   if( is.null(coordnames(sp.obj))) {
     names(hl) <- c("easting","northing")
-  } else {
-    names(hl) <- coordnames(sp.obj)
-  }
+  } 
   
   # Convert lattice to SpatialPoints object
   hl.points <- SpatialPoints(hl, proj4string=CRS(proj4string(sp.obj)))
@@ -57,7 +55,7 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
   attr(hl.points,"eta") <- attr(hl, "eta")
   attr(hl.points,"bases") <- attr(hl, "bases")
   attr(hl.points,"triangular") <- attr(hl, "triangular")
-  attr(hl.points,"hl.bbox") <- attr(hl, "bbox")  # save original bbox, because bbox(hl.points) != bbox(sp.obj)
+  attr(hl.points,"hl.bbox") <- attr(hl, "hl.bbox")  # save original bbox, because bbox(hl.points) != bbox(sp.obj)
   
   hl.points
   
@@ -84,3 +82,14 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
 #       abline(h=tmp2, col="blue")
 #   }
 # }
+#
+## Compute Voronoi polygons and variance of sizes
+# library(dismo)
+# tmp.v <- voronoi(tmp)
+# plot(WA.utm)
+# plot(tmp.v, add=T, col=rainbow(length(tmp.v)))
+# plot(WA.utm, add=T)
+# plot(tmp, pch=16, add=T)
+# tmp.v.sizes <- unlist(lapply( tmp.v@polygons, function(x){x@area} ))
+# cat("Standard deviation of tesselation sizes (m)\n")
+# print(sd(tmp.v.sizes))

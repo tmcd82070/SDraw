@@ -4,7 +4,8 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   #
   # Input: 
   #   bbox = Dx2 matrix equal to the bounding box for the Halton lattice. bbox[1,] = c(min, max) of dimension 1, bbox[2,] = c(min, max)
-  #     of dimension 2, etc. Default is the unit box [0,1]X[0,1].  Number rows is number of dimensions. 
+  #     of dimension 2, etc. Default is the unit box [0,1]X[0,1].  Number rows is number of dimensions.  dimnames(bbox)[[1]] is the name
+  #     of the columns on output (i.e., coordinate names). 
   #   J = DX1 vector of base powers.  J[1] is for dimention 1, J[2] for dimension 2, etc.
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
@@ -66,6 +67,7 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   
   # Construct sequences in each direction
   coords <-vector("list",D)
+  names(coords) <- dimnames(bbox)[[1]]
   for( i in 1:D ){
     c.seq <- seq( 1, n[i] )
     coords[[i]] <- (c.seq - 0.5)/n[i]
@@ -87,19 +89,20 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   attr(hl.coords,"J") <- J
   attr(hl.coords,"eta") <- eta
   attr(hl.coords,"bases") <- bases
-  attr(hl.coords,"bbox") <- bbox
+  attr(hl.coords,"hl.bbox") <- bbox
   attr(hl.coords,"triangular") <- triangular
   
   hl.coords
 }
 
-# tmp <- halton.lattice(bbox(WA), N=220, J=c(4,2), eta=c(2,2), triangular=T)
+ tmp <- halton.lattice(bbox(WA.utm), N=220, J=c(4,2), eta=c(2,2), triangular=T)
 # 
 # tmp.J <- attr(tmp,"J")
 # tmp.b <- attr(tmp,"bases")
-# tmp.bb <- attr(tmp,"bbox") 
+# tmp.bb <- attr(tmp,"hl.bbox") 
 # 
-# plot( tmp.bb[1,], tmp.bb[2,], type="n")
+# 
+# #plot( tmp.bb[1,], tmp.bb[2,], type="n")
 # points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
 # 
 # 
