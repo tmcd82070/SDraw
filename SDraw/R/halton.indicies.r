@@ -65,10 +65,14 @@ halton.indicies <- function(hl){
   hl.coords <- t(hl.coords)
   cell.coord <- floor( n.boxes*(hl.coords - ll.corner)/(delta) + .Machine$double.eps*10) + 1
   cell.coord <- colSums( (cell.coord - m1)*mat.sz )
-  hl <- data.frame( hl, halton.index=hl.vec[cell.coord] )
-  
+  hl.out <- data.frame( data.frame(hl), halton.index=hl.vec[cell.coord] )
 
-  hl
+  if( regexpr("SpatialPoints", class(hl)) > 0 ){
+    # Return a SpatialPoints* object
+    hl.out <- SpatialPointsDataFrame(coordinates(hl), data=hl.out)
+  } 
+  
+  hl.out
   
 }
 
@@ -82,15 +86,15 @@ halton.indicies <- function(hl){
 #   points(tmp2[tmp2$halton.index==i,], pch=16,col=rainbow(max(tmp2$halton.index))[i])
 # }
 
-tmp <- halton.lattice.polygon(WA.utm[3,], J=c(6,3), eta=c(2,2))
-tmp2 <- halton.indicies(tmp)
-
-plot(WA.utm, xlim=c(480118.3, 515610.1), ylim=c(5230959 ,5265726))
-for( i in 1:max(tmp2$halton.index)){
-  if( sum( tmp2$halton.index==i)>0){
-    points(tmp2[tmp2$halton.index==i,c("x","y")], pch=16,col=rainbow(max(tmp2$halton.index))[i])
-  }
-}
+# tmp <- halton.lattice.polygon(WA.utm[3,], J=c(6,3), eta=c(2,2))
+# tmp2 <- halton.indicies(tmp)
+# 
+# plot(WA.utm, xlim=c(480118.3, 515610.1), ylim=c(5230959 ,5265726))
+# for( i in 1:max(tmp2$halton.index)){
+#   if( sum( tmp2$halton.index==i)>0){
+#     points(tmp2[tmp2$halton.index==i,c("x","y")], pch=16,col=rainbow(max(tmp2$halton.index))[i])
+#   }
+# }
 
 
 

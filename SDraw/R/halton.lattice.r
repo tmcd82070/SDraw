@@ -95,7 +95,7 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   hl.coords
 }
 
- tmp <- halton.lattice(bbox(WA.utm), N=220, J=c(4,2), eta=c(2,2), triangular=T)
+# tmp <- halton.lattice(bbox(WA.utm), N=220, J=c(4,2), eta=c(2,2), triangular=T)
 # 
 # tmp.J <- attr(tmp,"J")
 # tmp.b <- attr(tmp,"bases")
