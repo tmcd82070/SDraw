@@ -86,15 +86,16 @@ halton.indicies <- function(hl){
 #   points(tmp2[tmp2$halton.index==i,], pch=16,col=rainbow(max(tmp2$halton.index))[i])
 # }
 
-# tmp <- halton.lattice.polygon(WA.utm[3,], J=c(6,3), eta=c(2,2))
-# tmp2 <- halton.indicies(tmp)
-# 
-# plot(WA.utm, xlim=c(480118.3, 515610.1), ylim=c(5230959 ,5265726))
-# for( i in 1:max(tmp2$halton.index)){
-#   if( sum( tmp2$halton.index==i)>0){
-#     points(tmp2[tmp2$halton.index==i,c("x","y")], pch=16,col=rainbow(max(tmp2$halton.index))[i])
-#   }
-# }
+tmp <- halton.lattice.polygon(WA.utm[3,], J=c(6,3), eta=c(2,2))
+tmp2 <- halton.indicies(tmp)
+
+plot(WA.utm, xlim=c(480118.3, 515610.1), ylim=c(5230959 ,5265726))
+plot(WA.utm)
+for( i in 1:max(tmp2$halton.index)){
+  if( sum( tmp2$halton.index==i)>0){
+    points(tmp2[tmp2$halton.index==i,c("x","y")], pch=16,col=rainbow(max(tmp2$halton.index))[i])
+  }
+}
 
 
 
@@ -103,24 +104,24 @@ halton.indicies <- function(hl){
 
 
 
-# ##  This plots the halton boxes, points, and indices for particular J's
-# J <- c(4,2)
-# b <- c(2,3)
-# n.boxes <- b ^ J
-# hl.ind <- halton( prod(n.boxes), 2 )
-# 
-# plot(c(0,1),c(0,1),type="n")
-# 
-# for( i in J[1]:1){
-#   abline(v=(0:b[1]^i)/b[1]^i, lwd=J[1]+1-i, col=i)
-# }
-# for( i in J[2]:1){
-#   abline(h=(0:b[2]^i)/b[2]^i, lwd=J[2]+1-i, col=i)
-# }
-# points(hl.ind[,1], hl.ind[,2], col=6, pch=16)
-# 
-# 
-# for( i in 1:prod(n.boxes)){
-#   tmp2 <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
-#   text(tmp2[1],tmp2[2], i, adj=.5, col="black")  
-# }
+##  This plots the halton boxes, points, and indices for particular J's
+J <- c(4,2)
+b <- c(2,3)
+n.boxes <- b ^ J
+hl.ind <- halton( prod(n.boxes), 2 )
+
+plot(c(0,1),c(0,1),type="n")
+
+for( i in J[1]:1){
+  abline(v=(0:b[1]^i)/b[1]^i, lwd=J[1]+1-i, col=i)
+}
+for( i in J[2]:1){
+  abline(h=(0:b[2]^i)/b[2]^i, lwd=J[2]+1-i, col=i)
+}
+points(hl.ind[,1], hl.ind[,2], col=6, pch=16)
+
+
+for( i in 1:prod(n.boxes)){
+  tmp2 <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
+  text(tmp2[1],tmp2[2], i, adj=.5, col="black")  
+}
