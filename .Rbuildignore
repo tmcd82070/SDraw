@@ -5,12 +5,14 @@ src-x64
 ^.*\.Rproj$
 ^\.Rproj\.user$
 .Rhistory
-.RData
+^\.RData$
 .Rbuildignore
 SDraw.rproj
 ArchivedVersions
+TestingFolder
 .gitignore
 .*\.gz$
+.*\.piz$
 ^README\.md$
 .*\.mod$
 .*\.o$
