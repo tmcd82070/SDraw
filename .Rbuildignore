@@ -1,0 +1,17 @@
+^cran-comments\.md$
+src-i386
+src-x64
+^\.travis\.yml$
+^.*\.Rproj$
+^\.Rproj\.user$
+.Rhistory
+.RData
+.Rbuildignore
+SDraw.rproj
+ArchivedVersions
+.gitignore
+.*\.gz$
+^README\.md$
+.*\.mod$
+.*\.o$
+.*\.dll$
