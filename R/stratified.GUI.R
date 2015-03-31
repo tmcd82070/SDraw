@@ -16,10 +16,10 @@ stratified.GUI <- function()   {
     win$add(vbox1)
 
     # ================= Sample type frame ============================
-    samp.types <- c("BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
+    samp.types <- c("HAL - Halton Lattice Sampling", "BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
             "SSS - Simple Systematic Sampling")
 			#this adds different sampling frames
-			#I don't forsee adding anything other than BAS, GRTS, or SSS
+			#I don't forsee adding anything other than BAS, GRTS, or SSS  -- HAL!!!
     samp.type.combo <- gtkComboBoxNewText()
     samp.type.combo$show()
     for( i in samp.types ){
@@ -52,21 +52,23 @@ stratified.GUI <- function()   {
 
 
     # --------------------------- Middle horizontal box ---------------
+    req.frame <- gtkFrameNew("Required Inputs")
+    vbox1$packStart(req.frame)
+
     hbox1 <- gtkHBoxNew(FALSE, 8) #sets up middle horizontal box, FALSE means things not evenly spaced, 8 is for 8 pixels between things
     hbox1$setBorderWidth(8)
-    vbox1$add(hbox1)
-	#this makes a middle box
+    req.frame$add(hbox1) #this adds the new horizontal box to the frame which is in the overall vertical box.  we are building the window vertically
 
 
 
     # ================= Required Inputs frame ============================
-    req.frame <- gtkFrameNew("Required Inputs")
-    hbox1$add(req.frame)
+    frame.frame <- gtkFrameNew("Frame Information")
+    hbox1$add(frame.frame)  # Adds the frame to the horizontal box
 
     #   ---- Define a verticle box
     req.vbox <- gtkVBoxNew(FALSE, 8)
     req.vbox$setBorderWidth(8)
-    req.frame$add(req.vbox)
+    frame.frame$add(req.vbox)
 
 
     #   ---- Define table of boxes so everything aligns
@@ -76,14 +78,6 @@ stratified.GUI <- function()   {
 
     req.vbox$packStart(tbl)
 
-    #   ---- Sample size text box
-    n.entry <- gtkEntry()
-    n.entry$setText( "" )
- 
-    samp.size.label <- gtkLabel("Total sample size (N):") #changed from "Sample size (n):"
-
-    gtkTableAttach(tbl,samp.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(tbl,n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
     #   ---- Input shape file box
     shape.in.entry <- gtkEntry()
@@ -104,11 +98,11 @@ stratified.GUI <- function()   {
     gtkTableAttach(tbl,shape.file.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,shape.file.box, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
-	# #   ---- Input stratifying variable information Guy added this section 12/19
-	# #   ---- Stratum Names
-	strata.var.entry <- gtkEntry()
-	strata.var.entry$setText( "" )
-	strata.var.label <- gtkLabel("Name of Stratifying Variable:")
+  	# #   ---- Input stratifying variable information Guy added this section 12/19
+  	# #   ---- Stratum Names
+  	strata.var.entry <- gtkEntry()
+  	strata.var.entry$setText( "" )
+  	strata.var.label <- gtkLabel("Name of Stratifying Variable:")
 	
     gtkTableAttach(tbl,strata.var.label, 0, 1, 2, 3, xpadding=5, ypadding=5)
     gtkTableAttach(tbl,strata.var.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
@@ -123,16 +117,78 @@ stratified.GUI <- function()   {
     gtkTableAttach(tbl,out.r.entry, 1, 2, 3, 4, xpadding=5, ypadding=5)
 
 
+    # ============================ Sample Allocation frame ===========
+    #hbox1 <- gtkHBoxNew(FALSE, 8) #sets up another horizontal box, FALSE means things not evenly spaced, 8 is for 8 pixels between things
+    #hbox1$setBorderWidth(8)
+    #vbox1$add(hbox1)
+    
+    samp.alloc.frame <- gtkFrameNew("Sample Allocation")
+    hbox1$add(samp.alloc.frame)
+    
+    #  Radio Buttons to Specify Sample Allocation 
+    stype.box <- gtkVBoxNew(TRUE, 2)
+    stype.box$setBorderWidth(8)
+    samp.alloc.frame$add( stype.box )
+    
+    prop.rb <- gtkRadioButton(label="Proportional to Size")
+    const.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"Constant")
+    user.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"User-specified")
+    #user.entry <-gtkEntry()
+    #user.entry$setText( "" ) #keep box blank
+    
+    stype.box$packStart(prop.rb, TRUE, TRUE, 2)
+    stype.box$packStart(const.rb, TRUE, TRUE, 2)
+    stype.box$packStart(user.rb, TRUE, TRUE, 2)
+    #stype.box$packStart(user.entry, TRUE, TRUE, 2) 
+    #this creates a box next to the user-specified button
+    #it would be nice to only have this box pop up if the user-specified button is clicked
+    
+    #   ---- Sample sizes
+    
+    n.frame <- gtkFrameNew( "Sample Size")
+    
+    # n.tbl <- gtkTableNew(7,4,homogeneous=FALSE) #Bigger than we need. FALSE for nonhomogeneous
+    # gtkTableSetRowSpacings(n.tbl,1) #1 pixel between rows
+    # gtkTableSetColSpacings(n.tbl,5) #5 pixels between column
+    
+    hbox1$add(n.frame)
+    
+    n.vbox <- gtkVBoxNew(TRUE, 2)
+    n.vbox$setBorderWidth(8)
+    n.frame$add( n.vbox )
+    
+    n.entry <- gtkEntry()
+    n.entry$setText( "" )
+    
+    n.label <- gtkLabel("Specify total sample size (N):") 
+    n.label2 <- gtkLabel(" ")
+
+    n.vbox$packStart(n.entry)
+    n.vbox$packStart(n.label)
+    n.vbox$packStart(n.label2)
+
+    # gtkTableAttach(n.tbl,tot.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
+    # gtkTableAttach(n.tbl,n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
+
+
     # =========================== Optional inputs frame ================================
+    opt.hbox <- gtkHBoxNew(TRUE, 2)
+    opt.hbox$setBorderWidth(8)
+    vbox1$add(opt.hbox)
+
     opt.frame <- gtkFrameNew("Optional Inputs")
-    hbox1$add(opt.frame)
+    opt.hbox$packStart(opt.frame)
+
+    opt.blank.box <- gtkHBoxNew(TRUE,2)
+    opt.hbox$packStart(opt.blank.box)
 
     opt.vbox <- gtkVBoxNew(FALSE, 8)
     opt.vbox$setBorderWidth(8)
     opt.frame$add(opt.vbox)
 
+
     #   ---- Define table of boxes so everything aligns
-    opt.tbl <- gtkTable(7,2,FALSE)
+    opt.tbl <- gtkTable(7,5,FALSE)
     gtkTableSetRowSpacings(tbl,1)
     gtkTableSetColSpacings(tbl,5)
 
@@ -141,10 +197,10 @@ stratified.GUI <- function()   {
     #   ---- Over sample size text boxes
     over.entry <- gtkEntry()
     over.entry$setText( "0" )
-    over.size.label <- gtkLabel("Strata Over samples:")
+    over.size.label <- gtkLabel("Over sample, each strata:")
 
-    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 2, 3, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,over.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
 		
     #   ---- Seed text box
@@ -152,84 +208,21 @@ stratified.GUI <- function()   {
     seed.entry$setText( "" )
     seed.label <- gtkLabel("Random number seed:")
 
-    gtkTableAttach(opt.tbl,seed.label, 0, 1, 6, 7, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 6, 7, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
-   # # =========================== Frame Type ================================
-   # samp.type.frame <- gtkFrameNew("Frame Type")
-   # hbox1$add(samp.type.frame)
+    #   ---- Put in some blank space to pretty it up
+    blank.lab <- gtkLabel("                          ")
+    blank.lab2 <- gtkLabel(" ")
 
-   # stype.box <- gtkVBoxNew(TRUE, 2)
-   # samp.type.frame$add( stype.box )
-
-   # area.rb <- gtkRadioButton(label="Area\n(polygon shapefile)")
-   # line.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Linear\n(line shapefile)")
-   # disc.rb <- gtkRadioButtonNewWithLabelFromWidget(area.rb,"Finite\n(point shapefile)")
+    gtkTableAttach(opt.tbl,blank.lab, 3, 4, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,blank.lab2, 4, 5, 0, 1, xpadding=5, ypadding=5)
 
 
-   # stype.box$packStart(area.rb, TRUE, TRUE, 2)
-   # stype.box$packStart(line.rb, TRUE, TRUE, 2)
-   # stype.box$packStart(disc.rb, TRUE, TRUE, 2)
-   
-   # ============================ Radio Buttons to Specify Sample Allocation ===========
-    hbox1 <- gtkHBoxNew(FALSE, 8) #sets up another horizontal box, FALSE means things not evenly spaced, 8 is for 8 pixels between things
-    hbox1$setBorderWidth(8)
-    vbox1$add(hbox1)
-   
-    # =========================== Horizontal Frame Type ================================
-   samp.alloc.frame <- gtkFrameNew("Sample Allocation Across Strata")
-   hbox1$add(samp.alloc.frame)
-
-   stype.box <- gtkHBoxNew(TRUE, 2)
-   samp.alloc.frame$add( stype.box )
-
-   prop.rb <- gtkRadioButton(label="Proportional to Size")
-   const.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"Constant")
-   user.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"User-specified")
-   #user.entry <-gtkEntry()
-   #user.entry$setText( "" ) #keep box blank
-
-   stype.box$packStart(prop.rb, TRUE, TRUE, 2)
-   stype.box$packStart(const.rb, TRUE, TRUE, 2)
-   stype.box$packStart(user.rb, TRUE, TRUE, 2)
-   #stype.box$packStart(user.entry, TRUE, TRUE, 2) 
-   #this creates a box next to the user-specified button
-   #it would be nice to only have this box pop up if the user-specified button is clicked
-   
-   # ============================ Text box to specify strata sample sizes ================
-   
-    hbox1 <- gtkHBoxNew(FALSE, 8) #sets up another horizontal box, FALSE means things not evenly spaced, 8 is for 8 pixels between things
-    hbox1$setBorderWidth(8)
-    vbox1$add(hbox1)
-	
-	req.frame <- gtkFrameNew("Strata Sample Sizes")
-    hbox1$add(req.frame)
-
-    #   ---- Define a verticle box
-    req.vbox <- gtkVBoxNew(FALSE, 8)
-    req.vbox$setBorderWidth(8)
-    req.frame$add(req.vbox)
-
-
-    #   ---- Define table of boxes so everything aligns
-    tbl3 <- gtkTable(1,2,FALSE) #3 rows, 2 columns, FALSE for nonhomogeneous
-    gtkTableSetRowSpacings(tbl,1) #1 pixel between rows
-    gtkTableSetColSpacings(tbl,5) #5 pixels between columns
-
-    req.vbox$packStart(tbl3)
-
-    #   ---- Sample size text box
-    user.samp.entry <- gtkEntry()
-    user.samp.entry$setText( "" )
- 
-    user.samp.size.label <- gtkLabel("Specify strata sample sizes\n(separated by commas)") #changed from "Sample size (n):"
-
-    gtkTableAttach(tbl3,user.samp.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(tbl3,user.samp.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
     # =========================== Bottom row of buttons ==================================
 
     #   ---- Separator
-    gtkBoxPackStart(vbox1, gtkHSeparatorNew(), expand=FALSE)
+    vbox1$packStart(gtkHSeparatorNew(), expand=FALSE)
 
 
     #   ---- Define box for row of buttons at bottom
@@ -246,8 +239,7 @@ stratified.GUI <- function()   {
 			strata.var.entry=strata.var.entry,
             out.r.entry=out.r.entry,
             over.entry=over.entry,
-			seed.entry=seed.entry,
-			user.samp.entry=user.samp.entry
+			seed.entry=seed.entry
             )
     ) 
     bbox$packEnd(run.b, expand=FALSE)
