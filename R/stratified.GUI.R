@@ -50,6 +50,47 @@ stratified.GUI <- function()   {
     vbox1$packStart(hbox2)
 
 
+    # ------ Optional inputs box
+    opt.hbox <- gtkHBoxNew(TRUE, 2)
+    opt.hbox$setBorderWidth(8)
+    hbox2$packStart(opt.hbox)
+    
+    opt.frame <- gtkFrameNew("Optional Inputs")
+    opt.hbox$packStart(opt.frame)
+    
+#    opt.blank.box <- gtkHBoxNew(TRUE,2)
+#    opt.hbox$packStart(opt.blank.box)
+    
+    opt.vbox <- gtkVBoxNew(FALSE, 8)
+    opt.vbox$setBorderWidth(8)
+    opt.frame$add(opt.vbox)
+    
+    
+    #   ---- Define table of boxes so everything aligns
+    opt.tbl <- gtkTable(7,5,FALSE)
+    gtkTableSetRowSpacings(opt.tbl,1)
+    gtkTableSetColSpacings(opt.tbl,5)
+    
+    opt.vbox$add(opt.tbl)
+    
+    #   ---- Over sample size text boxes
+    over.entry <- gtkEntry()
+    over.entry$setText( "0" )
+    over.size.label <- gtkLabel("Over sample, each strata:")
+    
+    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
+    
+    
+    #   ---- Seed text box
+    seed.entry <- gtkEntryNew()
+    seed.entry$setText( "" )
+    seed.label <- gtkLabel("Random number seed:")
+    
+    gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
+    
+
 
     # --------------------------- Middle horizontal box ---------------
     req.frame <- gtkFrameNew("Required Inputs")
@@ -160,8 +201,8 @@ stratified.GUI <- function()   {
     n.entry <- gtkEntry()
     n.entry$setText( "" )
     
-    n.label <- gtkLabel("If 'proportional': Total N\nIf 'constant': n per strata\nIf 'user': n list in strata order") 
-    n.label2 <- gtkLabel(" ")
+    n.label <- gtkLabel("If Allocation is...\tSample size means...") 
+    n.label2 <- gtkLabel("'proportional':\t Total N\n'constant':\t\t n per strata\n'user':\t\t\t n list in strata order")
 
     n.vbox$packStart(n.entry)
     n.vbox$packStart(n.label)
@@ -172,44 +213,6 @@ stratified.GUI <- function()   {
 
 
     # =========================== Optional inputs frame ================================
-    opt.hbox <- gtkHBoxNew(TRUE, 2)
-    opt.hbox$setBorderWidth(8)
-    vbox1$add(opt.hbox)
-
-    opt.frame <- gtkFrameNew("Optional Inputs")
-    opt.hbox$packStart(opt.frame)
-
-    opt.blank.box <- gtkHBoxNew(TRUE,2)
-    opt.hbox$packStart(opt.blank.box)
-
-    opt.vbox <- gtkVBoxNew(FALSE, 8)
-    opt.vbox$setBorderWidth(8)
-    opt.frame$add(opt.vbox)
-
-
-    #   ---- Define table of boxes so everything aligns
-    opt.tbl <- gtkTable(7,5,FALSE)
-    gtkTableSetRowSpacings(tbl,1)
-    gtkTableSetColSpacings(tbl,5)
-
-    opt.vbox$add(opt.tbl)
-
-    #   ---- Over sample size text boxes
-    over.entry <- gtkEntry()
-    over.entry$setText( "0" )
-    over.size.label <- gtkLabel("Over sample, each strata:")
-
-    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
-
-		
-    #   ---- Seed text box
-    seed.entry <- gtkEntryNew()
-    seed.entry$setText( "" )
-    seed.label <- gtkLabel("Random number seed:")
-
-    gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
     #   ---- Put in some blank space to pretty it up
 #     blank.lab <- gtkLabel("                          ")
