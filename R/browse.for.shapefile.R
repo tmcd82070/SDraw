@@ -19,7 +19,7 @@ browse.for.shapefile <- function(x, dat){
         path <- path.n.filename$path
 
         dat$shape.in.entry$setText(filename)
-        dat$shape.in.dir$setText(path)
+        dat$shape.in.dir$setText(path)  # does nothing right how becuse shape.in.dir is not passed in
     } else {
         dialog$destroy()
     }

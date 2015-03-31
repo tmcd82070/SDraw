@@ -4,7 +4,7 @@ run.strat.sample <- function(button, dat){
     #   Query the entry fields
     n <- dat$n.entry$getText()
     fn <- dat$shape.in.entry$getText()
-	strat.var <- dat$strata.var.entry$getText()
+	  strat.var <- dat$strata.var.entry$getText()
     outobj <- dat$out.r.entry$getText()
     over.n <- dat$over.entry$getText()
     seed <- dat$seed.entry$getText()
@@ -57,7 +57,7 @@ run.strat.sample <- function(button, dat){
 
     #   fix up the sample sizes
     # n <- as.numeric(as.vector( n ))
-	# over.n <- as.numeric(as.vector(over.n))
+	  # over.n <- as.numeric(as.vector(over.n))
     if( nchar(over.n) == 0 ){ #right now this just works on 1 oversample, which is fine
         over.n <- 0
     } else {

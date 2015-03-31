@@ -16,8 +16,11 @@ stratified.GUI <- function()   {
     win$add(vbox1)
 
     # ================= Sample type frame ============================
-    samp.types <- c("HAL - Halton Lattice Sampling", "BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
-            "SSS - Simple Systematic Sampling")
+    samp.types <- c("HAL - Halton Lattice Sampling", 
+                    "BAS - Balanced Acceptance Sampling", 
+                    "GRTS - Generalized Random Tesselation Stratified", 
+                    "SSS - Simple Systematic Sampling")
+    
 			#this adds different sampling frames
 			#I don't forsee adding anything other than BAS, GRTS, or SSS  -- HAL!!!
     samp.type.combo <- gtkComboBoxNewText()
@@ -49,6 +52,34 @@ stratified.GUI <- function()   {
 
     vbox1$packStart(hbox2)
 
+#   Handler for change in sample type
+    f.samp.type.change <- function(x,dat){
+      stype <- samp.type.combo$getActive()
+      
+      #  Carefull, don't get the numbers out of order with the options
+      if( stype == 0 ){
+        # Halton samples
+        over.entry$hide()
+        over.size.label$hide()
+      } else if( stype == 1 ){
+        # BAS samples
+        over.entry$hide()
+        over.size.label$hide()        
+      } else if( stype == 2 ){
+        # GRTS samples
+        over.entry$show()
+        over.size.label$show()
+      } else {
+        # sss samples
+        over.entry$hide()
+        over.size.label$hide()
+      }
+      
+      
+    }
+    gSignalConnect(samp.type.combo, "changed", f.samp.type.change )
+
+
 
     # ------ Optional inputs box
     opt.hbox <- gtkHBoxNew(TRUE, 2)
@@ -73,13 +104,6 @@ stratified.GUI <- function()   {
     
     opt.vbox$add(opt.tbl)
     
-    #   ---- Over sample size text boxes
-    over.entry <- gtkEntry()
-    over.entry$setText( "0" )
-    over.size.label <- gtkLabel("Over sample, each strata:")
-    
-    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,over.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
     
     
     #   ---- Seed text box
@@ -87,9 +111,22 @@ stratified.GUI <- function()   {
     seed.entry$setText( "" )
     seed.label <- gtkLabel("Random number seed:")
     
-    gtkTableAttach(opt.tbl,seed.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,seed.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
     
+
+    #   ---- Over sample size text boxes
+    over.entry <- gtkEntry()
+    over.entry$setText( "0" )
+    over.size.label <- gtkLabel("Over sample, each strata:")
+
+    # Hide initially because Halton Latice is initial sample type
+    over.entry$hide()
+    over.size.label$hide()
+
+    
+    gtkTableAttach(opt.tbl,over.size.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
+    gtkTableAttach(opt.tbl,over.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
 
     # --------------------------- Middle horizontal box ---------------
@@ -125,10 +162,14 @@ stratified.GUI <- function()   {
     shape.in.entry$setText( "" )
     shape.file.label <- gtkLabel("Shape file:")
 
+    shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
+    shape.in.dir$setText( getwd() )
+
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
     gSignalConnect(browse.b, "clicked", browse.for.shapefile,data=list(
         shape.in.entry = shape.in.entry, 
+        shape.in.dir = shape.in.dir,
         parent.window = win
     ))
     
@@ -183,6 +224,25 @@ stratified.GUI <- function()   {
     #stype.box$packStart(user.entry, TRUE, TRUE, 2) 
     #this creates a box next to the user-specified button
     #it would be nice to only have this box pop up if the user-specified button is clicked
+
+    f.write.sample.label <- function(x,dat){
+      prop.active <- prop.rb$getActive()
+      const.active <- const.rb$getActive()
+      
+      if(prop.active){
+        n.label$setText("Specify: total n across all\n\tstrata")
+      } else if( const.active ){
+        n.label$setText("Specify: n for all strata")
+      } else {
+        # Note, because the three buttons are in a group, you don't need signal for the last one
+        n.label$setText("Specify: a comma delimited\n\tlist of n, in strata order")
+      }
+    }
+
+
+    gSignalConnect(prop.rb, "toggled", f.write.sample.label )
+    gSignalConnect(const.rb, "toggled", f.write.sample.label )
+
     
     #   ---- Sample sizes
     
@@ -201,11 +261,11 @@ stratified.GUI <- function()   {
     n.entry <- gtkEntry()
     n.entry$setText( "" )
     
-    n.label <- gtkLabel("If Allocation is...\tSample size means...") 
-    n.label2 <- gtkLabel("'proportional':\t Total N\n'constant':\t\t n per strata\n'user':\t\t\t n list in strata order")
+    n.label <- gtkLabel("Specify: total n across all\n\tstrata") 
+    n.label2 <- gtkLabel(" ")
 
-    n.vbox$packStart(n.entry)
     n.vbox$packStart(n.label)
+    n.vbox$packStart(n.entry)
     n.vbox$packStart(n.label2)
 
     # gtkTableAttach(n.tbl,tot.size.label, 0, 1, 0, 1, xpadding=5, ypadding=5)
@@ -239,25 +299,25 @@ stratified.GUI <- function()   {
             samp.type.combo=samp.type.combo,
             n.entry=n.entry,
             shape.in.entry=shape.in.entry,
-			strata.var.entry=strata.var.entry,
+			      strata.var.entry=strata.var.entry,
             out.r.entry=out.r.entry,
             over.entry=over.entry,
-			seed.entry=seed.entry
+			      seed.entry=seed.entry
             )
     ) 
     bbox$packEnd(run.b, expand=FALSE)
 
 
-    # #   ---- Plot button
-    # plot.b <- gtkButton("Map")
-    # gSignalConnect(plot.b, "clicked", #function(x,dat){print(dat$input.dir)}, 
-    # plotSample, 
-    # data=list(
-            # shape.in.entry=shape.in.entry,
-            # out.r.entry=out.r.entry
-            # )
-    # )
-    # bbox$packEnd(plot.b, expand=FALSE)
+    #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
+    read.b <- gtkButton("Read\nShapefile")
+    gSignalConnect(read.b, "clicked", readButtonAction, 
+    data=list(
+            shape.in.entry=shape.in.entry,
+            shape.in.dir=shape.in.dir,
+            out.r.entry=out.r.entry
+            )
+    )
+    bbox$packEnd(read.b, expand=FALSE)
 
 
     # #   ---- View button

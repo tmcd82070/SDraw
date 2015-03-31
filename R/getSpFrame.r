@@ -13,8 +13,8 @@ getSpFrame <- function( filename, dir ){
 
         #   Save a copy for future use, but save in the Package space because 
         #   Packages cannot alter the .GlobalEnv
-        SDrawPackageSpace <- as.environment( "package:SDraw" )
-        assign(filename, shp, pos=SDrawPackageSpace)  
+    #    SDrawPackageSpace <- as.environment( "package:SDraw" )
+    #    assign(filename, shp, pos=SDrawPackageSpace)  
     }
 	#this is another comment
 
