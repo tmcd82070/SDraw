@@ -16,7 +16,7 @@ equi.GUI <- function()   {
     win$add(vbox1)
 
     # ================= Sample type frame ============================
-    samp.types <- c("BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
+    samp.types <- c("HAL - Halton Lattice Sampling", "BAS - Balanced Acceptance Sampling", "GRTS - Generalized Random Tesselation Stratified", 
             "SSS - Simple Systematic Sampling")
     samp.type.combo <- gtkComboBoxNewText()
     samp.type.combo$show()
