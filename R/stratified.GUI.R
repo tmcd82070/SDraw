@@ -130,7 +130,7 @@ stratified.GUI <- function()   {
     stype.box$setBorderWidth(8)
     samp.alloc.frame$add( stype.box )
     
-    prop.rb <- gtkRadioButton(label="Proportional to Size")
+    prop.rb <- gtkRadioButtonNewWithLabel(label="Proportional to Size")
     const.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"Constant")
     user.rb <- gtkRadioButtonNewWithLabelFromWidget(prop.rb,"User-specified")
     #user.entry <-gtkEntry()
@@ -160,7 +160,7 @@ stratified.GUI <- function()   {
     n.entry <- gtkEntry()
     n.entry$setText( "" )
     
-    n.label <- gtkLabel("Specify total sample size (N):") 
+    n.label <- gtkLabel("If 'proportional': Total N\nIf 'constant': n per strata\nIf 'user': n list in strata order") 
     n.label2 <- gtkLabel(" ")
 
     n.vbox$packStart(n.entry)
@@ -204,7 +204,7 @@ stratified.GUI <- function()   {
 
 		
     #   ---- Seed text box
-    seed.entry <- gtkEntry()
+    seed.entry <- gtkEntryNew()
     seed.entry$setText( "" )
     seed.label <- gtkLabel("Random number seed:")
 
@@ -212,11 +212,11 @@ stratified.GUI <- function()   {
     gtkTableAttach(opt.tbl,seed.entry, 1, 2, 1, 2, xpadding=5, ypadding=5)
 
     #   ---- Put in some blank space to pretty it up
-    blank.lab <- gtkLabel("                          ")
-    blank.lab2 <- gtkLabel(" ")
-
-    gtkTableAttach(opt.tbl,blank.lab, 3, 4, 0, 1, xpadding=5, ypadding=5)
-    gtkTableAttach(opt.tbl,blank.lab2, 4, 5, 0, 1, xpadding=5, ypadding=5)
+#     blank.lab <- gtkLabel("                          ")
+#     blank.lab2 <- gtkLabel(" ")
+# 
+#     gtkTableAttach(opt.tbl,blank.lab, 3, 4, 0, 1, xpadding=5, ypadding=5)
+#     gtkTableAttach(opt.tbl,blank.lab2, 4, 5, 0, 1, xpadding=5, ypadding=5)
 
 
     # =========================== Bottom row of buttons ==================================
