@@ -8,7 +8,7 @@ stratified.GUI <- function()   {
     #   ---- Define the main window
     win <- gtkWindowNew("toplevel")
     win$setBorderWidth(8) 
-    win$setTitle("S-Draw : A sample drawing interface--Stratified design")
+    win$setTitle("S-Draw : Stratified sample drawing interface")
     #gtkWindowSetIconFromFile(win, filename = "s-draw.ico")  # need path to be correct here, or does not work, obviously
 
     vbox1 <- gtkVBoxNew(FALSE, 8)
@@ -272,17 +272,82 @@ stratified.GUI <- function()   {
     # gtkTableAttach(n.tbl,n.entry, 1, 2, 0, 1, xpadding=5, ypadding=5)
 
 
-    # =========================== Optional inputs frame ================================
+    # =========================== Frame information area ==================================
 
-    #   ---- Put in some blank space to pretty it up
-#     blank.lab <- gtkLabel("                          ")
-#     blank.lab2 <- gtkLabel(" ")
-# 
-#     gtkTableAttach(opt.tbl,blank.lab, 3, 4, 0, 1, xpadding=5, ypadding=5)
-#     gtkTableAttach(opt.tbl,blank.lab2, 4, 5, 0, 1, xpadding=5, ypadding=5)
+    #   ---- Separator
+    vbox1$packStart(gtkHSeparatorNew(), expand=FALSE)
 
 
+    finfo.vbox <- gtkHBoxNew(FALSE,2)
+    finfo.vbox$setBorderWidth(8)
+    vbox1$packStart(finfo.vbox)
+
+    finfo.title <- gtkLabel("Frame Type:\n<pending>")
+    finfo.vbox$packStart(finfo.title, expand=FALSE, fill=FALSE)
+
+    finfo.vbox$packStart(gtkVSeparatorNew(), expand=FALSE)
+
+    max.vars <- 20  # maximum number of variables to display
+    n.blank.cols <- 4  # must be even, half place on left and half on right
+
+    finfo.tbl <- gtkTable(max.vars+1,n.blank.cols+2,FALSE) #FALSE for nonhomogeneous
+    gtkTableSetRowSpacings(finfo.tbl,1) #1 pixel between rows
+    gtkTableSetColSpacings(finfo.tbl,5) #5 pixels between columns
+    finfo.vbox$packStart(finfo.tbl)
+
+    # Allocate the labels
+    names.labs <- lapply(1:(max.vars+1), gtkLabel, str="")
+    vtypes.labs <- lapply(1:(max.vars+1), gtkLabel, str="")
+
+    # Place column header labels
+    names.labs[[1]]$setText("VARIABLE")
+    vtypes.labs[[1]]$setText("CLASS")
+
+    gtkTableAttach(finfo.tbl, names.labs[[1]], (n.blank.cols/2), (n.blank.cols/2)+1, 0,1 )
+    gtkTableAttach(finfo.tbl, vtypes.labs[[1]], (n.blank.cols/2)+1, (n.blank.cols/2)+2, 0,1 )
+
+    # Place separators
+    gtkTableAttach(finfo.tbl, gtkHSeparatorNew(), (n.blank.cols/2), (n.blank.cols/2)+1, 1,2)
+    gtkTableAttach(finfo.tbl, gtkHSeparatorNew(), (n.blank.cols/2)+1, (n.blank.cols/2)+2, 1,2)
+
+# Set thier length
+#     f.setlablen <-function(x,lablist){
+#         lablist[[x]]$setWidthChars(25)
+#         #lablist[[x]]$setJustify(GTK_JUSTIFY_LEFT)
+#         #lablist[[x]]$setAlignment(0,.5)
+#     }
+#     names.labs <- lapply(1:(max.vars+1), f.setlablen, lablist=names.labs)
+#     vtypes.labs <- lapply(1:(max.vars+1), f.setlablen, lablist=vtypes.labs)
+
+    # place them
+    placelabs <-  function(x, lablist, obj, labcol, bcols){
+      gtkTableAttach( obj, lablist[[x+1]], bcols+labcol-1, bcols+labcol, x-1+2, x+2) # + 2 for header
+    }
+
+    lapply(1:max.vars, placelabs, lablist=names.labs, obj=finfo.tbl, labcol=1, bcols=n.blank.cols/2)
+    lapply(1:max.vars, placelabs, lablist=vtypes.labs, obj=finfo.tbl, labcol=2, bcols=n.blank.cols/2 )
+
+
+#     blank.labs <- lapply(1:(n.blank.cols+2), gtkLabel, str=" ")
+#     placeblanklabs <-  function(x, lablist, obj, side){
+#       gtkTableAttach( obj, lablist[[side+x]], side+x-1, side+x, 0, 1)
+#     }
+#     lapply(1:(n.blank.cols/2), placeblanklabs, lablist=blank.labs, obj=finfo.tbl, side=0)
+#     lapply(1:(n.blank.cols/2), placeblanklabs, lablist=blank.labs, obj=finfo.tbl, side=(n.blank.cols/2)+1)
+
+    # Initial values in columns, and hide all but first
+    names.labs[[2]]$setText("<pending>")
+    vtypes.labs[[2]]$setText("<pending>")
+    lapply(2:max.vars, function(x,lablist){lablist[[x+1]]$hide()}, lablist=names.labs)
+    lapply(2:max.vars, function(x,lablist){lablist[[x+1]]$hide()}, lablist=vtypes.labs)
+
+
+
+
+
+# Bottom row of buttons ---------------------------------------------------
     # =========================== Bottom row of buttons ==================================
+
 
     #   ---- Separator
     vbox1$packStart(gtkHSeparatorNew(), expand=FALSE)
@@ -309,12 +374,15 @@ stratified.GUI <- function()   {
 
 
     #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
-    read.b <- gtkButton("Read\nShapefile")
+    read.b <- gtkButton("Inspect\nShapefile")
     gSignalConnect(read.b, "clicked", readButtonAction, 
     data=list(
             shape.in.entry=shape.in.entry,
             shape.in.dir=shape.in.dir,
-            out.r.entry=out.r.entry
+            out.r.entry=out.r.entry,
+            name.labs=names.labs,
+            type.labs=vtypes.labs, 
+            finfo.title=finfo.title
             )
     )
     bbox$packEnd(read.b, expand=FALSE)
