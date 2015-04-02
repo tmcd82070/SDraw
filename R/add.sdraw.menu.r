@@ -19,7 +19,7 @@ if( sys == "Windows" & interactive() & !rstudio){
     #cat("\t advanced.GUI() -> Interface to draw advanced samples.\n")
 } else {
   winDialog( "ok", paste("You are running in RStudio where an SDraw menu cannot be created.", " ",
-                         "Execute one of the following functions in the Console window:",
+                         "To see the dialogs, execute one of the following in the Console window:",
                          "  equi.GUI() -> Interface to draw equi-probable samples.",
                          "  stratified.GIU() -> Interface to draw stratified samples.", sep="\n"))
 }
