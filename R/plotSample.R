@@ -9,23 +9,25 @@ plotSample <- function(button, dat){
 #    print( ls(envir=as.environment("equi.GUI")) )
         
     fn <- dat$shape.in.entry$getText()
+    in.dir <- dat$shape.in.dir$getText()
     outobj <- dat$out.r.entry$getText()
     
-    input.dir <- get(".INPUT.DIR", envir=.GlobalEnv ) 
-
+  
     if( nchar(fn) == 0 ){
         error.message("A shapefile name must be specified.")
         return()
     }
     
     #   Check whether the frame has been read already, and the sp object is laying around. If not, read it.
-    shp <- getSpFrame( fn )
+    shp <- getSpFrame(fn,in.dir)
     
     #   plot shape file
-    if( "SpatialPolygonsDataFrame" %in% class(shp) ){
+    if( regexpr("^SpatialPolygons", class(shp)) > 0 ){
         plot(shp, col=rainbow(length(shp@polygons)))
-    } else {
-        plot(shp)
+    } else if (regexpr("^SpatialLines", class(shp)) > 0){
+        plot(shp, col=rainbow(length(shp)), lwd=3)
+    } else if (regexpr("^SpatialPoints", class(shp)) > 0 ){
+        plot(shp, col=rainbow(length(shp)), pch=16)
     }
 
     #   If the sample object exists, plot points on the map

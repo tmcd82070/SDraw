@@ -4,7 +4,6 @@ readButtonAction<-function(x,dat){
   
   fn <- dat$shape.in.entry$getText()
   in.dir <- dat$shape.in.dir$getText()
-  outobj <- dat$out.r.entry$getText()
   
   spframe <- getSpFrame(fn,in.dir)
 
@@ -30,8 +29,16 @@ readButtonAction<-function(x,dat){
     lablist[[x+1]]$setText(txt[x])
     lablist[[x+1]]$show()
   }
-  lapply(1:length(nms), f.labtxt, lablist=dat$name.labs, txt=nms )
-  lapply(1:length(typ), f.labtxt, lablist=dat$type.labs, txt=typ )
+  nn <- min(length(nms),length(dat$name.labs)-1)
+  lapply(1:nn, f.labtxt, lablist=dat$name.labs, txt=nms )
+  lapply(1:nn, f.labtxt, lablist=dat$type.labs, txt=typ )
   
+  if( length(nms) > (length(dat$name.labs)-1) ){
+    dat$name.labs[[nn+1]]$setText(paste("<list truncated>"))
+    dat$type.labs[[nn+1]]$setText(paste("<first", nn-1, "displayed>"))
+  }
+  
+  # Plot the object
+  plotSample(x,dat)
   
 }

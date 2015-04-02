@@ -160,7 +160,7 @@ stratified.GUI <- function()   {
     #   ---- Input shape file box
     shape.in.entry <- gtkEntry()
     shape.in.entry$setText( "" )
-    shape.file.label <- gtkLabel("Shape file:")
+    shape.file.label <- gtkLabel("Shape file OR 'sp' Object:")
 
     shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
     shape.in.dir$setText( getwd() )
@@ -282,7 +282,7 @@ stratified.GUI <- function()   {
     finfo.vbox$setBorderWidth(8)
     vbox1$packStart(finfo.vbox)
 
-    finfo.title <- gtkLabel("Frame Type:\n<pending>")
+    finfo.title <- gtkLabel("Frame Type:    \n<pending>")
     finfo.vbox$packStart(finfo.title, expand=FALSE, fill=FALSE)
 
     finfo.vbox$packStart(gtkVSeparatorNew(), expand=FALSE)
@@ -374,7 +374,7 @@ stratified.GUI <- function()   {
 
 
     #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
-    read.b <- gtkButton("Inspect\nShapefile")
+    read.b <- gtkButton("Inspect\n Frame ")
     gSignalConnect(read.b, "clicked", readButtonAction, 
     data=list(
             shape.in.entry=shape.in.entry,
