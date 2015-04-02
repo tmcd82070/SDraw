@@ -22,11 +22,11 @@ plotSample <- function(button, dat){
     shp <- getSpFrame(fn,in.dir)
     
     #   plot shape file
-    if( regexpr("^SpatialPolygons", class(shp)) > 0 ){
+    if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
         plot(shp, col=rainbow(length(shp@polygons)))
-    } else if (regexpr("^SpatialLines", class(shp)) > 0){
+    } else if (regexpr("^SpatialLines", class(shp)[1]) > 0){
         plot(shp, col=rainbow(length(shp)), lwd=3)
-    } else if (regexpr("^SpatialPoints", class(shp)) > 0 ){
+    } else if (regexpr("^SpatialPoints", class(shp)[1]) > 0 ){
         plot(shp, col=rainbow(length(shp)), pch=16)
     }
 
