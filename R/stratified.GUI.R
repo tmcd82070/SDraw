@@ -364,10 +364,14 @@ stratified.GUI <- function()   {
             samp.type.combo=samp.type.combo,
             n.entry=n.entry,
             shape.in.entry=shape.in.entry,
-			      strata.var.entry=strata.var.entry,
+            shape.in.dir=shape.in.dir,
+            strata.var.entry=strata.var.entry,
             out.r.entry=out.r.entry,
             over.entry=over.entry,
-			      seed.entry=seed.entry
+			      seed.entry=seed.entry, 
+            prop.rb=prop.rb,
+            const.rb=const.rb, 
+            user.rb=user.rb
             )
     ) 
     bbox$packEnd(run.b, expand=FALSE)

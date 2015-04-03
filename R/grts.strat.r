@@ -1,14 +1,25 @@
-grts.strat <- function( n, over.n, strat.var, sizes, shp ){
+grts.strat <- function( n, over.n, strat.var, shp ){
 
-# these are data passed from the GUI
-# strat.name = "Stratum"
-# strat.var <- c("Large","Small")
-# sizes <- c(120, 30)
-# selType=c("Equal")
+# Inputs: 
+  # n = vector of sample sizes, one element per strata
+  # over.n = scalar (vector length 1) of number of units to add per strata.  Constant across strata
+  # strat.var = string nameing strata variable IF shape contains points or lines
+  # shp = the SpatialXDataFrame object (the frame)
 
-#this makes a list of elements to be passed to the grts function
-Stratdsgn <- lapply(1:length(strat.var), function(x) list(panel=c(PanelOne=sizes[x]),seltype=selType))
-names(Stratdsgn) <- strat.var
+  # For debuggin
+  cat("---- n -----\n")
+  print(n)
+  cat("---- over.n -----\n")
+  print(over.n)
+  cat("---- strat.var -----\n")
+  print(strat.var)
+  cat("---- head(shp) -----\n")
+  print(head(data.frame(shp)))
+  
+  #this makes a list of elements to be passed to the grts function
+    selType="Equal"
+    Stratdsgn <- lapply(1:length(strat.var), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
+    names(Stratdsgn) <- strat.var
 
 
 
@@ -30,7 +41,7 @@ names(Stratdsgn) <- strat.var
             type.frame=sframe.type,
             src.frame="sp.object",
             sp.object=shp,
-			stratum="Stratum",   #need to use stratum variable name as taken from GUI
+			      stratum=strat.var,   #need to use stratum variable name as taken from GUI
             shapefile=FALSE)
 
 
