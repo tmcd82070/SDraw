@@ -22,7 +22,7 @@ strata.levels<-names(table(data.frame(shp[,strat.var])))
   
   #this makes a list of elements to be passed to the grts function
     selType="Equal"
-	Stratdsgn <- lapply(1:length(strata.levels), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
+	  Stratdsgn <- lapply(1:length(strata.levels), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
     names(Stratdsgn) <- strata.levels
 
 
@@ -45,9 +45,10 @@ strata.levels<-names(table(data.frame(shp[,strat.var])))
     Stratsites <- grts(design=Stratdsgn,
             DesignID="STRAT",
             type.frame=sframe.type,
+            att.frame=data.frame(shp),
             src.frame="sp.object",
             sp.object=shp,
-			stratum=strat.var,   #need to use stratum variable name as taken from GUI
+			      stratum=strat.var,   #need to use stratum variable name as taken from GUI
             shapefile=FALSE)
 
 
