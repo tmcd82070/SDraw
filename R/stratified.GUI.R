@@ -392,12 +392,12 @@ stratified.GUI <- function()   {
     bbox$packEnd(read.b, expand=FALSE)
 
 
-    # #   ---- View button
-    # view.b <- gtkButton("View Sample")
-    # gSignalConnect(view.b, "clicked", view.sample, data=list(
-            # out.r.entry = out.r.entry
-    # ))
-    # bbox$packEnd( view.b, expand=FALSE)
+    #   ---- View button
+    view.b <- gtkButton("View Sample")
+    gSignalConnect(view.b, "clicked", view.sample, data=list(
+            out.r.entry = out.r.entry
+    ))
+    bbox$packEnd( view.b, expand=FALSE)
 
 
 #    #   ---- Write to csv button
@@ -407,13 +407,13 @@ stratified.GUI <- function()   {
 #    ))
 #    bbox$packEnd( write.csv.b, expand=FALSE)
 
-    # #   ---- Write to Shapefile button
-    # write.shp.b <- gtkButton("Export")
-    # gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
-            # out.r.entry = out.r.entry, 
-            # parent.window = win            
-    # ))
-    # bbox$packEnd( write.shp.b, expand=FALSE)
+    #   ---- Write to Shapefile button
+    write.shp.b <- gtkButton("Export")
+    gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
+            out.r.entry = out.r.entry, 
+            parent.window = win            
+    ))
+    bbox$packEnd( write.shp.b, expand=FALSE)
 
 
     #   ---- Done button

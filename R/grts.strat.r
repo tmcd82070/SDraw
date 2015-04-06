@@ -6,6 +6,8 @@ grts.strat <- function( n, over.n, strat.var, shp ){
   # strat.var = string nameing strata variable IF shape contains points or lines
   # shp = the SpatialXDataFrame object (the frame)
 
+# Get strata level names from shape file
+strata.levels<-names(table(data.frame(shp[,strat.var])))
   # For debuggin
   cat("---- n -----\n")
   print(n)
@@ -13,15 +15,19 @@ grts.strat <- function( n, over.n, strat.var, shp ){
   print(over.n)
   cat("---- strat.var -----\n")
   print(strat.var)
+  cat("---- strata.levels -----\n")
+  print(strata.levels) 
   cat("---- head(shp) -----\n")
   print(head(data.frame(shp)))
   
   #this makes a list of elements to be passed to the grts function
     selType="Equal"
-    Stratdsgn <- lapply(1:length(strat.var), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
-    names(Stratdsgn) <- strat.var
+	Stratdsgn <- lapply(1:length(strata.levels), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
+    names(Stratdsgn) <- strata.levels
 
 
+# strataDsgn <- lapply(1:length(strata.vec), function(x) list(panel=c(PanelOne=strata.sizes.vec[x]),seltype=selType))
+# names(strataDsgn) <- strata.vec
 
     # Stratdsgn <- list(None = list(panel = c(sample = n), #update this for stratified call
                                   # seltype = "Equal",
@@ -41,7 +47,7 @@ grts.strat <- function( n, over.n, strat.var, shp ){
             type.frame=sframe.type,
             src.frame="sp.object",
             sp.object=shp,
-			      stratum=strat.var,   #need to use stratum variable name as taken from GUI
+			stratum=strat.var,   #need to use stratum variable name as taken from GUI
             shapefile=FALSE)
 
 
@@ -58,8 +64,8 @@ grts.strat <- function( n, over.n, strat.var, shp ){
 
     #   Store some attributes
     attr(Stratsites, "sample.type") <- "GRTS"
-    #attr(Equalsites, "n") <- n
-    #attr(Equalsites, "over.n") <- over.n
+    attr(Stratsites, "n") <- n
+    attr(Stratsites, "over.n") <- over.n
     attr(Stratsites, "sp.object") <- deparse(substitute(shp))
     attr(Stratsites, "frame.type") <- sframe.type
 

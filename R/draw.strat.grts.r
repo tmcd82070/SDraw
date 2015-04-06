@@ -17,18 +17,28 @@ draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir){
       n.strata <- length(unique(data.frame(shp)[,strat.var]))
     } else if( regexpr("SpatialLines", class(shp)[1]) > 0 ){
       sframe.type = "lines"
-      n.strata <- length(shp) # number of lines
+      #n.strata <- length(shp) # number of lines
+	  n.strata <- length(unique(data.frame(shp)[,strat.var]))
     } else if( regexpr("SpatialPolygons", class(shp)[1]) > 0 ){
       sframe.type = "polygons"
-      n.strata <- length(shp) # number of polygons in shape
+      #n.strata <- length(shp) # number of polygons in shape
+	  n.strata <- length(unique(data.frame(shp)[,strat.var]))
     }
     
     # Set sample sizes based on allocation scheme
     if(alloc.type=="proportional"){
       if( sframe.type == "polygons"){
-        strata.sizes <- gArea(shp,TRUE)
+        # get area column and  calculate the proportion in each strata
+		frame <- data.frame(shp)
+		colnum <- min(grep("area",colnames(frame),ignore.case=TRUE))
+		strata.sizes <- aggregate(frame[,colnum], by=list(frame[,strat.var]), function(x) round(as.numeric(n)*sum(x)/sum(frame[,colnum]),0))$x
+		
       } else if( sframe.type == "lines" ){
-        strata.sizes <- gLength(shp,TRUE)
+        # get length column and  calculate the proportion in each strata
+		frame <- data.frame(shp)
+		colnum <- min(grep("length",colnames(frame),ignore.case=TRUE))
+		strata.sizes <- aggregate(frame[,colnum], by=list(frame[,strat.var]), function(x) round(as.numeric(n)*sum(x)/sum(frame[,colnum]),0))$x
+	
       } else {
         strata.sizes <- table(data.frame(shp)[,strat.var])
       }
