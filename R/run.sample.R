@@ -78,10 +78,12 @@ run.sample <- function(button, dat){
                 "GRTS" = draw.grts(n,over.n,fn,in.dir),
                 "SSS " = draw.sss(n,over.n,fn,in.dir),
                          stop(paste("Unknown sample type:",stype)))
+    print("hello2")
 
     #   Save the sample in global environment.  Type of sample is an attribute. 
-    SDrawPackageSpace <- as.environment( "package:SDraw" )
-    assign( outobj, samp, pos=SDrawPackageSpace )
+    #  SDrawPackageSpace <- as.environment( "package:SDraw" )
+    #  assign( outobj, samp, pos=SDrawPackageSpace )
+    assign( outobj, samp, pos=.GlobalEnv )
 
     #   Tell user we are finished.
     cat("First 10 sample locations:\n")

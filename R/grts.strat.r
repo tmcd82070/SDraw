@@ -7,7 +7,7 @@ grts.strat <- function( n, over.n, strat.var, shp ){
   # shp = the SpatialXDataFrame object (the frame)
 
 # Get strata level names from shape file
-strata.levels<-names(table(data.frame(shp[,strat.var])))
+strata.levels<-names(table(data.frame(shp)[,strat.var]))
   # For debuggin
   cat("---- n -----\n")
   print(n)
@@ -22,7 +22,9 @@ strata.levels<-names(table(data.frame(shp[,strat.var])))
   
   #this makes a list of elements to be passed to the grts function
     selType="Equal"
-	  Stratdsgn <- lapply(1:length(strata.levels), function(x) list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n))
+	  Stratdsgn <- lapply(1:length(strata.levels), function(x, nn, st, o.n){
+	    list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n)
+	  }, nn=n, st=selType, o.n=over.n)
     names(Stratdsgn) <- strata.levels
 
 

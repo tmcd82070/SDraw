@@ -8,6 +8,7 @@ plotSample <- function(button, dat){
 #    SDrawPackageSpace <- as.environment( "package:SDraw" )
 #    print( ls(envir=as.environment("equi.GUI")) )
         
+
     fn <- dat$shape.in.entry$getText()
     in.dir <- dat$shape.in.dir$getText()
     outobj <- dat$out.r.entry$getText()
@@ -21,6 +22,7 @@ plotSample <- function(button, dat){
     #   Check whether the frame has been read already, and the sp object is laying around. If not, read it.
     shp <- getSpFrame(fn,in.dir)
     
+  
     #   plot shape file
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
         plot(shp, col=rainbow(length(shp@polygons)))

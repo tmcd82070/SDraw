@@ -190,10 +190,10 @@ equi.GUI <- function()   {
 
     #   ---- Plot button
     plot.b <- gtkButton("Map")
-    gSignalConnect(plot.b, "clicked", #function(x,dat){print(dat$input.dir)}, 
-    plotSample, 
+    gSignalConnect(plot.b, "clicked", plotSample, 
     data=list(
             shape.in.entry=shape.in.entry,
+            shape.in.dir=shape.in.dir,
             out.r.entry=out.r.entry
             )
     )
