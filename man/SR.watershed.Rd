@@ -13,23 +13,25 @@ Santa Rosa Island, USA.
 \format{
 A SpatialPolygonsDataFrame containing 191 polygons outlining watersheds on Santa Rosa Island, USA.  
 
-#don't know where to find this. GTD, 2/13/15
-The proj2string is "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0", 
-meaning among other things that the coordinates are decimal degrees of latitude and longitude. 
+The proj2string is +proj=utm +zone=10 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0", 
+meaning among other things that the coordinates are UTM meters zone 10. 
 
-#don't know where to find this. GTD, 2/13/15
 The rectangular bounding box of the polygon is 
 \tabular{lrr}{
     \tab    min  \tab     max \cr
-x \tab -67.81762 \tab -52.61917 \cr
-y \tab 46.60950 \tab 60.37024 \cr
+x \tab 754695 \tab 779932 \cr
+y \tab  3754227 \tab 3769909 \cr
 }
-#don't know where to find this. GTD, 2/13/15
+
 The associated data frame is: 
-\tabular{rrrrrrr}{
-ObjectID \tab PROV \tab NAME \tab SQKM \tab FIPS_ADMIN \tab POP1996 \tab DWELL1996 \cr
-65537 \tab NF \tab Newfoundland And Labrador \tab 395344.4  \tab CA05 \tab 551850  \tab  187423 \cr
+\enumerate{
+  \item OBJECTID : Polygon ID
+  \item WatershedN : Watershed name.  Only "large" watersheds are named. 
+  \item Shape_Leng : Perimeter of watershed (?)
+  \item Shape_Area : Area of watershed (square meters) 
+  \item size.strata : Size strata = 0 for "small" watersheds, 1 for "large" named watershed.
 }
+
 }
 
 

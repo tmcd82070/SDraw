@@ -17,3 +17,4 @@ TestingFolder
 .*\.mod$
 .*\.o$
 .*\.dll$
+^source_all.r$
