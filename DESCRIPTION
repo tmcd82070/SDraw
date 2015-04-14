@@ -2,7 +2,7 @@ Package: SDraw
 Type: Package
 Title: Sample Draw
 Version: 1.5.1
-Date: 2015-03-30
+Date: 2015-04-14
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Spatially balanced sample draws especially suited for environmental monitoring.  Draws BAS, GRTS, and SSS samples from points, lines, and polygons.
