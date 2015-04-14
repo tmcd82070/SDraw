@@ -63,12 +63,14 @@ run.sample <- function(button, dat){
 #   Write out the command to console and history file.  Must do this 
 #   here, rather than in draw.XXX routines, because I want to write out 
 #   the assignment to the output object.
-    cat(">")
-    switch( stype, 
-        "BAS " = timestamp(paste(outobj, "<- bas(", n + over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
-        "GRTS" = timestamp(paste(outobj, "<- grts.equi(", n, ",", over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
-        "SSS " = timestamp(paste(outobj, "<- sss(", n , ",", fn, ")"), prefix="", suffix=" ## SDraw")
-    )
+#   NOTE: TIMESTAMP STOPPED WORKING.  AT SOME POINT, RETURN AND WRITE THESE 
+#   COMMANDS TO A SDRAW.LOG FILE.
+#     cat(">")
+#     switch( stype, 
+#         "BAS " = timestamp(paste(outobj, "<- bas(", n + over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
+#         "GRTS" = timestamp(paste(outobj, "<- grts.equi(", n, ",", over.n, ",", fn, ")"), prefix="", suffix=" ## SDraw"),
+#         "SSS " = timestamp(paste(outobj, "<- sss(", n , ",", fn, ")"), prefix="", suffix=" ## SDraw")
+#     )
 
 
     #   Actually draw the sample
@@ -78,7 +80,6 @@ run.sample <- function(button, dat){
                 "GRTS" = draw.grts(n,over.n,fn,in.dir),
                 "SSS " = draw.sss(n,over.n,fn,in.dir),
                          stop(paste("Unknown sample type:",stype)))
-    print("hello2")
 
     #   Save the sample in global environment.  Type of sample is an attribute. 
     #  SDrawPackageSpace <- as.environment( "package:SDraw" )

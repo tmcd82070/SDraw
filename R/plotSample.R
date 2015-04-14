@@ -35,18 +35,35 @@ plotSample <- function(button, dat){
     #   If the sample object exists, plot points on the map
     if( exists( outobj )){
         samp <- get( outobj, pos=.GlobalEnv )
-        n <- attr(samp, "n")
         stype <- attr(samp, "sample.type")
         
-        if( nrow(samp) == n ){
-            #   No oversample
-            points( samp, pch=16 )
-            legend("bottomleft", legend=paste(stype, "sample points"), pch=c(16))
+        # Is this a stratified sample -> different legend
+        strat.var <- attr(samp, "strata.var")
+        
+        # Determine if this sample has an oversample
+        has.oversamp <- "pointType" %in% names(data.frame(samp))
+        if( has.oversamp )  has.oversamp <- length(unique(data.frame(samp)[,"pointType"])) > 1
+        
+        if( !is.null( strat.var )){
+          # We have stratified sample
+          strat.ind <- data.frame(samp)[,strat.var]
+          strat.vals <- levels(factor(strat.ind))
+          strat.cols <- terrain.colors(length(strat.vals))
+          for(h in strat.vals){
+            points( samp[strat.ind == h,], pch=which(h==strat.vals)+14, col=strat.cols[which(h==strat.vals)] )
+          }
+          legend("bottomleft", legend=strat.vals, pch=1:length(strat.vals)+14, col=strat.cols, title="Strata:")
+          # Note. oversample points in stratified samples, if they exist, are not plotted.
+        } else if( has.oversamp ){
+          #   There is some oversample
+          samp.ind <- data.frame(samp)[,"pointType"]
+          points( samp[samp.ind=="Sample",], pch=16 )
+          points( samp[samp.ind=="OverSample",], pch=1 )
+          legend("bottomleft", legend=paste(stype, c("sample", "over sample")), pch=c(16,1))
         } else {
-            #   There is some oversample
-            points( samp[1:n,], pch=16 )
-            points( samp[ (n+1):nrow(samp),], pch=1 )
-            legend("bottomleft", legend=paste(stype, c("sample", "over sample")), pch=c(16,1))
+          #   No oversample
+          points( samp, pch=16 )
+          legend("bottomleft", legend=paste(stype, "sample points"), pch=c(16))
         }
 
     }

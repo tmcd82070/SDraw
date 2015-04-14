@@ -2,6 +2,7 @@ run.strat.sample <- function(button, dat){
 #tester for running stratified sample
 
     #   Query the entry fields
+ 
     n <- dat$n.entry$getText()
     fn <- dat$shape.in.entry$getText()
     dir <- dat$shape.in.dir$getText()
@@ -70,6 +71,7 @@ run.strat.sample <- function(button, dat){
 
     #   Actually draw the sample
     #   Remember that fn is the text string name of the shapefile, without .shp, and without path.
+
     samp <- switch( stype, 
                 #"BAS " = draw.bas(n,over.n,fn),
                 "GRTS" = draw.strat.grts(n,over.n,strat.var,alloc.type,fn,dir), 
@@ -77,6 +79,7 @@ run.strat.sample <- function(button, dat){
                          stop(paste("Unknown sample type:",stype)))
 
     #   Save the sample in global environment.  Type of sample is an attribute.                         
+    print("back from draw.strat.grts in run.strat.sample")
     assign( outobj, samp, pos=.GlobalEnv )
 
     #   Tell user we are finished.

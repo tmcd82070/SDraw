@@ -3,10 +3,12 @@ draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir){
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
 
-#    cat("Drawing GRTS sample...This can take a while ...\n")
+    cat("Drawing GRTS sample...This can take a while ...\n")
 
 #   Check whether the frame has been read already, and the sp object is laying around. 
     shp <- getSpFrame( fn, dir )
+
+    print(head(data.frame(shp)))
 
     if(!(strat.var %in% names(shp))){
       stop(paste("Variable", strat.var, "not found in frame"))
@@ -49,6 +51,5 @@ draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir){
 
 #   Call the user visible routine that takes a SpatialX object
     ans <- grts.strat(n, over.n, strat.var, shp ) 
-
     ans
 }

@@ -7,7 +7,11 @@ getSpFrame <- function( filename, dir ){
         #   The shapefile is not laying around.  Read it.
 
         #   Write the command to console and histry file
-        timestamp( paste( filename, "<- readOGR(", dir, ",", filename, ")"), prefix="", suffix=" ## SDraw")
+        # NOTE: THIS USED TO WORK. HOWEVER, WHEN WE UPGRADED TO R 3.1.3 TIMESTAMP STOPPED WORKING AND INFACT 
+        # CRASHED R WHEN RUNNING IN RSTUDIO.  SO, WE HAVE TAKEN ALL THESE OUT.  IF REQUIRED, WE WILL OPEN OUR OWN
+        # LOG FILE AND WRITE THERE. 
+        #print("writing to log")
+        #  timestamp( paste( filename, "<- readOGR(", dir, ",", filename, ")"), prefix="", suffix=" ## SDraw")
         
         shp <- readShape(dir, filename)  # a wrapper for readOGR
 

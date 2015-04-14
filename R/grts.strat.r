@@ -71,6 +71,7 @@ strata.levels<-names(table(data.frame(shp)[,strat.var]))
     attr(Stratsites, "over.n") <- over.n
     attr(Stratsites, "sp.object") <- deparse(substitute(shp))
     attr(Stratsites, "frame.type") <- sframe.type
+    attr(Stratsites, "strata.var") <- "stratum"
 
     Stratsites
 }

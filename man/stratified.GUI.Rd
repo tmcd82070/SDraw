@@ -85,6 +85,7 @@ Following is a description of the functioning of all buttons at the bottom of th
     .GlobalEnv workspace. 
     
 }    
+}
 
 After the sample draw, one can check allocation sample sizes in each strata using the \code{table} function.  For example, if the output R name is 'samp', one can check sample sizes with \code{table(samp$strata)}.   One can plot the study area and sample points with \code{plot(frame); points(samp)}, assuming \code{frame} is the 'sp' object containing the frame
 
