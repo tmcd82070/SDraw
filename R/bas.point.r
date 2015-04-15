@@ -46,32 +46,30 @@ pixels <- SpatialPolygonsDataFrame( pixels, data=df )
 samp <- NULL
 crs.obj <- CRS(shp@proj4string@projargs)
 cord.names <- dimnames(bbox(shp))[[1]]
+df.col.names <- names(df)
+
+
 repeat{
   samp2 <- bas.polygon( n * (1 + n/N), pixels )  # at most, a 2*n sample
 
   #   Snap the halton points to the pixel center points, which were a part of the input data frame
   cords.df <- data.frame(samp2)
   cords <- cords.df[,cord.names]
-  cords.df <- cords.df[,!(names(cords.df) %in% c(cord.names,paste(cord.names,".1",sep="")))]  # Drop coordinates from attributes
-  
+
   samp2 <- SpatialPointsDataFrame( cords, data=cords.df, proj4string=crs.obj )  
   
   if( length(samp) > 0){
     samp.cords <- rbind(coordinates(samp), cords)
-    print(names(samp))  # here, take out coord names from data sets so they rbind
-    print(names(cords.df))
-    samp.df <- rbind(data.frame(samp), cords.df)
+    samp.df <- rbind(data.frame(samp)[,df.col.names], cords.df[,df.col.names])
   } else {
     samp.cords <- cords
-    samp.df <- cords.df
+    samp.df <- cords.df[,df.col.names]
   }
                         
   dups <- duplicated(samp.cords)
   
   samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], proj4string=crs.obj)
   
-  print(c(sum(!dups),sum(dups)))
-
   if( length(samp) >= n ){
     samp <- samp[1:n,]
     break
