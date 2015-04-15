@@ -18,10 +18,7 @@ if( n < 1 ){
 bb <- bbox( shp )
 
 #   Find area of all polygons
-area <- 0
-for( i in 1:length(shp) ){
-    area <- area + shp@polygons[[i]]@area
-}
+area <- gArea(shp)  # If shp is not projected, this generates a warning. 
 
 #   Find fraction of the square Halton box covered by the polygons
 p <- min(1, area / max(diff(t(bb)))^2 )
@@ -29,10 +26,43 @@ p <- min(1, area / max(diff(t(bb)))^2 )
 #   Maximum number for random start.  Random start is uniform on integers between 1 and this number. 
 max.u <- 10e7
 
-#   Draw initial random start
+
 my.dim <- 2 # number of dimensions we are sampling
+
 m <- runif( 200 )   # burn 200 random numbers.   I have doubts about the randomness of the first few numbers of R's runif
-m <- ceiling(max.u * runif( my.dim ))
+
+
+
+#   Make sure there is a non-missing attribute associated with each polygon in shp.
+#   This is because over() extracts attributes of shp, and missingness is used 
+#   to flag which points are outside a polygon.
+if( regexpr( "DataFrame", class(shp)) > 0 ){
+  #   Shp has a data frame
+  df <- data.frame( data.frame(shp), sp.object.ID=row.names(shp), polygon.num=1:length(shp) )
+} else {
+  df <- data.frame( sp.object.ID=row.names(shp), polygon.num=1:length(shp), row.names=row.names(shp) )
+}
+
+shp <- SpatialPolygonsDataFrame( shp, data=df )
+
+crs.obj <- CRS(shp@proj4string@projargs)
+
+#   Draw initial random start, but make sure the first point is inside the study area.
+repeat{
+  m <- ceiling(max.u * runif( my.dim ))
+  halt.samp <- matrix( halton( 1, my.dim, m), 1, 2)
+
+  #   Convert from [0,1] to a square box covering [bb]
+  halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
+  halt.samp <- t(halt.samp)
+  
+  halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(siteID=1) )
+  
+  in.poly <- over( halt.pts, shp )
+  keep <- any(!is.na( in.poly$polygon.num ))
+
+  if(keep) break
+}
 
 #   Take initial number of Halton numbers that is approximately correct
 #   This is number of samples to take to be Alpha% sure that we get n points in the study area.
@@ -47,23 +77,8 @@ halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
 halt.samp <- t(halt.samp)
 
 
-#   Make sure there is a non-missing attribute associated with each polygon in shp.
-#   This is because over() extracts attributes of shp, and missingness is used 
-#   to flag which points are outside a polygon.
-if( regexpr( "DataFrame", class(shp)) > 0 ){
-    #   Shp has a data frame
-    df <- data.frame( data.frame(shp), sp.object.ID=row.names(shp), polygon.num=1:length(shp) )
-} else {
-    df <- data.frame( sp.object.ID=row.names(shp), polygon.num=1:length(shp), row.names=row.names(shp) )
-}
-
-shp <- SpatialPolygonsDataFrame( shp, data=df )
-
-
 #   Check which are in the polygon, after first converting halt.samp to SpatialPoints
-crs.obj <- CRS(shp@proj4string@projargs)
 halt.pts <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(siteID=1:nrow(halt.samp)) )
-
 
 in.poly <- over( halt.pts, shp )
 

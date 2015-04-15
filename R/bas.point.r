@@ -4,6 +4,13 @@ bas.point <- function(n, shp){
 
 if( regexpr("Points", class(shp)) < 0 ) stop("Must call bas.point with a SpatialPointsX object.")
 
+N <- length(shp)
+
+if( n > N){
+  warning("Sample size greater than frame requested. Census taken.")
+  n <- N
+}
+
 pts <- coordinates( shp )
 
 #   Find minimum distance between two points.  
@@ -32,18 +39,46 @@ if( regexpr( "DataFrame", class(shp) ) > 0){
 
 pixels <- SpatialPolygonsDataFrame( pixels, data=df )
 
-#   Now that we have polygons around points, call bas.polygon
-samp <- bas.polygon( n, pixels )
 
-
-#   Snap the halton points to the pixel center points, which were a part of the input data frame
+#   Now that we have polygons around points, call bas.polygon. 
+#   But, because points can be sampled more than once when the Halton sequence comes 
+#   back around.  To deal with this, take an oversample and keep going until we get n distinct points. 
+samp <- NULL
+crs.obj <- CRS(shp@proj4string@projargs)
 cord.names <- dimnames(bbox(shp))[[1]]
-cords.df <- data.frame(samp)
-cords <- cords.df[,cord.names]
-cords.df <- cords.df[,!(names(cords.df) %in% c(cord.names,paste(cord.names,".1",sep="")))]  # Drop coordinates from attributes
-pts <- SpatialPointsDataFrame( cords, data=cords.df )
+repeat{
+  samp2 <- bas.polygon( n * (1 + n/N), pixels )  # at most, a 2*n sample
+
+  #   Snap the halton points to the pixel center points, which were a part of the input data frame
+  cords.df <- data.frame(samp2)
+  cords <- cords.df[,cord.names]
+  cords.df <- cords.df[,!(names(cords.df) %in% c(cord.names,paste(cord.names,".1",sep="")))]  # Drop coordinates from attributes
+  
+  samp2 <- SpatialPointsDataFrame( cords, data=cords.df, proj4string=crs.obj )  
+  
+  if( length(samp) > 0){
+    samp.cords <- rbind(coordinates(samp), cords)
+    print(names(samp))  # here, take out coord names from data sets so they rbind
+    print(names(cords.df))
+    samp.df <- rbind(data.frame(samp), cords.df)
+  } else {
+    samp.cords <- cords
+    samp.df <- cords.df
+  }
+                        
+  dups <- duplicated(samp.cords)
+  
+  samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], proj4string=crs.obj)
+  
+  print(c(sum(!dups),sum(dups)))
+
+  if( length(samp) >= n ){
+    samp <- samp[1:n,]
+    break
+  }  
+}
 
 
+samp
 
-pts
 }
