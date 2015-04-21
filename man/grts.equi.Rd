@@ -6,7 +6,7 @@
  discrete (point) resource.
 }
 \description{
-This is a wrapper for the \code{grts} functionn in package \code{spsurvey}.  This function 
+This is a wrapper for the \code{grts} function in package \code{spsurvey}.  This function 
 makes it easier to draw an equi-probable Generalized Random Tesselation Stratified (GRTS) sample 
 from the types of resources supported by \code{spsurvey} 
 }
@@ -27,8 +27,7 @@ A SpatialPoints, SpatialPointsDataFrame, SpatialLines, SpatialLinesDataFrame, Sp
 }
 }
 \details{
-This routine draws equi-probable, unstratified, GRTS samples.  To draw other types 
-of samples (e.g., stratified, variable-probable, etc.) see \code{spsurvey}.
+This routine draws equi-probable, unstratified, GRTS samples.  
 }
 
 \value{
@@ -49,7 +48,7 @@ Trent McDonald
 }
 
 \seealso{
-\code{\link{equi.GUI}}
+\code{\link{equi.GUI}}, \code{\link{grts.strat}}, \code{\link{bas}}
 }
 
 \examples{
