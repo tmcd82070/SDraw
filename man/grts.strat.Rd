@@ -52,14 +52,17 @@ Trent McDonald
 }
 
 \examples{
+
+# ----  An example drawing stratified sample from polygons
 data(WA.utm)
 
 #   Define strata
 WA.utm$stratum <- factor( c("water","Islands","Mainland",rep("Islands",length(WA.utm)-3)))
 
 #   Draw sample, sample sizes are in order of levels of stratum variable, 
-#   here, Islands, Mainland, water
-WA.sample <- grts.strat(c(10,100,0),0, "stratum", WA.utm)
+#   here, Islands, Mainland, water. 
+#   Note, spsurvey requires at least one point in each strata
+WA.sample <- grts.strat(c(10,100,1),0, "stratum", WA.utm)
 
 #   Plot
 require(sp)
@@ -69,6 +72,24 @@ plot( WA.utm, col=WA.utm$stratum )
 plot( WA.sample[ WA.sample$stratum == "Islands", ], pch=16, add=TRUE, col=4 )  
 plot( WA.sample[ WA.sample$stratum == "Mainland", ], pch=16, add=TRUE, col=5 )  
 
+
+
+# ----  An example drawing stratified sample of points
+data(WA.cities)
+
+
+#   Draw 2 points from each county
+strat.names <- unique(WA.cities$COUNTY)
+n.strata <- length(strat.names)
+WA.sample <- grts.strat(rep(2,n.strata),0, "COUNTY", WA.cities)
+
+#   Plot
+plot(WA.cities, col=factor(WA.cities$COUNTY), pch=1)
+
+for( i in 1:n.strata ){
+  plot( WA.sample[WA.sample$stratum == strat.names[i],], col=i, 
+  add=T, pch=16)
+}
 
 }
 
