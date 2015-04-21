@@ -20,7 +20,7 @@ There are multiple ways to install.  One is from source, the other is from the b
 
 ## From binary build
 
-* Download the binary build zip file [here](https://www.dropbox.com/s/iv4522vsbfyk93e/SDraw_1.5.2.zip?dl=0)
+* Download the binary build zip file from the link provided in the [current release notes.](https://github.com/tmcd82070/SDraw/releases) 
 * In R, select "Install from local zip file..." from the "Packages" menu in the standard R interface. Or, execute the following: `install.packages( pkgs=file.choose(), type="binary")` 
 * Navigate to the binary build .zip and click Open 
 
