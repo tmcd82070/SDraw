@@ -17,7 +17,7 @@ halton.indicies <- function(hl){
   #     "hl.bbox" = bounding box of the full lattice. 
   #
   # Output: 
-  #   a data frame line hl, but with indicies of the Halton sequence attached in column "hl.index". 
+  #   a data frame like hl, but with indicies of the Halton sequence attached in column "hl.index". 
   #
  
   J <- attr(hl,"J")
