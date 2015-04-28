@@ -1,4 +1,4 @@
-halton <- function( n, dim=1, start=1 ){
+halton <- function( n, dim=1, start=0 ){
 #
 #   compute a Halton sequence of n numbers starting at position start.
 #

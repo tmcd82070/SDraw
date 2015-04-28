@@ -96,13 +96,14 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
 }
 
 # tmp <- halton.lattice(bbox(WA.utm), N=220, J=c(4,2), eta=c(2,2), triangular=T)
+# tmp <- halton.lattice(bbox(WA.utm), N=220, triangular=T)
 # 
 # tmp.J <- attr(tmp,"J")
 # tmp.b <- attr(tmp,"bases")
 # tmp.bb <- attr(tmp,"hl.bbox") 
 # 
 # 
-# #plot( tmp.bb[1,], tmp.bb[2,], type="n")
+# plot( tmp.bb[1,], tmp.bb[2,], type="n")
 # points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
 # 
 # 

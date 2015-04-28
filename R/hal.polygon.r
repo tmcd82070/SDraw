@@ -39,7 +39,7 @@ hal.polygon <- function( n, shp, N=50000, J=NULL, eta=c(1,1), triangular=FALSE, 
   # Draw sample from the frame
   m <- runif(200)    # burn 200 random numbers from R's routine
   N.frame <- nrow(hl.points)
-  m <- floor(runif(1, 0, N.frame)
+  m <- floor(runif(1, 0, N.frame))
   n <- min( n, N.frame )  # Can't take more than a census. 
   ind <- ((((1:n)+m)-1) %%  N.frame)+1   # Cycle the indicies around to start of frame if necessary
 
