@@ -77,7 +77,7 @@ halton.indicies <- function(hl, index.name="halton.index"){
   m1 <- c(0, rep(1,D-1))   # vector with 0 in first element, 1's after
 
   hl.ind <- t(hl.ind)
-  cell.coord <- floor(hl.ind * n.boxes + .Machine$double.eps*10) + 1
+  cell.coord <- floor(hl.ind * n.boxes + .Machine$double.eps*1000) + 1
   cell.coord <- colSums( (cell.coord - m1)*mat.sz )
   hl.vec[cell.coord] <- 0:(ncol(hl.ind)-1)
   
