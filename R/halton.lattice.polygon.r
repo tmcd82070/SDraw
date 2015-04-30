@@ -1,7 +1,7 @@
 halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
   #
   # Function to construct a Halton lattice inside a SpatialPolygon object. This is a wrapper for 
-  # halton.lattice, which does all the hard work. 
+  # halton.lattice, which does all the hard work. This routine can only handle D=2 dimensional space.
   #
   # Inputs:
   #   sp.obj = A SpatialPolygon object from the sp package
@@ -30,6 +30,7 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
   # Get the halton lattice inside the bounding box, this does all the hard work
   hl <- halton.lattice( bbox(sp.obj), N, J, eta, triangular, bases)
 
+  
   # A nicety: copy over the names of the coordinates.
   if( is.null(coordnames(sp.obj))) {
     names(hl) <- c("easting","northing")
@@ -37,7 +38,6 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
   
   # Convert lattice to SpatialPoints object
   hl.points <- SpatialPoints(hl, proj4string=CRS(proj4string(sp.obj)))
-  
   
   # Do point-in-polygon selection to get just those inside polygon.
   # Take the data frame off of the sp.obj, so over returns vector, not data frame.

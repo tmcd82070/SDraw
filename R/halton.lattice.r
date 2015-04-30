@@ -18,6 +18,9 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   #   triangular = boolean, if TRUE, construct a triangular grid. If FALSE, construct rectangluar grid.
   #   bases = DX1 vector of Halton bases.  These must be co-prime. If bases = NULL (the default), the 
   #     first D prime integers are used. 
+  # 
+  # Output: 
+  # a data frame of halton lattice points. 
 
   D <- nrow( bbox )   # number of dimensions
   
@@ -67,7 +70,12 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   
   # Construct sequences in each direction
   coords <-vector("list",D)
-  names(coords) <- dimnames(bbox)[[1]]
+  if( is.null(dimnames(bbox)[[1]]) ){
+    names(coords) <- paste("d",1:D, sep="")
+    dimnames(bbox) <- list(paste("d",1:D, sep=""),c("min","max"))
+  } else {
+    names(coords) <- dimnames(bbox)[[1]]
+  }
   for( i in 1:D ){
     c.seq <- seq( 1, n[i] )
     coords[[i]] <- (c.seq - 0.5)/n[i]
