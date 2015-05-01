@@ -1,4 +1,4 @@
-hal <- function(n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
+hal <- function(n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3), pt.spacing=NULL){
 #
 #   Draw a HAL sample from the shapefile named in fn.
 #
@@ -8,6 +8,7 @@ hal <- function(n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
 #   Other inputs: see hal.polygon.r
 #   Note: eta and triangular only apply to sampling from a polygon.  I.e., only apply 
 #   when shp is a SpatialPolygons* object.
+  # pt.spacing = spacing of descretization points when shp is a SpatialLines object
 #  
 #   Output:
 #
@@ -21,8 +22,7 @@ hal <- function(n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
         
     } else if (regexpr("SpatialLines", class(shp)[1]) > 0 ){
 
-        #samp <- bas.line( n, shp )
-        cat("HAL sample of lines not implemented yet\n")
+        samp <- hal.line( n, shp, J,  )
       
     } else if (regexpr("SpatialPolygons", class(shp)[1]) > 0 ){
     
