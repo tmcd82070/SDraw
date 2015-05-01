@@ -52,7 +52,9 @@ hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
   
   attr(sp.obj,"J") <- J
   attr(sp.obj,"bases") <- bases
-  attr(sp.obj,"hl.bbox") <- bbox( sp.obj )
+  if( is.null( attr(sp.obj, "hl.box" )) ){
+    attr(sp.obj,"hl.bbox") <- bbox( sp.obj )
+  }
   
   # Compute halton indicies of every point in sp.obj.  The Halton index is the index of the 
   # Halton box that the point falls in. 

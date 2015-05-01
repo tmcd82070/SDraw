@@ -28,8 +28,8 @@ halton.indicies <- function(hl, index.name="halton.index"){
   J <- attr(hl,"J")
   b <- attr(hl,"bases")
   bb <- attr(hl,"hl.bbox") 
-  eta <- attr(hl,"eta") # not used here, but saved to transfer to attributest of output object
-  triangle <- attr(hl,"triangular")   # not used here, but saved to transfer to attributest of output object
+  eta <- attr(hl,"eta") # not used here, but saved to transfer to attributes of output object
+  triangle <- attr(hl,"triangular")   # not used here, but saved to transfer to attributes of output object
   
   
   # Number of dimensions

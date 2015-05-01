@@ -39,32 +39,8 @@ hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=
   # Construct Halton lattice  
   hl.points <- halton.lattice.polygon( sp.obj, N, J, eta, triangular, bases )
   
-  # Assign Halton indicies to points.  This returns a SpatialPoints* object
-  hl.points <- halton.indicies( hl.points )
-  
-  # Make a Halton frame, which takes halton.index and adds cycles to points in same Halton box
-  # This frame comes back sorted by halton order, ready to sample
-  hl.points <- halton.frame( hl.points )
-  
-  # Draw sample from the frame
-  m <- runif(200)    # burn 200 random numbers from R's routine
-  N.frame <- nrow(hl.points)
-  m <- floor(runif(1, 0, N.frame))
-  n <- min( n, N.frame )  # Can't take more than a census. 
-  ind <- ((((1:n)+m)-1) %%  N.frame)+1   # Cycle the indicies around to start of frame if necessary
-
-  
-  samp <- hl.points[ind,]
-  
-  # Add attributes
-  attr(samp,"J") <- attr(hl.points, "J")
-  attr(samp,"eta") <- attr(hl.points, "eta")
-  attr(samp,"bases") <- attr(hl.points, "bases")
-  attr(samp,"hl.bbox") <- attr(hl.points, "hl.bbox")
-  attr(samp,"triangular") <- attr(hl.points, "trianglular")
-  attr(samp,"index.name") <- attr(hl.points,"index.name")
-  attr(samp,"order.name") <- attr(hl.points,"order.name")
-  attr(samp,"m") <- m  # needed if we want more points from this frame
+  # Now that we have points, we can draw a HAL point sample. 
+  samp <- hal.point( n, hl.points, attr(hl.points, "J"), attr(hl.points, "bases") )
   
   samp
   
