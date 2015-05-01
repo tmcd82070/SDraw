@@ -1,10 +1,10 @@
-hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
+hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
   #
-  #   Draw a HAL sample from a polygon in a shapefile.
+  #   Draw a HAL sample from points in a shapefile.
   #
   #   input:
   #   n = desired sample size,
-  #   sp.obj = a SpatialPolygons* object, according to package sp.
+  #   sp.obj = a SpatialPoints* object, according to package sp.
   #   J = 2X1 vector of base powers.  J[1] is for horizontal, J[2] for vertical dimension
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
@@ -32,15 +32,31 @@ hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=
   # If lattice is not specified, set frame size to some multiple of n
   if(is.null(J)){
     N <- 100*n
-  } else {
-    N <- NULL
+
+    bb <- bbox( sp.obj )
+    
+    D <- nrow( bb )   # number of dimensions
+    
+    delta <- apply( bb, 1, diff ) 
+    
+    # Set default values of J so Halton boxes are as close to squares as possible
+    n.boxes <- rep(NA,D)  # n boxes in each dimension
+    for( i in 1:D ){
+      n.boxes[i] <- ((delta[i]^(D-1))/prod(delta[-i]) * N)^(1/D)
+    }
+    
+    # compute J which gives something close to n
+    J <- round( log(n.boxes)/log(bases) )
+    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
   }
   
-  # Construct Halton lattice  
-  hl.points <- halton.lattice.polygon( sp.obj, N, J, eta, triangular, bases )
+  attr(sp.obj,"J") <- J
+  attr(sp.obj,"bases") <- bases
+  attr(sp.obj,"hl.bbox") <- bbox( sp.obj )
   
-  # Assign Halton indicies to points.  This returns a SpatialPoints* object
-  hl.points <- halton.indicies( hl.points )
+  # Compute halton indicies of every point in sp.obj.  The Halton index is the index of the 
+  # Halton box that the point falls in. 
+  hl.points <- halton.indicies(sp.obj)
   
   # Make a Halton frame, which takes halton.index and adds cycles to points in same Halton box
   # This frame comes back sorted by halton order, ready to sample
@@ -52,7 +68,7 @@ hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=
   m <- floor(runif(1, 0, N.frame))
   n <- min( n, N.frame )  # Can't take more than a census. 
   ind <- ((((1:n)+m)-1) %%  N.frame)+1   # Cycle the indicies around to start of frame if necessary
-
+  
   
   samp <- hl.points[ind,]
   

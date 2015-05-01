@@ -28,7 +28,7 @@ halton.indicies <- function(hl, index.name="halton.index"){
   J <- attr(hl,"J")
   b <- attr(hl,"bases")
   bb <- attr(hl,"hl.bbox") 
-  eta <- attr(hl,"eta")
+  eta <- attr(hl,"eta") # not used here, but saved to transfer to attributest of output object
   triangle <- attr(hl,"triangular")   # not used here, but saved to transfer to attributest of output object
   
   
@@ -69,7 +69,7 @@ halton.indicies <- function(hl, index.name="halton.index"){
   hl.vec <- rep(NA, prod(n.boxes))
   
   # Fill Halton matrix with Halton indicies
-  hl.ind <- halton( prod(n.boxes), D)
+  hl.ind <- halton( prod(n.boxes), D, start=0, bases=b)
   
   # This sets up the column major ordering of our array. 
   # Do it this way because it generalizes to D > 2

@@ -76,6 +76,7 @@ run.sample <- function(button, dat){
     #   Actually draw the sample
     #   Remember that fn is the text string name of the shapefile with path, but without .shp.
     samp <- switch( stype, 
+                "HAL " = draw.hal(n,over.n,fn,in.dir),    
                 "BAS " = draw.bas(n,over.n,fn,in.dir),
                 "GRTS" = draw.grts(n,over.n,fn,in.dir),
                 "SSS " = draw.sss(n,over.n,fn,in.dir),

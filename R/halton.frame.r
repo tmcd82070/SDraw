@@ -57,10 +57,6 @@ halton.frame <- function( hl.points, order.name="frame.order" ){
 
     # Add cycle to hl.index to make it easy to sort outside this routine
     hl.digits <- floor(log10(max(hl.index))) + 1
-    print(length(hl.index))
-    print(length(cycle))
-    print(max(hl.index))
-    print(hl.digits)
     cycle.hl.index <- cycle * 10^hl.digits + hl.index
     df$zzzzframe.order <- cycle.hl.index 
   
@@ -100,7 +96,7 @@ halton.frame <- function( hl.points, order.name="frame.order" ){
 ##  Test with SpatialPolygon* objects
 # tmp <- halton.lattice.polygon(WA.utm, J=c(7,4), eta=c(2,2))
 # tmp <- halton.lattice.polygon(WA.utm.nodata, J=c(6,3), eta=c(1,1))
-# tmp2 <- halton.indicies(tmp)
+# 
 # 
 # tmp3 <- halton.frame(tmp2)
 # #
