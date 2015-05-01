@@ -84,7 +84,7 @@ halton.indicies <- function(hl, index.name="halton.index"){
 
   # Find the Halton boxes that the points in hl belong in
   hl.coords <- t(hl.coords)
-  cell.coord <- floor( n.boxes*(hl.coords - ll.corner)/(delta) + .Machine$double.eps*10) + 1
+  cell.coord <- floor( n.boxes*(hl.coords - ll.corner)/(delta) + .Machine$double.eps*1000) + 1
   cell.coord <- colSums( (cell.coord - m1)*mat.sz )
   if(is.null(hl)){
     hl.out <- data.frame(halton.index=hl.vec[cell.coord])

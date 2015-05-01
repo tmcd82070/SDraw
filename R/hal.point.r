@@ -53,7 +53,14 @@ hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
   attr(sp.obj,"J") <- J
   attr(sp.obj,"bases") <- bases
   if( is.null( attr(sp.obj, "hl.box" )) ){
-    attr(sp.obj,"hl.bbox") <- bbox( sp.obj )
+    bb <- bbox(sp.obj)
+    # Because Halton boxes are closed on bottom and left, open on top and right, we 
+    # need to add a tiny amount to top and right just in case any points are exactly 
+    # on the bounding box top or right boundaries. If we did not do this, a point exactly 
+    # on the top or right boundary would technically be outside all Halton boxes. 
+    delta <- apply( bb, 1, diff ) 
+    bb[,2] <- bb[,2] + 0.0001*delta
+    attr(sp.obj,"hl.bbox") <- bb
   }
   
   # Compute halton indicies of every point in sp.obj.  The Halton index is the index of the 
