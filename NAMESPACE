@@ -18,6 +18,8 @@ export(halton.frame)
 export(hal)
 export(hal.polygon)
 export(hal.point)
-#export(hal.line)
+export(hal.line)
+export(readShape)
+
 
 import(RGtk2, sp, spsurvey, utils, rgdal, rgeos)
