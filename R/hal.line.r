@@ -1,19 +1,19 @@
-hal.line <- function( n, sp.obj, J=NULL, pt.spacing = NULL, bases=c(2,3)){
+hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3)){
   #
   #   Draw a HAL sample from a shape containing lines .
   #
   #   input:
   #   n = desired sample size,
-  #   sp.obj = a SpatialPolygons* object, according to package sp.
+  #   shp = a SpatialPolygons* object, according to package sp.
   #   J = 2X1 vector of base powers.  J[1] is for horizontal, J[2] for vertical dimension
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
   #   pt.spacing = spacing of points on lines prior to sampling via HAL.  First step in 
   #     sampling lines is to descritize the lines by placing points on the lines, then sampling
   #     the points using Halton sampling.  If the user wishes, they can specify the spacing 
-  #     of points with this parameter.  For example, specifying 50, and assuming the sp.obj is 
-  #     projected to UTM meters, means points will be placed every 50 meters along all lines in sp.obj. 
-  #     It is best if sp.obj is projected here. Otherwise, if pt.spacing is not specified, the 
+  #     of points with this parameter.  For example, specifying 50, and assuming the shp is 
+  #     projected to UTM meters, means points will be placed every 50 meters along all lines in shp. 
+  #     It is best if shp is projected here. Otherwise, if pt.spacing is not specified, the 
   #     algorithm places 1000*n points along the lines during descretization. 
   #   bases = 2X1 vector of Halton bases.  These must be co-prime. 
   

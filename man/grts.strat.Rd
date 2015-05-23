@@ -88,7 +88,7 @@ plot(WA.cities, col=factor(WA.cities$COUNTY), pch=1)
 
 for( i in 1:n.strata ){
   plot( WA.sample[WA.sample$stratum == strat.names[i],], col=i, 
-  add=T, pch=16)
+  add=TRUE, pch=16)
 }
 
 }

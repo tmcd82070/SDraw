@@ -1,10 +1,10 @@
-hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
+hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
   #
   #   Draw a HAL sample from points in a shapefile.
   #
   #   input:
   #   n = desired sample size,
-  #   sp.obj = a SpatialPoints* object, according to package sp.
+  #   shp = a SpatialPoints* object, according to package sp.
   #   J = 2X1 vector of base powers.  J[1] is for horizontal, J[2] for vertical dimension
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
@@ -33,7 +33,7 @@ hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
   if(is.null(J)){
     N <- 100*n
 
-    bb <- bbox( sp.obj )
+    bb <- bbox( shp )
     
     D <- nrow( bb )   # number of dimensions
     
@@ -50,22 +50,22 @@ hal.point <- function( n, sp.obj, J=NULL, bases=c(2,3)){
     J <- ifelse(J <= 0,1,J)  # ensure all J > 0
   }
   
-  attr(sp.obj,"J") <- J
-  attr(sp.obj,"bases") <- bases
-  if( is.null( attr(sp.obj, "hl.box" )) ){
-    bb <- bbox(sp.obj)
+  attr(shp,"J") <- J
+  attr(shp,"bases") <- bases
+  if( is.null( attr(shp, "hl.box" )) ){
+    bb <- bbox(shp)
     # Because Halton boxes are closed on bottom and left, open on top and right, we 
     # need to add a tiny amount to top and right just in case any points are exactly 
     # on the bounding box top or right boundaries. If we did not do this, a point exactly 
     # on the top or right boundary would technically be outside all Halton boxes. 
     delta <- apply( bb, 1, diff ) 
     bb[,2] <- bb[,2] + 0.0001*delta
-    attr(sp.obj,"hl.bbox") <- bb
+    attr(shp,"hl.bbox") <- bb
   }
   
-  # Compute halton indicies of every point in sp.obj.  The Halton index is the index of the 
+  # Compute halton indicies of every point in shp.  The Halton index is the index of the 
   # Halton box that the point falls in. 
-  hl.points <- halton.indicies(sp.obj)
+  hl.points <- halton.indicies(shp)
   
   # Make a Halton frame, which takes halton.index and adds cycles to points in same Halton box
   # This frame comes back sorted by halton order, ready to sample

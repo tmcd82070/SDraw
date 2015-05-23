@@ -2,27 +2,28 @@
 \alias{halton}
 
 \title{
-Compute multi-dimensional Halton sequence.
+Compute points in the Halton sequence.
 }
 \description{
-Computes \code{dim} co-prime van der Corput sequences, each with specified length, beginning at specified indices.
+Computes points in a multi-dimensional Halton sequence, beginning at specified indices and using specified co-prime bases.
 }
 \usage{
-halton(n, dim = 1, start = 1)
+halton(n, dim = 1, start = 0, bases = NULL)
 }
 \arguments{
-  \item{n}{(scalar) the number of values in each Halton sequence. }
-  \item{dim}{(scalar) the number of dimensions, equal to the number of van der Corput sequences.}
-  \item{start}{(scalar or \code{dim}-vector) starting index (location) of each van der Corput sequence.}
+  \item{n}{A scalar giving the number of values in the Halton points to produce. }
+  \item{dim}{A scalar giving the number of dimensions, equal to the number of van der Corput sequences. Technically, \code{dim==1} produces a van der Corput sequence, \code{dim>=2} produces Halton sequences. }
+  \item{start}{A scalar or a length \code{dim} vector giving the starting index (location) for  each van der Corput sequence. Origin of each sequence is 0. \code{all(start>=0)} must be true.}
+  \item{bases}{A length \code{dim} vector giving the base to use for each dimension.  For a Halton sequence, bases must all be co-prime.  No check for common prime factors is performed.     If \code{bases} is \code{NULL}, the first \code{dim} primes starting at 2 are used as bases of the Halton sequence. 
+    For example, the 4-dimensional Halton sequence would use bases 2, 3, 5, and 7. 
+    The 6-dimensional Halton sequence would use 2, 3, 5, 7, 11, and 13. Etc. 
+}
 }
 \details{
     The Halton sequence is a sequence of \code{dim}-dimensional numbers where 
     each dimension is a (1-dimensional) co-prime van der Corput sequence. Here, all 
     van der Corput sequences use bases that are prime numbers.  See references below. 
     
-    The first \code{dim} primes, starting at 2, are used for the bases of the Halton sequence. 
-    For example, the 4-dimensional Halton sequence uses bases 2, 3, 5, and 7. 
-    The 6-dimensional Halton sequence uses bases 2, 3, 5, 7, 11, and 13. 
     
 }
 

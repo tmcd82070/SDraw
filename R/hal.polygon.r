@@ -1,10 +1,10 @@
-hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
+hal.polygon <- function( n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3)){
   #
   #   Draw a HAL sample from a polygon in a shapefile.
   #
   #   input:
   #   n = desired sample size,
-  #   sp.obj = a SpatialPolygons* object, according to package sp.
+  #   shp = a SpatialPolygons* object, according to package sp.
   #   J = 2X1 vector of base powers.  J[1] is for horizontal, J[2] for vertical dimension
   #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
   #     J is choosen so that Halton boxes are as square as possible. 
@@ -37,7 +37,7 @@ hal.polygon <- function( n, sp.obj, J=NULL, eta=c(1,1), triangular=FALSE, bases=
   }
   
   # Construct Halton lattice  
-  hl.points <- halton.lattice.polygon( sp.obj, N, J, eta, triangular, bases )
+  hl.points <- halton.lattice.polygon( shp, N, J, eta, triangular, bases )
   
   # Now that we have points, we can draw a HAL point sample. 
   samp <- hal.point( n, hl.points, attr(hl.points, "J"), attr(hl.points, "bases") )

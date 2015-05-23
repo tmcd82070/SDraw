@@ -112,7 +112,7 @@ Trent McDonald (tmcdonald@west-inc.com)
 
 \seealso{
 \code{\link{bas}}, \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{sss.polygon}}, 
-\code{\link{halton}}, \code{\link{grts.equi}}, \code{\link{spsurvey::grts}}
+\code{\link{halton}}, \code{\link{grts.equi}}
 }
 
 \examples{
