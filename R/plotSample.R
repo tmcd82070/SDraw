@@ -10,8 +10,8 @@ plotSample <- function(button, dat){
         
 
     fn <- dat$shape.in.entry$getText()
-    in.dir <- dat$shape.in.dir$getText()
-    outobj <- dat$out.r.entry$getText()
+    in.dir <- dat$shape.in.dir$getText()       # in.dir <- '//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles'
+    outobj <- dat$out.r.entry$getText()        # outobj <- 'sdraw.2015.06.15.161404'
     
   
     if( nchar(fn) == 0 ){
@@ -40,9 +40,12 @@ plotSample <- function(button, dat){
         # Is this a stratified sample -> different legend
         strat.var <- attr(samp, "strata.var")
         
+        # Is this an unequal prob sample -> different legend
+        unequal.var <- attr(samp, "unequal.var")
+        
         # Determine if this sample has an oversample
         has.oversamp <- "pointType" %in% names(data.frame(samp))
-        if( has.oversamp )  has.oversamp <- length(unique(data.frame(samp)[,"pointType"])) > 1
+        if( has.oversamp )  has.oversamp <- length(unique(data.frame(samp)[,"pointType"])) > 1   # ?
         
         if( !is.null( strat.var )){
           # We have stratified sample
@@ -54,6 +57,16 @@ plotSample <- function(button, dat){
           }
           legend("bottomleft", legend=strat.vals, pch=1:length(strat.vals)+14, col=strat.cols, title="Strata:")
           # Note. oversample points in stratified samples, if they exist, are not plotted.
+        } else if( !is.null( unequal.var )){
+          # We have categorical sample
+          unequal.ind <- data.frame(samp)[,c("mdcaty")]  #data.frame(samp)[,unequal.var]
+          unequal.vals <- levels(factor(unequal.ind))
+          unequal.cols <- terrain.colors(length(unequal.vals))
+          for(h in unequal.vals){
+            points( samp[unequal.ind == h,], pch=which(h==unequal.vals)+14, col=unequal.cols[which(h==unequal.vals)] )
+          }
+          legend("bottomleft", legend=unequal.vals, pch=1:length(unequal.vals)+14, col=unequal.cols, title="Categories:")
+          # Note. oversample points in stratified samples, if they exist, are not plotted.          
         } else if( has.oversamp ){
           #   There is some oversample
           samp.ind <- data.frame(samp)[,"pointType"]
