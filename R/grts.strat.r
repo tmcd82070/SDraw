@@ -23,7 +23,7 @@ strata.levels<-names(table(data.frame(shp)[,strat.var]))
   #this makes a list of elements to be passed to the grts function
     selType="Equal"
 	  Stratdsgn <- lapply(1:length(strata.levels), function(x, nn, st, o.n){
-	    list(panel=c(PanelOne=n[x]),seltype=selType,over=over.n)
+	    list(panel=c(Main=n[x]),seltype=selType,over=over.n)
 	  }, nn=n, st=selType, o.n=over.n)
     names(Stratdsgn) <- strata.levels
 

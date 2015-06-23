@@ -4,15 +4,15 @@ run.unequal.sample <- function(button, dat){
   #   Query the entry fields
   
   # testing
-#   n <- "24,56,45"
+#   n <- "24"
 #   fn <- "SRI_Watersheds_shapefile_J"
 #   dir <- "\\\\LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles"
-#   unequal.var <- "Category"
+#   unequal.var <- "C"
 #   outobj <- "sdraw.2015.06.11.160942"
 #   over.n <- 2
 #   seed <- 1234
 #   stype <- "GRTS"
-#   alloc.type <- "uneqproportion"
+#   alloc.type <- "continuous"
 #   testShp <- readOGR(dir,fn)      # shpfile object for testing.
   
   n <- dat$n.entry$getText()

@@ -29,18 +29,18 @@ grts.unequal <- function( n, over.n, unequal.var, shp, alloc.type ){
     #this makes a list of elements to be passed to the grts function
     selType="Unequal"
     Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,caty.n=the.caty.n,over=over.n))
-    IDHelper <- "UNEQ-CONST"
+    IDHelper <- "Site"    # old: "UNEQ-CONST"
     
   } else if(alloc.type == "continuous"){
 
     #this makes a list of elements to be passed to the grts function
-    selType="Continuous"
-    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,over=over.n))
-    IDHelper <- "CONT"
+#     selType="Continuous"
+#     Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,over=over.n))
+    IDHelper <- "Site"  # old: "CONT
     
-    Contdsgn <- list(None=list(panel=c(PanelOne=115),
+    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),
                                seltype="Continuous",
-                               over=20))
+                               over=over.n))
  
   } else if(alloc.type == "uneqproportion"){
     
@@ -51,10 +51,8 @@ grts.unequal <- function( n, over.n, unequal.var, shp, alloc.type ){
     #this makes a list of elements to be passed to the grts function
     selType="Unequal"
     Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,caty.n=the.caty.n,over=over.n))
-    IDHelper <- "UNEQ-PROB"
+    IDHelper <- "Site"   # old:  "UNEQ-PROB"
   }
-  
-  
   
   if( regexpr("SpatialPoints", class(shp)[1]) > 0 ){
     sframe.type = "finite"

@@ -18,7 +18,7 @@ unequal.GUI <- function()   {
   # ================= Sample type frame ============================
   samp.types <- c("HAL - Halton Lattice Sampling", 
                   "BAS - Balanced Acceptance Sampling", 
-                  "GRTS - Generalized Random Tesselation Stratified", 
+                  "GRTS - Generalized Random Tessellation Stratified", 
                   "SSS - Simple Systematic Sampling")
   
   #this adds different sampling frames

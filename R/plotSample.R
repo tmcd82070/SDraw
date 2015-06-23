@@ -11,7 +11,7 @@ plotSample <- function(button, dat){
 
     fn <- dat$shape.in.entry$getText()
     in.dir <- dat$shape.in.dir$getText()       # in.dir <- '//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles'
-    outobj <- dat$out.r.entry$getText()        # outobj <- 'sdraw.2015.06.15.161404'
+    outobj <- dat$out.r.entry$getText()        # outobj <- samp  'sdraw.2015.06.15.161404'
     
   
     if( nchar(fn) == 0 ){
@@ -25,17 +25,20 @@ plotSample <- function(button, dat){
   
     #   plot shape file
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
-        plot(shp, col=rainbow(length(shp@polygons)))
+        plot(shp, col=rainbow(length(shp@polygons)))                   # traditional R plot
+#         spplot(shp, col.regions = bpy.colors(100))                      # spplot - polygons
     } else if (regexpr("^SpatialLines", class(shp)[1]) > 0){
-        plot(shp, col=rainbow(length(shp)), lwd=3)
+        plot(shp, col=rainbow(length(shp)), lwd=3)                     # traditional R plot
+#         spplot(shp, col.regions = bpy.colors(100))                      # spplot - lines
     } else if (regexpr("^SpatialPoints", class(shp)[1]) > 0 ){
-        plot(shp, col=rainbow(length(shp)), pch=16)
+        plot(shp, col=rainbow(length(shp)), pch=16)                    # traditional R plot
+#         spplot(shp, col.regions = bpy.colors(100))                      # spplot - points
     }
 
     #   If the sample object exists, plot points on the map
     if( exists( outobj )){
-        samp <- get( outobj, pos=.GlobalEnv )
-        stype <- attr(samp, "sample.type")
+        samp <- get( outobj, pos=.GlobalEnv )     # spatial points obj i think
+        stype <- attr(samp, "sample.type")        
         
         # Is this a stratified sample -> different legend
         strat.var <- attr(samp, "strata.var")
@@ -54,6 +57,7 @@ plotSample <- function(button, dat){
           strat.cols <- terrain.colors(length(strat.vals))
           for(h in strat.vals){
             points( samp[strat.ind == h,], pch=which(h==strat.vals)+14, col=strat.cols[which(h==strat.vals)] )
+          
           }
           legend("bottomleft", legend=strat.vals, pch=1:length(strat.vals)+14, col=strat.cols, title="Strata:")
           # Note. oversample points in stratified samples, if they exist, are not plotted.

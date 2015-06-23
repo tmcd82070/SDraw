@@ -1,6 +1,6 @@
 grts.equi <- function( n, over.n, shp ){
 
-    Equaldsgn <- list(None = list(panel = c(sample = n),
+    Equaldsgn <- list(None = list(panel = c(Main = n),
                                   seltype = "Equal",
                                   over = over.n))
 
