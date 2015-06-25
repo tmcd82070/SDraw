@@ -14,7 +14,7 @@ grts.equi <- function( n, over.n, shp ){
     }
 
     Equalsites <- grts(design=Equaldsgn,
-            DesignID="EQUAL",
+            DesignID="Site"  #"EQUAL",
             type.frame=sframe.type,
             src.frame="sp.object",
             sp.object=shp,
@@ -28,7 +28,7 @@ grts.equi <- function( n, over.n, shp ){
     #Equalsites <- Equalsites[,!(names(Equalsites) %in% c("mdcaty","wgt","stratum","panel"))]
 
     #   Add a column of sample/oversample for convieneince
-    Equalsites$pointType <- c(rep("Sample",n), rep("OverSample",over.n))
+    # Equalsites$pointType <- c(rep("Sample",n), rep("OverSample",over.n))
 
     #   Copy over the projection from the input spatial object
     proj4string(Equalsites) <- CRS(proj4string(shp))

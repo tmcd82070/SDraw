@@ -4,7 +4,7 @@ run.unequal.sample <- function(button, dat){
   #   Query the entry fields
   
   # testing
-#   n <- "24"
+#   n <- "48"
 #   fn <- "SRI_Watersheds_shapefile_J"
 #   dir <- "\\\\LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles"
 #   unequal.var <- "C"
@@ -14,6 +14,12 @@ run.unequal.sample <- function(button, dat){
 #   stype <- "GRTS"
 #   alloc.type <- "continuous"
 #   testShp <- readOGR(dir,fn)      # shpfile object for testing.
+  
+  
+#   spplot(shp, zcol="Shape_Leng", colorkey=TRUE, col.regions = bpy.colors(100))   
+#   points(samp) 
+  
+  
   
   n <- dat$n.entry$getText()
   fn <- dat$shape.in.entry$getText()
