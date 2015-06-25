@@ -28,3 +28,4 @@ if( sys == "Windows" & interactive() & !rstudio){
 }
 
 }
+# streams <- readOGR("//LAR-FILE-SRV/Data/NPS/SDraw/inst/doc/Shapefiles","SRI_Stream_Derived_Lengths_shapefile_J")

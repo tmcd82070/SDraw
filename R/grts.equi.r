@@ -14,7 +14,7 @@ grts.equi <- function( n, over.n, shp ){
     }
 
     Equalsites <- grts(design=Equaldsgn,
-            DesignID="Site"  #"EQUAL",
+            DesignID='Site',
             type.frame=sframe.type,
             src.frame="sp.object",
             sp.object=shp,

@@ -27,9 +27,9 @@ plotSample <- function(button, dat){
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
         plot(shp, col=rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
     } else if (regexpr("^SpatialLines", class(shp)[1]) > 0){
-        plot(shp, col=rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5), lwd=3)                     # traditional R plot
+        plot(shp, col=rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), lwd=3)                     # traditional R plot
     } else if (regexpr("^SpatialPoints", class(shp)[1]) > 0 ){
-        plot(shp, col=rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5), pch=16)                    # traditional R plot
+        plot(shp, col=rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), pch=16)                    # traditional R plot
     }
 
     #   If the sample object exists, plot points on the map
@@ -54,7 +54,7 @@ plotSample <- function(button, dat){
           strat.vals <- levels(factor(strat.ind))
           strat.cols <- rainbow(length(strat.vals))
           for(h in strat.vals){
-            points( samp[strat.ind == h,], pch=which(h==strat.vals)+14, col=strat.cols[which(h==strat.vals)] )
+            points( samp[strat.ind == h,], pch=which(h==strat.vals)+14,cex=1.5,col=strat.cols[which(h==strat.vals)] )
           }
           legend("bottomleft", legend=strat.vals, pch=1:length(strat.vals)+14, col=strat.cols, title="Strata:")
           # Note. oversample points in stratified samples, if they exist, are not plotted.
@@ -67,7 +67,7 @@ plotSample <- function(button, dat){
             unequal.vals <- levels(factor(unequal.ind))
             unequal.cols <- rainbow(length(unequal.vals))
             for(h in unequal.vals){
-              points( samp[unequal.ind == h,], pch=which(h==unequal.vals)+14, col=unequal.cols[which(h==unequal.vals)] )
+              points( samp[unequal.ind == h,], pch=which(h==unequal.vals)+14,cex=1.5,col=unequal.cols[which(h==unequal.vals)] )
             }
             legend("bottomleft", legend=unequal.vals, pch=1:length(unequal.vals)+14, col=unequal.cols, title="Categories:")
 

@@ -1,6 +1,13 @@
 
 
-setwd('//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/R/')
+
+setwd('//LAR-FILE-SRV/Data/NPS/SDraw/R/')
+
+require(sp)
+require(rgdal)
+require(RGtk2)
+require(spsurvey)
+
 
 
 #   --------------------------------------------------------
