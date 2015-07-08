@@ -20,6 +20,7 @@ browse.for.shapefile <- function(x, dat){
 
         dat$shape.in.entry$setText(filename)
         dat$shape.in.dir$setText(path)  # does nothing right how becuse shape.in.dir is not passed in
+        dat$out.r.entry$setText("")   # reset R Shape name to blank
     } else {
         dialog$destroy()
     }

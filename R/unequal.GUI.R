@@ -164,11 +164,15 @@ unequal.GUI <- function()   {
   shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
   shape.in.dir$setText( getwd() )
   
+  out.r.entry <- gtkEntry()
+  out.r.entry$setText( "" )
+  
   shape.file.box <- gtkHBox(FALSE, 10)
   browse.b <- gtkButton("Browse")
   gSignalConnect(browse.b, "clicked", browse.for.shapefile,data=list(
     shape.in.entry = shape.in.entry, 
     shape.in.dir = shape.in.dir,
+    out.r.entry = out.r.entry,
     parent.window = win
   ))
   
@@ -209,7 +213,7 @@ unequal.GUI <- function()   {
   
   #   ---- Output R object box
   out.r.entry <- gtkEntry()
-  out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
+  out.r.entry$setText("")#paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
   out.r.label <- gtkLabel("Sample's R name:")
   
   gtkTableAttach(tbl,out.r.label, 0, 1, 3, 4, xpadding=5, ypadding=5)
@@ -378,6 +382,20 @@ unequal.GUI <- function()   {
   bbox$SetLayout("Spread")                   # Layout can be c("Start", "Edge", "Spread", "End")
   bbox$SetBorderWidth(10)
   
+  #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
+  read.b <- gtkButton("Inspect\n Frame ")
+  gSignalConnect(read.b, "clicked", readButtonAction, 
+                 data=list(
+                   shape.in.entry=shape.in.entry,
+                   shape.in.dir=shape.in.dir,
+                   out.r.entry=out.r.entry,
+                   name.labs=names.labs,
+                   type.labs=vtypes.labs, 
+                   finfo.title=finfo.title
+                 )
+  )
+  bbox$packEnd(read.b, expand=FALSE)
+  
   #   ---- Run button
   run.b <- gtkButton("Run")
   gSignalConnect(run.b, "clicked", run.unequal.sample, data=list( 
@@ -396,10 +414,9 @@ unequal.GUI <- function()   {
   ) 
   bbox$packEnd(run.b, expand=FALSE)
   
-  
   #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
-  read.b <- gtkButton("Inspect\n Frame ")
-  gSignalConnect(read.b, "clicked", readButtonAction, 
+  plot.b <- gtkButton("Plot\nSample")
+  gSignalConnect(plot.b, "clicked", readButtonAction, 
                  data=list(
                    shape.in.entry=shape.in.entry,
                    shape.in.dir=shape.in.dir,
@@ -409,11 +426,10 @@ unequal.GUI <- function()   {
                    finfo.title=finfo.title
                  )
   )
-  bbox$packEnd(read.b, expand=FALSE)
-  
+  bbox$packEnd(plot.b, expand=FALSE)  
   
   #   ---- View button
-  view.b <- gtkButton("View Sample")
+  view.b <- gtkButton("Tabulate\n Sample")
   gSignalConnect(view.b, "clicked", view.sample, data=list(
     out.r.entry = out.r.entry
   ))

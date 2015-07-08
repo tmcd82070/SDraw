@@ -4,16 +4,16 @@ run.unequal.sample <- function(button, dat){
   #   Query the entry fields
   
   # testing
-#   n <- "48"
+#   n <- "48,24,32"
 #   fn <- "SRI_Watersheds_shapefile_J"
-#   dir <- "\\\\LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles"
-#   unequal.var <- "C"
+#   dir <- "//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles"
+#   unequal.var <- "Category"
 #   outobj <- "sdraw.2015.06.11.160942"
 #   over.n <- 2
 #   seed <- 1234
 #   stype <- "GRTS"
-#   alloc.type <- "continuous"
-#   testShp <- readOGR(dir,fn)      # shpfile object for testing.
+#   alloc.type <- "uneqproportion"
+#   shp <- readOGR(dir,fn)      # shpfile object for testing.
   
   
 #   spplot(shp, zcol="Shape_Leng", colorkey=TRUE, col.regions = bpy.colors(100))   
@@ -65,6 +65,24 @@ run.unequal.sample <- function(button, dat){
     return()
   }
   
+  if( outobj == "" ){
+    error.message("Sample's R Name must be specified prior to sampling.")
+    return()
+  }
+
+  
+  shp <- getSpFrame( fn, dir )
+  
+  if( dat$cont.rb$getActive() & !is.numeric(data.frame(shp)[,unequal.var]) ){
+    error.message("Variable for sampling is not numeric. Check sampling scheme and/or variable, and try again.")
+    return()
+  }
+  
+  if( (dat$const.rb$getActive() | dat$uneqprop.rb$getActive()) & ( !is.factor(data.frame(shp)[,unequal.var] ) & !is.character(data.frame(shp)[,unequal.var]) ) ){
+    error.message("Variable for sampling is not character nor factor. Check sampling scheme and/or variable, and try again.")
+    return()
+  }   
+  
   #     if( exists( outobj, where=.GlobalEnv ) ){
   #         #   Ideally, we could ask the user here if they want to overwrite.
   #         #   This should be easy using RGtk windows, but I am in a rush.
@@ -92,7 +110,7 @@ run.unequal.sample <- function(button, dat){
   
   samp <- switch( stype, 
                   #"BAS " = draw.bas(n,over.n,fn),
-                  "GRTS" = draw.unequal.grts(n,over.n,unequal.var,alloc.type,fn,dir), 
+                  "GRTS" = draw.unequal.grts(n,over.n,unequal.var,alloc.type,fn,dir,outobj), 
                   #"SSS " = draw.sss(n,over.n,fn),
                   stop(paste("Unknown sample type:",stype)))
   

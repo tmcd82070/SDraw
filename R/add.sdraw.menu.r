@@ -10,6 +10,7 @@ if( sys == "Windows" & interactive() & !rstudio){
   winMenuAdd("SDraw")
 	winMenuAddItem("SDraw/Sample Draws", "Equi-Probable...", "equi.GUI()")
 	winMenuAddItem("SDraw/Sample Draws", "Stratified...", "stratified.GUI()")
+  winMenuAddItem("SDraw/Sample Draws", "Unequal...", "unequal.GUI()")
 	#winMenuAddItem("SDraw/Sample Draws", "Variable Probable...", "advanced.GUI()")
 	winMenuAddItem("SDraw/Analysis", "CDF", "none")
 } else if(!rstudio){
@@ -28,4 +29,3 @@ if( sys == "Windows" & interactive() & !rstudio){
 }
 
 }
-# streams <- readOGR("//LAR-FILE-SRV/Data/NPS/SDraw/inst/doc/Shapefiles","SRI_Stream_Derived_Lengths_shapefile_J")

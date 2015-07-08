@@ -1,4 +1,4 @@
-draw.unequal.grts <- function(n, over.n, unequal.var, alloc.type, fn, dir){   
+draw.unequal.grts <- function(n, over.n, unequal.var, alloc.type, fn, dir, outobj){   
   #
   #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
   #
@@ -52,6 +52,6 @@ draw.unequal.grts <- function(n, over.n, unequal.var, alloc.type, fn, dir){
   }
   
   #   Call the user visible routine that takes a SpatialX object
-  ans <- grts.unequal(n, over.n, unequal.var, shp, alloc.type ) 
+  ans <- grts.unequal(n, over.n, unequal.var, shp, alloc.type, fn, dir, outobj ) 
   ans
 }

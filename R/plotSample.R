@@ -11,8 +11,8 @@ plotSample <- function(button, dat){
 
     fn <- dat$shape.in.entry$getText()
     in.dir <- dat$shape.in.dir$getText()       # in.dir <- '//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles'
-    outobj <- dat$out.r.entry$getText()        # outobj <- "samp"  'sdraw.2015.06.15.161404'
-    
+    outobj <- dat$out.r.entry$getText()        # outobj <- samp  'sdraw.2015.06.15.161404'
+
   
     if( nchar(fn) == 0 ){
         error.message("A shapefile name must be specified.")
@@ -25,14 +25,15 @@ plotSample <- function(button, dat){
   
     #   plot shape file
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
-        plot(shp, col=rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
+        plot(shp, col="gray",border="white")#rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
     } else if (regexpr("^SpatialLines", class(shp)[1]) > 0){
-        plot(shp, col=rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), lwd=3)                     # traditional R plot
+        plot(shp, col="gray", lwd=3)#rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), lwd=3)                     # traditional R plot
     } else if (regexpr("^SpatialPoints", class(shp)[1]) > 0 ){
-        plot(shp, col=rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), pch=16)                    # traditional R plot
+        plot(shp, col="gray", pch=16)#rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), pch=16)                    # traditional R plot
     }
 
     #   If the sample object exists, plot points on the map
+    if( outobj != ""){   # letting the R sample name field be a blank
     if( exists( outobj )){
         samp <- get( outobj, pos=.GlobalEnv )     
         stype <- attr(samp, "sample.type")        
@@ -110,6 +111,7 @@ plotSample <- function(button, dat){
           legend("bottomleft", legend=paste(stype, "sample points"), pch=c(16))
         }
 
+    }
     }
 
 }
