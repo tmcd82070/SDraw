@@ -19,3 +19,4 @@ Testing
 .*\.o$
 .*\.dll$
 ^source_all.r$
+^R\jasonHelper.R$
