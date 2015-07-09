@@ -10,6 +10,7 @@ src-x64
 SDraw.rproj
 ArchivedVersions
 TestingFolder
+Testing
 .gitignore
 .*\.gz$
 .*\.piz$
@@ -18,3 +19,4 @@ TestingFolder
 .*\.o$
 .*\.dll$
 ^source_all.r$
+^R\jasonHelper.R$

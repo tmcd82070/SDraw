@@ -12,13 +12,12 @@ stratified.GUI <- function()   {
     #gtkWindowSetIconFromFile(win, filename = "s-draw.ico")  # need path to be correct here, or does not work, obviously
 
     vbox1 <- gtkVBoxNew(FALSE, 8)
-    vbox1$setBorderWidth(8)
     win$add(vbox1)
 
     # ================= Sample type frame ============================
     samp.types <- c("HAL - Halton Lattice Sampling", 
                     "BAS - Balanced Acceptance Sampling", 
-                    "GRTS - Generalized Random Tesselation Stratified", 
+                    "GRTS - Generalized Random Tessellation Stratified", 
                     "SSS - Simple Systematic Sampling")
     
 			#this adds different sampling frames
