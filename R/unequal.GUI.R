@@ -164,8 +164,17 @@ unequal.GUI <- function()   {
   shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
   shape.in.dir$setText( getwd() )
   
+  #out.r.entry <- gtkEntry()
+  #out.r.entry$setText( "" )
+  
+  #   ---- Output R object box
   out.r.entry <- gtkEntry()
-  out.r.entry$setText( "" )
+  out.r.entry$setText("")#paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
+  out.r.label <- gtkLabel("Sample's R name:")
+  
+  gtkTableAttach(tbl,out.r.label, 0, 1, 3, 4, xpadding=5, ypadding=5)
+  gtkTableAttach(tbl,out.r.entry, 1, 2, 3, 4, xpadding=5, ypadding=5)
+  
   
   shape.file.box <- gtkHBox(FALSE, 10)
   browse.b <- gtkButton("Browse")
@@ -211,13 +220,6 @@ unequal.GUI <- function()   {
   gtkTableAttach(tbl,unequal.var.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
   
   
-  #   ---- Output R object box
-  out.r.entry <- gtkEntry()
-  out.r.entry$setText("")#paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
-  out.r.label <- gtkLabel("Sample's R name:")
-  
-  gtkTableAttach(tbl,out.r.label, 0, 1, 3, 4, xpadding=5, ypadding=5)
-  gtkTableAttach(tbl,out.r.entry, 1, 2, 3, 4, xpadding=5, ypadding=5)
   
   
   # ============================ Sample Allocation frame ===========

@@ -48,3 +48,4 @@ SDraw.Rproj
 .RData
 source_all.r
 Testing
+*.log
