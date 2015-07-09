@@ -22,7 +22,7 @@ hal <- function(n, shp, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3), pt.s
         
     } else if (regexpr("SpatialLines", class(shp)[1]) > 0 ){
 
-        samp <- hal.line( n, shp, J,  )
+        samp <- hal.line( n, shp, J, pt.spacing, bases )
       
     } else if (regexpr("SpatialPolygons", class(shp)[1]) > 0 ){
     
