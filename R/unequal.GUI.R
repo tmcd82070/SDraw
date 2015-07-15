@@ -192,7 +192,6 @@ unequal.GUI <- function()   {
   gtkTableAttach(tbl,shape.file.label, 0, 1, 1, 2, xpadding=5, ypadding=5)
   gtkTableAttach(tbl,shape.file.box, 1, 2, 1, 2, xpadding=5, ypadding=5)
   
-  # #   ---- Input stratifying variable information Guy added this section 12/19
   # #   ---- Stratum Names
   unequal.var.entry <- gtkEntry()
   unequal.var.entry$setText( "" )
@@ -417,7 +416,7 @@ unequal.GUI <- function()   {
   bbox$packEnd(run.b, expand=FALSE)
   
   #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
-  plot.b <- gtkButton("Plot\nSample")
+  plot.b <- gtkButton("  Plot\nSample")
   gSignalConnect(plot.b, "clicked", readButtonAction, 
                  data=list(
                    shape.in.entry=shape.in.entry,

@@ -1,4 +1,4 @@
-draw.grts <- function(n,over.n,fn,dir){
+draw.grts <- function(n,over.n,fn,dir,outobj){
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
@@ -10,7 +10,7 @@ draw.grts <- function(n,over.n,fn,dir){
 
 
 #   Call the user visible routine that takes a SpatialX object
-    ans <- grts.equi( n, over.n, shp )
+    ans <- grts.equi( n, over.n, shp, fn, dir, outobj )
 
     ans
 }

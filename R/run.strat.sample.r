@@ -2,7 +2,9 @@ run.strat.sample <- function(button, dat){
 #tester for running stratified sample
 
     #   Query the entry fields
- 
+#     strat.var <- 'Stratum'
+#     alloc.type <- 'constant'
+  
     n <- dat$n.entry$getText()
     fn <- dat$shape.in.entry$getText()
     dir <- dat$shape.in.dir$getText()
@@ -12,7 +14,7 @@ run.strat.sample <- function(button, dat){
     seed <- dat$seed.entry$getText()
     stype <- dat$samp.type.combo$getActiveText()
     stype <- substring(stype, 1, 4)
-	
+
     #   Set seed if there is a number present
     if( nchar(seed) > 0 ){
         seed <- as.numeric( seed )
@@ -55,6 +57,12 @@ run.strat.sample <- function(button, dat){
 #         cat( paste( "Old version of", outobj, "copied to", paste(outobj, ".previous", sep=""), "\n"))
 #     }
 
+    shp <- getSpFrame( fn, dir )
+
+    if( !is.factor(data.frame(shp)[,strat.var] ) & !is.character(data.frame(shp)[,strat.var]) ){
+      error.message("Variable for sampling is not character nor factor. Check sampling scheme and/or variable, and try again.")
+      return()
+    }   
 
     #   fix up the sample sizes
     # n <- as.numeric(as.vector( n ))
@@ -74,7 +82,7 @@ run.strat.sample <- function(button, dat){
 
     samp <- switch( stype, 
                 #"BAS " = draw.bas(n,over.n,fn),
-                "GRTS" = draw.strat.grts(n,over.n,strat.var,alloc.type,fn,dir), 
+                "GRTS" = draw.strat.grts(n,over.n,strat.var,alloc.type,fn,dir,outobj), 
                 #"SSS " = draw.sss(n,over.n,fn),
                          stop(paste("Unknown sample type:",stype)))
 
@@ -86,7 +94,7 @@ run.strat.sample <- function(button, dat){
     cat("First 10 sample locations:\n")
     print(samp[1:10,])
 
-    dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.")
+    dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.", "\nCode file saved to", outobj, ".")
     dialog$run()
     dialog$destroy()
 	

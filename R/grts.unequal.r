@@ -5,24 +5,7 @@ grts.unequal <- function( n, over.n, unequal.var, shp, alloc.type, fn, dir, outo
   # over.n = scalar (vector length 1) of number of units to add per category.  Constant across category
   # unequal.var = string nameing category variable IF shape contains points or lines
   # shp = the SpatialXDataFrame object (the frame)
-  
-  options(useFancyQuotes = FALSE)
-  cat(print(outobj))
-  cat(print(dir))
-  cat(print(fn))
-  log_con <- file(paste0(outobj,".log"),open="a")     # write selected pieces of code to a file
-  cat("# Utilization of this code without first installing R packages rgdal and spsurvey will result in error.\n",sep="",file=log_con)
-
-  cat("# This output results from the SDraw package, WEST Inc., 2014, Version 1.04.\n
-library(rgdal)
-library(spsurvey)\n\n",sep="",file=log_con)
-
-
-  
-  cat("# Read in the shapefile of interest from which sampling occurs.\n
-shp <- readOGR( ",dQuote(dir),", ",dQuote(fn)," ) \n\n",sep="",file=log_con)
-  close(log_con)
-  
+    
   # Get category level names from shape file
   category.levels <- names(table(data.frame(shp)[,unequal.var]))
   # For debuggin
@@ -46,8 +29,9 @@ shp <- readOGR( ",dQuote(dir),", ",dQuote(fn)," ) \n\n",sep="",file=log_con)
     #this makes a list of elements to be passed to the grts function
     selType="Unequal"
     IDHelper <- "Site" 
-    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,caty.n=the.caty.n,over=over.n))
-  
+    
+    
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------     
     # prepare category string for printing
     for(i in 1:length(the.caty.n)){
       if(i == 1){
@@ -58,29 +42,35 @@ shp <- readOGR( ",dQuote(dir),", ",dQuote(fn)," ) \n\n",sep="",file=log_con)
     }
     string <- paste(string,")",sep="")
     
-    log_con <- file(paste0(outobj,".log"),open="a")
-  cat("# Prepare the design of the sampling for use in the grts function.\n
-Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
-seltype=",dQuote(get("selType")),",
-caty.n=",string,",
-over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
-    close(log_con)
+    cat("# Prepare the design of the sampling for use in the grts function.\n
+        Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
+        seltype=",dQuote(get("selType")),",
+        caty.n=",string,",
+        over=",get("over.n"),"))\n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------     
     
+    
+    
+    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),seltype=selType,caty.n=the.caty.n,over=over.n))
+      
   } else if(alloc.type == "continuous"){
 
     #this makes a list of elements to be passed to the grts function
     selType="Continuous"
     IDHelper <- "Site" 
+    
+    
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------    
+    cat("# Prepare the design of the sampling for use in the grts function.\n
+      Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
+      seltype=",dQuote(get("selType")),",
+      over=",get("over.n"),"))\n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------        
+    
+
     Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),
                                seltype=selType,
                                over=over.n))
-    
-    log_con <- file(paste0(outobj,".log"),open="a")
-  cat("# Prepare the design of the sampling for use in the grts function.\n
-Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
-seltype=",dQuote(get("selType")),",
-over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
-    close(log_con)
     
   } else if(alloc.type == "uneqproportion"){
     
@@ -88,14 +78,9 @@ over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
     the.caty.n <- n
     names(the.caty.n) <- category.levels
     
-    #this makes a list of elements to be passed to the grts function
-    selType="Unequal"
-    IDHelper <- "Site" 
-    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),
-                                  seltype=selType,
-                                  caty.n=the.caty.n,
-                                  over=over.n))
     
+    
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------    
     # prepare category string for printing
     for(i in 1:length(the.caty.n)){
       if(i == 1){
@@ -106,13 +91,22 @@ over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
     }
     string <- paste(string,")",sep="")
     
-    log_con <- file(paste0(outobj,".log"),open="a")
-  cat("# Prepare the design of the sampling for use in the grts function.\n
-Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
-seltype=",dQuote(get("selType")),",
-caty.n=",string,",
-over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
-    close(log_con)
+    cat("# Prepare the design of the sampling for use in the grts function.\n
+      Unequaldsgn <- list(None=list(panel=c(PanelOne=(",sum(get("n")),")),
+      seltype=",dQuote(get("selType")),",
+        caty.n=",string,",
+        over=",get("over.n"),"))\n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------    
+    
+    
+    
+    #this makes a list of elements to be passed to the grts function
+    selType="Unequal"
+    IDHelper <- "Site" 
+    Unequaldsgn <- list(None=list(panel=c(PanelOne=sum(n)),
+                                  seltype=selType,
+                                  caty.n=the.caty.n,
+                                  over=over.n))    
   }
   
   if( regexpr("SpatialPoints", class(shp)[1]) > 0 ){
@@ -124,6 +118,21 @@ over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
   }
 
 
+
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+cat("# Draw the sample via the grts function in package spsurvey.\n
+    Unequalsites <- grts(design=Unequaldsgn,
+    DesignID=",dQuote(get("IDHelper")),",
+    type.frame=",dQuote(get("sframe.type")),",
+    att.frame=data.frame(shp),
+    src.frame='sp.object',
+    sp.object=shp,
+    mdcaty=",dQuote(get("unequal.var")),",   
+    shapefile=FALSE)\n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+
+
+
   Unequalsites <- grts(design=Unequaldsgn,
                      DesignID=IDHelper,
                      type.frame=sframe.type,    # added to file
@@ -132,21 +141,6 @@ over=",get("over.n"),"))\n\n", sep="", append = TRUE, file = log_con)
                      sp.object=shp,
                      mdcaty=unequal.var,   #need to use category/continuous variable name as taken from GUI
                      shapefile=FALSE)
-  
-  log_con <- file(paste0(outobj,".log"),open="a")
-  cat("# Draw the sample via the grts function in package spsurvey.\n
-Unequalsites <- grts(design=Unequaldsgn,
-DesignID=",dQuote(get("IDHelper")),",
-type.frame=",dQuote(get("sframe.type")),",
-att.frame=data.frame(shp),
-src.frame='sp.object',
-sp.object=shp,
-mdcaty=",dQuote(get("unequal.var")),",   
-shapefile=FALSE)\n\n", sep="", append = TRUE, file = log_con)
-  cat("# Plot the original shapefile, along with the sample.\n
-plot(shp)
-plot(Unequalsites,col='red',pch=19,add=TRUE)", sep="", append = TRUE, file = log_con)
-  close(log_con)
 
   cat("Success.\n")
   
@@ -168,7 +162,7 @@ plot(Unequalsites,col='red',pch=19,add=TRUE)", sep="", append = TRUE, file = log
   attr(Unequalsites, "unequal.var") <- unequal.var
   attr(Unequalsites, "alloc.type") <- selType
 
-  options(useFancyQuotes = TRUE)
+  makeLog(strat.var=NULL,strata.levels=NULL,unequal.var=unequal.var,alloc.type=alloc.type,category.levels=NULL,n,over.n,shp,fn,dir,outobj,sframe.type=sframe.type,selType=selType)
 
   Unequalsites
 }

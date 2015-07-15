@@ -33,7 +33,7 @@ plotSample <- function(button, dat){
     }
 
     #   If the sample object exists, plot points on the map
-    if( outobj != ""){   # letting the R sample name field be a blank
+    if( outobj != ""){   # letting the R sample name field be a blank      --- s/be an if here to determine which button was pressed   something read.b?
     if( exists( outobj )){
         samp <- get( outobj, pos=.GlobalEnv )     
         stype <- attr(samp, "sample.type")        

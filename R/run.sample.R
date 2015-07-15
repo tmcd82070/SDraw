@@ -46,8 +46,6 @@ run.sample <- function(button, dat){
 #        cat( paste( "Old version of", outobj, "copied to", paste(outobj, ".previous", sep=""), "\n"))
 #    }
 
-
-
     #   fix up the sample sizes
     n <- as.numeric( n )
     if( nchar(over.n) == 0 ){
@@ -77,7 +75,7 @@ run.sample <- function(button, dat){
     #   Remember that fn is the text string name of the shapefile with path, but without .shp.
     samp <- switch( stype, 
                 "BAS " = draw.bas(n,over.n,fn,in.dir),
-                "GRTS" = draw.grts(n,over.n,fn,in.dir),
+                "GRTS" = draw.grts(n,over.n,fn,in.dir,outobj),
                 "SSS " = draw.sss(n,over.n,fn,in.dir),
                          stop(paste("Unknown sample type:",stype)))
 
@@ -90,7 +88,7 @@ run.sample <- function(button, dat){
     cat("First 10 sample locations:\n")
     print(samp[1:10,])
 
-    dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.")
+    dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.", "\nCode file saved to", outobj, ".")
     dialog$run()
     dialog$destroy()
 

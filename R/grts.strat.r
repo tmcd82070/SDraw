@@ -1,4 +1,4 @@
-grts.strat <- function( n, over.n, strat.var, shp ){
+grts.strat <- function( n, over.n, strat.var, shp, fn, dir, outobj ){
 
 # Inputs: 
   # n = vector of sample sizes, one element per strata
@@ -6,26 +6,62 @@ grts.strat <- function( n, over.n, strat.var, shp ){
   # strat.var = string nameing strata variable IF shape contains points or lines
   # shp = the SpatialXDataFrame object (the frame)
 
-# Get strata level names from shape file
-strata.levels<-names(table(data.frame(shp)[,strat.var]))
-  # For debuggin
-  cat("---- n -----\n")
-  print(n)
-  cat("---- over.n -----\n")
-  print(over.n)
-  cat("---- strat.var -----\n")
-  print(strat.var)
-  cat("---- strata.levels -----\n")
-  print(strata.levels) 
-  cat("---- head(shp) -----\n")
-  print(head(data.frame(shp)))
+  # Get strata level names from shape file
+  strata.levels<-names(table(data.frame(shp)[,strat.var]))
   
+  # For debuggin
+#   cat("---- n -----\n")
+#   print(n)
+#   cat("---- over.n -----\n")
+#   print(over.n)
+#   cat("---- strat.var -----\n")
+#   print(strat.var)
+#   cat("---- strata.levels -----\n")
+#   print(strata.levels) 
+#   cat("---- head(shp) -----\n")
+#   print(head(data.frame(shp)))
+
   #this makes a list of elements to be passed to the grts function
-    selType="Equal"
-	  Stratdsgn <- lapply(1:length(strata.levels), function(x, nn, st, o.n){
-	    list(panel=c(Main=n[x]),seltype=selType,over=over.n)
-	  }, nn=n, st=selType, o.n=over.n)
-    names(Stratdsgn) <- strata.levels
+  selType="Equal"
+  Stratdsgn <- lapply(1:length(strata.levels), function(x, nn, st, o.n){
+    list(panel=c(Main=n[x]),seltype=selType,over=over.n)
+  }, nn=n, st=selType, o.n=over.n)
+  names(Stratdsgn) <- strata.levels
+ 
+
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+# prepare stratum string for printing
+for(i in 1:length(strata.levels)){
+  if(i == 1){
+    string <- paste("c(",dQuote(strata.levels[1]),sep="")
+  } else {
+    string <- paste(string,",",dQuote(strata.levels[i]),sep="")
+  }
+}
+string <- paste(string,")",sep="")
+
+# prepare n-string for printing
+for(i in 1:length(n)){
+  if(i == 1){
+    nstring <- paste("c(",n[1],sep="")
+  } else {
+    nstring <- paste(nstring,",",n[i],sep="")
+  }
+}
+nstring <- paste(nstring,")",sep="")  
+
+cat("# Prepare the design of the sampling for use in the grts function.\n
+  n <- ",nstring,"\n
+  Stratdsgn <- lapply(1:length(",string,"), function(x, nn, st, o.n){
+        list(panel=c(Main=n[x]),seltype=",dQuote(get("selType")),",over=",get("over.n"),")
+      }, nn=",nstring,", st=",dQuote(get("selType")),", o.n=",get("over.n"),")\n
+  names(Stratdsgn) <- ",string,"\n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+
+
+
+
+
 
 
 # strataDsgn <- lapply(1:length(strata.vec), function(x) list(panel=c(PanelOne=strata.sizes.vec[x]),seltype=selType))
@@ -44,6 +80,23 @@ strata.levels<-names(table(data.frame(shp)[,strat.var]))
         sframe.type = "area"
     }
 
+
+
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+cat("# Draw the sample via the grts function in package spsurvey.\n
+      Stratsites <- grts(design=Stratdsgn,
+      DesignID='STRAT',
+    type.frame=",dQuote(get("sframe.type")),",
+    att.frame=data.frame(shp),
+    src.frame='sp.object',
+    sp.object=shp,
+    stratum=",dQuote(get("strat.var")),",
+    shapefile=FALSE)
+    \n\n", sep="")
+# ------------- PRINT TO CONSOLE ----------------------------------------------------------------
+
+
+
     Stratsites <- grts(design=Stratdsgn,
             DesignID="STRAT",
             type.frame=sframe.type,
@@ -52,7 +105,6 @@ strata.levels<-names(table(data.frame(shp)[,strat.var]))
             sp.object=shp,
 			      stratum=strat.var,   #need to use stratum variable name as taken from GUI
             shapefile=FALSE)
-
 
     cat("Success.\n")
 
@@ -72,6 +124,8 @@ strata.levels<-names(table(data.frame(shp)[,strat.var]))
     attr(Stratsites, "sp.object") <- deparse(substitute(shp))
     attr(Stratsites, "frame.type") <- sframe.type
     attr(Stratsites, "strata.var") <- "stratum"
+
+    makeLog(strat.var=strat.var,strata.levels=strata.levels,unequal.var=NULL,alloc.type=NULL,category.levels=NULL,n,over.n,shp,fn,dir,outobj,sframe.type=sframe.type,selType=selType)
 
     Stratsites
 }

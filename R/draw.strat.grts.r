@@ -1,4 +1,4 @@
-draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir){   
+draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir, outobj){   
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
@@ -50,6 +50,6 @@ draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir){
     }
 
 #   Call the user visible routine that takes a SpatialX object
-    ans <- grts.strat(n, over.n, strat.var, shp ) 
+    ans <- grts.strat(n, over.n, strat.var, shp, fn, dir, outobj )
     ans
 }

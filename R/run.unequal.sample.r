@@ -125,7 +125,7 @@ run.unequal.sample <- function(button, dat){
   # reset R Shape name to blank
   #dat$out.r.entry$setText("")   
   
-  dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.", "\nSample saved to", outobj)
+  dialog <- gtkMessageDialogNew(NULL, c("modal"), "info", "ok", stype, "draw successful.", "\nCode file saved to", outobj, ".")
   dialog$run()
   dialog$destroy()
   

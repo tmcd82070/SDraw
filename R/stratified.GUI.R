@@ -164,11 +164,21 @@ stratified.GUI <- function()   {
     shape.in.dir <- gtkEntry()  # this entry box is hidden/not displayed
     shape.in.dir$setText( getwd() )
 
+    #   ---- Output R object box
+    out.r.entry <- gtkEntry()
+    out.r.entry$setText("")#paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
+    out.r.label <- gtkLabel("Sample's R name:")
+    
+    gtkTableAttach(tbl,out.r.label, 0, 1, 3, 4, xpadding=5, ypadding=5)
+    gtkTableAttach(tbl,out.r.entry, 1, 2, 3, 4, xpadding=5, ypadding=5)
+
+
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")
     gSignalConnect(browse.b, "clicked", browse.for.shapefile,data=list(
         shape.in.entry = shape.in.entry, 
         shape.in.dir = shape.in.dir,
+        out.r.entry = out.r.entry,
         parent.window = win
     ))
     
@@ -189,13 +199,6 @@ stratified.GUI <- function()   {
     gtkTableAttach(tbl,strata.var.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
 	
 	
-    #   ---- Output R object box
-    out.r.entry <- gtkEntry()
-    out.r.entry$setText(paste("sdraw.", format(Sys.time(), "%Y.%m.%d.%H%M%S"), sep=""))
-    out.r.label <- gtkLabel("Sample's R name:")
-
-    gtkTableAttach(tbl,out.r.label, 0, 1, 3, 4, xpadding=5, ypadding=5)
-    gtkTableAttach(tbl,out.r.entry, 1, 2, 3, 4, xpadding=5, ypadding=5)
 
 
     # ============================ Sample Allocation frame ===========
@@ -357,71 +360,86 @@ stratified.GUI <- function()   {
     bbox$SetLayout("Spread")                   # Layout can be c("Start", "Edge", "Spread", "End")
     bbox$SetBorderWidth(10)
 
-    #   ---- Run button
-    run.b <- gtkButton("Run")
-    gSignalConnect(run.b, "clicked", run.strat.sample, data=list( 
-            samp.type.combo=samp.type.combo,
-            n.entry=n.entry,
-            shape.in.entry=shape.in.entry,
-            shape.in.dir=shape.in.dir,
-            strata.var.entry=strata.var.entry,
-            out.r.entry=out.r.entry,
-            over.entry=over.entry,
-			      seed.entry=seed.entry, 
-            prop.rb=prop.rb,
-            const.rb=const.rb, 
-            user.rb=user.rb
-            )
-    ) 
-    bbox$packEnd(run.b, expand=FALSE)
 
 
-    #   ---- Read frame button, but do not draw sample, this displays variables in shapefile
-    read.b <- gtkButton("Inspect\n Frame ")
-    gSignalConnect(read.b, "clicked", readButtonAction, 
-    data=list(
-            shape.in.entry=shape.in.entry,
-            shape.in.dir=shape.in.dir,
-            out.r.entry=out.r.entry,
-            name.labs=names.labs,
-            type.labs=vtypes.labs, 
-            finfo.title=finfo.title
-            )
-    )
-    bbox$packEnd(read.b, expand=FALSE)
+
+#   ---- Read frame button, but do not draw sample, this displays variables in shapefile
+read.b <- gtkButton("Inspect\n Frame ")
+gSignalConnect(read.b, "clicked", readButtonAction, 
+               data=list(
+                 shape.in.entry=shape.in.entry,
+                 shape.in.dir=shape.in.dir,
+                 out.r.entry=out.r.entry,
+                 name.labs=names.labs,
+                 type.labs=vtypes.labs, 
+                 finfo.title=finfo.title
+               )
+)
+bbox$packEnd(read.b, expand=FALSE)
+
+#   ---- Run button
+run.b <- gtkButton("Run")
+gSignalConnect(run.b, "clicked", run.strat.sample, data=list( 
+  samp.type.combo=samp.type.combo,
+  n.entry=n.entry,
+  shape.in.entry=shape.in.entry,
+  shape.in.dir=shape.in.dir,
+  strata.var.entry=strata.var.entry,
+  out.r.entry=out.r.entry,
+  over.entry=over.entry,
+  seed.entry=seed.entry, 
+  prop.rb=prop.rb,
+  const.rb=const.rb, 
+  user.rb=user.rb
+)
+) 
+bbox$packEnd(run.b, expand=FALSE)
+
+#   ---- Read frame button, but do not draw sample, this displays variables in shapefile
+plot.b <- gtkButton("  Plot\nSample")
+gSignalConnect(plot.b, "clicked", readButtonAction, 
+               data=list(
+                 shape.in.entry=shape.in.entry,
+                 shape.in.dir=shape.in.dir,
+                 out.r.entry=out.r.entry,
+                 name.labs=names.labs,
+                 type.labs=vtypes.labs, 
+                 finfo.title=finfo.title
+               )
+)
+bbox$packEnd(plot.b, expand=FALSE)  
+
+#   ---- View button
+view.b <- gtkButton("Tabulate\n Sample")
+gSignalConnect(view.b, "clicked", view.sample, data=list(
+  out.r.entry = out.r.entry
+))
+bbox$packEnd( view.b, expand=FALSE)
 
 
-    #   ---- View button
-    view.b <- gtkButton("View Sample")
-    gSignalConnect(view.b, "clicked", view.sample, data=list(
-            out.r.entry = out.r.entry
-    ))
-    bbox$packEnd( view.b, expand=FALSE)
-
-
-#    #   ---- Write to csv button
+# ???   #   ---- Write to csv button
 #    write.csv.b <- gtkButton("Write CSV")
 #    gSignalConnect(write.csv.b, "clicked", SDraw::my.write.csv, data=list(
 #            out.r.entry = out.r.entry
 #    ))
 #    bbox$packEnd( write.csv.b, expand=FALSE)
 
-    #   ---- Write to Shapefile button
-    write.shp.b <- gtkButton("Export")
-    gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
-            out.r.entry = out.r.entry, 
-            parent.window = win            
-    ))
-    bbox$packEnd( write.shp.b, expand=FALSE)
+#   ---- Write to Shapefile button
+write.shp.b <- gtkButton("Export")
+gSignalConnect(write.shp.b, "clicked", my.write.shp, data=list(
+  out.r.entry = out.r.entry, 
+  parent.window = win            
+))
+bbox$packEnd( write.shp.b, expand=FALSE)
 
 
-    #   ---- Done button
-    cancel.b <- gtkButton("Done")
-    gSignalConnect(cancel.b, "clicked", function(x){
-        win$Hide();
-        win$Destroy()
-    })
-    bbox$packEnd( cancel.b, expand=FALSE)
+#   ---- Done button
+cancel.b <- gtkButton("Done")
+gSignalConnect(cancel.b, "clicked", function(x){
+  win$Hide();
+  win$Destroy()
+})
+bbox$packEnd( cancel.b, expand=FALSE)
 
 
     #   ---- Pack the rows of buttons into the vertical box
