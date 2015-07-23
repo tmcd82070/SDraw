@@ -24,5 +24,4 @@ export(hal.line)
 export(readShape)
 
 
->>>>>>> origin/HAL-Sampling
 import(RGtk2, sp, spsurvey, utils, rgdal, rgeos)
