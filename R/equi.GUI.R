@@ -97,6 +97,7 @@ equi.GUI <- function()   {
     gtkTableAttach(tbl,out.r.label, 0, 1, 2, 3, xpadding=5, ypadding=5) 
     gtkTableAttach(tbl,out.r.entry, 1, 2, 2, 3, xpadding=5, ypadding=5)
  
+    
 
     shape.file.box <- gtkHBox(FALSE, 10)
     browse.b <- gtkButton("Browse")

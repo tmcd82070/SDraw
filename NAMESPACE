@@ -13,4 +13,16 @@ export(unequal.GUI)
 export(grts.equi)
 export(grts.strat)
 export(grts.unequal)
+export(halton.lattice.polygon)
+export(halton.lattice)
+export(halton.indicies)
+export(halton.frame)
+export(hal)
+export(hal.polygon)
+export(hal.point)
+export(hal.line)
+export(readShape)
+
+
+>>>>>>> origin/HAL-Sampling
 import(RGtk2, sp, spsurvey, utils, rgdal, rgeos)

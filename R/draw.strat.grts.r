@@ -2,6 +2,7 @@ draw.strat.grts <- function(n, over.n, strat.var, alloc.type, fn, dir, outobj){
 #
 #   draw a GRTS sample using spsurvey.  Spsurvey should already be loaded.
 #
+#
 
     cat("Drawing GRTS sample...This can take a while ...\n")
 

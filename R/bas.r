@@ -10,7 +10,7 @@ bas <- function(n, shp){
 #   An ordered data frame containing n+over.n rows, where each row represents a
 #   a different unit selected in the sample.
 #
-
+####
 
 
     

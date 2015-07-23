@@ -1,4 +1,4 @@
-halton <- function( n, dim=1, start=1 ){
+halton <- function( n, dim=1, start=0, bases=NULL ){
 #
 #   compute a Halton sequence of n numbers starting at position start.
 #
@@ -34,7 +34,9 @@ if( length(start) != dim ){
 
 
 #    Bases of the first dim dimensions of the Halton sequence
-bases <- first.primes[ 1:dim ]
+if( is.null(bases)){
+  bases <- first.primes[ 1:dim ]  
+}
 
 
 #   The locations of the numbers we want Halton numbers for.  First Halton number is 1, second is 2, etc.  This is the
