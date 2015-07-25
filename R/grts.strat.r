@@ -1,4 +1,4 @@
-grts.strat <- function( n, over.n, strat.var, shp, fn, dir, outobj ){
+grts.strat <- function( n, over.n, strat.var, shp){
 
 # Inputs: 
   # n = vector of sample sizes, one element per strata
@@ -125,7 +125,6 @@ cat("# Draw the sample via the grts function in package spsurvey.\n
     attr(Stratsites, "frame.type") <- sframe.type
     attr(Stratsites, "strata.var") <- "stratum"
 
-    makeLog(strat.var=strat.var,strata.levels=strata.levels,unequal.var=NULL,alloc.type=NULL,category.levels=NULL,n,over.n,shp,fn,dir,outobj,sframe.type=sframe.type,selType=selType)
 
     Stratsites
 }

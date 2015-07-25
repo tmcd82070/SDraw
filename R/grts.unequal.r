@@ -1,4 +1,4 @@
-grts.unequal <- function( n, over.n, unequal.var, shp, alloc.type, fn, dir, outobj ){
+grts.unequal <- function( n, over.n, unequal.var, shp, alloc.type ){
   
   # Inputs: 
   # n = vector of sample sizes, one element per category
@@ -162,7 +162,6 @@ cat("# Draw the sample via the grts function in package spsurvey.\n
   attr(Unequalsites, "unequal.var") <- unequal.var
   attr(Unequalsites, "alloc.type") <- selType
 
-  makeLog(strat.var=NULL,strata.levels=NULL,unequal.var=unequal.var,alloc.type=alloc.type,category.levels=NULL,n,over.n,shp,fn,dir,outobj,sframe.type=sframe.type,selType=selType)
 
   Unequalsites
 }

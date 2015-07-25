@@ -1,12 +1,16 @@
-
+#' @import sp spsurvey
+#' 
+#' @importFrom rgdal readOGR
+#' @importFrom rgeos gArea
 
 .onAttach<-function(libname, pkgname){
 
-    v <- packageVersion("SDraw") 
+    v <- utils::packageVersion("SDraw") 
 
     packageStartupMessage( paste("SDraw - Sample Draws (vers ", v ,")", sep=""))  
-#   packageStartupMessage("\nWEST Inc. (tmcdonald@west-inc.com)") 
 
-
+    
 
 }
+
+setMethod("spsample", c(x="SpatialPolygons", n="ANY", type="ANY"), SDraw.SpatialPolygons)

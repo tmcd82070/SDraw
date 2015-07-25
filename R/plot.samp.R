@@ -1,4 +1,4 @@
-plotSample <- function(button, dat){
+plot.samp <- function(shp, samp){
 
 #    print(ls(envir=environment()))
 #    cat("*****\n")
@@ -9,20 +9,7 @@ plotSample <- function(button, dat){
 #    print( ls(envir=as.environment("equi.GUI")) )
         
 
-    fn <- dat$shape.in.entry$getText()
-    in.dir <- dat$shape.in.dir$getText()       # in.dir <- '//LAR-FILE-SRV/Data/NPS/GitHub/2015.06.11/inst/doc/Shapefiles'
-    outobj <- dat$out.r.entry$getText()        # outobj <- samp  'sdraw.2015.06.15.161404'
 
-  
-    if( nchar(fn) == 0 ){
-        error.message("A shapefile name must be specified.")
-        return()
-    }
-    
-    #   Check whether the frame has been read already, and the sp object is laying around. If not, read it.
-    shp <- getSpFrame(fn,in.dir)
-    
-  
     #   plot shape file
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
         plot(shp, col="gray",border="white")#rainbow(length(shp@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
@@ -33,9 +20,7 @@ plotSample <- function(button, dat){
     }
 
     #   If the sample object exists, plot points on the map
-    if( outobj != ""){   # letting the R sample name field be a blank      --- s/be an if here to determine which button was pressed   something read.b?
-    if( exists( outobj )){
-        samp <- get( outobj, pos=.GlobalEnv )     
+    if( !missing(samp) ){
         stype <- attr(samp, "sample.type")        
         
         # Is this a stratified sample -> different legend
@@ -112,6 +97,6 @@ plotSample <- function(button, dat){
         }
 
     }
-    }
+    
 
 }
