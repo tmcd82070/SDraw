@@ -56,14 +56,16 @@
 #'  Journal of the American Statistical Association, v99, p. 262-278.
 #'  
 #'  @seealso 
-#'   \code{\link{bas}}, \code{\link{hal}}, \code{\link{sss}}, \code{\link{grts}}
-#'   
+#'  \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}},
+#' \code{\link{hal.polygon}}, \code{\link{hal.line}}, \code{\link{hal.point}}, 
+#' \code{\link{sss.line}}, \code{\link{sss.polygon}},
+#' \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
+#'    
 #'  @examples 
 #'  data(WA)
 #'  WA.sample <- spsample(WA, 100, "HAL")
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  
-#'  @name spsample
 NULL
 
 

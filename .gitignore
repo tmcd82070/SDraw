@@ -48,6 +48,6 @@ SDraw.Rproj
 .Rhistory
 .RData
 source_all.r
-Testing
 *.log
+man/*.Rd
 

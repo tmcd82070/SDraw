@@ -1,3 +1,48 @@
+#' @export bas.polygon
+#' 
+#' @title Draws a Balanced Asseptance Sample (BAS) from an area resource (polygons).
+#' 
+#' @description Draws a BAS sample from a SpatialPolygons object
+#' 
+#' @details A BAS sample is drawn from the union of all polygons in \code{shp} by
+#' enclosing all polygons in a bounding square and selecting a randomized
+#' Halton sequence of points from the bounding square.  Points falling outside
+#' all polygons are discarded until exactly \code{n} locations are selected
+#' inside the polygons.
+#' 
+#' @param n Sample size.  Number of locations to draw from the set of all
+#' polygons contained in \code{shp}.
+#' @param shp A SpatialPolygons or SpatialPolygonsDataFrame object. This object
+#' must contain at least 1 polygon.  If it contains more than 1 polygon, the
+#' BAS sample is drawn from the union of all polygons.
+#' @return A SpatialPointsDataFrame containing locations in the BAS sample, in
+#' order they are to be visited.  A 'siteID' attribute is attached to each
+#' point (in the embedded data frame) and gives the BAS ordering of the sample
+#' (i.e., sort on 'siteID' to get proper BAS order).  In addition, if the input
+#' object has an attached data frame (i.e., is a SpatialPolygonsDataFrame), the
+#' attrributes of the polygon in which each BAS point fell is attached in the
+#' associated data frame.
+#' @author Trent McDonald
+#' @seealso \code{\link{bas}}
+#' @keywords design survey
+#' @examples
+#' 
+#' data(WA)
+#' 
+#' #   Draw sample
+#' WA_sample <- bas.polygon(200, WA)  
+#' 
+#' #   Plot
+#' require(sp)
+#' plot( WA )
+#' 
+#' # Plot first 100 sample locations
+#' plot( WA_sample[ WA_sample$siteID <= 100, ], pch=16, add=TRUE ) 
+#' 
+#' # Plot second 100 locations 
+#' plot( WA_sample[ WA_sample$siteID >  100, ], pch=1, add=TRUE )  
+#' 
+#' 
 bas.polygon <- function( n, shp ){
 #
 #   Take a BAS sample from a polygon.

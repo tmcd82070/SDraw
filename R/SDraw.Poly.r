@@ -4,6 +4,7 @@
 #'  
 
 
+
 SDraw.SpatialPolygons <- function(x, n, type, ...){
   
   ans <- switch(type,
