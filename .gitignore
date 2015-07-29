@@ -49,6 +49,7 @@ SDraw.Rproj
 .RData
 source_all.r
 *.log
-man\*.Rd
+man/
+NAMESPACE
 
 
