@@ -1,4 +1,4 @@
-#' @export halgon
+#' @export halton
 #' 
 #' @title Compute points in the Halton sequence.
 #' 

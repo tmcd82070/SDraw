@@ -11,7 +11,7 @@
 #' \url{http://nationalmap.gov/small_scale/atlasftp.html}  (file 'citiesx010g.shp.tar.gz'). 
 #' 
 #' The attributes of each point are:
-#' enumerate{
+#' \enumerate{
 #'\item GNIS_ID = A unique identification number assigned by the Geographic Names
 #'Information System (GNIS).  This number can be used to link places in this data set
 #'with GNIS.

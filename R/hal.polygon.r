@@ -21,7 +21,12 @@
 #' contain at least 1 point.  
 #' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 #' \code{J[2]} for vertical dimension. \code{J} determines the size and shape
-#' of the lowest level of Halton boxes. If \code{J=NULL} (the default),
+#' of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
+#' of Halton boxes over \code{shp}'s bounding box, and \code{bases[2]^J[2]} 
+#' horizontal rows of Halton boxes over the bounding box, for a total 
+#' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
+#' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+#' vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is choosen so that Halton boxes are as square as possible.
 #' @param eta A 2X1 vector specifying the number of points to add in the 
 #' horizontal and vertical dimensions of each Halton box.  e.g., if 
@@ -40,7 +45,7 @@
 #' point (in the embedded data frame) and gives the HAL ordering of the sample
 #' (i.e., sort on 'siteID' to get proper HAL order).  In addition, if the input
 #' object has an attached data frame (i.e., is a \code{SpatialPolygonsDataFrame}), the
-#' attrributes of the polygon in which each HAL point fell is attached in the
+#' attributes of the polygon in which each HAL point fell is attached in the
 #' associated data frame. The ID  of the polygon in \code{shp} in which each
 #' point fell is an attribute of the output points.
 #' @author Trent McDonald

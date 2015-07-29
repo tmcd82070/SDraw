@@ -22,7 +22,12 @@
 #' contain at least 1 point.  
 #' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 #' \code{J[2]} for vertical dimension. \code{J} determines the size and shape
-#' of the lowest level of Halton boxes. If \code{J=NULL} (the default),
+#' of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
+#' of Halton boxes over \code{shp}'s bounding box, and \code{bases[2]^J[2]} 
+#' horizontal rows of Halton boxes over the bounding box, for a total 
+#' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
+#' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+#' vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is choosen so that Halton boxes are as square as possible.
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
 
@@ -49,6 +54,9 @@
 #' 
 hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
 
+#  change name of 'frame.order' in output data frame to SDraw.siteID to be consistent with documentation. 
+#  This needs to happen in halton.lattice() or halton.frame(). 
+  
   #   Check n
   if( n < 1 ){
     n <- 1
