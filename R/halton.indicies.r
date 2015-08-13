@@ -1,38 +1,55 @@
-halton.indicies <- function(hl, index.name="halton.index"){
-  #
-  # Compute and attach indicies of the Halton sequence to points in the 
-  # input Halton lattice. 
-  #
-  # Input: 
-  #   hl = either a data frame or a SpatialPoints* object. Suitable input is the output of 
-  #     functions halton.lattice() (a data frame) and halton.lattice.polygon() (a SpatialPoints* object).  
-  #     If hl is a data frame, it must contain coordinates columns named the same as dimnames[[1]] of the 
-  #     bounding box attribute.  That is, coordinates are assumed to be hl[dimnames(bb)[[1]]], where bb
-  #     is the bounding box attribute of hl (see attributes below). If hl is a data.frame, this function 
-  #     works for D>2. If hl is a SpatialPoints* object, it only works for D=2 because SpatialPoints are
-  #     only defined in 2D.
-  #
-  #   The data frame and SpatialPOints* object must have the following attributes:   
-  #     "J" = levels or exponents of bases used in halton lattice; 
-  #     "eta" = number of points in x and y direction in each halton box; 
-  #     "bases" = bases in each dimension used in halton lattice; 
-  #     "hl.bbox" = bounding box of the full lattice. 
-  #
-  #   index.name = name of the column in the output data frame or SpatialPoints* object containing
-  #     the Halton indicies.  This is saved as an attribute of the output object
-  #
-  # Output: 
-  #   a data frame like hl, but with indicies of the Halton sequence attached in column "hl.index". 
-  #
- 
+#'  @export halton.indicies
+#'  
+#'  @title Compute Halton indicies
+#'  
+#'  @description Compute and attach indicies of the Halton sequence for points.  Points can be
+#'  an abitrary set or a Halton lattice. 
+#'  
+#'  @param hl Either a data frame or a \code{SpatialPoints} object, both of which must have 
+#'  with additional attributes. Suitable input objects are the output of 
+#'  functions \code{halton.lattice} (a data frame with attributes) and 
+#'  \code{halton.lattice.polygon} (a \code{SpatialPoints} object with attributes). 
+#'  If \code{hl} is a data frame, it must contain coordinates columns named the same as 
+#'  row names (\code{dimnames[[1]]}) of the Halton bounding box attribute (\code{attr(hl,"hl.bbox")}. 
+#'  That is, coordinates are \code{hl[,dimnames(bb)[[1]]]]}, where \code{bb}
+#'  is the "hl.bbox" bounding box attribute of \code{hl}. If \code{hl} is a data.frame, this function 
+#'  works for dimensions >2. 
+#'  @param index.name A character string giving the name of the column in 
+#'  the output data frame or SpatialPoints object to contain 
+#'  the Halton indicies.  This name is saved as an attribute of the output object.
+#'  
+#'  @details The input object \code{hl} must have the following attributes:   
+#'  \itemize{
+#'    \item \code{bases} = Dx1 vector of bases to use in each dimension.  
+#'    \item \code{J} = DX1 vector of the exponents for bases defining the Halton boxes.
+#'     The number of Halton divisions in dimension \code{i} is \code{bases[i]^J[i]}.  Total 
+#'     number of Halton boxes is \code{prod(bases^J)}. 
+#'    \item \code{hl.bbox} = DX2 matrix containing bounding box of the full set of Halton boxes. 
+#'    First column of this matrix is the lower-left coordinate (i.e., minimums in D dimensions) 
+#'    of the bounding box, while the second column is the upper-right coordinate 
+#'    (i.e., maximums in D dimensions) of the bounding box.
+#'    For example, if \code{D} = 2, \code{hl.bbox} = \code{matrix( c(min(x),min(y),max(x),max(y)),2)} 
+#'  }
+#'  If, in addition, \code{hl} has attributes \code{eta} or \code{triangular}, their values  
+#'  are transfered to the output object for continuity of attributes of the overall 
+#'  sample frame object.
+#'  
+#'  @return A data frame, like \code{data.frame(hl)}, but with indicies of the 
+#'  Halton sequence attached in a column named \code{index.name}. 
+#'   
+halton.indicies <- function(hl, index.name="SDraw.HaltonIndex"){
+
   J <- attr(hl,"J")
   b <- attr(hl,"bases")
   bb <- attr(hl,"hl.bbox") 
   eta <- attr(hl,"eta") # not used here, but saved to transfer to attributes of output object
   triangle <- attr(hl,"triangular")   # not used here, but saved to transfer to attributes of output object
   
-  
-  # Number of dimensions
+  if( is.null(J)) stop("Attribute 'J' of input object missing.")
+  if( is.null(b)) stop("Attribute 'bases' of input object missing.")
+  if( is.null(bb)) stop("Attribute 'hl.bbox' of input object missing.")
+
+    # Number of dimensions
   D <- nrow(bb)
   
   # size/extent of box in each dimension
@@ -64,39 +81,25 @@ halton.indicies <- function(hl, index.name="halton.index"){
   # In general, if using another sequence, we would be solving the Chinese remainder
   # theorem here. 
   
-  # Halton index matrix, stored as a vector in column-major order for now.  
-  # Each cell cooresponds to a Halton box. 
-  hl.vec <- rep(NA, prod(n.boxes))
-  
-  # Fill Halton matrix with Halton indicies
-  hl.ind <- halton( prod(n.boxes), D, start=0, bases=b)
-  
-  # This sets up the column major ordering of our array. 
-  # Do it this way because it generalizes to D > 2
-  mat.sz <- cumprod( c(1,n.boxes[-length(n.boxes)]) )
-  m1 <- c(0, rep(1,D-1))   # vector with 0 in first element, 1's after
 
-  hl.ind <- t(hl.ind)
-  cell.coord <- floor(hl.ind * n.boxes + .Machine$double.eps*1000) + 1
-  cell.coord <- colSums( (cell.coord - m1)*mat.sz )
-  hl.vec[cell.coord] <- 0:(ncol(hl.ind)-1)
+  if( prod(n.boxes) < 100000 ){
+    hl.out <- F.halton.indicies.vector(hl.coords, n.boxes, D, b, delta, ll.corner)
+  } else {
+    hl.out <- F.halton.indicies.CRT(hl.coords, n.boxes, D, b, delta, ll.corner)
+  }
   
-
-  # Find the Halton boxes that the points in hl belong in
-  hl.coords <- t(hl.coords)
-  cell.coord <- floor( n.boxes*(hl.coords - ll.corner)/(delta) + .Machine$double.eps*1000) + 1
-  cell.coord <- colSums( (cell.coord - m1)*mat.sz )
   if(is.null(hl)){
-    hl.out <- data.frame(halton.index=hl.vec[cell.coord])
+    hl.out <- data.frame(halton.index=hl.out)
     names(hl.out) <- index.name
   } else {
-    hl.out <- data.frame( hl, halton.index=hl.vec[cell.coord] )
+    hl.out <- data.frame( hl, halton.index=hl.out )
     names(hl.out) <- c(names(hl), index.name)
   }
+  
 
   if( is.points ){
     # Return a SpatialPoints* object
-    hl.out <- SpatialPointsDataFrame(t(hl.coords), data=hl.out, proj4string=p4string )
+    hl.out <- SpatialPointsDataFrame(hl.coords, data=hl.out, proj4string = p4string)
   } 
   
   # Add attributes

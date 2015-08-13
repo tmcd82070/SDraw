@@ -8,5 +8,5 @@ Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for balanced sampling.  Draws HAL, BAS, GRTS, and SSS samples from points, lines, and polygons.
 License: GNU General Public License
 BugReports: https://github.com/tmcd82070/SDraw/issues
-Imports: spsurvey, utils, rgdal, rgeos
+Imports: spsurvey, utils, rgdal, rgeos, graphics
 Depends: sp

@@ -42,8 +42,10 @@
 #'  @note The follwing sample types are fixed-size (return exactly \code{n} points):
 #'  \code{HAL, BAS, GRTS, random}.  The rest are variable-size. 
 #'  
-#'  See documentation for \code{hal}, \code{bas}, \code{sss}, and \code{grts} for additional 
-#'  parameters passed via \code{...}.  See additional notes on \code{sp} methods in \code{help(spsample, package=sp)}.
+#'  See documentation for \code{hal.?}, \code{bas.?}, \code{sss.?}, and \code{grts.?} for additional 
+#'  parameters passed via \code{...}.  
+#'  
+#'  See additional notes on \code{sp} methods in \code{help(spsample, package=sp)}.
 #'  
 #'  
 #'  @author Trent McDonald

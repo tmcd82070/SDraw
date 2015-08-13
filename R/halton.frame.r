@@ -1,25 +1,60 @@
-halton.frame <- function( hl.points, order.name="frame.order" ){
-  #
-  # Make a Halton frame, from a set of Halton points that have 
-  # their Halton indicies attached. This function takes the halton.index and 
-  # adds random Halton cycles to points in same Halton box, then sorts by these
-  # adjusted indicies. 
-  #
-  # Input: 
-  #   hl.points = the output of halton.indicies.  This is either a data frame or a 
-  #     SpatialPointsDataFrame object.  The data frame, or data frame of the SpatialPointsDataFrame, 
-  #     must contain a column with the Halton indicies, which is assumed to be named 
-  #     attr(hl.points, "index.name").  By default this column names is "halton.index".  
-  #     Each row of the data frame is a point 
-  #     in the frame, and column attr(hl.points, "index.name") is the Halton ID of the box the point falls in.
-  #     We cannot have a SpatialPoints object here.  If SpatialPoints are passed in, there must
-  #     be at least one column in the data slot (i.e., the halton.index column).
-  #   order.name = name of the column in the output object by which the frame should be sorted
-  #     to produce the proper sampling order. This is saved as an attribute of the output object.
-  #
-  # Value: 
-  #   A data frame like hl.points, but sorted by modified halton order, and ready to sample
-  
+#' @export halton.frame
+#' 
+#' @title Construction of sampling frame from a Halton lattice and indicies.
+#' 
+#' @description Makes a Halton frame from a set of points that have  
+#' their Halton indicies attached. This function uses a Halton index column
+#' to identify points in the same Halton box,  and 
+#' randomly adds Halton cycles to separate geographically nearby points in the frame. 
+#' The frame is then sorted by the new frame indicies for sampling.
+#' 
+#'  @param hl.points Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
+#'  particular, the output of \code{halton.indicies} is acceptable.
+#'  The data frame, or data frame of the \code{SpatialPointsDataFrame}, 
+#'  must contain the Halton indicies, which is assumed to be named 
+#'  \code{attr(hl.points, "index.name")}.  The default name for this column when using output from 
+#'  \code{halton.indicies} is \code{SDraw.HaltonIndex}.  Each row of the data frame is a sampling unit
+#'  to be included in the frame, and the Halton index of the unit is the Halton box 
+#'  the unit falls in. A \code{SpatialPoints} object without the data frame is not 
+#'  acceptable. 
+#'  @param order.name Name of the column in the output object by which the frame should 
+#'  be sorted to produce the proper sampling order.  This index is unique to all units.  This 
+#'  parameter is saved as an attribute of the output object. 
+#'
+#'  @return A data frame suitable for use as a sampling frame. This is a data frame, 
+#'  like \code{hl.points}, but with a new index column separating points in the same Halton box.  
+#'  The output data frame is sorted by the new indicies.  New indicies are in column 
+#'  specified by the "order.name" attribute (i.e., \code{attr(obj, "order.name")} ). 
+#'   
+#'   @author Trent McDonald
+#'   
+#'   @seealso \code{\link{halton.indicies}}
+#'   
+#'   @examples 
+#'data(WA.cities)
+#'
+#'# This is the "brute force" method to draw HAL samples. hal.point does all this.
+#'
+#'# Define Halton lattice
+#'attr(WA.cities,"J") <- c(6,3)
+#'attr(WA.cities,"bases") <- c(2,3)
+#'# Add tiny amount to right and top of bounding box because Halton boxes are 
+#'# closed on the left and bottom.  This includes points exactly on the bounding lines.
+#'attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1) 
+#'
+#'# Compute Halton indicies
+#'frame <- halton.indicies( WA.cities )
+#'
+#'# Separate points in frame that are in same box
+#'frame <- halton.frame( frame )
+#'
+#'# Draw sample of size 20
+#'n <- 20
+#'random.start <- floor( runif(1,0,nrow(frame)-1 )
+#'samp <- frame[ ( ((0:(n-1))+random.start) %% nrow(frame) ) + 1]
+#'
+halton.frame <- function( hl.points, order.name="SDraw.siteID" ){
+
   # Extract halton index (should probably check for presence first, and exit nicely)
   if( regexpr("SpatialPointsDataFrame", class(hl.points)) > 0 ){
     df <- data.frame(hl.points)  # use data.frame here because we want the coordinates in df
@@ -89,64 +124,4 @@ halton.frame <- function( hl.points, order.name="frame.order" ){
   df
 }
 
-
-# -----------------------------
-# Examples
-
-##  Test with SpatialPolygon* objects
-# tmp <- halton.lattice.polygon(WA.utm, J=c(7,4), eta=c(2,2))
-# tmp <- halton.lattice.polygon(WA.utm.nodata, J=c(6,3), eta=c(1,1))
-# 
-# 
-# tmp3 <- halton.frame(tmp2)
-# #
-##  Test with multiple points in each box for SpatialPolygon* objects (i.e., eta > 1)
-# tmp <- halton.lattice.polygon(WA.utm, J=c(6,3), eta=c(2,2))
-# tmp <- halton.lattice.polygon(WA.utm.nodata, j=c(6,3), eta=c(2,2))
-# tmp2 <- halton.indicies(tmp)
-# 
-# tmp3 <- halton.frame(tmp2)
-#
-# Some interesting plots
-# plot(WA.utm)
-# points(tmp)
-# points(tmp3[tmp3$halton.index==2,], pch=16, col=1:4)
-# points(tmp3[tmp3$halton.index==3,], pch=16, col=1:4)
-#
-# points(tmp3[20000 <= tmp3$frame.order & tmp3$frame.order<=29999,], pch=16, col=2)
-# points(tmp3[30000 <= tmp3$frame.order & tmp3$frame.order<=39999,], pch=16, col=3)
-# points(tmp3[40000 <= tmp3$frame.order & tmp3$frame.order<=49999,], pch=16, col=4)
-# 
-#
-## Test with data frames
-# tmp <- halton.lattice(bbox(WA.utm[3,]), J=c(6,3), eta=c(2,1))
-# tmp2 <- halton.indicies(tmp)
-# tmp3 <- halton.frame(tmp2)
-
-# #plot(WA.utm[3,], xlim=c(480118.3, 515610.1), ylim=c(5230959 ,5265726))
-# plot(WA.utm[3,])
-# 
-# points(tmp3[1:4, ], pch=16,col=rainbow(max(tmp2$halton.index))[i])
-
-## Test on unit box to see indicies
-# J <- c(3,2)
-# eta <- c(1,1)
-# b <- c(2,3)
-# tmp <- halton.lattice(J=J, eta=eta, triangular=F )
-# tmp2 <- halton.indicies(tmp)
-# # 
-# # 
-# plot(c(0,1),c(0,1),type="n")
-# 
-# for( i in J[1]:1){
-#   abline(v=(0:b[1]^i)/b[1]^i, lwd=J[1]+1-i, col=i)
-# }
-# for( i in J[2]:1){
-#   abline(h=(0:b[2]^i)/b[2]^i, lwd=J[2]+1-i, col=i)
-# }
-# points(tmp[,1],tmp[,2],  col=6, pch=16)
-# 
-# for( i in 1:nrow(tmp2)){
-#   text(tmp2$d1[i],tmp2$d2[i], tmp2$halton.index[i], adj=1, col="black")  
-# }
 

@@ -4,8 +4,7 @@
 #' 
 #' @description  Draws a Halton Lattice sample from a \code{SpatialPoints} object. 
 #' 
-#' @details  \emph{Brief description of Halton Lattice sampling for points:} 
-#' Given a set of Halton Lattice parameters \code{J} and \code{bases},
+#' @details  Given a set of Halton Lattice parameters \code{J} and \code{bases},
 #' a Halton lattice is constructed over the bounding box of the input points.  
 #' This results in \code{prod(bases^J)} Halton boxes on the bounding box. 
 #' The Halton index of all boxes is computed and assigned to points that lie 
@@ -30,9 +29,13 @@
 #' vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is choosen so that Halton boxes are as square as possible.
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
+#' @param plot Logical indicating whether to plot \code{shp} and selected points.  
+#' @param plot.lattice Logical indicating whether to plot the Halton lattice used 
+#' to draw the sample.  \code{plot.lattice = TRUE} produces same map 
+#' as \code{plot=TRUE}, with the addition of the Halton lattice.  
 
 #' @return A SpatialPointsDataFrame containing locations in the HAL sample, in
-#' the order they are to be visited.  A 'siteID' attribute is attached to each
+#' the order they are to be visited.  A 'SDraw.siteID' attribute is attached to each
 #' point (in the embedded data frame) and gives the HAL ordering of the sample
 #' (i.e., sort on 'siteID' to get proper HAL order).  In addition, if the input
 #' object has an attached data frame (i.e., is a  \code{SpatialPointsDataFrame}), the
@@ -44,15 +47,16 @@
 #' @keywords design survey
 #' @examples
 #' 
-#'   #   Draw sample of Hawaii coastline
-#'   #   This takes approximately 30 seconds to run
-#'   data(WA.cities)
-#'   samp <- hal.point( 100, WA.cities )
-#'   plot(WA.cities)
-#'   points( samp, pch=16, col="red" )
+#'#   Draw sample of Hawaii coastline
+#'#   This takes approximately 30 seconds to run
+#'data(WA.cities)
+#'samp <- hal.point( 100, WA.cities, plot.lattice=TRUE )
+#'
+#'#   Different lattice topology
+#'samp <- hal.point( 100, WA.cities, J=c(10,4), plot.lattice=TRUE)
 #'   
 #' 
-hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
+hal.point <- function( n, shp, J=NULL, bases=c(2,3), plot=TRUE, plot.lattice=FALSE){
 
 #  change name of 'frame.order' in output data frame to SDraw.siteID to be consistent with documentation. 
 #  This needs to happen in halton.lattice() or halton.frame(). 
@@ -63,6 +67,11 @@ hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
     warning("Sample size less than one has been reset to 1")
   }
 
+  if(plot){
+    sp::plot(shp, pch=1)
+  }
+  
+  
   # If lattice is not specified, set frame size to some multiple of n
   if(is.null(J)){
     N <- 100*n
@@ -86,6 +95,7 @@ hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
   
   attr(shp,"J") <- J
   attr(shp,"bases") <- bases
+  
   if( is.null( attr(shp, "hl.box" )) ){
     bb <- bbox(shp)
     # Because Halton boxes are closed on bottom and left, open on top and right, we 
@@ -96,6 +106,25 @@ hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
     bb[,2] <- bb[,2] + 0.0001*delta
     attr(shp,"hl.bbox") <- bb
   }
+  
+  if(plot.lattice){
+    if(!plot) sp::plot(shp,pch=2)
+    
+    for(d in 1:2){
+      tmp2 <- bb[d,1] + (0:(bases[d]^J[d]))*(diff(bb[d,]))/(bases[d]^J[d])
+      if( d == 1){
+        for(i in 1:length(tmp2)){
+          lines(rep(tmp2[i],2), bb[2,], col="blue")
+        }
+      } else{
+        for(i in 1:length(tmp2)){
+          lines(bb[1,], rep(tmp2[i],2), col="blue")
+        }
+      }
+    }    
+  }
+  
+  
   
   # Compute halton indicies of every point in shp.  The Halton index is the index of the 
   # Halton box that the point falls in. 
@@ -108,10 +137,9 @@ hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
   # Draw sample from the frame
   m <- runif(200)    # burn 200 random numbers from R's routine
   N.frame <- nrow(hl.points)
-  m <- floor(runif(1, 0, N.frame))
+  m <- floor(runif(1, 0, N.frame-1))
   n <- min( n, N.frame )  # Can't take more than a census. 
-  ind <- ((((1:n)+m)-1) %%  N.frame)+1   # Cycle the indicies around to start of frame if necessary
-  
+  ind <- (((0:(n-1))+m) %% N.frame ) + 1  # Cycle the indicies around to start of frame if necessary
   
   samp <- hl.points[ind,]
   
@@ -124,6 +152,12 @@ hal.point <- function( n, shp, J=NULL, bases=c(2,3)){
   attr(samp,"index.name") <- attr(hl.points,"index.name")
   attr(samp,"order.name") <- attr(hl.points,"order.name")
   attr(samp,"m") <- m  # needed if we want more points from this frame
+  
+  if(plot){
+    sp::plot(samp, add=TRUE, pch=16, col="red")
+  }
+  
+  
   
   samp
   

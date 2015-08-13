@@ -53,16 +53,16 @@
 #' @keywords design survey
 #' @examples
 #' 
-#'   #   Draw sample of Hawaii coastline
-#'   #   This takes approximately 30 seconds to run
-#'   data(WA)
-#'   samp <- hal.polygon( 100, WA )
-#'   plot(WA)
-#'   points( samp, pch=16, col="red" )
+#'#   Draw sample of Hawaii coastline
+#'#   This takes approximately 30 seconds to run
+#'data(WA)
+#'samp <- hal.polygon( 100, WA )
+#'plot(WA)
+#'points( samp, pch=16, col="red" )
 #'   
-#'   #   Different lattice topology
-#'   samp <- hal.polygon( 100, WA, J=c(8,2), eta=c(2,1), triangular=TRUE)
-#'   points( samp, pch=15, col="blue")
+#'#   Different lattice topology
+#'samp <- hal.polygon( 100, WA, J=c(8,2), eta=c(2,1), triangular=TRUE)
+#'points( samp, pch=15, col="blue")
 #'   
 #' 
 
