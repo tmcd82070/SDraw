@@ -57,9 +57,6 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' require(sp)
-#' data(WA)
-#' 
 #' # A square grid oriented east-west
 #' WA.samp <- sss.polygon( 100, WA )   
 #' plot( WA )

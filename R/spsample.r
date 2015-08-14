@@ -64,7 +64,6 @@
 #' \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 #'    
 #'  @examples 
-#'  data(WA)
 #'  WA.sample <- spsample(WA, 100, "HAL")
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  

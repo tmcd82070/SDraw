@@ -49,7 +49,6 @@
 #' 
 #'#   Draw sample of Hawaii coastline
 #'#   This takes approximately 30 seconds to run
-#'data(WA.cities)
 #'samp <- hal.point( 100, WA.cities, plot.lattice=TRUE )
 #'
 #'#   Different lattice topology

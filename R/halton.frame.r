@@ -31,8 +31,6 @@
 #'   @seealso \code{\link{halton.indicies}}
 #'   
 #'   @examples 
-#'data(WA.cities)
-#'
 #'# This is the "brute force" method to draw HAL samples. hal.point does all this.
 #'
 #'# Define Halton lattice
@@ -50,8 +48,8 @@
 #'
 #'# Draw sample of size 20
 #'n <- 20
-#'random.start <- floor( runif(1,0,nrow(frame)-1 )
-#'samp <- frame[ ( ((0:(n-1))+random.start) %% nrow(frame) ) + 1]
+#'random.start <- floor( runif(1,0,nrow(frame)-1 ) )
+#'samp <- frame[ ( ((0:(n-1))+random.start) %% nrow(frame) ) + 1, ]
 #'
 halton.frame <- function( hl.points, order.name="SDraw.siteID" ){
 

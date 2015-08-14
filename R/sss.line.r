@@ -21,7 +21,6 @@
 #' @examples
 #' 
 #' 
-#' data(HI.coast)
 #' HI.samp <- sss.line( 100, HI.coast )   # square grid oriented east-west
 #' plot( HI.coast, col=rainbow(length(HI.coast)) )
 #' points( HI.samp, col="red", pch=16 )

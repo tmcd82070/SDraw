@@ -1,9 +1,15 @@
 grts.equi <- function( n, shp, over.n=0 ){
 
+  if( over.n == 0 ){
+    Equaldsgn <- list(None = list(panel = c(Main = n),
+                                  seltype = "Equal"))
+    
+  } else {
   Equaldsgn <- list(None = list(panel = c(Main = n),
                                 seltype = "Equal",
                                 over = over.n))
-
+  }
+  
 
   
   if( regexpr("SpatialPoints", class(shp)[1]) > 0 ){

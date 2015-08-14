@@ -37,22 +37,23 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' data(WA)
-#' 
 #' #   Draw sample
-#' WA_sample <- grts.equi(100,WA.cities,100)
+#' \dontrun{
+#' # Don't run because spsurvey::grts sometimes stops when it cannot write to 
+#' # a temporary shape file.
+#' WA.city.samp <- grts.point(100,WA.cities,100)
 #' 
 #' #   Plot
-#' require(sp)
 #' plot( WA.cities )
 #' 
 #' # Plot 'sample' locations
-#' plot( WA_sample[ WA_sample$pointType == "Sample", ], pch=16, add=TRUE, col="red" )  
+#' WA.city.samp <- as(WA.city.samp, "SpatialPointsDataFrame")
+#' plot( WA.city.samp[ WA.city.samp$pointType == "Sample", ], pch=16, add=TRUE, col="red" )  
 #' 
 #' # Plot 'over sample' locations
-#' plot( WA_sample[ WA_sample$pointType == "OverSample", ], pch=1, add=TRUE, col="blue" )  
+#' plot( WA.city.samp[ WA.city.samp$pointType == "OverSample", ], pch=16, add=TRUE, col="blue" )  
 #' 
-#' 
+#' }
 #'
 
 

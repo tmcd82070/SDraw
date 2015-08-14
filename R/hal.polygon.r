@@ -55,7 +55,6 @@
 #' 
 #'#   Draw sample of Hawaii coastline
 #'#   This takes approximately 30 seconds to run
-#'data(WA)
 #'samp <- hal.polygon( 100, WA )
 #'plot(WA)
 #'points( samp, pch=16, col="red" )

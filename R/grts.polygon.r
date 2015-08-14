@@ -38,13 +38,14 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' data(WA)
 #' 
 #' #   Draw sample
-#' WA_sample <- grts.equi(100,WA,100)
+#' \dontrun{
+#' # Don't run because spsurvey::grts sometimes stops because it cannot 
+#' # create a temporary shapefile
+#' WA_sample <- grts.polygon(100,WA,100)
 #' 
 #' #   Plot
-#' require(sp)
 #' plot( WA )
 #' 
 #' # Plot 'sample' locations
@@ -52,7 +53,7 @@
 #' 
 #' # Plot 'over sample' locations
 #' plot( WA_sample[ WA_sample$pointType == "OverSample", ], pch=1, add=TRUE, col="blue" )  
-#' 
+#' }
 #' 
 #'
 grts.polygon <- function( n, shp, over.n=0 ){

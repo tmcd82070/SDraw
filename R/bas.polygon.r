@@ -26,14 +26,10 @@
 #' @seealso \code{\link{bas}}
 #' @keywords design survey
 #' @examples
-#' 
-#' data(WA)
-#' 
 #' #   Draw sample
 #' WA_sample <- bas.polygon(200, WA)  
 #' 
 #' #   Plot
-#' require(sp)
 #' plot( WA )
 #' 
 #' # Plot first 100 sample locations

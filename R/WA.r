@@ -37,7 +37,6 @@
 #' }
 #' 
 #' @examples
-#'data(WA)
 #'plot(WA[WA$LAND_TYPE == "MAINLAND",], col="red")
 #'plot(WA[WA$LAND_TYPE == "ISLAND",], col="blue",add=TRUE)
 #'plot(WA[WA$LAND_TYPE == "OCEAN",], col="turquoise",add=TRUE)

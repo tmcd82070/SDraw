@@ -1,4 +1,4 @@
-#' @export F.halton.indicies.CRT
+#' @export halton.indicies.CRT
 #'  
 #' @title Halton indicies by the Chinese Remainder Theorem (CRT)
 #' 
@@ -35,7 +35,7 @@
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
 #' n.boxes <- c(16,9) 
-#' F.halton.indicies.vector(pt, n.boxes) # should equal 70
+#' halton.indicies.vector(pt, n.boxes) # should equal 70
 #' 
 #' # Plot Halton boxes and indicies to check
 #' b <- c(2,3)
@@ -51,7 +51,7 @@
 #' points(pt$x, pt$y, col=6, pch=16, cex=2)
 #' 
 #' 
-F.halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
   
   f.hal.index <- function(pt, n.boxes, b, J, xf, yf){
     # internal function to return Halton index for one point.  This is 

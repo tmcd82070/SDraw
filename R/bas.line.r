@@ -41,7 +41,6 @@
 #' #   Draw sample of Hawaii coastline
 #' #   This takes approximately 60 seconds to run
 #' \dontrun{
-#' data(HI.coast)
 #' samp <- bas.line( 100, HI.coast )
 #' plot(HI.coast, col=rainbow(length(HI.coast)))
 #' points( samp, pch=16 )

@@ -1,4 +1,4 @@
-#' @export F.halton.indicies.vector
+#' @export halton.indicies.vector
 #'  
 #' @title Halton indicies for an entire vector of coordinates 
 #' 
@@ -38,10 +38,10 @@
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
 #' n.boxes <- c(16,9) 
-#' F.halton.indicies.vector(pt, n.boxes) # should equal 70
+#' halton.indicies.vector(pt, n.boxes) # should equal 70
 #' 
 #' pt <- data.frame(x=143, y=164)
-#' F.halton.indicies.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
+#' halton.indicies.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
 #' 
 #' # Plot Halton boxes and indicies to check
 #' b <- c(2,3)
@@ -57,7 +57,7 @@
 #' points(pt$x, pt$y, col=6, pch=16, cex=2)
 #' 
 #' 
-F.halton.indicies.vector <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+halton.indicies.vector <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
 
   # Halton index matrix, stored as a vector in column-major order for now.  
   # Each cell cooresponds to a Halton box. 

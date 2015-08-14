@@ -28,7 +28,6 @@
 #' }
 #' 
 #' @examples
-#'data(HI.coast)
 #'plot(HI.coast)
 #'
 #'@name HI.coast

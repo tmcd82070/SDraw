@@ -37,6 +37,22 @@
 #'  @return A data frame, like \code{data.frame(hl)}, but with indicies of the 
 #'  Halton sequence attached in a column named \code{index.name}. 
 #'   
+#'  @author Trent McDonald
+#'   
+#'  @seealso \code{\link{halton.frame}}
+#'   
+#'  @examples 
+#'# Define the Halton lattice
+#'attr(WA.cities,"J") <- c(3,2)
+#'attr(WA.cities,"bases") <- c(2,3)
+#'# Add tiny amount to right and top of bounding box because Halton boxes are 
+#'# closed on the left and bottom.  This includes points exactly on the bounding lines.
+#'attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1) 
+#'
+#'# Compute Halton indicies
+#'frame <- halton.indicies( WA.cities )
+#'
+#'
 halton.indicies <- function(hl, index.name="SDraw.HaltonIndex"){
 
   J <- attr(hl,"J")
@@ -83,9 +99,9 @@ halton.indicies <- function(hl, index.name="SDraw.HaltonIndex"){
   
 
   if( prod(n.boxes) < 100000 ){
-    hl.out <- F.halton.indicies.vector(hl.coords, n.boxes, D, b, delta, ll.corner)
+    hl.out <- halton.indicies.vector(hl.coords, n.boxes, D, b, delta, ll.corner)
   } else {
-    hl.out <- F.halton.indicies.CRT(hl.coords, n.boxes, D, b, delta, ll.corner)
+    hl.out <- halton.indicies.CRT(hl.coords, n.boxes, D, b, delta, ll.corner)
   }
   
   if(is.null(hl)){

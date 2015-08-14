@@ -10,3 +10,4 @@ License: GNU General Public License
 BugReports: https://github.com/tmcd82070/SDraw/issues
 Imports: spsurvey, utils, rgdal, rgeos, graphics
 Depends: sp
+LazyData: true

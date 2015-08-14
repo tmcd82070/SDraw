@@ -38,13 +38,14 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' data(HI.coast)
 #' 
 #' #   Draw sample
-#' HI_sample <- grts.equi(100,HI.coast,100)
+#' \dontrun{
+#' # Because spsurvey::grts sometimes stops when it cannot create a temporary 
+#' # shapefile. 
+#' HI_sample <- grts.line(100,HI.coast,100)
 #' 
 #' #   Plot
-#' require(sp)
 #' plot( HI.coast )
 #' 
 #' # Plot 'sample' locations
@@ -52,7 +53,7 @@
 #' 
 #' # Plot 'over sample' locations
 #' plot( HI_sample[ HI_sample$pointType == "OverSample", ], pch=1, add=TRUE, col="blue" )  
-#' 
+#' }
 #' 
 #'
 grts.line <- function( n, shp, over.n=0 ){
