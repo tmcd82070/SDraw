@@ -30,7 +30,7 @@
 #' 
 #' @author Trent McDonald
 #' 
-#' @seealso \code{\link{bas}}
+#' @seealso \code{\link{halton.indicies}}
 #' 
 #' @references van der Corput sequences are described here:
 #' \url{http://en.wikipedia.org/wiki/Van_der_Corput_sequence}

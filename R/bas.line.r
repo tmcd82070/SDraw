@@ -34,7 +34,7 @@
 #' associated data frame. The number of the line in \code{shp} on which each
 #' point falls also appears in the attribute data frame.
 #' @author Trent McDonald
-#' @seealso \code{\link{bas}}
+#' @seealso \code{\link{bas.line}}, \code{\link{bas.polygon}}, \code{\link{spsample}}
 #' @keywords design survey
 #' @examples
 #' 

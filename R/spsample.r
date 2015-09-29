@@ -1,8 +1,10 @@
-#'  @title Sample Draws in (or on) spatial objects.
-#'  
-#'  @aliases spsample
-#'  
+#'
 #'  @name spsample
+#'  
+#'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
+#'  
+#'  @title field is in SDraw.line.  I could not get roxyen to use @title in this file
+#'  
 #'  
 #'  @description Draw sample (point locations) from SpatialPoints, SpatialLines, 
 #'  and SpatialPolygons. This is extends the generic \code{spsample} function of 
@@ -33,6 +35,9 @@
 #'  } 
 #'  @param ... Optional arguments passed to underlying sample type method.  See NOTES.
 #'  
+#'  @details This is a S4 generic method for types \code{SpatialPoints?}, \code{SpatialLines?}, 
+#'  and \code{SpatialPolygons?} objects.  ? means these objects can come with an attached
+#'  data frame containing attributes. 
 #'  
 #'  @return A \code{SpatialPointsDataFrame} object.  At a minimum, the data frame 
 #'  embedded in the \code{SpatialPoints} object contains a column named \code{siteID} which 
@@ -51,8 +56,8 @@
 #'  @author Trent McDonald
 #'  
 #'  @references 
-#'  Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) “BAS: 
-#'  Balanced Acceptance Sampling of Natural Resources”, Biometrics, v69, p. 776-784.
+#'  Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) "BAS: 
+#'  Balanced Acceptance Sampling of Natural Resources", Biometrics, v69, p. 776-784.
 #'  
 #'  Stevens D. L. Jr. and A. R. Olsen (2004) "Spatially Balanced Sampling of Natural Resources", 
 #'  Journal of the American Statistical Association, v99, p. 262-278.
@@ -67,6 +72,7 @@
 #'  WA.sample <- spsample(WA, 100, "HAL")
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  
+
 NULL
 
 

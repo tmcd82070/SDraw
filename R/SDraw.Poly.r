@@ -1,4 +1,6 @@
-#' @rdname spsample
+#'  @export SDraw.SpatialPolygons
+#'    
+#'  @rdname spsample
 #'
 #'  @method spsample SpatialPolygons 
 #'  
@@ -11,8 +13,8 @@ SDraw.SpatialPolygons <- function(x, n, type, ...){
     HAL = hal.polygon( n, x, ...), 
     BAS = bas.polygon( n, x ), 
     SSS = sss.polygon( n, x, ...),
-    GRTS = grts.equi( n, x, ...), 
-    sp:::sample.SpatialPolygons(x, n, type, ...)
+    GRTS = grts.polygon( n, x, ...), 
+    sp::spsample(x, n, type, ...)
   )
   
   ans

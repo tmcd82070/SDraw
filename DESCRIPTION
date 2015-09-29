@@ -2,12 +2,20 @@ Package: SDraw
 Type: Package
 Title: Sample Draw
 Version: 2.1.1
-Date: 2015-07-23
+Date: 2015-09-29
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
-Description: Routines for balanced sampling.  Draws HAL, BAS, GRTS, and SSS samples from points, lines, and polygons.
+Description: Routines for balanced sampling. Draws HAL, BAS, GRTS, and SSS
+    samples from points, lines, and polygons.
 License: GNU General Public License
 BugReports: https://github.com/tmcd82070/SDraw/issues
-Imports: spsurvey, utils, rgdal, rgeos, graphics
-Depends: sp
+Imports:
+    spsurvey,
+    utils,
+    rgdal,
+    rgeos,
+    graphics,
+    methods
+Depends:
+    sp
 LazyData: true

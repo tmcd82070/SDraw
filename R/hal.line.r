@@ -74,7 +74,37 @@ hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3)){
   }
   
   #   Discretize the line with many more points than needed for sample
-  pt.frame <- spsample( shp, N, type="regular" )
+  #this is code for Line
+#   cc = coordinates(x)
+#   lengths = LineLength(cc, longlat = FALSE, sum = FALSE)
+#   if (any(abs(lengths) < .Machine$double.eps)) {
+#     wl <- which(abs(lengths) < .Machine$double.eps)
+#     cc <- cc[-(wl), ]
+#     lengths <- lengths[-(wl)]
+#   }  
+#   csl = c(0, cumsum(lengths))
+#   pts = ((1:n) - (1 - offset))/n * maxl
+#   int = findInterval(pts, csl, all.inside = TRUE)
+#   where = (pts - csl[int])/diff(csl)[int]
+#   xy = cc[int, , drop = FALSE] + where * (cc[int + 1, , drop = FALSE] - cc[int, , drop = FALSE])
+  
+  #this is code for Lines
+#   L = x@Lines
+#   lengths = sapply(L, function(x) LineLength(x@coords))
+#   if (sum(lengths) < .Machine$double.eps) 
+#     stop("Lines object of no length")
+#   nrs = round(lengths/sum(lengths) * n)
+#   ret = vector("list", sum(nrs > 0))
+#   j = 1
+#   for (i in 1:length(L)) {
+#     if (nrs[i] > 0) {
+#       ret[[j]] = sample.Line(L[[i]], nrs[i], type = type, 
+#                              offset = offset, ...)
+#       j = j + 1
+#     }
+#   }
+#   do.call(rbind, ret)
+  pt.frame <- spsample( as(shp, "Lines"), N, type="regular" )
   
   # Now that we have points, we can draw a HAL point sample. 
   samp <- hal.point( n, pt.frame, J, bases )

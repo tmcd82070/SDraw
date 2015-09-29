@@ -7,6 +7,7 @@
 #' 
 #' @param hl.coords nXD vector of coordinates for points 
 #' @param n.boxes DX1 vector containing number of Halton boxes in each dimension.
+#' @param D Number of dimensions
 #' @param b DX1 vector of bases to use for each dimension
 #' @param delta DX1 vector of study area extents in each dimension.  Study area is 
 #'  \code{delta[i]} units wide in dimension \code{i}.
@@ -24,13 +25,13 @@
 #' 
 #' This routine solves the Chinese Remainder Theorem to find Halton indicies.
 #' This routine loops over the points in  \code{hl.coords}, and as such minimizes memory usage 
-#' but sacrifices speed. For small problems,  see  \code{\link{F.halton.indicies.vector}}, 
+#' but sacrifices speed. For small problems,  see  \code{\link{halton.indicies.vector}}, 
 #' which computes indicies by actually placing points in Halton boxes to find their indicies. 
 #' 
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{F.halton.indicies.vector}}, \code{\link{F.halton.indicies}}
+#' @seealso \code{\link{halton.indicies.vector}}, \code{\link{halton.indicies}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
@@ -51,7 +52,7 @@
 #' points(pt$x, pt$y, col=6, pch=16, cex=2)
 #' 
 #' 
-halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
   
   f.hal.index <- function(pt, n.boxes, b, J, xf, yf){
     # internal function to return Halton index for one point.  This is 
@@ -94,7 +95,7 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), ll.c
   }
   
   # Scale points to [0,1]
-  hl.coords <- t( t(as.matrix(hl.coords))/delta )
+  hl.coords <- t( (t(as.matrix(hl.coords))-ll.corner)/delta )
   
   # Compute J = exponents
   J <- log(n.boxes, b)

@@ -23,7 +23,7 @@
 #' attrributes of the polygon in which each BAS point fell is attached in the
 #' associated data frame.
 #' @author Trent McDonald
-#' @seealso \code{\link{bas}}
+#' @seealso \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{spsample}}
 #' @keywords design survey
 #' @examples
 #' #   Draw sample

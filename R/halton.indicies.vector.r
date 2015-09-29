@@ -27,13 +27,13 @@
 #' This routine uses the Halton sequence and modular arithmetic to find Halton indicies.
 #' This means several vectors of size \code{nrow(hl.coords)} must be created.  Depending on 
 #' memory, this approach fails for a sufficently large number of points. When this routine 
-#' fails, see the slower \code{\link{F.halton.indicies.Chinese}}, which computes indicies by solving 
+#' fails, see the slower \code{\link{halton.indicies.CRT}}, which computes indicies by solving 
 #' the Chinese Remainder Theorem. 
 #' 
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{F.halton.indicies.Chinese}}, \code{\link{F.halton.indicies}}
+#' @seealso \code{\link{halton.indicies.CRT}}, \code{\link{halton.indicies}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
