@@ -1,23 +1,33 @@
-#'  @title Extendeed Greatest Common Denominator (GCD) algorithm. 
+#'  @title Extended Greatest Common Denominator (GCD) algorithm. 
 #'  
 #'  @description Implements the extended Euclidean algorithm which 
 #'  computes the greatest common divisor and solves Bezout’s identity.
 #'  
 #'  @param a A vector of integers
 #'  
-#'  @param b A vector of integers.  Length must equal length of \code{a}.
+#'  @param b A vector of integers.  \code{length(a)} must equal \code{length(b)}.
 #'  
 #'  @details This routine computes the element-wise gcd and 
 #'  coefficients s and t such that a*t + b*s = d. In other words, if 
-#'  \code{x = extended.gcd(a,b)}, \code{x$a*x$t + x$b*x$s == x$gcd}
+#'  \code{x = extended.gcd(a,b)}, then \code{x$a*x$t + x$b*x$s == x$gcd}
 #'  
+#'  The Wikipedia page, from which this algorithm was stolen, has the 
+#'  following statement, "The quotients of a and b by their greatest common divisor, which are output, 
+#'  may have an incorrect sign. This is easy to correct at the end of the computation, 
+#'  but has not been done here for simplifying the code."  I have absolutely no 
+#'  idea what this means, but include it as a warning.  For purposes of 
+#'  \code{SDraw}, elements of a and b are always positive, and I have never 
+#'  observed "incorrect signs".  But, there may be some pathelogical cases 
+#'  where "incorrect signs" occur, and the user should "correct" for this.  
+#'  This routine does check that the output gcd is 
+#'  positive, and corrects this and the signs of s and t if so.  
 #'  
 #'  @return a data frame containing 5 columns; \code{a}, \code{t}, 
 #'  \code{b}, \code{s}, and \code{gcd}.  
 #'  Number of rows in output equals length of input \code{a}.  
 #'
 #'  @references 
-#'  Code is based on Wikipedia pseudo-code found here: 
+#'  Code is based on the following Wikipedia pseudo-code: 
 #'  \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}
 #'   
 #'  @author Trent McDonald
@@ -66,22 +76,22 @@ extended.gcd <- function( a, b ){
 }
 
 
-# --------------
-
-# A note from wikipedia:
-# The quotients of a and b by their greatest common divisor, which are output, 
-# may have an incorrect sign. This is easy to correct at the end of the computation, 
-# but has not been done here for simplifying the code. Similarly, if either a or 
-# b is zero and the other is negative, the greatest common divisor that is 
-# output is negative, and all the signs of the output must be changed.
-
-tmp <- extended.gcd(c(16,16,2^5),c(9,27,3^3))
-print( tmp )
-print( tmp$a*tmp$t + tmp$b*tmp$s )
-
-
-tmp <- extended.gcd( c(16,27,27,46), c(9,16,9,240) )
- 
-print(tmp)
- #  Check
- print(cbind(tmp$a*tmp$t + tmp$b*tmp$s, tmp$gcd))
+# # --------------
+# 
+# # A note from wikipedia:
+# # The quotients of a and b by their greatest common divisor, which are output, 
+# # may have an incorrect sign. This is easy to correct at the end of the computation, 
+# # but has not been done here for simplifying the code. Similarly, if either a or 
+# # b is zero and the other is negative, the greatest common divisor that is 
+# # output is negative, and all the signs of the output must be changed.
+# 
+# tmp <- extended.gcd(c(16,16,2^5),c(9,27,3^3))
+# print( tmp )
+# print( tmp$a*tmp$t + tmp$b*tmp$s )
+# 
+# 
+# tmp <- extended.gcd( c(16,27,27,46), c(9,16,9,240) )
+#  
+# print(tmp)
+#  #  Check
+#  print(cbind(tmp$a*tmp$t + tmp$b*tmp$s, tmp$gcd))

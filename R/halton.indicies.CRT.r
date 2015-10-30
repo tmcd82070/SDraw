@@ -3,7 +3,8 @@
 #' @title Halton indicies by the Chinese Remainder Theorem (CRT)
 #' 
 #' @description Computes Halton indicies of D-dimensional points by solving the Chinese Remainder Theorem. 
-#' This function is relatively slow, but it works for large problems. 
+#' This function is slightly slower than \code{halton.indicies.vector}, but 
+#' it works for large problems. 
 #' 
 #' @param hl.coords nXD vector of coordinates for points. No points can be outside 
 #'  the bounding box or exactly on the right or top boundary.  See Details. 
@@ -130,29 +131,44 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, delta=c(1,1), ll.corner=c(0,
 # tmp<- halton.indicies.CRT(pt, n.boxes) # should equal 70
 # cat(paste("Halton index from CRT routine:", tmp, "\n"))
 
-# Plot Halton boxes and indicies to check
-b <- c(2,3)
-J <- c(4,2)
-hl.ind <- halton( 3*prod(n.boxes), 2,0 )
-plot(c(0,1),c(0,1),type="n",xaxt="n", yaxt="n")
-axis(1,at=(0:b[1]) / b[1])
-axis(2,at=(0:b[2]) / b[2])
-for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=1, col=i)
-for( i in J[2]:1) abline(h=(0:b[2]^i)/b[2]^i, lwd=1, col=i)
-for( i in 1:prod(n.boxes)){
-  box.center <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
-  text(box.center[1],box.center[2], i-1, adj=.5)  
-}
-points(pt$x, pt$y, col=6, pch=16, cex=.5)
+# # Plot Halton boxes and indicies to check
+# b <- c(2,3)
+# J <- c(4,2)
+# hl.ind <- halton( 3*prod(n.boxes), 2,0 )
+# plot(c(0,1),c(0,1),type="n",xaxt="n", yaxt="n")
+# axis(1,at=(0:b[1]) / b[1])
+# axis(2,at=(0:b[2]) / b[2])
+# for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=1, col=i)
+# for( i in J[2]:1) abline(h=(0:b[2]^i)/b[2]^i, lwd=1, col=i)
+# for( i in 1:prod(n.boxes)){
+#   box.center <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
+#   text(box.center[1],box.center[2], i-1, adj=.5)  
+# }
+# points(pt$x, pt$y, col=6, pch=16, cex=.5)
 
 
 # Note, you cannot have a point exactly on the right or top edge. 
 tmp <- data.frame(x=(0:100)/101,y=.2)
+tmp.n <- 10000000
+tmp <- data.frame(x=runif(tmp.n), y=runif(tmp.n))
 n.boxes <- c(16,9)
-tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
-tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
-tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
-print(tmp2)
+tmp.vec.time <- system.time( 
+  tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
+)
+# tmp.crt.time <- system.time(
+  # tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+# )
+# tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
+# print(tmp2[10:60,])
+# cat("Number of non-equal indicies: ")
+# cat(sum(tmp2$H.ind.vector != tmp2$H.ind.CRT))
+# cat("\n")
+cat("Time for VECTOR routine to complete:\n")
+print(tmp.vec.time)
+# cat("Time for CRT routine to complete:\n")
+# print(tmp.crt.time)
+
+
 
 # plot(c(0,1),c(0,1),type="n", xlim=c(0,1), ylim=c(.15,.25))
 # for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=1, col=i)

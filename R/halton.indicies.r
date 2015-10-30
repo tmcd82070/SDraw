@@ -2,39 +2,61 @@
 #'  
 #'  @title Compute Halton indicies
 #'  
-#'  @description Compute and attach indicies of the Halton sequence for points.  Points can be
+#'  @description Compute and attach indicies of the Halton sequence to points.  Points can be
 #'  an abitrary set or a Halton lattice. 
 #'  
-#'  @param hl Either a data frame or a \code{SpatialPoints} object, both of which must have 
-#'  with additional attributes. Suitable input objects are the output of 
+#'  @param hl Either a data frame or a \code{SpatialPoints} object, both of 
+#'  which must have 
+#'  additional attributes (see Details). Suitable input objects are the output of 
 #'  functions \code{halton.lattice} (a data frame with attributes) and 
 #'  \code{halton.lattice.polygon} (a \code{SpatialPoints} object with attributes). 
-#'  If \code{hl} is a data frame, it must contain coordinates columns named the same as 
-#'  row names (\code{dimnames[[1]]}) of the Halton bounding box attribute (\code{attr(hl,"hl.bbox")}. 
+#'  
+#'  If \code{hl} is a data frame, it must contain coordinates columns 
+#'  named the same as 
+#'  row names of the Halton bounding box attribute (i.e., 
+#'  \code{dimnames(attr(hl,"hl.bbox"))[[1]]} name the coordinate columns). 
 #'  That is, coordinates are \code{hl[,dimnames(bb)[[1]]]]}, where \code{bb}
-#'  is the "hl.bbox" bounding box attribute of \code{hl}. If \code{hl} is a data.frame, this function 
+#'  is the "hl.bbox" bounding box attribute of \code{hl}. 
+#'  
+#'  If \code{hl} is a data.frame, this function 
 #'  works for dimensions >2. 
+#'  
 #'  @param index.name A character string giving the name of the column in 
 #'  the output data frame or SpatialPoints object to contain 
-#'  the Halton indicies.  This name is saved as an attribute of the output object.
+#'  the Halton indicies.  This name is saved as an attribute attached to 
+#'  the output object.
+#'  
+#'  @param use.CRT A logical values specifying whether to invert the 
+#'  Halton sequence using the Chinese Remainder Theorem (CRT).  The other 
+#'  method (\code{use.CRT == FALSE}) is a direct method, and is very fast, 
+#'  but requires multiple huge vectors be allocated (size of vectors is 
+#'  \code{prod{bases^J}}, see Details). As the number of points grows, 
+#'  eventually the direct method will not be able to allocate sufficient  
+#'  memory (tips: Make sure to run 64-bit R, and try increasing 
+#'  memory limit with \code{memory.limiit}).   
+#'  The CRT method, while much  (much) slower, does not require 
+#'  as much memory, and should eventually complete a much larger problem.
+#'  Patience is required if your problem is big enough to require 
+#'  \code{use.CRT == TRUE}.      
 #'  
 #'  @details The input object \code{hl} must have the following attributes:   
 #'  \itemize{
 #'    \item \code{bases} = Dx1 vector of bases to use in each dimension.  
 #'    \item \code{J} = DX1 vector of the exponents for bases defining the Halton boxes.
-#'     The number of Halton divisions in dimension \code{i} is \code{bases[i]^J[i]}.  Total 
-#'     number of Halton boxes is \code{prod(bases^J)}. 
+#'     The number of Halton divisions in dimension \code{i} is \code{bases[i]^J[i]}.  
+#'     Total number of Halton boxes is \code{prod(bases^J)}. 
 #'    \item \code{hl.bbox} = DX2 matrix containing bounding box of the full set of Halton boxes. 
 #'    First column of this matrix is the lower-left coordinate (i.e., minimums in D dimensions) 
 #'    of the bounding box, while the second column is the upper-right coordinate 
 #'    (i.e., maximums in D dimensions) of the bounding box.
 #'    For example, if \code{D} = 2, \code{hl.bbox} = \code{matrix( c(min(x),min(y),max(x),max(y)),2)} 
 #'  }
+#'  
 #'  If, in addition, \code{hl} has attributes \code{eta} or \code{triangular}, their values  
-#'  are transfered to the output object for continuity of attributes of the overall 
+#'  are transfered to the output object for continuity of attributes within the more general  
 #'  sample frame object.
 #'  
-#'  @return A data frame, like \code{data.frame(hl)}, but with indicies of the 
+#'  @return A data frame, structured like \code{data.frame(hl)}, but with indicies of the 
 #'  Halton sequence attached in a column named \code{index.name}. 
 #'   
 #'  @author Trent McDonald
@@ -53,7 +75,7 @@
 #'frame <- halton.indicies( WA.cities )
 #'
 #'
-halton.indicies <- function(hl, index.name="SDraw.HaltonIndex"){
+halton.indicies <- function(hl, index.name="SDraw.HaltonIndex", use.CRT=FALSE){
 
   J <- attr(hl,"J")
   b <- attr(hl,"bases")
@@ -93,12 +115,13 @@ halton.indicies <- function(hl, index.name="SDraw.HaltonIndex"){
     is.points <- FALSE
   }
   
-  # Note, the following is a nice way around the Chinese remainder theorem. 
+  # Note, this is the hard part.  This is where we invert the Halton sequence
+  # either directly or using the Chinese Remainder Theorem. 
   # In general, if using another sequence, we would be solving the Chinese remainder
   # theorem here. 
   
 
-  if( prod(n.boxes) < 100000 ){
+  if( !use.CRT ){
     hl.out <- halton.indicies.vector(hl.coords, n.boxes, D, b, delta, ll.corner)
   } else {
     hl.out <- halton.indicies.CRT(hl.coords, n.boxes, D, b, delta, ll.corner)
