@@ -16,13 +16,12 @@
 #' 
 #' @return A nX1 vector of Halton indicies corresponding to points in \code{hl.coords}. 
 #' 
-#' @details The Halton sequence maps the non-negative integers to D-space.  
-#' Halton indicies are invert of the Halton sequence. The Halton index of a point 
-#' is the index of the Halton box that contains the point.  The Halton index of a point
-#' is an integer N such that integers in the set $\{x:N = x mod C\}$, where $C$ 
-#' = \code{prod(n.boxes)}, 
-#' get mapped by the Halton sequence to  the same box
-#' Halton box as the original point.  
+#' @details The Halton sequence maps the non-negative integers (the Halton indicies) to D-space.  
+#' This routine does the inverse.
+#' Given a point in D-space and a grid of Halton boxes, the point's Halton index  
+#' is any integer N which gets mapped to the Halton box containing the point.  
+#' (i.e., any integer in the set $\{x:N = x mod C\}$, where $C$ 
+#' = \code{prod(n.boxes)}).  
 #' 
 #' This routine uses the Halton sequence and modular arithmetic to find Halton indicies.
 #' This means several vectors of size \code{nrow(hl.coords)} must be created.  Depending on 

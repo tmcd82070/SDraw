@@ -1,8 +1,8 @@
 Package: SDraw
 Type: Package
 Title: Sample Draw
-Version: 2.1.1
-Date: 2015-09-29
+Version: 2.1.2
+Date: 2015-10-06
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for balanced sampling. Draws HAL, BAS, GRTS, and SSS

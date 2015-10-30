@@ -2,31 +2,33 @@
 #'  
 #' @title Halton indicies by the Chinese Remainder Theorem (CRT)
 #' 
-#' @description Computes Halton indicies of 2-D points by solving the Chinese Remainder Theorem. 
+#' @description Computes Halton indicies of D-dimensional points by solving the Chinese Remainder Theorem. 
 #' This function is relatively slow, but it works for large problems. 
 #' 
-#' @param hl.coords nXD vector of coordinates for points 
+#' @param hl.coords nXD vector of coordinates for points. No points can be outside 
+#'  the bounding box or exactly on the right or top boundary.  See Details. 
 #' @param n.boxes DX1 vector containing number of Halton boxes in each dimension.
-#' @param D Number of dimensions
-#' @param b DX1 vector of bases to use for each dimension
-#' @param delta DX1 vector of study area extents in each dimension.  Study area is 
-#'  \code{delta[i]} units wide in dimension \code{i}.
+#' @param delta DX1 vector of study area bounding box extents in each dimension.  Study area is 
+#'  bounded by a cube in D space, which is \code{delta[i]} units wide in dimension \code{i}.  Area 
+#'  of bounding cube is \code{prod{delta}} units to the \code{D} power. 
 #' @param ll.corner DX1 vector containing minimum coordinates in all dimensions.
 #' 
 #' @return A nX1 vector of Halton indicies corresponding to points in \code{hl.coords}. 
 #' 
-#' @details The Halton sequence maps the non-negative integers to D-space.  
-#' Halton indicies are invert of the Halton sequence. The Halton index of a point 
-#' is the index of the Halton box that contains the point.  The Halton index of a point
-#' is an integer N such that integers in the set $\{x:N = x mod C\}$, where $C$ 
-#' = \code{prod(n.boxes)}, 
-#' get mapped by the Halton sequence to  the same box
-#' Halton box as the original point.  
+#' @details The Halton sequence maps the non-negative integers (the Halton indicies) to D-space.  
+#' This routine does the inverse.
+#' Given a point in D-space and a grid of Halton boxes, the point's Halton index  
+#' is any integer N which gets mapped to the Halton box containing the point.  
+#' (i.e., any integer in the set $\{x:N = x mod C\}$, where $C$ 
+#' = \code{prod(n.boxes)}).  
 #' 
 #' This routine solves the Chinese Remainder Theorem to find Halton indicies.
 #' This routine loops over the points in  \code{hl.coords}, and as such minimizes memory usage 
 #' but sacrifices speed. For small problems,  see  \code{\link{halton.indicies.vector}}, 
 #' which computes indicies by actually placing points in Halton boxes to find their indicies. 
+#' 
+#' No point can be less than it's corresponding \code{ll.corner}.  No point 
+#' can be equal to or greater than it's corresponding \code{ll.corner + delta}. 
 #' 
 #' @author Trent McDonald
 #' 
@@ -38,9 +40,10 @@
 #' n.boxes <- c(16,9) 
 #' halton.indicies.vector(pt, n.boxes) # should equal 70
 #' 
-#' # Plot Halton boxes and indicies to check
+#' # Plot Halton boxes and indicies to check.  
+#' # pt should plot in box labeled 70
 #' b <- c(2,3)
-#' J <- c(4,2)
+#' J <- log(n.boxes,b)  # J must be integers
 #' hl.ind <- halton( prod(n.boxes), 2,0 )
 #' plot(c(0,1),c(0,1),type="n")
 #' for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=J[1]+1-i, col=i)
@@ -51,80 +54,111 @@
 #' }
 #' points(pt$x, pt$y, col=6, pch=16, cex=2)
 #' 
-#' 
-halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+#' # Longer vector
+#' tmp <- data.frame(x=(0:100)/101,y=.2)
+#' n.boxes <- c(16,9)
+#' tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+halton.indicies.CRT <- function(hl.coords, n.boxes, delta=c(1,1), ll.corner=c(0,0)){
   
-  f.hal.index <- function(pt, n.boxes, b, J, xf, yf){
-    # internal function to return Halton index for one point.  This is 
-    # where CRT is solved. 
-    x <- pt[1]
-    y <- pt[2]
-    b.x <- b[1]
-    b.y <- b[2]
-    nx <- n.boxes[1]
-    ny <- n.boxes[2]
-    jx <- J[1]
-    jy <- J[2]
-    
-    print(c(x,y))
-    
-    # LL corner of point's box
-    x.n <- floor(x*nx)
-    y.n <- floor(y*ny)
-    
-    # Mod value in each dimension
-    pows <- b.x^((jx-1):1)
-    digits <- c(floor(x.n/pows), x.n %% b.x )
-    Ax <- round(sum(rev(digits)*c(pows,1))) %% nx
 
-    pows <- b.y^((jy-1):1)
-    digits <- c(floor(y.n/pows), y.n %% b.y )
-    Ay <- round(sum(rev(digits)*c(pows,1))) %% ny  # round() used to lop off fuzz
-
-    print(c(Ax,Ay))
-    
-    # Solve CRT.  Find N s.t., N = Ax mod b.x and N= Ay mod b.y
-    kx <- xf[xf[,2]==Ax ,1]
-    ky <- yf[yf[,2]==Ay ,1]
-    
-    print(c(kx,ky))
-    cat("--------------------------------------\n")
-    
-    N <- kx*ny + ky*nx
-    N
-  }
-  
   # Scale points to [0,1]
   hl.coords <- t( (t(as.matrix(hl.coords))-ll.corner)/delta )
   
-  # Compute J = exponents
-  J <- log(n.boxes, b)
-  if( !all( (J - trunc(J)) <= .Machine$double.eps * 1000) ){
-    stop( "number of boxes in one or more dimensions is not an integer power of bases. Check n.boxes and b.")
-  }
+#   # Compute J = exponents
+#   J <- log(n.boxes, b)
+#   if( !all( (J - trunc(J)) <= .Machine$double.eps * 1000) ){
+#     stop( "number of boxes in one or more dimensions is not an integer power of bases. Check n.boxes and b.")
+#   }
   
-  # compute CRT lookup tables
-  f.frac <- function(x){x - trunc(x)}
+  # compute Halton index lookup tables.  Just need 1st cycle here.
+  # tmp here should be integers, but round just to remove any fuzz
+  tmp <- round( halton(n.boxes[1], bases=b[1])*n.boxes[1] )
+  x.hal.order <- data.frame(ord=0:(n.boxes[1]-1), 
+                            row=tmp)
+  tmp <- round( halton(n.boxes[2], bases=b[2])*n.boxes[2] )
+  y.hal.order <- data.frame(ord=0:(n.boxes[2]-1), 
+                            row=tmp) 
   
-  tmp <- 0:(n.boxes[1]-1)
-  tmp2 <- tmp*n.boxes[2]/n.boxes[1]
-  x.factor <- cbind(tmp, round(f.frac(tmp2)*n.boxes[1]) )  # round used to lop off fuzz
-  
-  tmp <- 0:(n.boxes[2]-1)
-  tmp2 <- tmp*n.boxes[1]/n.boxes[2]
-  y.factor <- cbind(tmp, round(f.frac(tmp2)*n.boxes[2]) )
+#   print(x.hal.order)
+#   print(y.hal.order)
+ 
 
-  # Loop over coordinates
-  hl.out <- unlist(apply(hl.coords, 1, f.hal.index, n.boxes=n.boxes, b=b, J=J, xf=x.factor, yf=y.factor))
+  # LL corner of each point's box
+  x.n <- floor(hl.coords[,1]*n.boxes[1])
+  y.n <- floor(hl.coords[,2]*n.boxes[2])
   
+  
+  
+#   cat("Row - column: ")
+#   print(cbind(x.n, y.n))
+#   cat("\n")
 
+  # Halton sequence index in each dimension of point. 
+  Ax <- sapply(x.n, function(x,hal.ord){ hal.ord$ord[ hal.ord$row == x]}, hal.ord=x.hal.order)
+  Ay <- sapply(y.n, function(x,hal.ord){ hal.ord$ord[ hal.ord$row == x]}, hal.ord=y.hal.order)
+
+   # print(cbind(Ax, Ay))
+  
+  # Solve CRT.  Find N s.t., N = Ax mod n.boxes[1] and N= Ay mod n.boxes[2]
+  # This involves taking a modular inverse, which requires the Extended 
+  # Euclidean Algorithm to find the greatest common demoninator.
+  # Note, because bases are co-prime, gcd should be 1.  We need the s and t 
+  # coefficients here.
+  gcd <- extended.gcd(n.boxes[1], n.boxes[2])
+  
+   # print(gcd)
+  
+  # Compute Halton indicies
+  hl.out <- Ax*n.boxes[2]*gcd$s + Ay*n.boxes[1]*gcd$t
+  hl.out <- hl.out %% prod(n.boxes)
+  
   hl.out
   
 }
 
-# tmp <- data.frame(x=(0:100)/100,y=.2)
-# tmp <- F.halton.indicies.CRT(tmp, c(16,9))
-# print(tmp)
-# print(length(tmp))
+
+#  pt.1 <- data.frame(x=0.43, y=0.64)
+#  pt.2 <- data.frame(x=1.5/16, y=.5/9)
+#  pt.3 <- data.frame(x= 0.4049793, y=0.281932)
+#  pt.4 <- data.frame(x=0.4573888, y=0.6285714)
+#  pt <- rbind(pt.1, pt.2, pt.3, pt.4)
+#  
+#  n.boxes <- c(16,9) 
+# tmp<- halton.indicies.vector(pt, n.boxes) # should equal 70
+# cat(paste("Halton index from vector routine:", tmp, "\n"))
+# 
+# tmp<- halton.indicies.CRT(pt, n.boxes) # should equal 70
+# cat(paste("Halton index from CRT routine:", tmp, "\n"))
+
+# Plot Halton boxes and indicies to check
+b <- c(2,3)
+J <- c(4,2)
+hl.ind <- halton( 3*prod(n.boxes), 2,0 )
+plot(c(0,1),c(0,1),type="n",xaxt="n", yaxt="n")
+axis(1,at=(0:b[1]) / b[1])
+axis(2,at=(0:b[2]) / b[2])
+for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=1, col=i)
+for( i in J[2]:1) abline(h=(0:b[2]^i)/b[2]^i, lwd=1, col=i)
+for( i in 1:prod(n.boxes)){
+  box.center <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
+  text(box.center[1],box.center[2], i-1, adj=.5)  
+}
+points(pt$x, pt$y, col=6, pch=16, cex=.5)
 
 
+# Note, you cannot have a point exactly on the right or top edge. 
+tmp <- data.frame(x=(0:100)/101,y=.2)
+n.boxes <- c(16,9)
+tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
+tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
+print(tmp2)
+
+# plot(c(0,1),c(0,1),type="n", xlim=c(0,1), ylim=c(.15,.25))
+# for( i in J[1]:1) abline(v=(0:b[1]^i)/b[1]^i, lwd=1, col=i)
+# for( i in J[2]:1) abline(h=(0:b[2]^i)/b[2]^i, lwd=1, col=i)
+# for( i in 1:prod(n.boxes)){
+#   box.center <- (floor(n.boxes*hl.ind[i,]+.Machine$double.eps*10) + 1-.5)/n.boxes
+#   text(box.center[1],box.center[2], i-1, adj=.5)  
+# }
+# points(tmp$x, tmp$y, col=6, pch=16, cex=.5)
