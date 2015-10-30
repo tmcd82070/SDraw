@@ -147,26 +147,26 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, delta=c(1,1), ll.corner=c(0,
 # points(pt$x, pt$y, col=6, pch=16, cex=.5)
 
 
-# Note, you cannot have a point exactly on the right or top edge. 
-tmp <- data.frame(x=(0:100)/101,y=.2)
-tmp.n <- 10000000
-tmp <- data.frame(x=runif(tmp.n), y=runif(tmp.n))
-n.boxes <- c(16,9)
-tmp.vec.time <- system.time( 
-  tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
-)
-# tmp.crt.time <- system.time(
-  # tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+# # Note, you cannot have a point exactly on the right or top edge. 
+# tmp <- data.frame(x=(0:100)/101,y=.2)
+# tmp.n <- 10000000
+# tmp <- data.frame(x=runif(tmp.n), y=runif(tmp.n))
+# n.boxes <- c(16,9)
+# tmp.vec.time <- system.time( 
+#   tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
 # )
-# tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
-# print(tmp2[10:60,])
-# cat("Number of non-equal indicies: ")
-# cat(sum(tmp2$H.ind.vector != tmp2$H.ind.CRT))
-# cat("\n")
-cat("Time for VECTOR routine to complete:\n")
-print(tmp.vec.time)
-# cat("Time for CRT routine to complete:\n")
-# print(tmp.crt.time)
+# # tmp.crt.time <- system.time(
+#   # tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+# # )
+# # tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
+# # print(tmp2[10:60,])
+# # cat("Number of non-equal indicies: ")
+# # cat(sum(tmp2$H.ind.vector != tmp2$H.ind.CRT))
+# # cat("\n")
+# cat("Time for VECTOR routine to complete:\n")
+# print(tmp.vec.time)
+# # cat("Time for CRT routine to complete:\n")
+# # print(tmp.crt.time)
 
 
 
