@@ -1,7 +1,7 @@
-#'  @name spsample
+#'
 #'
 #'  
-#'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
+#  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
 #'  
 #'  @title field is in SDraw.line.  I could not get roxyen to use @title in this file
 #'  
@@ -72,4 +72,5 @@
 #'  WA.sample <- spsample(WA, 100, "HAL")
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  
+#'  @name spsample
 NULL

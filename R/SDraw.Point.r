@@ -2,6 +2,7 @@
 #'    
 #'  @rdname spsample
 #'
+#'  @name spsample
 #'  
 #'  @method spsample SpatialPoints
 #'  
