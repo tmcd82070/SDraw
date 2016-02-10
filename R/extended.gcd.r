@@ -1,7 +1,9 @@
+#'  @export extended.gcd
+#' 
 #'  @title Extended Greatest Common Denominator (GCD) algorithm. 
 #'  
 #'  @description Implements the extended Euclidean algorithm which 
-#'  computes the greatest common divisor and solves Bezout’s identity.
+#'  computes the greatest common divisor and solves Bezout's identity.
 #'  
 #'  @param a A vector of integers
 #'  
@@ -12,10 +14,11 @@
 #'  \code{x = extended.gcd(a,b)}, then \code{x$a*x$t + x$b*x$s == x$gcd}
 #'  
 #'  The Wikipedia page, from which this algorithm was stolen, has the 
-#'  following statement, "The quotients of a and b by their greatest common divisor, which are output, 
-#'  may have an incorrect sign. This is easy to correct at the end of the computation, 
-#'  but has not been done here for simplifying the code."  I have absolutely no 
-#'  idea what this means, but include it as a warning.  For purposes of 
+#'  following statement, 'The quotients of a and b by their greatest common divisor, 
+#'  which are output, may have an incorrect sign.  this is easy to correct at the end
+#'  of the computation, but has not been done here for simpligying the code. 
+#'  I have absolutely no 
+#'  idea what that means, but include it as a warning.  For purposes of 
 #'  \code{SDraw}, elements of a and b are always positive, and I have never 
 #'  observed "incorrect signs".  But, there may be some pathelogical cases 
 #'  where "incorrect signs" occur, and the user should "correct" for this.  
@@ -38,8 +41,6 @@
 #'  #  Check
 #'  cbind(x$a*x$t + x$b*x$s, x$gcd)
 #'  
-
-
 extended.gcd <- function( a, b ){
   
   # Check equality of lengths 
@@ -77,13 +78,6 @@ extended.gcd <- function( a, b ){
 
 
 # # --------------
-# 
-# # A note from wikipedia:
-# # The quotients of a and b by their greatest common divisor, which are output, 
-# # may have an incorrect sign. This is easy to correct at the end of the computation, 
-# # but has not been done here for simplifying the code. Similarly, if either a or 
-# # b is zero and the other is negative, the greatest common divisor that is 
-# # output is negative, and all the signs of the output must be changed.
 # 
 # tmp <- extended.gcd(c(16,16,2^5),c(9,27,3^3))
 # print( tmp )

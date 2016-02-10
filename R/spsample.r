@@ -1,5 +1,5 @@
-#'
 #'  @name spsample
+#'
 #'  
 #'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
 #'  
@@ -72,8 +72,4 @@
 #'  WA.sample <- spsample(WA, 100, "HAL")
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  
-
 NULL
-
-
-

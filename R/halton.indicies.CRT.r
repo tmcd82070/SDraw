@@ -9,6 +9,7 @@
 #' @param hl.coords nXD vector of coordinates for points. No points can be outside 
 #'  the bounding box or exactly on the right or top boundary.  See Details. 
 #' @param n.boxes DX1 vector containing number of Halton boxes in each dimension.
+#' @param b DX1 vector of bases to use in the Halton sequence.
 #' @param delta DX1 vector of study area bounding box extents in each dimension.  Study area is 
 #'  bounded by a cube in D space, which is \code{delta[i]} units wide in dimension \code{i}.  Area 
 #'  of bounding cube is \code{prod{delta}} units to the \code{D} power. 
@@ -30,6 +31,9 @@
 #' 
 #' No point can be less than it's corresponding \code{ll.corner}.  No point 
 #' can be equal to or greater than it's corresponding \code{ll.corner + delta}. 
+#' 
+#' Note: \code{n.boxes} is checked for compatibility with \code{b}.  That is, 
+#' \code{log(n.boxes, b)} must all be integers.  
 #' 
 #' @author Trent McDonald
 #' 
@@ -59,17 +63,20 @@
 #' tmp <- data.frame(x=(0:100)/101,y=.2)
 #' n.boxes <- c(16,9)
 #' tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
-halton.indicies.CRT <- function(hl.coords, n.boxes, delta=c(1,1), ll.corner=c(0,0)){
+#' 
+halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), 
+                                ll.corner=c(0,0)){
   
 
   # Scale points to [0,1]
-  hl.coords <- t( (t(as.matrix(hl.coords))-ll.corner)/delta )
+  tmp <- ll.corner
+  hl.coords <- t( (t(as.matrix(hl.coords)) - ll.corner)/delta )
   
-#   # Compute J = exponents
-#   J <- log(n.boxes, b)
-#   if( !all( (J - trunc(J)) <= .Machine$double.eps * 1000) ){
-#     stop( "number of boxes in one or more dimensions is not an integer power of bases. Check n.boxes and b.")
-#   }
+  # Compute J = exponents as a check.
+  J <- log(n.boxes, b)
+  if( !all( (J - trunc(J)) <= .Machine$double.eps * 1000) ){
+    stop( "number of boxes in one or more dimensions is not an integer power of bases. Check n.boxes and b.")
+  }
   
   # compute Halton index lookup tables.  Just need 1st cycle here.
   # tmp here should be integers, but round just to remove any fuzz

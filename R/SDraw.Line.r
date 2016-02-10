@@ -1,3 +1,4 @@
+#'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
 #'
 #'  @export SDraw.SpatialLines
 #'
@@ -14,6 +15,7 @@
 
 SDraw.SpatialLines <- function(x, n, type, ...){
   
+  print("hi")
   ans <- switch(type,
                 HAL = hal.line( n, x, ...), 
                 BAS = bas.line( n, x ), 

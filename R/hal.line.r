@@ -24,17 +24,25 @@
 #' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 #' vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is choosen so that Halton boxes are as square as possible.
+#' 
 #' @param pt.spacing Desired spacing of points on lines prior to sampling via
-#' HAL.  The first step in sampling is to descritize lines by placing
-#' equaly-spaced points on them, then sampling points using Halton sampling
-#' (see \code{hal.point}).  This parameter controls spacing of points in the
+#' HAL.  The first step in sampling is descritization which places
+#' equaly-spaced points on all lines. Then, points are sampled using Halton sampling
+#' (see \code{hal.point}) for points.  This parameter controls spacing of points during the
 #' discretization of lines.  For example, specifying 50, and assuming
 #' \code{shp} is projected to UTM meters, means points will be placed every 50
 #' meters along all lines in \code{shp}. \code{shp} should be projected before
 #' sampling so that \code{pt.spacing} makes sense.  If \code{pt.spacing} is not
 #' specified, 1000*\code{n} points will be placed along the lines during
 #' descretization.
+#' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
+#' 
+#' @param plot Logical indicating whether to plot \code{shp} and selected points.  
+#' @param plot.lattice Logical indicating whether to plot the Halton lattice used 
+#' to draw the sample.  \code{plot.lattice = TRUE} produces same map 
+#' as \code{plot=TRUE}, with the addition of the Halton lattice. 
+#' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the HAL sample, in
 #' the order they are to be visited.  A 'siteID' attribute is attached to each
 #' point (in the embedded data frame) and gives the HAL ordering of the sample
@@ -48,17 +56,20 @@
 #' @keywords design survey
 #' @examples
 #' 
-#'   #   Draw sample of Hawaii coastline
-#'   #   This takes approximately 30 seconds to run
+#'   #   Default sample of Hawaii coastline
 #'   samp <- hal.line( 100, HI.coast )
-#'   plot(HI.coast, col=rainbow(length(HI.coast)))
-#'   points( samp, pch=16 )
 #'   
+#'   #   Frame spacing ~157 meters. Frame has ~10,000 points
+#'   samp <- hal.line( 100, HI.coast, pt.spacing=157.1855, plot.lattice=TRUE )
+#'   
+#'   #   Different Halton lattice 
+#'   samp <- hal.line( 100, HI.coast, J=c(5,3), pt.spacing=157.1855, plot.lattice=TRUE)
 #' 
-hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3)){
+hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3),  
+                      plot=TRUE, plot.lattice=FALSE){
 
   
-  if( regexpr("Lines", class(shp)) < 0 ) stop("Must call hal.line with a SpatialLinesX object.")
+  if( !inherits(shp, "SpatialLines") ) stop("Must call hal.line with a SpatialLinesX object.")
   
   #   Check n
   if( n < 1 ){
@@ -66,12 +77,6 @@ hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3)){
     warning("Sample size less than one has been reset to 1")
   }
 
-  # If lattice is not specified, set frame size to some multiple of n
-  if(is.null(pt.spacing)){
-    N <- 1000*n
-  } else {
-    N <- NULL
-  }
   
   #   Discretize the line with many more points than needed for sample
   #this is code for Line
@@ -89,34 +94,39 @@ hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3)){
 #   xy = cc[int, , drop = FALSE] + where * (cc[int + 1, , drop = FALSE] - cc[int, , drop = FALSE])
   
   #this is code for Lines
-#   L = x@Lines
-#   lengths = sapply(L, function(x) LineLength(x@coords))
-#   if (sum(lengths) < .Machine$double.eps) 
-#     stop("Lines object of no length")
-#   nrs = round(lengths/sum(lengths) * n)
-#   ret = vector("list", sum(nrs > 0))
-#   j = 1
-#   for (i in 1:length(L)) {
-#     if (nrs[i] > 0) {
-#       ret[[j]] = sample.Line(L[[i]], nrs[i], type = type, 
-#                              offset = offset, ...)
-#       j = j + 1
-#     }
-#   }
-#   do.call(rbind, ret)
-  pt.frame <- spsample( as(shp, "Lines"), N, type="regular" )
-  
+   L = shp@lines
+   lengths = sapply(L, function(x) LineLength(coordinates(x)[[1]]))
+   if (sum(lengths) < .Machine$double.eps) 
+     stop("Lines object of no length")
+   
+   # If frame spacing is not specified, set frame size to some multiple of n
+   if(is.null(pt.spacing)){
+     N <- 1000*n
+   } else {
+     N <- sum(lengths) / pt.spacing
+   }
+   nrs = round(lengths/sum(lengths) * N)
+   ret = vector("list", sum(nrs > 0))
+   j <- 1
+   for (i in 1:length(L)) {
+     if (nrs[i] > 0) {
+       ret[[j]] = sp:::sample.Line(coordinates(L[[i]]), nrs[i], type = "regular")
+       j <- j+1
+     }
+   }
+   ret <- do.call(rbind, ret)
+#  pt.frame <- sp::spsample( as(shp, "SpatialLines"), N, type="regular" )
+
   # Now that we have points, we can draw a HAL point sample. 
-  samp <- hal.point( n, pt.frame, J, bases )
-  
+  samp <- hal.point( n, ret, J, bases, plot, plot.lattice )
+
   samp
-  
-  
+
 }
 
 
 # ----- Some examples
 
-# samp<- hal.polygon(1000, WA.utm)
-# plot(WA.utm)
-# points(samp)
+#  samp<- hal.line(100, HI.coast)
+#  plot(HI.coast)
+#  points(samp)
