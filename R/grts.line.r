@@ -2,6 +2,7 @@
 #'  
 #' @title Draw a equi-probable GRTS sample from a linear (line) resource.
 #' 
+#' 
 #' @description Draws an equi-probable unstratified Generalized Random
 #' Tesselation Stratified (GRTS) sample from a \code{SpatialLines} object
 #' 
