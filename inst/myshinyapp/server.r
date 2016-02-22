@@ -23,12 +23,52 @@ server <- function(session,input, output){
       return(NULL)
     plot(shape())
   })
-
   
-  #for run button
-  observeEvent(input$Run, {})
-  #for export button
-  observeEvent(input$Export, {})
-  #for quit button
-  observeEvent(input$Quit, {})
-}
+  
+  
+#   method = input$method
+#   
+#   #shp will be the uploaded shapefile
+#   shp = readOGR(input$shape)
+#   #shp = readOGR('M:/IbatMigrationModel/Shapefiles/ProjectBoundaries/BeechRidgeProject','BeechRidgeProject')
+#  class(shp)
+# 
+#   #read in functions from GitHub-SDraw folder
+   lapply(list.files('C:/Users/rtupling/Documents/GitHub/SDraw/R/', full.names = TRUE, pattern = '.r'), source)    
+#   
+#   test = bas.polygon(n = 10, shp = shp)
+#   
+#   plot(test)
+#   plot(shp)
+#   
+#   
+#   #This stuff recognizes the shapefile as points, line, or polygons. 
+#   eval(parse(text=paste(paste(tolower(method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shp))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shp))))-1)),sep='.'), '(', 'n =', n, ',', 'shp = shp',')')))
+#   
+#   
+#   
+#   
+  run <- reactive({
+    #make text outside here
+    text=paste(paste(tolower(method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shp))), 1, 
+                                                    nchar(as.character(gsub('Spatial|DataFrame','',class(shp))))-1)),sep='.'), '(', 'n =', input$n, ',', 'shp = shape',')')
+    isolate({
+      # PUT THE COOL STUFF INSIDE HERE
+       eval(parse(text=text))
+    })})
+#   
+#   
+#   
+#   #for run button
+   output$sample<-renderPlot(input$Run)
+#   
+#   #for export button
+  output$export<-downloadHandler(
+     filename = function(){paste('SDraw Sample ', input$method, ' .shp', sep = '')},
+    content = function(filename){
+      writeOGR()
+    }
+  )
+#   #for quit button
+   observeEvent(input$Quit, {stopApp()})
+ }
