@@ -7,12 +7,15 @@ shinyUI(fluidPage(
   ),
   
   column(4,
-    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"))
+
+    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"), selected = 1)
   ),
   
   column(4,
-  numericInput("n", "Sample Size", 100, min = 1, max = 1000)
-  ),
+  numericInput("n", "Sample Size", 100, min = 1, max = 1000, step = 10)),
+
+   
+ 
   
   sidebarLayout(
   sidebarPanel(
@@ -24,8 +27,10 @@ shinyUI(fluidPage(
   mainPanel(
     "View Shapefile", 
     fluidRow(plotOutput("shape")), 
+    fluidRow(plotOutput("shape2")), 
     width = 12
   )),
+    
   
   sidebarPanel(
     actionButton("Run", label = "Run", icon = NULL, width = NULL), 
@@ -34,3 +39,4 @@ shinyUI(fluidPage(
   ), 
   
   theme = "journal.css"))
+
