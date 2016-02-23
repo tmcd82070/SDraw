@@ -7,11 +7,11 @@ shinyUI(fluidPage(
   ),
   
   column(4,
-    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"))
+    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"), selected = 1)
   ),
   
   column(4,
-  numericInput("n", "Sample Size", 100, min = 1, max = 1000)
+  numericInput("n", "Sample Size", 100, min = 1, max = 1000, step = 10)
   ),
   
   sidebarLayout(
