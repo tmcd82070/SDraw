@@ -34,3 +34,4 @@ shinyUI(fluidPage(
   ), 
   
   theme = "journal.css"))
+

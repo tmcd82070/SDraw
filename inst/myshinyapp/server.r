@@ -43,10 +43,12 @@ server <- function(session,input, output){
        eval(parse(text=text))
     })})
    
+  
+  
   # for run button, execute above 'run' function for selected input$method (HAL, BAS, GRTS, SSS)
   observeEvent(input$Run, {run(paste(tolower(input$method, '.', text, sep = "")))}) 
   
-  
+
   
   
   #for export button
