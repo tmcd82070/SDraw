@@ -29,16 +29,25 @@ server <- function(session,input, output){
   
   
    #read in functions from GitHub-SDraw folder
+<<<<<<< HEAD
    lapply(list.files('C:/Users/rtupling/Documents/GitHub/SDraw/R/', full.names = TRUE, pattern = '.r'), source)    
   
+=======
+#    lapply(list.files('C:/Users/rtupling/Documents/GitHub/SDraw/R/', full.names = TRUE, pattern = '.r'), source)    
+#   
+>>>>>>> origin/ShinySDraw
     
    
    
    # 'run' function recognizes the shapefile as points, lines, or polygons  
   run <- reactive({
     #make text outside here
+<<<<<<< HEAD
     text=paste(paste(tolower(method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shp))), 1, 
                                                     nchar(as.character(gsub('Spatial|DataFrame','',class(shp))))-1)),sep='.'), '(', 'n =', input$n, ',', 'shp = shape',')')
+=======
+    text=paste(paste(tolower(input$method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shape()))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shape()))))-1)),sep='.'), '(', 'n =', input$n, ',', 'shp = shape()',')')
+>>>>>>> origin/ShinySDraw
     isolate({
        eval(parse(text=text))
     })})
@@ -46,8 +55,17 @@ server <- function(session,input, output){
   
   
   # for run button, execute above 'run' function for selected input$method (HAL, BAS, GRTS, SSS)
+<<<<<<< HEAD
   observeEvent(input$Run, {run(paste(tolower(input$method, '.', text, sep = "")))}) 
   
+=======
+  #observeEvent(input$Run, {run(paste(tolower(input$method, '.', text, sep = "")))}) 
+  output$shape2<-renderPlot({
+    if(!input$Run)
+      return(NULL)
+      plot(run())
+  })
+>>>>>>> origin/ShinySDraw
 
 
   
@@ -69,6 +87,19 @@ server <- function(session,input, output){
   )
 
   
+<<<<<<< HEAD
+=======
+
+  #for export button
+  output$Export<-downloadHandler(
+     filename = function(){paste('SDraw Sample','.shp', sep = '')},
+    content = function(filename){
+      writeOGR(shape, filename)
+    }
+  )
+
+  
+>>>>>>> origin/ShinySDraw
    #for quit button
    observeEvent(input$Quit, {stopApp()})
  
@@ -80,7 +111,11 @@ server <- function(session,input, output){
 # testing code - delete when done
 #    test = bas.polygon(n = 10, shp = shp)
 #    plot(test)
+<<<<<<< HEAD
 
+=======
+#    plot(shp)
+>>>>>>> origin/ShinySDraw
 #   method = input$method
 #   #method = "bas"
 #   
@@ -111,13 +146,13 @@ server <- function(session,input, output){
 #   
 #   
 #   
-  runBAS <- reactive({
-    #make text outside here
-    text=paste(paste(tolower(method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shp))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shp))))-1)),sep='.'), '(', 'n =', n, ',', 'shp = shp',')')
-    isolate({
-      # PUT THE COOL STUFF INSIDE HERE
-       eval(parse(text=text))
-    })})
+#   runBAS <- reactive({
+#     #make text outside here
+#     text=paste(paste(tolower(method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shp))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shp))))-1)),sep='.'), '(', 'n =', n, ',', 'shp = shp',')')
+#     isolate({
+#       # PUT THE COOL STUFF INSIDE HERE
+#        eval(parse(text=text))
+#     })})
 #   
 #   ########################
 #   # ---- BAS Sampling Functions ---- #
@@ -155,3 +190,8 @@ server <- function(session,input, output){
 # #   )
 #   #for quit button
 #   observeEvent(input$Quit, {})
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> origin/ShinySDraw

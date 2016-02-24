@@ -20,7 +20,7 @@ halton.lattice.polygon <- function(sp.obj, N=10000, J=NULL, eta=c(1,1), triangul
   
   if( is.null(J)){
     # Get area of object, subtracting holes.  This requires rgeos package.
-    sp.area <- gArea( sp.obj )
+    sp.area <- rgeos::gArea( sp.obj )
     
     # Bump up the N requested to account for area outside polygons, but within bbox.
     bb.area <- prod(apply(bbox(sp.obj),1,diff))

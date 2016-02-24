@@ -15,7 +15,8 @@ Imports:
     rgdal,
     rgeos,
     graphics,
-    methods
+    methods,
+    shiny
 Depends:
     sp
 LazyData: true
