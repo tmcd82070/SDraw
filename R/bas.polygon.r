@@ -59,7 +59,7 @@ if( n < 1 ){
 bb <- bbox( shp )
 
 #   Find area of all polygons
-area <- gArea(shp)  # If shp is not projected, this generates a warning. 
+area <- rgeos::gArea(shp)  # If shp is not projected, this generates a warning. 
 
 #   Find fraction of the square Halton box covered by the polygons
 p <- min(1, area / max(diff(t(bb)))^2 )
