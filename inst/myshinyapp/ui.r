@@ -7,23 +7,6 @@ shinyUI(fluidPage(
   ),
   
   column(4,
-<<<<<<< HEAD
-<<<<<<< HEAD
-    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"), selected = 1)
-  ),
-  
-  column(4,
-  numericInput("n", "Sample Size", 100, min = 1, max = 1000, step = 10)
-=======
-    selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"))
-  ),
-  
-  column(4,
-  numericInput("n", "Sample Size", 100, min = 1, max = 1000)
->>>>>>> origin/ShinySDraw
-  ),
-=======
-
     selectInput("method", h3("Sampling Method"), choices = list("HAL", "BAS", "GRTS", "SSS"), selected = 1)
   ),
   
@@ -32,7 +15,6 @@ shinyUI(fluidPage(
 
    
  
->>>>>>> origin/ShinySDraw
   
   sidebarLayout(
   sidebarPanel(
@@ -56,11 +38,4 @@ shinyUI(fluidPage(
   ), 
   
   theme = "journal.css"))
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/ShinySDraw
-=======
-
->>>>>>> origin/ShinySDraw
