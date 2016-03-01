@@ -34,7 +34,7 @@ server <- function(session,input, output){
     isolate({
        eval(parse(text=text))
     })})
-   
+  
   
   
   # for run button, execute above 'run' function for selected input$method (HAL, BAS, GRTS, SSS)
@@ -51,9 +51,7 @@ server <- function(session,input, output){
 
   #for export button
   output$Export<-downloadHandler(
-    filename = function(){
-      paste(input$method, ' SDraw Sample', '.shp', sep = '')
-    },
+    filename = function(){},
     content = function(file){
       rgdal::writeOGR(shape2(), file)
     }
