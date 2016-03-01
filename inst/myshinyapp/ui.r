@@ -25,7 +25,8 @@ shinyUI(fluidPage(
   
   mainPanel(
     "View Shapefile", 
-    fluidRow(plotOutput("shape")), 
+    fluidRow(plotOutput("shape")),
+    fluidRow(textOutput('text')),
     fluidRow(plotOutput("shape2")), 
     width = 12
   )),

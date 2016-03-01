@@ -35,7 +35,7 @@ server <- function(session,input, output){
        eval(parse(text=text))
     })})
   
-  
+
   
   # for run button, execute above 'run' function for selected input$method (HAL, BAS, GRTS, SSS)
   #observeEvent(input$Run, {run(paste(tolower(input$method, '.', text, sep = "")))}) 
@@ -45,8 +45,12 @@ server <- function(session,input, output){
       plot(run())
   })
   
-  
-  
+  # determine what the 'run' function is doing (what function is it calling)
+  output$text<-renderText({
+    if(!input$Run)
+      return(NULL)
+      paste(text=paste(paste(tolower(input$method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shape()))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shape()))))-1)),sep='.'), '(', 'n =', input$n, ',', 'shp = shape()',')'))
+    })
   
 
   #for export button
