@@ -49,17 +49,20 @@ server <- function(session,input, output){
   output$text<-renderText({
     if(!input$Run)
       return(NULL)
-      paste(text=paste(paste(tolower(input$method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shape()))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shape()))))-1)),sep='.'), '(', 'n =', input$n, ',', 'shp = shape()',')'))
+      paste(text=paste(paste(tolower(input$method),tolower(substr(as.character(gsub('Spatial|DataFrame','',class(shape()))), 1, nchar(as.character(gsub('Spatial|DataFrame','',class(shape()))))-1)),sep='.')))
     })
   
 
   #for export button
   output$Export<-downloadHandler(
-    filename = function(){},
+    filename = function(){
+      paste(input$type, input$method, 'SDraw Sample', '.zip', sep = ' ')
+    },
     content = function(file){
-      rgdal::writeOGR(shape2(), file)
-    }
-  )
+      writeOGR(shape2(), dsn = paste(input$shape, '.shp', sep = ''), driver = 'ESRI Shapefile')
+      zip(zipfile = paste(input$type, input$method, 'SDraw Sample', '.zip', sep = ' '), files = Sys.glob('shape2.*'))
+      }
+    )
 
   
    #for quit button

@@ -11,7 +11,7 @@ shinyUI(fluidPage(
   ),
   
   column(4,
-  numericInput("n", "Sample Size", 100, min = 1, max = 1000, step = 10)),
+  numericInput("n", "Sample Size", 10, min = 1, max = 1000, step = 10)),
 
    
  
