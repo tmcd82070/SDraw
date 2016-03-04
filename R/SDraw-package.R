@@ -6,7 +6,7 @@
 #' Generalized-Random-Tesselation-Stratified (GRTS) samples, 
 #' and Simple-Systematic-Samples (SSS).  The input 
 #' frames can contain points (0-D, finite), lines (1-D, infinite), or polygons (2-D,
-#' infinit). 
+#' infinite). 
 #' 
 #' \tabular{ll}{ Package: 
 #' \tab SDraw\cr 
@@ -55,6 +55,6 @@
 #' 
 #' @keywords package
 
-NULL
+"_PACKAGE"
 
 

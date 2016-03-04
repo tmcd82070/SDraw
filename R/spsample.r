@@ -1,12 +1,6 @@
-#'
-#'
+#'  Sample Draws in (or on) spatial objects.
 #'  
-#  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
-#'  
-#'  @title field is in SDraw.line.  I could not get roxyen to use @title in this file
-#'  
-#'  
-#'  @description Draw sample (point locations) from SpatialPoints, SpatialLines, 
+#'  Draw sample (point locations) from SpatialPoints, SpatialLines, 
 #'  and SpatialPolygons. This is extends the generic \code{spsample} function of 
 #'  package \code{sp} to draw balanced samples. 
 #'  
@@ -73,4 +67,20 @@
 #'  WA.sample <- spsample(WA, 100, "SSS", spacing=c(1,2))
 #'  
 #'  @name spsample
-NULL
+#'  
+#'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
+#'  
+#' @export
+#' @docType methods
+#' @rdname spsample-methods
+#' @aliases spsample,SpatialPolygons,ANY-method
+setMethod("spsample", c(x="SpatialPolygons", n="ANY", type="ANY"), SDraw.SpatialPolygons)
+
+#' @rdname spsample-methods
+#' @aliases spsample,SpatialLines,ANY-method
+setMethod("spsample", c(x="SpatialLines", n="ANY", type="ANY"), SDraw.SpatialLines)
+
+#' @rdname spsample-methods
+#' @aliases spsample,SpatialPoints,ANY-method
+setMethod("spsample", c(x="SpatialPoints", n="ANY", type="ANY"), SDraw.SpatialPoints)
+

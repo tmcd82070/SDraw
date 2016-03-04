@@ -1,9 +1,8 @@
+#' 
 #'  @export SDraw.SpatialPolygons
 #'    
 #'  @rdname spsample
 #'  
-#'  @name spsample
-#'
 #'  @method spsample SpatialPolygons 
 #'  
 

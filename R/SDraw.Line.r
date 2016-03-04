@@ -1,16 +1,11 @@
-#'  @aliases spsample spsample.SpatialLines spsample.SpatialPoints spsample.SpatialPolygons
-#'
+#'  
 #'  @export SDraw.SpatialLines
 #'
-#'  @name spsample
-#'    
-#'  @title Sample Draws in (or on) spatial objects.
-#'  
 #'  @rdname spsample
 #'
 #'  @method spsample SpatialLines
 #'  
-
+#'  
 
 
 SDraw.SpatialLines <- function(x, n, type, ...){
