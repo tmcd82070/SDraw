@@ -21,7 +21,7 @@ grts.equi <- function( n, shp, over.n=0 ){
   }
 
 
-  Equalsites <- grts(design=Equaldsgn,
+  Equalsites <- spsurvey::grts(design=Equaldsgn,
           DesignID='Site',
           type.frame=sframe.type,
           src.frame="sp.object",
