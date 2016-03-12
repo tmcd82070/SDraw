@@ -1,11 +1,11 @@
-#'  @export halton.indicies
+#' @export halton.indicies
 #'  
-#'  @title Compute Halton indicies
+#' @title Compute Halton indicies
 #'  
-#'  @description Compute and attach indicies of the Halton sequence to points.  Points can be
+#' @description Compute and attach indicies of the Halton sequence to points.  Points can be
 #'  an abitrary set or a Halton lattice. 
 #'  
-#'  @param hl Either a data frame or a \code{SpatialPoints} object, both of 
+#' @param hl Either a data frame or a \code{SpatialPoints} object, both of 
 #'  which must have 
 #'  additional attributes (see Details). Suitable input objects are the output of 
 #'  functions \code{halton.lattice} (a data frame with attributes) and 
@@ -21,12 +21,12 @@
 #'  If \code{hl} is a data.frame, this function 
 #'  works for dimensions >2. 
 #'  
-#'  @param index.name A character string giving the name of the column in 
+#' @param index.name A character string giving the name of the column in 
 #'  the output data frame or SpatialPoints object to contain 
 #'  the Halton indicies.  This name is saved as an attribute attached to 
 #'  the output object.
 #'  
-#'  @param use.CRT A logical values specifying whether to invert the 
+#' @param use.CRT A logical values specifying whether to invert the 
 #'  Halton sequence using the Chinese Remainder Theorem (CRT).  The other 
 #'  method (\code{use.CRT == FALSE}) is a direct method, and is very fast, 
 #'  but requires multiple huge vectors be allocated (size of vectors is 
@@ -39,7 +39,7 @@
 #'  Patience is required if your problem is big enough to require 
 #'  \code{use.CRT == TRUE}.      
 #'  
-#'  @details The input object \code{hl} must have the following attributes:   
+#' @details The input object \code{hl} must have the following attributes:   
 #'  \itemize{
 #'    \item \code{bases} = Dx1 vector of bases to use in each dimension.  
 #'    \item \code{J} = DX1 vector of the exponents for bases defining the Halton boxes.
@@ -56,14 +56,14 @@
 #'  are transfered to the output object for continuity of attributes within the more general  
 #'  sample frame object.
 #'  
-#'  @return A data frame, structured like \code{data.frame(hl)}, but with indicies of the 
+#' @return A data frame, structured like \code{data.frame(hl)}, but with indicies of the 
 #'  Halton sequence attached in a column named \code{index.name}. 
 #'   
-#'  @author Trent McDonald
+#' @author Trent McDonald
 #'   
-#'  @seealso \code{\link{halton.frame}}
+#' @seealso \code{\link{halton.frame}}
 #'   
-#'  @examples 
+#' @examples 
 #'# Define the Halton lattice
 #'attr(WA.cities,"J") <- c(3,2)
 #'attr(WA.cities,"bases") <- c(2,3)

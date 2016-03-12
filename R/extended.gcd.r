@@ -1,15 +1,15 @@
-#'  @export extended.gcd
-#' 
-#'  @title Extended Greatest Common Denominator (GCD) algorithm. 
+#' @export extended.gcd
+#'
+#' @title Extended Greatest Common Denominator (GCD) algorithm. 
 #'  
-#'  @description Implements the extended Euclidean algorithm which 
-#'  computes the greatest common divisor and solves Bezout's identity.
+#' @description Implements the extended Euclidean algorithm which 
+#' computes the greatest common divisor and solves Bezout's identity.
 #'  
-#'  @param a A vector of integers
+#' @param a A vector of integers
 #'  
-#'  @param b A vector of integers.  \code{length(a)} must equal \code{length(b)}.
+#' @param b A vector of integers.  \code{length(a)} must equal \code{length(b)}.
 #'  
-#'  @details This routine computes the element-wise gcd and 
+#' @details This routine computes the element-wise gcd and 
 #'  coefficients s and t such that a*t + b*s = d. In other words, if 
 #'  \code{x = extended.gcd(a,b)}, then \code{x$a*x$t + x$b*x$s == x$gcd}
 #'  
@@ -25,17 +25,17 @@
 #'  This routine does check that the output gcd is 
 #'  positive, and corrects this and the signs of s and t if so.  
 #'  
-#'  @return a data frame containing 5 columns; \code{a}, \code{t}, 
+#' @return a data frame containing 5 columns; \code{a}, \code{t}, 
 #'  \code{b}, \code{s}, and \code{gcd}.  
 #'  Number of rows in output equals length of input \code{a}.  
 #'
-#'  @references 
+#' @references 
 #'  Code is based on the following Wikipedia pseudo-code: 
 #'  \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}
 #'   
-#'  @author Trent McDonald
+#' @author Trent McDonald
 #'  
-#'  @examples 
+#' @examples 
 #'  x <- extended.gcd( c(16,27,27,46), c(9,16,9,240) )
 #'  
 #'  #  Check

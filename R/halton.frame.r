@@ -8,7 +8,7 @@
 #' randomly adds Halton cycles to separate geographically nearby points in the frame. 
 #' The frame is then sorted by the new frame indicies for sampling.
 #' 
-#'  @param hl.points Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
+#' @param hl.points Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
 #'  particular, the output of \code{halton.indicies} is acceptable.
 #'  The data frame, or data frame of the \code{SpatialPointsDataFrame}, 
 #'  must contain the Halton indicies, which is assumed to be named 
@@ -17,20 +17,20 @@
 #'  to be included in the frame, and the Halton index of the unit is the Halton box 
 #'  the unit falls in. A \code{SpatialPoints} object without the data frame is not 
 #'  acceptable. 
-#'  @param order.name Name of the column in the output object by which the frame should 
+#' @param order.name Name of the column in the output object by which the frame should 
 #'  be sorted to produce the proper sampling order.  This index is unique to all units.  This 
 #'  parameter is saved as an attribute of the output object. 
 #'
-#'  @return A data frame suitable for use as a sampling frame. This is a data frame, 
+#' @return A data frame suitable for use as a sampling frame. This is a data frame, 
 #'  like \code{hl.points}, but with a new index column separating points in the same Halton box.  
 #'  The output data frame is sorted by the new indicies.  New indicies are in column 
 #'  specified by the "order.name" attribute (i.e., \code{attr(obj, "order.name")} ). 
 #'   
-#'   @author Trent McDonald
+#' @author Trent McDonald
 #'   
-#'   @seealso \code{\link{halton.indicies}}
+#' @seealso \code{\link{halton.indicies}}
 #'   
-#'   @examples 
+#' @examples 
 #'# This is the "brute force" method to draw HAL samples. hal.point does all this.
 #'
 #'# Define Halton lattice

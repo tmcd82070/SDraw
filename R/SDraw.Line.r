@@ -1,9 +1,12 @@
-#'  
-#'  @export SDraw.SpatialLines
+#' @title SDraw for SpatialLines
+#' 
+#' @description Dispatch an appropriate function based on type of the input spatial object.
+#' 
+#' @export SDraw.SpatialLines
 #'
-#'  @rdname spsample
+#' @rdname spsample
 #'
-#'  @method spsample SpatialLines
+#' @method spsample SpatialLines
 #'  
 #'  
 

@@ -22,8 +22,9 @@ Depends:
 LazyData: true
 RoxygenNote: 5.0.1
 Collate:
+    'runUI.r'
     'HI.coast.r'
-    'SDraw-package.R'
+    'SDraw-package.r'
     'SDraw.Line.r'
     'SDraw.Point.r'
     'SDraw.Poly.r'

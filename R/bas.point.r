@@ -5,7 +5,7 @@
 #' @description Draws a BAS sample from a SpatialPoints object
 #' 
 #' @details The BAS method for points computs the minimum distance between all points in
-#' \code{shp} and places a small square (pixel) around each.  Size of the
+#' \code{x} and places a small square (pixel) around each.  Size of the
 #' square around each point is d/sqrt(2) on a side, where d is the minimum
 #' distance between points. The BAS method for points then selects a BAS sample
 #' from the set of polygons (i.e., squares) surrounding each point (see
@@ -14,10 +14,11 @@
 #' points.  When a square contains a Halton point, the official sample location
 #' is the the original point (center of the square), not the Halton point. 
 #' 
-#' @param n Sample size.  Number of points to select from the set of points
-#' contained in \code{shp}.
-#' @param shp A SpatialPoints or SpatialPointsDataFrame object. This object
+#' @param x A SpatialPoints or SpatialPointsDataFrame object. This object
 #' must contain at least 1 point.
+#' @param n Sample size.  Number of points to select from the set of points
+#' contained in \code{x}.
+#'
 #' @return A SpatialPointsDataFrame containing locations in the BAS sample, in
 #' order they are to be visited.  A 'siteID' attribute is attached to each
 #' point (in the embedded data frame) and gives the BAS ordering of the sample
@@ -30,29 +31,29 @@
 #' @examples
 #' 
 #' \dontrun{
-#' bas.point( 100, WA.cities)
+#' bas.point( WA.cities, 100)
 #' }
 #' 
 #' 
 #' 
-bas.point <- function(n, shp){
+bas.point <- function(x, n, ...){
 #   Function to draw a bas sample from a shapefile
 #   containing a list of finite features.
 
-if( regexpr("Points", class(shp)) < 0 ) stop("Must call bas.point with a SpatialPointsX object.")
+if( regexpr("Points", class(x)) < 0 ) stop("Must call bas.point with a SpatialPointsX object.")
 
-N <- length(shp)
+N <- length(x)
 
 if( n > N){
   warning("Sample size greater than frame requested. Census taken.")
   n <- N
 }
 
-pts <- coordinates( shp )
+pts <- coordinates( x )
 
 #   Find minimum distance between two points.  
 #   This is expensive, but necessary. 
-d <- min(stats::dist( pts ))  # minimum distance.  Use dist from stats package. Keep in mind this is decimal degrees if shp is lat long.
+d <- min(stats::dist( pts ))  # minimum distance.  Use dist from stats package. Keep in mind this is decimal degrees if x is lat long.
 
 #   Make pixels around points 
 d <- d / (2*sqrt(2))   # reduce minimum so no pixels over lap
@@ -66,10 +67,10 @@ for( i in 1:nrow(pts)){
     Sr1 <- Polygon( cbind( c(ll.x[i],ll.x[i],ur.x[i],ur.x[i],ll.x[i]), c(ll.y[i],ur.y[i],ur.y[i],ll.y[i],ll.y[i]) ) )
     pixels[[i]] <- Polygons( list( Sr1 ), paste("p",i,sep="") )    
 }
-pixels <- SpatialPolygons( pixels, 1:nrow(pts), proj4string=CRS(proj4string(shp))   )
+pixels <- SpatialPolygons( pixels, 1:nrow(pts), proj4string=CRS(proj4string(x))   )
 
-if( regexpr( "DataFrame", class(shp) ) > 0){
-    df <- data.frame(shp, row.names=row.names(pixels))  # coordinates are included here, by default
+if( regexpr( "DataFrame", class(x) ) > 0){
+    df <- data.frame(x, row.names=row.names(pixels))  # coordinates are included here, by default
 } else {
     df <- data.frame(pts, row.names=row.names(pixels))
 }
@@ -81,8 +82,8 @@ pixels <- SpatialPolygonsDataFrame( pixels, data=df )
 #   But, because points can be sampled more than once when the Halton sequence comes 
 #   back around.  To deal with this, take an oversample and keep going until we get n distinct points. 
 samp <- NULL
-crs.obj <- CRS(shp@proj4string@projargs)
-cord.names <- dimnames(bbox(shp))[[1]]
+crs.obj <- CRS(x@proj4string@projargs)
+cord.names <- dimnames(bbox(x))[[1]]
 df.col.names <- names(df)
 
 
