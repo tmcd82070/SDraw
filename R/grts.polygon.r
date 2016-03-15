@@ -41,7 +41,7 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "GRTS").
-#'    \item \code{n}: Regular sample size.  (i.e., \code{sum(out$pointType=="Sample)})
+#'    \item \code{n}: Regular sample size.  (i.e., \code{sum(out$pointType=="Sample")})
 #'    \item \code{over.n}: Over-sample size. (i.e., \code{sum(out$pointType=="OverSample")})  
 #' }
 #' 

@@ -49,7 +49,7 @@
 #' # A square grid oriented east-west
 #' WA.samp <- srs.polygon( WA, 100 )   
 #' plot( WA )
-#' points( WA.samp )
+#' points( WA.samp, pch=16 )
 #' 
 #' 
 srs.polygon <- function( x, n ){
@@ -67,7 +67,7 @@ srs.polygon <- function( x, n ){
   A.bb <- diff(bb[1,])*diff(bb[2,])
   
   #   Find area of all polygons
-  A <- rgeos::gArea(shp)  # If shp is not projected, this generates a warning. 
+  A <- rgeos::gArea(x)  # If x is not projected, this generates a warning. 
   #A <- sum(unlist(lapply( x@polygons, function(x){ x@area}))) #this always works, but I don't know about holes
   
   # Compute number of points to generate to get approx n inside shape
@@ -110,8 +110,9 @@ srs.polygon <- function( x, n ){
   }
   
   # Make into a SpatialPointsDataFrame
-  samp <- SpatialPointsDataFrame(data.frame(x=samp.pts.x, y=samp.pts.y), samp.attr, 
-                                 CRS=proj4string(x))
+  samp <- SpatialPointsDataFrame(data.frame(x=samp.pts.x, y=samp.pts.y), 
+                                 samp.attr, 
+                                 proj4string=CRS(proj4string(x)))
   
   #   Add additional attributes
   attr(samp, "frame") <- deparse(substitute(x))

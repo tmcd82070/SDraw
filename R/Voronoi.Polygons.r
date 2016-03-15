@@ -5,6 +5,15 @@
 #'  
 #' @param x A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object
 #'  
+#' @param bounding.polygon If present, this is a \code{SpatialPolygons*} object specifing the 
+#' bounding polygon(s) for the Voronoi polygons.  If present, the 
+#' Voronoi polygons from points in \code{x} are clipped to the outside 
+#' bounding polygon of \code{bounding.polygon}.  The outside bounding polygon
+#' is the union of all polygon 
+#' in \code{bounding.polygon}.  If this is not present, the Voronoi polygons
+#' extend to a rectangle outside the range of the input points in all directions
+#' by 10 percent.    
+#'    
 #' @return A \code{SpatialPolygonsDataFrame} containing the Voronoi polygons
 #'  (or tesselations) surrounding the points in \code{x}. Attributes of the 
 #'  output polygons are: 
@@ -47,7 +56,7 @@
 #' @export
 
 
-voronoi.polygons <- function(x) {
+voronoi.polygons <- function(x, bounding.polygon) {
   if( !inherits(x,"SpatialPoints") ){
     stop("Must pass a SpatialPoints* object to voronoi.polygons.")
   }
@@ -60,7 +69,7 @@ voronoi.polygons <- function(x) {
     pcrds = rbind(pcrds, pcrds[1,])
     polys[[i]] = Polygons(list(Polygon(pcrds)), ID=as.character(i))
   }
-  SP = SpatialPolygons(polys, proj4string=CRS(proj4string(layer)))
+  SP = SpatialPolygons(polys, proj4string=CRS(proj4string(x)))
   voronoi = SpatialPolygonsDataFrame(SP, 
      data=data.frame(x=crds[,1], 
                      y=crds[,2], 
@@ -68,4 +77,17 @@ voronoi.polygons <- function(x) {
                                  slot, "area"),
                      row.names=sapply(slot(SP, 'polygons'),
                                  slot, "ID")))
+  
+  # Clip to some layer, if called for
+  if(!missing(bounding.polygon)){
+    # If multiple polygons in bound, get just the outside bounding polygon
+    bounding.polygon <- gUnion( bounding.polygon, bounding.polygon )
+    voronoi.clipped <- gIntersection( voronoi, bounding.polygon, byid=TRUE, 
+                                      id=row.names(voronoi))
+    df <- data.frame(voronoi)
+    df$area <- sapply(slot(voronoi.clipped,"polygons"), slot, "area")  # new areas
+    voronoi <- SpatialPolygonsDataFrame( voronoi.clipped, df)
+  }
+  
+  voronoi
 }
