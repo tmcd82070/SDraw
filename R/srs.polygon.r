@@ -30,6 +30,13 @@
 #'   \item Any attributes of the original polygons (in \code{x}). 
 #' }
 #'
+#' Additional attributes of the output object, beyond those which 
+#' make it a \code{SpatialPointsDataFrame}, are:
+#' \itemize{
+#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+#'    \item \code{sample.type}: Type of sample drawn. (i.e., "SRS").
+#' }
 #'    
 #'    
 #'     
@@ -47,50 +54,70 @@
 #' 
 srs.polygon <- function( x, n ){
 
-#   Check n
-if( n < 1 ){
-  n <- 1
-  warning("Sample size less than one has been reset to 1")
-}
+  #   Check n
+  if( n < 1 ){
+    n <- 1
+    warning("Sample size less than one has been reset to 1")
+  }
+    
+  # Bounding box of shapefile
+  bb <- bbox( x )
   
-# Bounding box of shapefile
-bb <- bbox( x )
-
-# Area of bounding box
-A.bb <- diff(bb[1,])*diff(bb[2,])
-
-#   Find area of all polygons
-A <- rgeos::gArea(shp)  # If shp is not projected, this generates a warning. 
-#A <- sum(unlist(lapply( x@polygons, function(x){ x@area}))) #this always works, but I don't know about holes
-
-# Compute number of points to generate to get approx n inside shape
-n.big <- (A.bb/A)*n
-
-# Generate more random points than we need
-m.x <- runif( 200 )   # burn 200 random numbers.   I have doubts about the randomness of the first few numbers of R's runif
-m.x <- runif( n.big, bb[1,1], bb[1,2] )
-m.y <- runif( n.big, bb[2,1], bb[2,2] )
-
-
-#   Make sample into a SpatialPoints object
-samp <- SpatialPoints( data.frame(x=m.x, y=m.y), proj4string=CRS(proj4string(x)) )
-
-#   Clip to x
-x@data <- data.frame( geometryID=row.names(geometry(x)), data.frame(x),  zzz=1 )   #  make sure data frame has at least one numeric column
-tmp <- over( samp, x )
-keep <- !is.na(tmp$zzz)
-tmp <- tmp[,!(names(tmp) %in% c("zzz"))] 
-samp@data <- data.frame( tmp )
-samp <- samp[ keep, ]
-
-loop again and make sur you have n points
-
-#   Add spacing as attribute
-attr(grd, "spacing.m") <- delta
-attr(grd, "rand.dir") <- -theta
-attr(grd, "rand.shift") <- c(m.x, m.y)
-attr(grd, "triangular") <- triangular
-
-grd
+  # Area of bounding box
+  A.bb <- diff(bb[1,])*diff(bb[2,])
+  
+  #   Find area of all polygons
+  A <- rgeos::gArea(shp)  # If shp is not projected, this generates a warning. 
+  #A <- sum(unlist(lapply( x@polygons, function(x){ x@area}))) #this always works, but I don't know about holes
+  
+  # Compute number of points to generate to get approx n inside shape
+  n.big <- ceiling((A.bb/A)*n)
+  
+  # burn 200 random numbers.   I have doubts about the randomness of the first few numbers of R's runif
+  m.x <- runif( 200 )   
+  
+  #  make sure data frame has at least one numeric column
+  x@data <- data.frame( siteID=1:length(x), geometryID=row.names(geometry(x)), data.frame(x),  zzz=1 )   
+  
+  # Loop until we get enough samples inside the polygons
+  samp.pts.x <- samp.pts.y <- NULL
+  samp.attr <- NULL
+  repeat{
+    # Generate random points
+    m.x <- runif( n.big, bb[1,1], bb[1,2] )
+    m.y <- runif( n.big, bb[2,1], bb[2,2] )
+  
+    #   Make sample into a SpatialPoints object
+    tmp.samp <- SpatialPoints( data.frame(x=m.x, y=m.y), proj4string=CRS(proj4string(x)) )
+  
+    #   Find points in x, and extract attributes of x at those points
+    tmp <- over( tmp.samp, x )
+    keep <- !is.na(tmp$zzz)
+  
+    samp.pts.x <- c(samp.pts.x, m.x[keep])
+    samp.pts.y <- c(samp.pts.y, m.y[keep])
+    samp.attr <- rbind(samp.attr, data.frame(tmp[keep,!(names(tmp) %in% c("zzz"))] ))
+    
+    if( length(samp.pts.x)  >= n ){
+      # We have more than enough inside polygons.  Keep only first n.
+      samp.pts.x <- samp.pts.x[1:n]
+      samp.pts.y <- samp.pts.y[1:n]
+      samp.attr <- samp.attr[1:n,]
+      break    
+    } else {
+      n.big <- ceiling((A.bb/A)*(n - length(samp.pts.x)))
+    }
+  }
+  
+  # Make into a SpatialPointsDataFrame
+  samp <- SpatialPointsDataFrame(data.frame(x=samp.pts.x, y=samp.pts.y), samp.attr, 
+                                 CRS=proj4string(x))
+  
+  #   Add additional attributes
+  attr(samp, "frame") <- deparse(substitute(x))
+  attr(samp, "frame.type") <- "polygon"
+  attr(samp, "sample.type") <- "SRS"
+  
+  samp
 
 }

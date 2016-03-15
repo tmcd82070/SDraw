@@ -48,7 +48,10 @@
 
 
 voronoi.polygons <- function(x) {
-  crds = layer@coords
+  if( !inherits(x,"SpatialPoints") ){
+    stop("Must pass a SpatialPoints* object to voronoi.polygons.")
+  }
+  crds = coordinates(x)
   z = deldir(crds[,1], crds[,2])
   w = tile.list(z)
   polys = vector(mode='list', length=length(w))

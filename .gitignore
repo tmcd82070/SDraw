@@ -47,6 +47,7 @@ SDraw*.piz
 SDraw.Rproj
 .Rhistory
 .RData
+SDrawExFrames.RData
 source_all.r
 *.log
 man/

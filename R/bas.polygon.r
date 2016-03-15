@@ -136,7 +136,7 @@ if( nrow(halt.pts) >= n ){
     halt.pts <- halt.pts[1:n,]
     halt.pts$siteID <- 1:n   # renumber the site ID's because some (those outside polygon) were tossed above
 } else {
-    warning(paste("Fewer than", n, "points realized. Run again and append or increase sample size."))
+    warning(paste("Fewer than", n, "points realized. Run again and append, or increase sample size."))
 }
 
 attr(halt.pts, "halton.seed") <- m

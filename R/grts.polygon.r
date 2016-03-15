@@ -35,6 +35,16 @@
 #'   \item Any attributes of the original polygons (in \code{x}). 
 #' }
 #' 
+#' Additional attributes of the output object, beyond those which 
+#' make it a \code{SpatialPointsDataFrame}, are:
+#' \itemize{
+#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+#'    \item \code{sample.type}: Type of sample drawn. (i.e., "GRTS").
+#'    \item \code{n}: Regular sample size.  (i.e., \code{sum(out$pointType=="Sample)})
+#'    \item \code{over.n}: Over-sample size. (i.e., \code{sum(out$pointType=="OverSample")})  
+#' }
+#' 
 #' @author Trent McDonald
 #' @seealso \code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hal.polygon}}, 
 #' \code{\link{bas.polygon}}, \code{\link{sdraw}}

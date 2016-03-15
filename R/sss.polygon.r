@@ -131,8 +131,13 @@
 #'   \item Any attributes of the original polygons (in \code{x}). 
 #' }
 #'
-#' The returned object has the following additional attributes: 
+#' Additional attributes of the output object, beyond those which 
+#' make it a \code{SpatialPointsDataFrame}, are:
 #' \itemize{
+#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+#'    \item \code{sample.type}: Type of sample drawn. (i.e., "SSS").
+#' 
 #'    \item \code{spacing.m}: A vector of length 2 giving the dimensions of
 #'    cells in units of the coordinates of \code{x}. (e.g., meters).  This
 #'    is the final \code{delta} computed above.  Each cell has size 
@@ -320,6 +325,9 @@ if( !is.na(utm.zone) ){
 
 
 #   Add spacing as attribute
+attr(grd, "frame") <- deparse(substitute(x))
+attr(grd, "frame.type") <- "polygon"
+attr(grd, "sample.type") <- "SSS"
 attr(grd, "spacing.m") <- delta
 attr(grd, "rand.dir") <- -theta
 attr(grd, "rand.shift") <- c(m.x, m.y)

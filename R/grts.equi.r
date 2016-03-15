@@ -47,10 +47,13 @@ grts.equi <- function( shp, n, over.n=0 ){
   
   if( inherits(shp, "SpatialPoints") ){
       sframe.type = "finite"
+      sframe.type.out = "point"
   } else if( inherits(shp, "SpatialLines") ){
       sframe.type = "linear"
+      sframe.type.out = "line"
   } else if( inherits(shp, "SpatialPolygons") ){
       sframe.type = "area"
+      sframe.type.out = "polygon"
   }
 
 
@@ -78,11 +81,11 @@ grts.equi <- function( shp, n, over.n=0 ){
   Equalsites <- Equalsites[, keep.cols ]
 
   #   Store some extra attributes
+  attr(Equalsites, "sp.object") <- deparse(substitute(shp))
+  attr(Equalsites, "frame.type") <- sframe.type.out
   attr(Equalsites, "sample.type") <- "GRTS"
   attr(Equalsites, "n") <- n
   attr(Equalsites, "over.n") <- over.n
-  attr(Equalsites, "sp.object") <- deparse(substitute(shp))
-  attr(Equalsites, "frame.type") <- sframe.type
   
   Equalsites
 }
