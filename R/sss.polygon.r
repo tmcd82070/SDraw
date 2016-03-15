@@ -196,7 +196,7 @@ if( regexpr("proj=longlat", ps) > 0 ){
     warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This will cause non-parallel grid lines\n", 
     "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
     
-    mean.x <- mean( bbox(x)["x",] )
+    mean.x <- mean( bbox(x)[1,] )
     utm.zone <- floor((mean.x + 180)/6) + 1;  # screw exceptions near Svalbaard.  Don't matter here.
     
     cat( paste("UTM Zone used for conversion =", utm.zone, "\n" ))
@@ -232,13 +232,13 @@ if( triangular ){
     m.y <- runif( 1, 0, delta[2] )
 
     #   Grid extent.  Do this so that under rotation, we don't loose any rows.
-    dx <- diff(bb["x",])
-    dy <- diff(bb["y",])
+    dx <- diff(bb[1,])
+    dy <- diff(bb[2,])
     d <- max(dx,dy)
     
     #   The first grid on corners.  Much bigger than we need, but it accounts for rotation.
-    seq.x <- seq( bb["x","min"]-d/2, bb["x","min"] + 2*d, by=delta[1] ) + m.x
-    seq.y <- seq( bb["y","min"]-d/2, bb["y","min"] + 2*d, by=delta[2] ) + m.y
+    seq.x <- seq( bb[1,"min"]-d/2, bb[1,"min"] + 2*d, by=delta[1] ) + m.x
+    seq.y <- seq( bb[2,"min"]-d/2, bb[2,"min"] + 2*d, by=delta[2] ) + m.y
 
     grd1 <- expand.grid( x=seq.x, y=seq.y )
     df1 <- data.frame( row=rep(2*(1:length(seq.y))-1, each=length(seq.x)), col=rep(2*(1:length(seq.x))-1, length(seq.y)) )
@@ -261,13 +261,13 @@ if( triangular ){
     m.y <- runif( 1, 0, delta[2] )
     
     #   Grid extent.  Do this so that under rotation, we don't loose any rows.
-    dx <- diff(bb["x",])
-    dy <- diff(bb["y",])
+    dx <- diff(bb[1,])
+    dy <- diff(bb[2,])
     d <- max(dx,dy)
     
     #   The grid.  Much bigger than we need to account for rotation. 
-    seq.x <- seq( bb["x","min"]-d/2, bb["x","min"] + 2*d, by=delta[1] ) + m.x
-    seq.y <- seq( bb["y","min"]-d/2, bb["y","min"] + 2*d, by=delta[2] ) + m.y
+    seq.x <- seq( bb[1,"min"]-d/2, bb[1,"min"] + 2*d, by=delta[1] ) + m.x
+    seq.y <- seq( bb[2,"min"]-d/2, bb[2,"min"] + 2*d, by=delta[2] ) + m.y
     
     grd <- expand.grid( x=seq.x, y=seq.y )
     df <- data.frame( siteID=1:(length(seq.x)*length(seq.y)), row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)) )
@@ -288,7 +288,7 @@ if( rand.dir != FALSE ){
     #   rotate the grid, after translating centroid of bounding box to (0,0)        
     A <- matrix( c(cos(theta), sin(theta), -sin(theta), cos(theta)), 2,2)
 
-    mean.xy <- c( mean(bb["x",]), mean(bb["y",]) )
+    mean.xy <- c( mean(bb[1,]), mean(bb[2,]) )
     pts <- cbind(grd$x, grd$y) - matrix(mean.xy, nrow=nrow(grd), ncol=2, byrow=TRUE)
     rot.pts <- pts %*% A
 

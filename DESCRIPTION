@@ -16,7 +16,8 @@ Imports:
     rgeos,
     graphics,
     methods,
-    shiny
+    shiny,
+    deldir
 Depends:
     sp
 LazyData: true
@@ -54,4 +55,5 @@ Collate:
     'readShape.r'
     'sss.line.r'
     'sss.polygon.r'
+    'voronoi.polygons.r'
     'zzz.r'

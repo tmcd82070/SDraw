@@ -79,9 +79,9 @@ m <- runif( 200 )   # burn 200 random numbers.   I have doubts about the randomn
 #   to flag which points are outside a polygon.
 if( regexpr( "DataFrame", class(shp)) > 0 ){
   #   Shp has a data frame
-  df <- data.frame( data.frame(shp), sp.object.ID=row.names(shp), polygon.num=1:length(shp) )
+  df <- data.frame( data.frame(shp), siteID=1:length(shp), geometryID=row.names(shp) )
 } else {
-  df <- data.frame( sp.object.ID=row.names(shp), polygon.num=1:length(shp), row.names=row.names(shp) )
+  df <- data.frame( siteID=1:length(shp), geometryID=row.names(shp),  row.names=row.names(shp) )
 }
 
 shp <- SpatialPolygonsDataFrame( shp, data=df )
