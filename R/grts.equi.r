@@ -24,13 +24,22 @@ grts.equi <- function( shp, n, over.n=0 ){
       } else if( ncol(df) == 0){
         df <- data.frame(geometryID=id, row.names = id)
       } else {
-        stop( "Number of rows in data frame does not equal number of spatial objects. Check your Spatial*DataFrame.")
+        stop( "Number of rows in data frame does not equal number of 
+              spatial objects in geometry. Check your input Spatial*DataFrame.")
       }
     } else {
       # xx is a SpatialX object (no data frame)
       df <- data.frame(geometryID=id, row.names = id)
     }
-    xx <- SpatialLinesDataFrame( geom, data=df)
+    if( inherits(geom, "SpatialLines")){
+      xx <- SpatialLinesDataFrame( geom, data=df)
+    } else if( inherits(geom, "SpatialPoints")){
+      xx <- SpatialPointsDataFrame( geom, data=df)
+    } else if( inherits(geom, "SpatialPolygons")){
+      xx <- SpatialPolygonsDataFrame( geom, data=df)
+    } else {
+      stop(paste("Unknown spatial object class =", class(geom)))
+    }
     xx
   }
   shp <- add.ID( shp )

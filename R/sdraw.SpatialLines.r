@@ -1,9 +1,3 @@
-# @rdname sdraw
-#
-# @method sdraw SpatialLines
-#
-#
-
 
 sdraw.SpatialLines <- function(x, n, type, ...){
   

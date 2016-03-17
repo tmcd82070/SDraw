@@ -1,13 +1,3 @@
-# 
-#  @export sdraw.SpatialPoints
-#    
-#  @rdname sdraw
-#
-#  
-#  @method sdraw SpatialPoints
-#  
-
-
 
 sdraw.SpatialPoints <- function(x, n, type, ...){
   
