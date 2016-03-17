@@ -3,7 +3,7 @@
 #' 
 #' @description Draws a BAS sample from a SpatialLines object.
 #' 
-#' @details A BAS sample is drawn from the union of all lines in \code{shp} by first
+#' @details A BAS sample is drawn from the union of all lines in \code{x} by first
 #' discretizing lines with a dense systematic sample of points.  The number of
 #' points in this dense systematic sample is \code{n*n.pixel.factor}.  After
 #' discretizing the line, points on the lines are sampled using the BAS method
@@ -16,8 +16,8 @@
 #' line.
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
-#' contained in \code{shp}.
-#' @param shp A SpatialLines or SpatialLinesDataFrame object. This object must
+#' contained in \code{x}.
+#' @param x A SpatialLines or SpatialLinesDataFrame object. This object must
 #' contain at least 1 line.  If it contains more than 1 line, the BAS sample is
 #' drawn from the union of all lines.
 #' @param n.pixel.factor Scalar controling the number of underlying pixels to
@@ -25,16 +25,19 @@
 #' \code{n*n.pixel.factor}, so this number can grow quickly.  On average, this
 #' is the number of unselected points between each selected point.  See
 #' Details.
-#' @return A SpatialPointsDataFrame containing locations in the BAS sample, in
-#' order they are to be visited.  A 'siteID' attribute is attached to each
-#' point (in the embedded data frame) and gives the BAS ordering of the sample
-#' (i.e., sort on 'siteID' to get proper BAS order).  In addition, if the input
-#' object has an attached data frame (i.e., is a SpatialLinessDataFrame), the
-#' attrributes of the line on which each BAS point fell is attached in the
-#' associated data frame. The number of the line in \code{shp} on which each
-#' point falls also appears in the attribute data frame.
+#' @return A \code{SpatialPointsDataFrame} containing locations in the BAS 
+#' sample, in BAS
+#' order.  \code{siteID} in the 
+#' embedded data frame  gives the BAS ordering of the sample
+#' (i.e., BAS ordering can be restored by sorting on \code{siteID}.  
+#' In addition, if the input
+#' object has an attached data frame (i.e., is a \code{SpatialLinessDataFrame}), 
+#' attrributes of the line on which each BAS point falls is included in the
+#' output object's embedded data frame. The number of the line 
+#' in \code{x} on which each
+#' point falls is also included in the attribute data frame.
 #' @author Trent McDonald
-#' @seealso \code{\link{bas.line}}, \code{\link{bas.polygon}}, \code{\link{spsample}}
+#' @seealso \code{\link{bas.line}}, \code{\link{bas.polygon}}, \code{\link{sdraw}}
 #' @keywords design survey
 #' @examples
 #' 
@@ -47,16 +50,16 @@
 #' }
 #' 
 #' 
-bas.line <- function(n, shp, n.pixel.factor=5){
+bas.line <- function(x, n, n.pixel.factor=5){
 
 #   Function to draw a bas sample from a shapefile
 #   containing linear 1-d features.
 
 
-if( regexpr("Lines", class(shp)) < 0 ) stop("Must call bas.line with a SpatialLinesX object.")
+if( !inherits(x, "SpatialLines") ) stop("Must call bas.line with a SpatialLines* object.")
 
 ##   Check for projected coordinates and convert if necessary.
-#ps <- proj4string(shp)
+#ps <- proj4string(x)
 #if( regexpr("proj=longlat", ps) > 0 ){
 #    #   We have a lat-long system  - Issue a warning
 #    warning( paste("SDRAW: Lat-Long coordinate system found. Recommend conversion of \n",
@@ -65,10 +68,10 @@ if( regexpr("Lines", class(shp)) < 0 ) stop("Must call bas.line with a SpatialLi
 #}
 
 #   Discretize the line with n.pixel.factor more points than needed for sample
-pt.frame <- spsample( shp, n*n.pixel.factor, type="regular" )
+pt.frame <- sss.line( x, n*n.pixel.factor )
 
 #   Sample as points
-samp <- bas.point( n, pt.frame )
+samp <- bas.point( pt.frame, n )
 
 samp
 

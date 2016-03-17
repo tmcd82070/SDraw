@@ -5,24 +5,24 @@
 #' @description  Draws a Halton Lattice sample from a SpatialLines object, where SpatialLines
 #' are defined in library 'sp'.
 #' 
-#' @details  A HAL sample is drawn from the union of all lines in \code{shp} by first
+#' @details  A HAL sample is drawn from the union of all lines in \code{x} by first
 #' discretizing lines with points spaced \code{pt.spacing} apart. After
 #' discretizing the lines, discretization points are sampled using the HAL method
 #' for points (see \code{\link{hal.point}}).
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
-#' contained in \code{shp}.
-#' @param shp A SpatialLines or SpatialLinesDataFrame object. This object must
+#' contained in \code{x}.
+#' @param x A SpatialLines or SpatialLinesDataFrame object. This object must
 #' contain at least 1 line.  If it contains more than 1 line, the HAL sample is
 #' drawn from the union of all lines.
 #' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 #' \code{J[2]} for vertical dimension. \code{J} determines the size and shape
 #' of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
-#' of Halton boxes over \code{shp}'s bounding box, and \code{bases[2]^J[2]} 
+#' of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
 #' horizontal rows of Halton boxes over the bounding box, for a total 
 #' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
 #' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
-#' vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
+#' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is choosen so that Halton boxes are as square as possible.
 #' 
 #' @param pt.spacing Desired spacing of points on lines prior to sampling via
@@ -30,15 +30,15 @@
 #' equaly-spaced points on all lines. Then, points are sampled using Halton sampling
 #' (see \code{hal.point}) for points.  This parameter controls spacing of points during the
 #' discretization of lines.  For example, specifying 50, and assuming
-#' \code{shp} is projected to UTM meters, means points will be placed every 50
-#' meters along all lines in \code{shp}. \code{shp} should be projected before
+#' \code{x} is projected to UTM meters, means points will be placed every 50
+#' meters along all lines in \code{x}. \code{x} should be projected before
 #' sampling so that \code{pt.spacing} makes sense.  If \code{pt.spacing} is not
 #' specified, 1000*\code{n} points will be placed along the lines during
 #' descretization.
 #' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
 #' 
-#' @param plot Logical indicating whether to plot \code{shp} and selected points.  
+#' @param plot Logical indicating whether to plot \code{x} and selected points.  
 #' @param plot.lattice Logical indicating whether to plot the Halton lattice used 
 #' to draw the sample.  \code{plot.lattice = TRUE} produces same map 
 #' as \code{plot=TRUE}, with the addition of the Halton lattice. 
@@ -49,8 +49,9 @@
 #' (i.e., sort on 'siteID' to get proper HAL order).  In addition, if the input
 #' object has an attached data frame (i.e., is a  \code{SpatialLinessDataFrame}), the
 #' attrributes of the line on which each HAL point fell is attached in the
-#' associated data frame. The number of the line in \code{shp} on which each
-#' point fell is an attribute of the output points.
+#' associated data frame. The number of the line in \code{x} on which each
+#' point falls is an attribute of the output points.
+#' 
 #' @author Trent McDonald
 #' @seealso \code{\link{bas.line}}, \code{\link{hal.point}}, \code{\link{hal.polygon}}, \code{\link{spsample}}
 #' @keywords design survey
@@ -65,11 +66,11 @@
 #'   #   Different Halton lattice 
 #'   samp <- hal.line( 100, HI.coast, J=c(5,3), pt.spacing=157.1855, plot.lattice=TRUE)
 #' 
-hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3),  
+hal.line <- function( x, n, J=NULL, pt.spacing = NULL, bases=c(2,3),  
                       plot=TRUE, plot.lattice=FALSE){
 
   
-  if( !inherits(shp, "SpatialLines") ) stop("Must call hal.line with a SpatialLinesX object.")
+  if( !inherits(x, "SpatialLines") ) stop("Must call hal.line with a SpatialLines* object.")
   
   #   Check n
   if( n < 1 ){
@@ -94,7 +95,7 @@ hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3),
 #   xy = cc[int, , drop = FALSE] + where * (cc[int + 1, , drop = FALSE] - cc[int, , drop = FALSE])
   
   #this is code for Lines
-   L = shp@lines
+   L = x@lines
    lengths = sapply(L, function(x) LineLength(coordinates(x)[[1]]))
    if (sum(lengths) < .Machine$double.eps) 
      stop("Lines object of no length")
@@ -115,7 +116,7 @@ hal.line <- function( n, shp, J=NULL, pt.spacing = NULL, bases=c(2,3),
      }
    }
    ret <- do.call(rbind, ret)
-#  pt.frame <- sp::spsample( as(shp, "SpatialLines"), N, type="regular" )
+#  pt.frame <- sp::spsample( as(x, "SpatialLines"), N, type="regular" )
 
   # Now that we have points, we can draw a HAL point sample. 
   samp <- hal.point( n, ret, J, bases, plot, plot.lattice )
