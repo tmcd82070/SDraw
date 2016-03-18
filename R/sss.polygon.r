@@ -2,122 +2,217 @@
 #' 
 #' @title  Draws a Simple Systematic Sample (SSS) from an area resource (polygons).
 #' 
-#' @description Draws a systematic, or grid, sample from a SpatialPolygons object, where
-#' SpatialPolygons are defined in library 'sp'. Options are available to
+#' @description Draws a systematic, or grid, sample from a \code{SpatialPolygons} or 
+#' \code{SpatialPolygonsDataFrame} object.  Optional parameters control
 #' control the relative spacing in horizontal and vertical directions, whether
-#' a square or triangular grid is produced, and whether the grid is randomly
-#' rotated.
+#' a square or triangular grid is produced, and whether the grid baseline has 
+#' random orientation.
 #' 
-#' @details The projection system of the input shape object (\code{shp}) is checked.  If
-#' the projection system is anything other than UTM (e.g., "longlat"),
-#' \code{shp} is converted to UTM prior to constructing the systematic grid.
+#' @details The projection system of the input shape object (\code{x}) is checked.  
+#' If the projection system is anything other than UTM (e.g., "longlat"),
+#' \code{x} is converted to UTM prior to constructing the systematic grid.
 #' UTM coordinate systems are necessary to obtain correct spacings (in UTM
 #' space).  At the end, if the orginal projection system was not UTM, the
 #' sample grid is projected back to the original.  This will make the output
 #' grid lines non-parrallel in the orginal system.  To get a proper grid, with
 #' consistent spacing, in the orginal projection, you must start with UTM's.
-#' The author STRONGLY recommends converting \code{shp} to a UTM coordinate
+#' The author STRONGLY recommends converting \code{x} to a UTM coordinate
 #' system prior to calling this function.
 #' 
-#' Absolute spacing (size of grid cells) is determined by \code{n}. By default,
+#' Spacing (size and shape of grid cells) is determined by \code{n} and 
+#' \code{spacing}. If \code{spacing} is not given,
 #' grid spacing is equal in X and Y directions, which produces square grid
-#' cells.  By default, grid spacing is \code{delta} (= \code{sqrt(A/n)}, where
-#' \code{A} = area of union of all polygons in \code{shp}.
+#' cells.  In this case, grid spacing is \code{delta} 
+#' (= \code{sqrt(A/n)}, where
+#' \code{A} = area of union of all polygons in \code{x}.
 #' 
-#' Relative spacing is controled by the input \code{spacing} vector.  If
+#' Relative shape of grid cells is controled by the \code{spacing} vector.  If
 #' \code{spacing = c(rx, ry)}, spacing in X and Y directions is
-#' \code{spacing*delta/rev(spacing)}. This assures area of each cell is
-#' \code{delta^2} while maintaining relative size specified.
+#' \code{spacing*delta/rev(spacing)}, where \code{delta} 
+#' = \code{sqrt(A/n)}. Conceptually, a square cell of size \code{delta^2} 
+#' is "stretched" multiplicatively by \code{rx} in the X direction and \code{ry} in the 
+#' Y direction. After stretching, the area of each cell remains
+#' \code{delta^2} while the relative lengths of the (rectangular) cell 
+#' sides is 1 to \code{(ry/rx)^2}.  That is, vertical dimension of each cell 
+#' is \code{(ry/rx)^2} times the horizontal dimension.  Vice versa, the horizontal 
+#' dimension is \code{(rx/ry)^2} times the vertical.
 #' 
 #' In general, realized sample size is not fixed.  Across multiple calls,
-#' realized sample size will not always equal \code{n}.
+#' realized sample size will not always equal \code{n}.  Across an infinite number
+#' of calls, the average sample size will be \code{n}
 #' 
-#' @param n Sample size.  Number of locations to draw from the set of all
-#' polygons contained in \code{shp}.
-#' @param shp A SpatialPolygons or SpatialPolygonsDataFrame object. This object
+#' One view of triangular grids (i.e., \code{triangular=TRUE}) is that 
+#' the resulting cells are triangles (hence the name).  Another view 
+#' is that each point in a triangular grid is the center of a 
+#' hexagonal cell. When \code{triangular=TRUE} and 
+#' \code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
+#' horizontal direction, but remain hexagons. Under the hexagon view, the 
+#' actual cells being sampled are formed by computing the 
+#' Voronoi tesselations (or Dirchlet polygons, see 
+#' \code{\link{deldir::deldir}}) of all points in the grid.  
+#' In this way, specifying 
+#' \code{triangular=TRUE} can be viewed as selecting hexagons. In some 
+#' cases, particularly when sampling geographic space, 
+#' sampling designs that select of hexagons have desirable properties.
+#' 
+#' In all cases, the grid is randomly shifted in the X and Y directions, 
+#' before rotation (if called for).  The amount of the random shift is 
+#' less than the X and Y extent of cells, and is returned as an attribute 
+#' of the sample. 
+#' 
+#' 
+#' @param n Sample size.  Number of locations to draw from the union of all
+#' polygons contained in \code{x}.
+#' 
+#' @param x A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} 
+#' object. This object
 #' must contain at least 1 polygon.  If it contains more than 1 polygon, the
-#' BAS sample is drawn from the union of all polygons.
+#' SSS sample is drawn from the union of all polygons.  Holes are respected.
+#' 
 #' @param spacing A vector of length 2 containing the RELATIVE spacing of grid
 #' points in the horizontal (X) and vertical (Y) directions.  See details.
+#' 
 #' @param triangular Boolean scaler specifying whether to produce a rectangular
-#' (\code{triangular==FALSE}) or triangular (\code{triangular==TRUE}) grid.
-#' @param rand.dir Boolean scaler specifying whether to randomly orient the
-#' grid direction (\code{rand.dir==TRUE}) or not (\code{rand.dir==FALSE}).  If
+#' (\code{triangular==FALSE}) or triangular (\code{triangular==TRUE}) grid. 
+#' See Details.
+#' 
+#' @param rand.dir Either a boolean scaler specifying whether to randomly 
+#' orient the
+#' grid's horizontal axis (\code{rand.dir==TRUE}) or not 
+#' (\code{rand.dir==FALSE}), or
+#' a user-specified fixed direction for the horizontal axis.  If
 #' FALSE, orientation of the grid is parallel to the X and Y axes.  If TRUE,
-#' the X axis of the grid is randomly rotated by an angle between -45 and 45
-#' degrees.  Note, relative spacing of the grid cells is computed prior to
-#' rotation. After rotation, the X axis of the grid could be close to 90
-#' degress, thereby nearly swapping the relative spacings.
-#' @return A SpatialPointsDataFrame containing locations in the SSS sample, in
-#' arbitrary order.  If the input object has an attached data frame (i.e., is a
-#' SpatialPolygonsDataFrame), attrributes of the polygon in which each point
-#' fell is attached in the associated data frame.
+#' the X axis of the grid is randomly rotated by an angle between -pi/4 
+#' (-45 degrees) and pi/4 (45 degrees).  
+#' If \code{rand.dir} is a number, the 
+#' grid is rotated by that many radians. No range check is performed 
+#' on user-specified \code{rand.dir}, so for example, rotation by \code{pi/8} is 
+#' equivalent to rotation by \code{pi/8 + 2*pi}. User-specified, but random, 
+#' direction of the grid can be specified by \code{rand.dir = runif(1,0,pi)}.
+#' Note, relative spacing 
+#' of the grid cells is computed prior to rotation. 
+#' 
+#' 
+#' @return A \code{SpatialPointsDataFrame} containing locations in the SSS sample, 
+#' in row-wise order starting in the south (see \code{siteID}, \code{row}, \code{col} 
+#' in returned data frame).  Attributes of the sample points (in the 
+#' embedded data frame) are 
+#' as follows: 
+#' \itemize{
+#'   \item \code{siteID}: A unique identifier for every sample point.  For 
+#'   rectangular grids, \code{siteID} is incremented west to east by row from 
+#'   the south.  For triangular grids, \code{siteID} is assigned west to east 
+#'   to points in every other row from the south. Then, 
+#'   starts over in the southwest and assigns ID's to previously-skipped 
+#'   rows.
+#'   \item \code{row}: Row number of the sampled point in the grid.  Row numbers 
+#'   are the vertical indices of the grid in a direction perpendicular to 
+#'   the (potentially rotated) main horizontal axis. Cell (1,1) is in 
+#'   the lower left (southwest) corner of the shape's bounding box.
+#'   Thus, row 1 is defined 
+#'   along the lower (southern) boundary of the shape's bounding box.  
+#'   Points in row 1 may not be inside the shape and therefore 
+#'   may not appear in the sample.  Consequently, the lowest row appearing 
+#'   in the sample may not be 1.  Visualize row i with 
+#'   \code{points(samp[samp$row==i,])}. 
+#'   \item \code{col}: Column number of the sampled point in the grid. Column 
+#'   numbers are the horizontal indicies of the grid in a direction parallel to
+#'   the (potentially rotated) main horizontal axis. Cell (1,1) is in 
+#'   the lower left (southwest) corner of the shape's bounding box.
+#'   Thus, column 1 is defined 
+#'   along the left (western) boundary of the shape's bounding box.  
+#'   Points in column 1 may not be inside the shape and therefore 
+#'   may not appear in the sample.  Consequently, the lowest column appearing 
+#'   in the sample may not be 1. Visualize column i with 
+#'   \code{points(samp[samp$col==i,])}.   
+#'   \item \code{geometryID}: The ID of the polygon in \code{x} which each 
+#'   sample point falls.  The 
+#'   ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
+#'   \item Any attributes of the original polygons (in \code{x}). 
+#' }
+#'
+#' The returned object has the following additional attributes: 
+#' \itemize{
+#'    \item \code{spacing.m}: A vector of length 2 giving the dimensions of
+#'    cells in units of the coordinates of \code{x}. (e.g., meters).  This
+#'    is the final \code{delta} computed above.  Each cell has size 
+#'    \code{prod(spacing.m)} = Area / \code{n}.
+#'    
+#'    \item \code{rand.dir}: The (potentially randomly chosen) direction for the grid's 
+#'    horizontal axis. This is in radians between -pi/4 and pi/4. 
+#'    \code{rand.dir} = 0 corresponds to no rotation 
+#'    (i.e., \code{rand.dir = FALSE}).  
+#'    
+#'    \item \code{rand.shift}: The random shift of the grid.  This is a vector 
+#'    of length 2 containing the  random shifts in the horizontal and vertical 
+#'    directions before rotation.  The random shift in both directions 
+#'    is chosen between 0 and the corresponding element of the \code{spacing.m}
+#'    attribute (described above).
+#'    
+#'    
+#'    \item \code{triangular}: TRUE or FALSE depending on whether the output 
+#'    grid is triangular or rectangular, respectively.
+#' }
+#'     
 #' @author Trent McDonald
-#' @seealso \code{\link{bas.polygon}}
+#' @seealso \code{\link{bas.polygon}}, \code{\link{sdraw}}
 #' @keywords design survey
 #' @examples
 #' 
 #' # A square grid oriented east-west
-#' WA.samp <- sss.polygon( 100, WA )   
+#' WA.samp <- sss.polygon( WA, 100 )   
 #' plot( WA )
 #' points( WA.samp )
 #' 
-#' # A rectangular grid oriented east-west, with relative spacing c(0.667, 1.5)
-#' WA.samp <- sss.polygon( 100, WA, spacing=c(2,3) )   
+#' # A rectangular grid oriented east-west, with relative spacing c(0.667, 1.5),
+#' # or 1 to 2.25.
+#' WA.samp <- sss.polygon( WA, 100, spacing=c(2,3) )   
 #' plot( WA )
 #' points( WA.samp )
 #' 
-#' # A rectangular grid oriented east-west, with x spacing = 2**(y spacing). 
-#' WA.samp <- sss.polygon( 100, WA, spacing=c(sqrt(2),1) )   
-#' plot( WA )
-#' points( WA.samp )
+#' # A rectangular grid oriented east-west, with x spacing = 2*(y spacing). 
+#' WA.samp <- sss.polygon( WA, 100, spacing=c(sqrt(2),1) )   
 #' 
 #' # A rectangular grid, random orientation, with y spacing = 3*(x spacing)
-#' WA.samp <- sss.polygon( 100, WA, spacing=c(1,sqrt(3)), rand.dir=TRUE )   
-#' plot( WA )
-#' points( WA.samp )
+#' WA.samp <- sss.polygon( WA, 100, spacing=c(1,sqrt(3)), rand.dir=TRUE )   
 #' 
 #' # A triangular grid oriented east-west
-#' WA.samp <- sss.polygon( 100, WA, triangular=TRUE )   
-#' plot( WA )
-#' points( WA.samp )
+#' WA.samp <- sss.polygon( WA, 100, triangular=TRUE )   
 #' 
 #' # A triangular grid oriented east-west, with relative spacing c(.667,1.5)
-#' WA.samp <- sss.polygon( 100, WA, spacing=c(2,3), triangular=TRUE )   
-#' plot( WA )
-#' points( WA.samp )
+#' WA.samp <- sss.polygon( WA, 100, spacing=c(2,3), triangular=TRUE )   
 #' 
 #' 
-sss.polygon <- function( n, shp, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE ){
+sss.polygon <- function( x, n, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE ){
 
 
 
-#   First, convert to UTM, if shp is not already
-ps <- proj4string(shp)
+#   First, convert to UTM, if x is not already
+ps <- proj4string(x)
 if( regexpr("proj=longlat", ps) > 0 ){
     #   We have a lat-long system  - convert
     #   All other systems leave alone
-    #   Compute an "okay" zone = zone of center of shp.
-    warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This may cause non-parallel grid lines\n", 
+    #   Compute an "okay" zone = zone of center of x.
+    warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This will cause non-parallel grid lines\n", 
     "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
     
-    mean.x <- mean( bbox(shp)["x",] )
+    mean.x <- mean( bbox(x)["x",] )
     utm.zone <- floor((mean.x + 180)/6) + 1;  # screw exceptions near Svalbaard.  Don't matter here.
     
     cat( paste("UTM Zone used for conversion =", utm.zone, "\n" ))
     
-    #   shp tranformed to UTM
-    shp <- spTransform( shp, CRS(paste("+proj=utm +zone=", utm.zone, " +datum=WGS84", sep="")) )
+    #   x tranformed to UTM
+    x <- spTransform( x, CRS(paste("+proj=utm +zone=", utm.zone, " +datum=WGS84", sep="")) )
 } else {
     utm.zone <- NA
 }
 
 
 #   Bounding box of shapefile
-bb <- bbox( shp )
+bb <- bbox( x )
 
 # area of shapefile.  Because we made sure we have UTM, this is square meters. 
-A <- sum(unlist(lapply( shp@polygons, function(x){ x@area})))  
+A <- sum(unlist(lapply( x@polygons, function(x){ x@area})))  
 
 
 #   Compute spacing assuming equal x and y spacing
@@ -146,16 +241,18 @@ if( triangular ){
     seq.y <- seq( bb["y","min"]-d/2, bb["y","min"] + 2*d, by=delta[2] ) + m.y
 
     grd1 <- expand.grid( x=seq.x, y=seq.y )
-    df1 <- data.frame( row=rep(2*(1:length(seq.y))-1, each=length(seq.x)), col=rep(2*(1:length(seq.x))-1, length(seq.y)), pointType=rep("Sample", length(seq.x)*length(seq.y)) )
+    df1 <- data.frame( row=rep(2*(1:length(seq.y))-1, each=length(seq.x)), col=rep(2*(1:length(seq.x))-1, length(seq.y)) )
     
     #   The second grid on the centers
     grd2 <- grd1
     grd2$x <- grd1$x + delta[1]/2
     grd2$y <- grd1$y + delta[2]/2
-    df2 <- data.frame( row=rep(2*(1:length(seq.y)), each=length(seq.x)), col=rep(2*(1:length(seq.x)), length(seq.y)), pointType=rep("Sample", length(seq.x)*length(seq.y)) )
+    df2 <- data.frame( row=rep(2*(1:length(seq.y)), each=length(seq.x)), col=rep(2*(1:length(seq.x)), length(seq.y)) )
 
     grd <- rbind(grd1, grd2)
     df <- rbind(df1, df2)
+
+    df <- data.frame( siteID=1:nrow(df), df )    
     
 } else {
     
@@ -173,15 +270,22 @@ if( triangular ){
     seq.y <- seq( bb["y","min"]-d/2, bb["y","min"] + 2*d, by=delta[2] ) + m.y
     
     grd <- expand.grid( x=seq.x, y=seq.y )
-    df <- data.frame( row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)), pointType=rep("Sample", length(seq.x)*length(seq.y)) )
+    df <- data.frame( siteID=1:(length(seq.x)*length(seq.y)), row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)) )
 }
 
 
 #   Randomly spin the grid, if called for
-if( rand.dir ){
+if( rand.dir != FALSE ){
 
-    #   rotate the grid, after translating to (0,0)        
-    theta <- runif( 1, -pi/4, pi/4 )
+    # Determine the angle
+    if( rand.dir == TRUE ){
+      theta <- runif( 1, -pi/4, pi/4 )
+    } else {
+      # this allows the user to specify ANY rotation.
+      theta <- -rand.dir
+    }
+  
+    #   rotate the grid, after translating centroid of bounding box to (0,0)        
     A <- matrix( c(cos(theta), sin(theta), -sin(theta), cos(theta)), 2,2)
 
     mean.xy <- c( mean(bb["x",]), mean(bb["y",]) )
@@ -195,16 +299,16 @@ if( rand.dir ){
     theta <- 0   # for the record, nothing to do here
 }
 
-#   Make grid into a SpatialX object
-grd <- SpatialPointsDataFrame( grd, proj4string=CRS(proj4string(shp)), data=df )
+#   Make grid into a SpatialPoints object
+grd <- SpatialPointsDataFrame( grd, proj4string=CRS(proj4string(x)), data=df )
 
-#   Clip to shp
-shp@data <- data.frame( data.frame(shp), zzz=1 )   #  make sure data frame has at least one numeric column
-tmp <- over( grd, shp )
+#   Clip to x
+x@data <- data.frame( geometryID=row.names(geometry(x)), data.frame(x),  zzz=1 )   #  make sure data frame has at least one numeric column
+tmp <- over( grd, x )
 keep <- !is.na(tmp$zzz)
 tmp <- tmp[,!(names(tmp) %in% c("zzz"))] 
 tmp2 <- data.frame(grd)
-tmp2 <- tmp2[,!(names(tmp2) %in% c("x","y"))] 
+tmp2 <- tmp2[,!(names(tmp2) %in% c("x","y","optional"))] 
 grd@data <- data.frame( tmp2, tmp )
 grd <- grd[ keep, ]
 
@@ -217,7 +321,8 @@ if( !is.na(utm.zone) ){
 
 #   Add spacing as attribute
 attr(grd, "spacing.m") <- delta
-attr(grd, "theta") <- theta
+attr(grd, "rand.dir") <- -theta
+attr(grd, "rand.shift") <- c(m.x, m.y)
 attr(grd, "triangular") <- triangular
 
 grd

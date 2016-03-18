@@ -29,9 +29,10 @@
 #'   by \code{siteID} (i.e., \code{samp <- samp[order(samp$siteID),]}). 
 #'   \item \code{pointType}: A string identifying regular sample points (\code{pointType=="Sample"})
 #'   and over-sample points (\code{pointType=="OverSample"}).
-#'   \item \code{geometryID}: The ID of the point in \code{x} which was sampled.  The 
+#'   \item \code{geometryID}: The ID of the polygon in \code{x} which each 
+#'   sample points fall.  The 
 #'   ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
-#'   \item Any attributes of the original points (in \code{x}). 
+#'   \item Any attributes of the original polygons (in \code{x}). 
 #' }
 #' 
 #' @author Trent McDonald
