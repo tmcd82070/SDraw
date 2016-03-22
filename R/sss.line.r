@@ -47,72 +47,95 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
 
   if( !(inherits(x, "SpatialLines")) ) stop("Must call sss.line with a SpatialLines* object.")
 
-  if(!missing(x) & !missing(spacing)) stop("Must specify only one of n or spacing in sss.line")
+  if(!missing(n) & !missing(spacing)) stop("Must specify only one of n or spacing in sss.line")
 
-  # Internal function to sample a single line -----
-  sss.single.line <- function(coords){
-    # keep in mind coords is a list that could be of length 2+
-    offset = offset[1]
-    lapply(coords, function(cc){
-      lens = LineLength(cc, longlat = FALSE, sum = FALSE)
-      if (any(abs(lens) < .Machine$double.eps)) {
-        wl <- which(abs(lens) < .Machine$double.eps)
-        cc <- cc[-(wl), ]
-        lens <- lens[-(wl)]
-      }
-      csl = c(0, cumsum(lens))
-      maxl = csl[length(csl)]
-      pts = ((1:n) - (1 - offset))/n * maxl  
-      here~~~~~!!!
-      int = findInterval(pts, csl, all.inside = TRUE)
-      where = (pts - csl[int])/diff(csl)[int]
-      xy = cc[int, , drop = FALSE] + where * (cc[int + 1, , drop = FALSE] - 
-                                              cc[int, , drop = FALSE])
-    if (nrow(xy) < 1) 
-      return(NULL)
-    SpatialPoints(xy, proj4string)
+  # check input parameters
+  if( !missing(n)){
+    if (!is.finite(n) || n < 1) return(NULL)
+  }
+  
+  # Merge lines functtion ==========================================
+  merge.lines <- function(x){
+    # "merge" all the lines into one big matrix of coordinates with NA's between
+    
+    # keep in mind that x@lines[[1]] could be 2+ Lines. 
+    # This unlists the Lines objects to produce one list of coordinates
+    # which is different than coordinates(x)
+    tmp <- lapply( unlist(x@lines), slot, "Lines")
+    tmp <- lapply( unlist(tmp), slot, "coords")
+  
+    # Construct matrix of all coordinates, with c(NA,NA) between lines
+    merged.line <- matrix(NA, length(unlist(tmp))/2, 3)
+    strt <- 1
+    strt.tt <- 1
+    for(i in 1:length(tmp)){
+      l1 <- tmp[[i]]
+      end <- strt + nrow(l1) - 1
+      tt <- seq(strt.tt, length=nrow(l1))
+      merged.line[strt:end,1] <- tt
+      merged.line[strt:end,2:3]<-l1
+      strt.tt <- max(tt) 
+      strt <- end + 1
+    }
+    
+    if( is.null(cnms <- coordnames(x))) cnms <- c("x", "y")
+    dimnames(merged.line)<- list(NULL, c("t",cnms))
+    merged.line
   }
 
-  # Rest of sss.line ------
+  # My approx function ===============================================
+  aprox <- function( x, y, x.out ){
+    y.out <- rep(NA, length(x.out))
+    for( i in 1:length(x.out)){
+      if( all(is.na(l.x <- which(x < x.out[i])))  ){
+        y.out[i] <- y[1]
+        next
+      } 
+      l.x <- max(l.x)
+      
+      if( all(is.na(u.x <- which(x > x.out[i])))  ){
+        y.out[i] <- y[length(y)]
+        next
+      } 
+      u.x <- min(u.x)
+      
+      if( any(e.x <- which(x == x.out[i]))){
+        y.out[i] <- y[e.x[length(e.x)]]
+        next
+      }
+      
+      y.out[i] <- y[l.x] + (y[u.x]-y[l.x])*(x.out[i] - x[l.x])/(x[u.x]-x[l.x])
+    }
+    y.out
+  }
   
-  # check input parameters
+  
+  # Main code ========================================================
+  # Get all coordinates from all lines "back to back" in a matrix
+  mline <- merge.lines(x)
+  
+  # Figure out x.out sequence along parameterized line
   if(missing(n)){
     # spacing has been specified
+    lens = sapply(x@lines, LinesLength)
     n <- sum(lens) / spacing
   } 
-
-  if (!is.finite(n) || n < 1) return(NULL)
-
-  # keep in mind that x@lines[[1]] could be 2+ Lines
-  L = x@lines
-  lens = sapply(L, LinesLength)
-  if (sum(lens) < .Machine$double.eps) stop("Lines object has no length")
-
-  # Number of points to put on each line
-  nrs = round(lens/sum(lens) * n)
+  t.out <- seq(1,mline[nrow(mline),1],by=(mline[nrow(mline),1]-1)/n)
+  t.out <- t.out[-length(t.out)]
   
-  # allocate list to hold points
-  ret = vector("list", sum(nrs > 0))
-  
-  j <- 1
-  for (i in 1:length(L)) {
-    if (nrs[i] > 0) {
-      ret[[j]] = sss.single.line(coordinates(L[[i]]), nrs[i])
-      j <- j+1
-    }
+  if( random.start ){
+    t.out <- t.out + runif(1, 0, t.out[2]-t.out[1])
   }
 
-  ret <- do.call(rbind, ret)  
+  x.out <- aprox( mline[,1], mline[,2], t.out)
+  y.out <- aprox( mline[,1], mline[,3], t.out)
+    
 
+  # HERE!!! check/change way that spacing is used.  you will need to 
+  # cumulatively add lengths along mline to get proper spacing
+  
+  # output ===========================================================
+  SpatialPoints( cbind(x.out, y.out), proj4string = CRS(proj4string(x)) )
 
-# old code:
-#   Make answer into a SpatialPointsDataFrame to be consistent with other SDraw routines
-#   It would be nice to transfer over the attributes of x, but x is a line, 
-#   and the over() function does not take points over lines (makes sense, no area to lines). 
-#   And, I cannot figure out a nice way to buffer the lines and use over.
-
-#samp <- SpatialPointsDataFrame( samp,  data=data.frame(siteID=1:length(samp)) )
-
-samp
 
 }
