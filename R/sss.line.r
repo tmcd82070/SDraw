@@ -63,23 +63,33 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     # which is different than coordinates(x)
     tmp <- lapply( unlist(x@lines), slot, "Lines")
     tmp <- lapply( unlist(tmp), slot, "coords")
-  
-    # Construct matrix of all coordinates, with c(NA,NA) between lines
-    merged.line <- matrix(NA, length(unlist(tmp))/2, 3)
+
+    # Construct matrix of all coordinates, with duplicate 
+    # indicies and lengths between 
+    # lines. Do this so that aprox (below) works.
+    merged.line <- matrix(NA, length(unlist(tmp))/2, 4)
     strt <- 1
     strt.tt <- 1
+    strt.len <- 0
     for(i in 1:length(tmp)){
       l1 <- tmp[[i]]
+      l1.seg.lengths = cumsum(LineLength(l1,sum=FALSE))
+      l1.seg.lengths = strt.len + c(0,l1.seg.lengths)
+      
       end <- strt + nrow(l1) - 1
       tt <- seq(strt.tt, length=nrow(l1))
+      
       merged.line[strt:end,1] <- tt
-      merged.line[strt:end,2:3]<-l1
-      strt.tt <- max(tt) 
+      merged.line[strt:end,2] <- l1.seg.lengths
+      merged.line[strt:end,3:4]<-l1
+      
+      strt.tt <- tt[length(tt)] 
       strt <- end + 1
+      strt.len <- l1.seg.lengths[length(l1.seg.lengths)]
     }
     
     if( is.null(cnms <- coordnames(x))) cnms <- c("x", "y")
-    dimnames(merged.line)<- list(NULL, c("t",cnms))
+    dimnames(merged.line)<- list(NULL, c("t","l",cnms))
     merged.line
   }
 
@@ -114,28 +124,35 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   # Get all coordinates from all lines "back to back" in a matrix
   mline <- merge.lines(x)
   
-  # Figure out x.out sequence along parameterized line
-  if(missing(n)){
-    # spacing has been specified
-    lens = sapply(x@lines, LinesLength)
-    n <- sum(lens) / spacing
+
+  # Figure out l.out sequence along parameterized line ("l","x","y")
+  tot.len <- mline[nrow(mline),"l"]
+  if(!missing(n)){
+    # figure out spacing. Want n equally space points along 
+    # entire length of line.
+    spacing <- tot.len / n
   } 
-  t.out <- seq(1,mline[nrow(mline),1],by=(mline[nrow(mline),1]-1)/n)
-  t.out <- t.out[-length(t.out)]
-  
+  l.out <- seq(0,tot.len-spacing,by=spacing)
+
   if( random.start ){
-    t.out <- t.out + runif(1, 0, t.out[2]-t.out[1])
+    l.out <- l.out + runif(1, 0, spacing)
   }
 
-  x.out <- aprox( mline[,1], mline[,2], t.out)
-  y.out <- aprox( mline[,1], mline[,3], t.out)
+  x.out <- aprox( mline[,"l"], mline[,3], l.out)
+  y.out <- aprox( mline[,"l"], mline[,4], l.out)
     
 
-  # HERE!!! check/change way that spacing is used.  you will need to 
-  # cumulatively add lengths along mline to get proper spacing
-  
   # output ===========================================================
   SpatialPoints( cbind(x.out, y.out), proj4string = CRS(proj4string(x)) )
 
 
 }
+
+tmp <- sss.line(HI.coast, 100)
+plot(HI.coast[2,])
+points(tmp,pch=16)
+points(tmp4[1],tmp4[2],pch=15,col="red")
+
+# tmp <- sss.line(Sl, 10)
+# plot(Sl)
+# points(tmp)
