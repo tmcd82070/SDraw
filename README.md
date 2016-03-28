@@ -3,14 +3,29 @@ An R package to draw samples
 
 Description: This package draws several types of statistical samples, but focuses on 
 spatially balanced samples that are  especially suited for environmental monitoring.  
-It draws BAS, GRTS, HAL, and SSS samples from points, lines, and polygons.  An friendly 
-user interface is included for the common functions. 
+It draws BAS, GRTS, HAL, and SSS samples from points, lines, and polygons.  An friendly Shiny 
+interface is included for the common functions. 
 
 License: GNU General Public License
 
+## Dependencies
+
+The author has found it best to install dependencies before attempting to 
+install SDraw. To install dependencies, execute the following: 
+* `install.packages( c("spsurvey", "rgdal", "rgeos", "sp", "shiny", "deldir"), repos="http://cran.r-project.org")`
+
+`rgdal` and `rgeos` require java routines, so java must be installed.  On Unix systems, the libraries needed for `rgdal` and `rgeos` are criptically named.  Google 'install rgdal unix'.   
+
 # Installation
 
-There are multiple ways to install.  One is from source, the other is from the binary build. 
+There are multiple ways to install the current version.  
+
+## Using `devtools`
+
+Assuming `devtools` is installed and loaded, the following should work:
+
+* `install_github("tmcd82070/SDraw")`
+
 
 ## From source 
 
@@ -18,22 +33,9 @@ There are multiple ways to install.  One is from source, the other is from the b
 * In R, execute the following: `install.packages( pkgs=file.choose(), type="source"" )`
 * A choose-file dialog will appear.  Navigate to the `tar.gz` file and click "Open"
 
-## From binary build
-
-* Download the binary build zip file from the link provided in the [current release notes.](https://github.com/tmcd82070/SDraw/releases) 
-* In R, select "Install from local zip file..." from the "Packages" menu in the standard R interface. Or, execute the following: `install.packages( pkgs=file.choose(), type="binary")` 
-* Navigate to the binary build .zip and click Open 
-
-## Dependencies
-
-The above methods should install all dependencies. If not, execute the following: 
-* `install.packages( c("RGtk2", "spsurvey", "rgdal", "rgeos", "sp"), repos="http://cran.r-project.org")`
 
 # After installation
-Issue `library(SDraw)` at the command prompt.  The first time you do this, R will ask whether you want to install the GTK+ runtime library.  Say 'yes'.  At the end of this, R may give you some sort of error.  Ignore it.  Restart R. 
-
-
-Re-start R and issue `library(SDraw)`.  An 'SDraw' menu item will appear in your R gui if you are using Windows and the default R console.  From the "SDraw" menu, choose the appropriate action.   The dialog boxes that pop up should be self explanatory.  See `help(package="SDraw")` for a list of functions.  The functions that open the dialog boxes are `equi.GUI()` and `stratified.GUI()` .  
+Issue `library(SDraw)` at the command prompt.  To bring up the Shiny interface (which is barely working as of version 2.1.2), issue `runUI()` at the command prompt.
 
 # Bugs
 
