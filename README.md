@@ -8,7 +8,7 @@ interface is included for the common functions.
 
 License: GNU General Public License
 
-## Dependencies
+# Dependencies
 
 The author has found it best to install dependencies before attempting to 
 install SDraw. To install dependencies, execute the following: 
