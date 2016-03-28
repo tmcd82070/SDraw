@@ -6,25 +6,33 @@
 #' \code{SpatialLines*} object represents a 2-dimensional line resource, such as a
 #' river, highway, or coastline.  
 #' 
-#' @details This function is simply a wrapper for \code{spsample} in package 'sp'.
-#' 
-#' @param n Sample size.  Number of locations to draw from the set of all lines
-#' contained in \code{x}.
-#' @param x A \code{SpatialLiness} or \code{SpatialLinessDataFrame} object. 
-#' This object
-#' must contain at least 1 line.  If it contains more than 1 line, the sample
-#' is drawn from the amalgomation of all lines.  Conceptually, the lines in \code{x} are 
-#' "stretched" straight, laid end-to-end in order of appearence in \code{x}, 
-#' and the systematic sample is drawn from this amalgomated line. 
-#' Points on the amalgomated line are then mapped back to 2-dimensional 
+#' @details If \code{x} contains multiple lines, the lines are amalgomated before
+#' sampling.   Conceptually, under amalgomation the lines in \code{x} are 
+#' "stretched" straight and laid end-to-end in order of appearence in \code{x}.
+#' The simple systematic sample is then drawn from the amalgomated line. 
+#' Finally, sample points on the amalgomated line are mapped back to 2-dimensional 
 #' space to fall on the lines in \code{x}. 
+#' 
+#' Note that spacing between sample points is enforced on the amalgomated 
+#' line, and may not look correct if the lines loop back on themselves. 
+#' For example, consider a line tracing a circle.  The spacing between 
+#' the first and last sample point along the circle will not be the 
+#' prescribed \code{spacing} because the circle starts between them. 
+#' Spacing of all other points (2 to n-1) will be as requested. 
+#'
+#' 
+#' @param n Sample size.  Number of points to draw from the set of all lines
+#' contained in \code{x}.  Specification of \code{n} takes precedence 
+#' over specification of \code{spacing}.
+#' @param x A \code{SpatialLiness} or \code{SpatialLinessDataFrame} object. 
+#' This object must contain at least 1 line.  
 #' 
 #' @param spacing Assuming, \code{n} is not given, this is the distance 
 #' between sample points on the amalgomated line 
 #' in \code{x}. For example, if \code{x} is projected 
 #' in UTM coordinates and \code{spacing=100}, the returned sample has one point 
-#' every 100 meters along the amalgomated line in \code{x}. Keep in mind that 
-#' line i+1 in \code{x} may not touch the end of line i in \code{x}, and that 
+#' every 100 meters along the amalgomated line in \code{x}. Keep in mind that the start
+#' of line i+1 in \code{x} may not coencide with the end of line i in \code{x}, and that 
 #' lines in \code{x} may not be straight.  Thus, 2-dimensional distances between
 #' sample points will not, in general, equal \code{spacing}.   
 #' 
@@ -37,10 +45,16 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' 
-#' HI.samp <- sss.line( 100, HI.coast )   
+#' # Draw fixed number of equi-distant points
+#' HI.samp <- sss.line( HI.coast, 100 )   
 #' plot( HI.coast, col=rainbow(length(HI.coast)) )
 #' points( HI.samp, col="red", pch=16 )
+#' 
+#' # Draw points every 20 km along amalgomated line
+#' HI.samp <- sss.line( HI.coast, spacing=20000 )   
+#' plot( HI.coast, col=rainbow(length(HI.coast)) )
+#' points( HI.samp, col="red", pch=16 )
+#' 
 #' 
 #' 
 sss.line <- function(x, n, spacing, random.start=TRUE){
@@ -143,12 +157,21 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     
 
   # output ===========================================================
-  SpatialPoints( cbind(x.out, y.out), proj4string = CRS(proj4string(x)) )
+  crds <- data.frame(x.out,y.out)
+  names(crds)<- dimnames(mline)[[2]][3:4]
+  samp<-SpatialPoints( crds, proj4string = CRS(proj4string(x)) )
 
-
+  #   Add additional attributes
+  attr(samp, "frame") <- deparse(substitute(x))
+  attr(samp, "frame.type") <- "line"
+  attr(samp, "sample.type") <- "SSS"
+  attr(samp, "sample.spacing") <- spacing
+  attr(samp, "random.start") <- random.start
+  
+  samp
 }
 
-tmp <- sss.line(HI.coast, 100)
+tmp <- sss.line(HI.coast, spacing=20000)
 plot(HI.coast[2,])
 points(tmp,pch=16)
 points(tmp4[1],tmp4[2],pch=15,col="red")
