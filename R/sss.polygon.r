@@ -193,14 +193,20 @@ sss.polygon <- function( x, n, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE 
 
 
 #   First, convert to UTM, if x is not already
-ps <- proj4string(x)
-if( regexpr("proj=longlat", ps) > 0 ){
+# the next statment identify longlat systems. But, I think
+# we want to use is.projected() here.
+#regexpr("proj=longlat", ps) > 0
+  
+if( !is.projected(x) ){
     #   We have a lat-long system  - convert
     #   All other systems leave alone
     #   Compute an "okay" zone = zone of center of x.
     warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This will cause non-parallel grid lines\n", 
     "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
-    
+  
+    # Save original projection system for later conversion back.
+    ps <- proj4string(x)
+  
     mean.x <- mean( bbox(x)[1,] )
     utm.zone <- floor((mean.x + 180)/6) + 1;  # screw exceptions near Svalbaard.  Don't matter here.
     

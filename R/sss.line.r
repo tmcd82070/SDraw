@@ -46,7 +46,21 @@
 #' 
 #' @return A SpatialPointsDataFrame containing locations in the SSS sample, in
 #' order along the amalgomated line.  Those on line 1 appear first, those on line 2 
-#' second, etc. 
+#' second, etc. Attributes of the sample points (in the 
+#' embedded data frame) are 
+#' as follows: 
+#' \itemize{
+#'   \item \code{siteID}: A unique identifier for every sample point.  
+#'   \code{siteID} starts with 1 at the first point and 
+#'   increments by one for each.  \code{siteID} orders 
+#'   sample points along the amalgomated line.
+#'   \item \code{geometryID}: The ID of the lines object in \code{x} on which each 
+#'   sample point falls.  The 
+#'   ID of lines in \code{x} are \code{row.names(geometry(x))}. 
+#'   \item Any attributes of the original lines (in \code{x}) on which each sample 
+#'   point falls.
+#' }
+#'
 #' 
 #' Additional attributes of the output object, beyond those which 
 #' make it a \code{SpatialPointsDataFrame}, are:
@@ -96,17 +110,21 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     # This unlists the Lines objects to produce one list of coordinates
     # which is different than coordinates(x)
     tmp <- lapply( unlist(x@lines), slot, "Lines")
+    l.id <- sapply( x@lines, slot, "ID")
+    nline <- sapply(tmp,length) # num Line objects in each Lines object
     tmp <- lapply( unlist(tmp), slot, "coords")
 
     # Construct matrix of all coordinates, with duplicate 
     # indicies and lengths between 
     # lines. Do this so that aprox (below) works.
-    merged.line <- matrix(NA, length(unlist(tmp))/2, 4)
+    merged.line <- matrix(NA, length(unlist(tmp))/2, 5)
+    l.id <- l.id[rep(1:length(l.id)), nline]  # reps out ID's so loop works
     strt <- 1
     strt.tt <- 1
     strt.len <- 0
     for(i in 1:length(tmp)){
       l1 <- tmp[[i]]
+      l1.id <- l.id[i]
       l1.seg.lengths = cumsum(LineLength(l1,sum=FALSE))
       l1.seg.lengths = strt.len + c(0,l1.seg.lengths)
       
@@ -116,6 +134,7 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
       merged.line[strt:end,1] <- tt
       merged.line[strt:end,2] <- l1.seg.lengths
       merged.line[strt:end,3:4]<-l1
+      merged.line[strt:end,5] <- l1.id
       
       strt.tt <- tt[length(tt)] 
       strt <- end + 1
@@ -123,13 +142,14 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     }
     
     if( is.null(cnms <- coordnames(x))) cnms <- c("x", "y")
-    dimnames(merged.line)<- list(NULL, c("t","l",cnms))
+    dimnames(merged.line)<- list(NULL, c("t","l",cnms,"geometryID"))
     merged.line
   }
 
   # My approx function ===============================================
   aprox <- function( x, y, x.out ){
     y.out <- rep(NA, length(x.out))
+    
     for( i in 1:length(x.out)){
       if( all(is.na(l.x <- which(x < x.out[i])))  ){
         y.out[i] <- y[1]
@@ -175,6 +195,9 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   x.out <- aprox( mline[,"l"], mline[,3], l.out)
   y.out <- aprox( mline[,"l"], mline[,4], l.out)
     
+Here!! do something like a.out<-aprox( mline[,"l"], mline[,"t"], l.out)
+then ids <- mline[a.out,"geometryID"]
+then df <- data.frame(x)[ids,]
 
   # output ===========================================================
   crds <- data.frame(x.out,y.out)
