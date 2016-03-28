@@ -24,6 +24,7 @@
 #' @param n Sample size.  Number of points to draw from the set of all lines
 #' contained in \code{x}.  Specification of \code{n} takes precedence 
 #' over specification of \code{spacing}.
+#' 
 #' @param x A \code{SpatialLiness} or \code{SpatialLinessDataFrame} object. 
 #' This object must contain at least 1 line.  
 #' 
@@ -36,9 +37,28 @@
 #' lines in \code{x} may not be straight.  Thus, 2-dimensional distances between
 #' sample points will not, in general, equal \code{spacing}.   
 #' 
+#' @param random.start Whether to start the sequence of points at a 
+#' random place.  If \code{TRUE}, a random uniform variate is selected 
+#' between 0 and either \code{spacing} or (length/\code{n}) and the first 
+#' location is placed at that location along the line.  Subsequent points occur
+#' every \code{spacing} units along the lines.  If \code{random.start==FALSE}, 
+#' the first sample point occurs at 0 (first vertex of the lines).
+#' 
 #' @return A SpatialPointsDataFrame containing locations in the SSS sample, in
 #' order along the amalgomated line.  Those on line 1 appear first, those on line 2 
 #' second, etc. 
+#' 
+#' Additional attributes of the output object, beyond those which 
+#' make it a \code{SpatialPointsDataFrame}, are:
+#' \itemize{
+#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
+#'    \item \code{sample.type}: Type of sample drawn. (i.e., "SSS").
+#'    \item \code{sample.spacing}: The spacing between sample points along the 
+#'    amalgomated line. This is the input \code{spacing} parameter if specified,
+#'    or is computed as (length/n) if \code{n} is specified.
+#'    \item \code{random.start}: Whether random start was requested.
+#' }
 #' 
 #' @author Trent McDonald
 #' @seealso \code{\link{sss.polygon}}, \code{\link{sss.point}}, \code{\link{sdraw}}
@@ -50,7 +70,7 @@
 #' plot( HI.coast, col=rainbow(length(HI.coast)) )
 #' points( HI.samp, col="red", pch=16 )
 #' 
-#' # Draw points every 20 km along amalgomated line
+#' # Draw points every 20 km along Hawaii's coastline
 #' HI.samp <- sss.line( HI.coast, spacing=20000 )   
 #' plot( HI.coast, col=rainbow(length(HI.coast)) )
 #' points( HI.samp, col="red", pch=16 )
@@ -61,7 +81,7 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
 
   if( !(inherits(x, "SpatialLines")) ) stop("Must call sss.line with a SpatialLines* object.")
 
-  if(!missing(n) & !missing(spacing)) stop("Must specify only one of n or spacing in sss.line")
+  if(!missing(n) & !missing(spacing)) warning("n and spacing both specified in sss.line.  n is being used.")
 
   # check input parameters
   if( !missing(n)){
@@ -171,10 +191,15 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   samp
 }
 
-tmp <- sss.line(HI.coast, spacing=20000)
-plot(HI.coast[2,])
-points(tmp,pch=16)
-points(tmp4[1],tmp4[2],pch=15,col="red")
+# HERE!!! make this return a SpatialPointsDataFrame
+# Update documentaiton to reflect return of spatialpointsdataframe
+# test with SpatialPoints object (no data frame)
+# test with lat long projection.
+
+# tmp <- sss.line(HI.coast, spacing=20000)
+# plot(HI.coast[2,])
+# points(tmp,pch=16)
+# points(tmp4[1],tmp4[2],pch=15,col="red")
 
 # tmp <- sss.line(Sl, 10)
 # plot(Sl)
