@@ -195,9 +195,9 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   x.out <- aprox( mline[,"l"], mline[,3], l.out)
   y.out <- aprox( mline[,"l"], mline[,4], l.out)
     
-Here!! do something like a.out<-aprox( mline[,"l"], mline[,"t"], l.out)
-then ids <- mline[a.out,"geometryID"]
-then df <- data.frame(x)[ids,]
+#Here!! do something like a.out<-aprox( mline[,"l"], mline[,"t"], l.out)
+#then ids <- mline[a.out,"geometryID"]
+#then df <- data.frame(x)[ids,]
 
   # output ===========================================================
   crds <- data.frame(x.out,y.out)
