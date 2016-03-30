@@ -20,7 +20,9 @@ shinyUI(fluidPage(
   sidebarPanel(
     fileInput("shape", "Upload Shapefile Here", 
               accept = c('.shp', '.dbf', '.sbn', '.sbx', '.shx', '.prj'), multiple = TRUE),
-    width = 4
+     selectInput(inputId = 'outputType', label = 'Export File Type:',
+                 choices = c('csv'='csv', 'shp'='ESRI Shapefile')),
+   width = 4
     ),
   
   mainPanel(
@@ -36,7 +38,7 @@ shinyUI(fluidPage(
     actionButton("Run", label = "Run", icon = NULL, width = NULL), 
     downloadButton("Export", label = "Export"), 
     actionButton("Quit", label = "Quit", icon = NULL, width = NULL)
-  ), 
+    ), 
   
   theme = "journal.css"))
 

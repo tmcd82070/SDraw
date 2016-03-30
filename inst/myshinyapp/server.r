@@ -2,6 +2,8 @@ server <- function(session,input, output){
   
   require(rgdal)
   
+  #increase file upload size to 30MB
+  options(shiny.maxRequestSize=30*1024^2)
   
   #display the shapefile image when uploaded
   shape <- reactive({
@@ -53,16 +55,24 @@ server <- function(session,input, output){
     })
   
 
+  filename = paste('data-', gsub('-| |\\:','',Sys.time()),sep='')
   #for export button
-  output$Export<-downloadHandler(
-    filename = function(){
-      paste(input$type, input$method, 'SDraw Sample', '.zip', sep = ' ')
-    },
+  #currently handles .csv and .shp file types - not working
+  output$Export<- downloadHandler(
+    filename = filename,
     content = function(file){
-      writeOGR(shape2(), dsn = paste(input$shape, '.shp', sep = ''), driver = 'ESRI Shapefile')
-      zip(zipfile = paste(input$type, input$method, 'SDraw Sample', '.zip', sep = ' '), files = Sys.glob('shape2.*'))
+      if(input$outputType == 'csv'){
+        write.csv(shape@data, paste0(choose.dir(),'\\',filename,'.csv'))
+      } else {
+        writeOGR(obj=shape,
+                 #dsn='c:/users/mkauffman/downloads',
+                 dsn = choose.dir(),
+                 layer=filename,
+                 #driver='ESRI Shapefile')
+                 driver = input$outputType)
       }
-    )
+    }
+  )
 
   
    #for quit button
