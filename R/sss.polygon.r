@@ -43,17 +43,16 @@
 #' 
 #' One view of triangular grids (i.e., \code{triangular=TRUE}) is that 
 #' the resulting cells are triangles (hence the name).  Another view 
-#' is that each point in a triangular grid is the center of a 
+#' is that every other point (diagonally) in a triangular grid is the center of a 
 #' hexagonal cell. When \code{triangular=TRUE} and 
 #' \code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
 #' horizontal direction, but remain hexagons. Under the hexagon view, the 
-#' actual cells being sampled are formed by computing the 
-#' Voronoi tesselations (or Dirchlet polygons, see 
-#' \code{\link{deldir::deldir}}) of all points in the grid.  
+#' actual hexagonal cells are formed by connecting the six 
+#' points surrouding a center. 
 #' In this way, specifying 
-#' \code{triangular=TRUE} can be viewed as selecting hexagons. In some 
-#' cases, particularly when sampling geographic space, 
-#' sampling designs that select of hexagons have desirable properties.
+#' \code{triangular=TRUE} can be viewed as selecting hexagons. When 
+#' sampling geographic space, 
+#' sample designs that select of hexagons can have desirable properties.
 #' 
 #' In all cases, the grid is randomly shifted in the X and Y directions, 
 #' before rotation (if called for).  The amount of the random shift is 

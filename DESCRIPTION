@@ -53,6 +53,7 @@ Collate:
     'plot.samp.R'
     'primes.r'
     'readShape.r'
+    'sss.point.r'
     'sss.line.r'
     'sss.polygon.r'
     'srs.polygon.r'

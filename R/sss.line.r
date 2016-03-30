@@ -71,7 +71,8 @@
 #'    \item \code{sample.spacing}: The spacing between sample points along the 
 #'    amalgomated line. This is the input \code{spacing} parameter if specified,
 #'    or is computed as (length/n) if \code{n} is specified.
-#'    \item \code{random.start}: Whether random start was requested.
+#'    \item \code{random.start}: The random start of the systematic sample.  NA 
+#'    corresponds to no random start.
 #' }
 #' 
 #' @author Trent McDonald
@@ -122,7 +123,10 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   l.out <- seq(0,tot.len-spacing,by=spacing)
 
   if( random.start ){
-    l.out <- l.out + runif(1, 0, spacing)
+    m <- runif(1, 0, spacing)
+    l.out <- l.out + m
+  } else {
+    m <- NA
   }
 
   # Extract or compute points on the parameterized line, and indices (tt)
@@ -156,7 +160,7 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   attr(samp, "frame.type") <- "line"
   attr(samp, "sample.type") <- "SSS"
   attr(samp, "sample.spacing") <- spacing
-  attr(samp, "random.start") <- random.start
+  attr(samp, "random.start") <- m
   
   samp
 }
