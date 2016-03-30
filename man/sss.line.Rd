@@ -7,7 +7,7 @@
 sss.line(x, n, spacing, random.start = TRUE)
 }
 \arguments{
-\item{x}{A \code{SpatialLiness} or \code{SpatialLinessDataFrame} object. 
+\item{x}{A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. 
 This object must contain at least 1 line.}
 
 \item{n}{Sample size.  Number of points to draw from the set of all lines
@@ -31,7 +31,7 @@ every \code{spacing} units along the lines.  If \code{random.start==FALSE},
 the first sample point occurs at 0 (first vertex of the lines).}
 }
 \value{
-A SpatialPointsDataFrame containing locations in the SSS sample, in
+A \code{SpatialPointsDataFrame} containing locations in the SSS sample, in
 order along the amalgomated line.  Those on line 1 appear first, those on line 2 
 second, etc. Attributes of the sample points (in the 
 embedded data frame) are 

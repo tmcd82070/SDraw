@@ -56,5 +56,8 @@ Collate:
     'sss.line.r'
     'sss.polygon.r'
     'srs.polygon.r'
+    'srs.line.r'
+    'merge.lines.r'
+    'aprox.r'
     'voronoi.polygons.r'
     'zzz.r'

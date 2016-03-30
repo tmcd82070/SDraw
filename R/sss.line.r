@@ -25,7 +25,7 @@
 #' contained in \code{x}.  Specification of \code{n} takes precedence 
 #' over specification of \code{spacing}.
 #' 
-#' @param x A \code{SpatialLiness} or \code{SpatialLinessDataFrame} object. 
+#' @param x A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. 
 #' This object must contain at least 1 line.  
 #' 
 #' @param spacing Assuming, \code{n} is not given, this is the distance 
@@ -44,7 +44,7 @@
 #' every \code{spacing} units along the lines.  If \code{random.start==FALSE}, 
 #' the first sample point occurs at 0 (first vertex of the lines).
 #' 
-#' @return A SpatialPointsDataFrame containing locations in the SSS sample, in
+#' @return A \code{SpatialPointsDataFrame} containing locations in the SSS sample, in
 #' order along the amalgomated line.  Those on line 1 appear first, those on line 2 
 #' second, etc. Attributes of the sample points (in the 
 #' embedded data frame) are 
@@ -102,78 +102,7 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     if (!is.finite(n) || n < 1) return(NULL)
   }
   
-  # Merge lines functtion ==========================================
-  merge.lines <- function(x){
-    # "merge" all the lines into one big matrix of coordinates with NA's between
-    
-    # keep in mind that x@lines[[1]] could be 2+ Lines. 
-    # This unlists the Lines objects to produce one list of coordinates
-    # which is different than coordinates(x)
-    tmp <- lapply( unlist(x@lines), slot, "Lines")
-    l.id <- sapply( x@lines, slot, "ID")
-    nline <- sapply(tmp,length) # num Line objects in each Lines object
-    tmp <- lapply( unlist(tmp), slot, "coords")
 
-    # Construct matrix of all coordinates, with duplicate 
-    # indicies and lengths between 
-    # lines. Do this so that aprox (below) works.
-    merged.line <- matrix(NA, length(unlist(tmp))/2, 4)
-    merged.ids <- rep(NA, nrow(merged.line))
-    l.id <- l.id[rep(1:length(l.id), nline)]  # reps out ID's so loop works
-    strt <- 1
-    strt.tt <- 1
-    strt.len <- 0
-    for(i in 1:length(tmp)){
-      l1 <- tmp[[i]]
-      l1.id <- l.id[i]
-      l1.seg.lengths = cumsum(LineLength(l1,sum=FALSE))
-      l1.seg.lengths = strt.len + c(0,l1.seg.lengths)
-      
-      end <- strt + nrow(l1) - 1
-      tt <- seq(strt.tt, length=nrow(l1))
-      
-      merged.line[strt:end,1] <- tt
-      merged.line[strt:end,2] <- l1.seg.lengths
-      merged.line[strt:end,3:4]<-l1
-      merged.ids[strt:end] <- l1.id
-      
-      strt.tt <- end + 1 #tt[length(tt)] 
-      strt <- end + 1
-      strt.len <- l1.seg.lengths[length(l1.seg.lengths)]
-    }
-    
-    if( is.null(cnms <- coordnames(x))) cnms <- c("x", "y")
-    dimnames(merged.line)<- list(NULL, c("t","l",cnms))
-    list(geometry=merged.line, IDs=merged.ids)
-  }
-
-  # My approx function ===============================================
-  aprox <- function( x, y, x.out ){
-    y.out <- rep(NA, length(x.out))
-    
-    for( i in 1:length(x.out)){
-      if( all(is.na(l.x <- which(x < x.out[i])))  ){
-        y.out[i] <- y[1]
-        next
-      } 
-      l.x <- max(l.x)
-      
-      if( all(is.na(u.x <- which(x > x.out[i])))  ){
-        y.out[i] <- y[length(y)]
-        next
-      } 
-      u.x <- min(u.x)
-      
-      if( any(e.x <- which(x == x.out[i]))){
-        y.out[i] <- y[e.x[length(e.x)]]
-        next
-      }
-      
-      y.out[i] <- y[l.x] + (y[u.x]-y[l.x])*(x.out[i] - x[l.x])/(x[u.x]-x[l.x])
-    }
-    y.out
-  }
-  
   
   # Main code ========================================================
   # Get all coordinates from all lines "back to back" in a matrix

@@ -28,7 +28,8 @@
 #' and \code{SpatialPolygons*} objects.  
 #'  
 #' \code{HAL, BAS, GRTS, SRS} are fixed-size designs (return exactly \code{n} points).
-#' \code{SSS} is variable-sized. 
+#' The \code{SSS} algorithm applied to Line and Point is fixed-sized.  The \code{SSS} method
+#' applied to Polygon frames is variable-sized. 
 #'
 #' Options which determine characteristics of each 
 #' sample time are passed via \code{...}.  For example, 
@@ -43,9 +44,12 @@
 #'
 #' @return A \code{SpatialPointsDataFrame} object.  At a minimum, the data frame 
 #' embedded in the \code{SpatialPoints} object contains a column named \code{siteID} which 
-#' numbers the points. If \code{x} is a \code{Spatial*DataFrame}, the return's  data
+#' numbers the points, and \code{geometryID} which contains the ID of the
+#' spatial object from which the point was drawn. 
+#' If \code{x} is a \code{Spatial*DataFrame}, the return's  data
 #' frame contains all attributes of \code{x} evaluated at the locations of the sample points.
-#' After \code{siteID} and existing attributes, the sampling routine may add attributes 
+#' 
+#' Certain sampling routine add attributes 
 #' that are pertenent to the design. For example, the \code{grts.*} routines add
 #' a \code{pointType} attribute.  See documentation for the underlying sampling routine
 #' to interpret extra output point attributes.  
