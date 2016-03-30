@@ -93,7 +93,7 @@ HI.samp <- sss.line( HI.coast, spacing=20000 )
 plot( HI.coast, col=rainbow(length(HI.coast)) )
 points( HI.samp, col="red", pch=16 )
 
-
+# Inspect attributes of points with HI.samp@data
 
 }
 \author{

@@ -11,11 +11,11 @@ readShape <- function(input.dir, layername){
 
     cat("Success reading shapefile\n")
 
-    if( length(grep("SpatialPoints", class(shp))) > 0 ){
+    if( inherits(shp, "SpatialPoints") ){
         attr(shp,"type") <- "points"
-    } else if( length(grep("SpatialLines", class(shp))) > 0 ){
+    } else if( inherits(shp, "SpatialLines") ){
         attr(shp,"type") <- "lines"
-    } else if( length(grep("SpatialPolygons", class(shp))) > 0 ){
+    } else if( inherits(shp, "SpatialPolygons") ){
         attr(shp,"type") <- "polygons"
     } 
     

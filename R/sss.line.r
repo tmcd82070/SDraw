@@ -89,7 +89,7 @@
 #' plot( HI.coast, col=rainbow(length(HI.coast)) )
 #' points( HI.samp, col="red", pch=16 )
 #' 
-#' 
+#' # Inspect attributes of points with HI.samp@data
 #' 
 sss.line <- function(x, n, spacing, random.start=TRUE){
 
@@ -117,8 +117,9 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     # Construct matrix of all coordinates, with duplicate 
     # indicies and lengths between 
     # lines. Do this so that aprox (below) works.
-    merged.line <- matrix(NA, length(unlist(tmp))/2, 5)
-    l.id <- l.id[rep(1:length(l.id)), nline]  # reps out ID's so loop works
+    merged.line <- matrix(NA, length(unlist(tmp))/2, 4)
+    merged.ids <- rep(NA, nrow(merged.line))
+    l.id <- l.id[rep(1:length(l.id), nline)]  # reps out ID's so loop works
     strt <- 1
     strt.tt <- 1
     strt.len <- 0
@@ -134,16 +135,16 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
       merged.line[strt:end,1] <- tt
       merged.line[strt:end,2] <- l1.seg.lengths
       merged.line[strt:end,3:4]<-l1
-      merged.line[strt:end,5] <- l1.id
+      merged.ids[strt:end] <- l1.id
       
-      strt.tt <- tt[length(tt)] 
+      strt.tt <- end + 1 #tt[length(tt)] 
       strt <- end + 1
       strt.len <- l1.seg.lengths[length(l1.seg.lengths)]
     }
     
     if( is.null(cnms <- coordnames(x))) cnms <- c("x", "y")
-    dimnames(merged.line)<- list(NULL, c("t","l",cnms,"geometryID"))
-    merged.line
+    dimnames(merged.line)<- list(NULL, c("t","l",cnms))
+    list(geometry=merged.line, IDs=merged.ids)
   }
 
   # My approx function ===============================================
@@ -176,8 +177,11 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   
   # Main code ========================================================
   # Get all coordinates from all lines "back to back" in a matrix
-  mline <- merge.lines(x)
+  mline.ids <- merge.lines(x)
+  mline <- mline.ids$geometry
+  mline.ids <- mline.ids$IDs
   
+  #print(data.frame(mline,mline.ids))
 
   # Figure out l.out sequence along parameterized line ("l","x","y")
   tot.len <- mline[nrow(mline),"l"]
@@ -192,17 +196,31 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     l.out <- l.out + runif(1, 0, spacing)
   }
 
+  # Extract or compute points on the parameterized line, and indices (tt)
   x.out <- aprox( mline[,"l"], mline[,3], l.out)
   y.out <- aprox( mline[,"l"], mline[,4], l.out)
+  t.out <- aprox( mline[,"l"], mline[,"t"], l.out)
+  
+  # Extract line ID's at each point
+  geoID.out <- mline.ids[ceiling(t.out)]
     
-#Here!! do something like a.out<-aprox( mline[,"l"], mline[,"t"], l.out)
-#then ids <- mline[a.out,"geometryID"]
-#then df <- data.frame(x)[ids,]
 
   # output ===========================================================
   crds <- data.frame(x.out,y.out)
   names(crds)<- dimnames(mline)[[2]][3:4]
+  row.names(crds) <- 1:length(x.out)
   samp<-SpatialPoints( crds, proj4string = CRS(proj4string(x)) )
+  
+  if( inherits(x, "SpatialLinesDataFrame") ){
+    # x has attributes, extract them at the points
+    df <- data.frame(x)[geoID.out, ]
+    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out, df)
+    row.names(df) <- 1:length(x.out)
+  } else {
+    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out )
+    row.names(df) <- 1:length(x.out)
+  }
+  samp <- SpatialPointsDataFrame(samp, df, proj4string = CRS(proj4string(x)), match.ID = TRUE)
 
   #   Add additional attributes
   attr(samp, "frame") <- deparse(substitute(x))
@@ -214,16 +232,27 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
   samp
 }
 
-# HERE!!! make this return a SpatialPointsDataFrame
-# Update documentaiton to reflect return of spatialpointsdataframe
-# test with SpatialPoints object (no data frame)
-# test with lat long projection.
-
+# # test with SpatialPoints object (no data frame)
+# tmp <-  sss.line(as(HI.coast, "SpatialLines"), 100)
+# plot(HI.coast)
+# points(tmp, pch=16)
+# 
+# # Test with a SpatialLinesDataFrame
 # tmp <- sss.line(HI.coast, spacing=20000)
-# plot(HI.coast[2,])
+# plot(HI.coast[1,])  # HI.coast[1] is the big island only
 # points(tmp,pch=16)
-# points(tmp4[1],tmp4[2],pch=15,col="red")
-
-# tmp <- sss.line(Sl, 10)
-# plot(Sl)
+# 
+# # tmp <- sss.line(Sl, 10)
+# # plot(Sl)
+# # points(tmp)
+# 
+# library(sp)
+# Sll <- SpatialLinesDataFrame(Sl, data.frame(color=c("red","blue"), elev=c(1000, 848), row.names = c("a","b")))
+# tmp <- sss.line(Sll, 10)
+# plot(Sll)
 # points(tmp)
+# print(data.frame(tmp))
+
+# # test on lat-long coordinate system
+# HI.ll <- spTransform(HI.coast, CRS("+init=epsg:4326"))
+# tmp <- sss.line(HI.ll, 50)
