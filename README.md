@@ -1,7 +1,7 @@
 # SDraw
 An R package to draw samples
 
-Description: This package draws several types of statistical samples, but focuses on spatially balanced samples that are  especially suited for environmental monitoring.  It draws BAS, GRTS, HAL, SSS and SRS samples from points, lines, and polygons.  An friendly Shiny interface is included for the common functions.  See `help(sdraw)` to get started. 
+Description: This package draws several types of statistical samples, but focuses on spatially balanced samples that are  especially suited for environmental monitoring.  It draws BAS, GRTS, HAL, SSS and SRS samples from points, lines, and polygons.  An friendly Shiny interface is included for the common functions.  See package help (`help("SDraw")`)` and help for function `sdraw` (`help("sdraw")`) to get started.  A list of available functions can be obtained with `help(package="SDraw")`. [For the newby: all of R is case sensitive.  `SDraw` is different than `sdraw`.] 
 
 License: GNU General Public License
 
@@ -10,7 +10,7 @@ License: GNU General Public License
 The author has found it best to install dependencies before attempting to install SDraw. To install dependencies, execute the following: 
 * `install.packages( c("spsurvey", "rgdal", "rgeos", "sp", "shiny", "deldir"), repos="http://cran.r-project.org")`
 
-`rgdal` and `rgeos` require java routines, so java must be installed.  On Unix systems, the libraries needed for `rgdal` and `rgeos` are criptically named.  Google 'install rgdal unix'.   
+`rgdal` and `rgeos` require java routines, so java must be installed *a priori*.  On Unix systems, the libraries needed for `rgdal` and `rgeos` are criptically named.  Google 'install rgdal unix'.   
 
 # Installation
 
