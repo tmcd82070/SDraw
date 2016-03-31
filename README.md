@@ -31,7 +31,9 @@ Assuming `devtools` is installed and loaded, the following should work:
 
 
 # After installation
-Issue `library(SDraw)` at the command prompt.  To bring up the Shiny interface (which is barely working as of version 2.1.2), issue `runUI()` at the command prompt.
+Issue `library(SDraw)` at the command prompt.  
+
+To bring up the Shiny interface (which is barely working as of version 2.1.2), issue `runUI()` at the command prompt.
 
 # Bugs
 
