@@ -58,7 +58,8 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{sample.spacing}: The spacing between sample points along the 
    amalgomated line. This is the input \code{spacing} parameter if specified,
    or is computed as (length/n) if \code{n} is specified.
-   \item \code{random.start}: Whether random start was requested.
+   \item \code{random.start}: The random start of the systematic sample.  NA 
+   corresponds to no random start.
 }
 }
 \description{
