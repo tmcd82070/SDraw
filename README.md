@@ -1,7 +1,7 @@
 # SDraw
 An R package to draw samples
 
-Description: This package draws several types of statistical samples, but focuses on spatially balanced samples that are  especially suited for environmental monitoring.  It draws BAS, GRTS, HAL, SSS and SRS samples from points, lines, and polygons.  An friendly Shiny interface is included for the common functions.  See package help (`help("SDraw")`)` and help for function `sdraw` (`help("sdraw")`) to get started.  A list of available functions can be obtained with `help(package="SDraw")`. [For the newby: all of R is case sensitive.  `SDraw` is different than `sdraw`.] 
+Description: This package draws several types of statistical samples, but focuses on spatially balanced samples that are  especially suited for environmental monitoring.  It draws BAS, GRTS, HAL, SSS and SRS samples from points, lines, and polygons.  An friendly Shiny interface is included for the common functions.  See package help (`help("SDraw")`) and help for function `sdraw` (`help("sdraw")`) to get started.  A list of available functions can be obtained with `help(package="SDraw")`. [For the newby: all of R is case sensitive.  `SDraw` is different than `sdraw`.] 
 
 License: GNU General Public License
 
