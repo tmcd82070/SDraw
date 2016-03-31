@@ -43,22 +43,19 @@
 #'   \item \code{siteID}: A unique identifier for every sample point.  
 #'   \code{siteID} starts with 1 at the first point and 
 #'   increments by one for each.  
-#'   \item If \code{x} inherits from \code{SpatialPointsDataFrame}, 
+#'   \item If \code{x} inherits from \code{SpatialPoints}, 
 #'   returned points have attribute \code{geometryID} -- the ID (=\code{row.names(x)}) of 
 #'   the sampled point. 
 #'   \item Any attributes (columns) associated with the input points (rows).
 #' }
-#'
-#' 
 #' Additional attributes of the output object are:
 #' \itemize{
-#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame}: Name of the input sampling frame (i.e., \code{x}).
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "SSS").
-#'    \item \code{sample.spacing}: The spacing between sample points along the 
-#'    line segment 0 to n. This is equal to (N/n)
 #'    \item \code{random.start}: The random start for the systematic sample.
 #' }
+#' Using these additional attributes, one could reconstruct the sample.
 #' 
 #' @author Trent McDonald
 #' @seealso \code{\link{sss.polygon}}, \code{\link{sss.line}}, \code{\link{sdraw}}
@@ -79,10 +76,14 @@
 #' 
 sss.point <- function(x, n){
 
-  if( !(inherits(x, "SpatialPoints")) ) stop("Must call sss.point with a SpatialPoints* object.")
+  if( !(inherits(x, "SpatialPoints")) & !(inherits(x, "data.frame")) ) stop("Must call sss.point with a SpatialPoints* or data.frame object.")
 
-  N <- nrow(x)
-  
+  if( inherits(x, "SpatialPoints")){
+    N<- length(x)
+  } else {
+    N <- nrow(x)
+  }
+
   # check input parameters
   if( !missing(n)){
     if (!is.finite(n) || n < 1) return(NULL)
@@ -91,92 +92,46 @@ sss.point <- function(x, n){
   
 
   # Construct index vector
-  k <- N / n
   m <- runif(1,0,1)
   m <- seq(m, n)
-  f <- seq(N/n, n, by=N/n)
-  
-  frame <- data.frame(x)
-  
-  # Main code ========================================================
-  # Get all coordinates from all lines "back to back" in a matrix
-  mline.ids <- merge.lines(x)
-  mline <- mline.ids$geometry
-  mline.ids <- mline.ids$IDs
-  
-  #print(data.frame(mline,mline.ids))
-
-  # Figure out l.out sequence along parameterized line ("l","x","y")
-  tot.len <- mline[nrow(mline),"l"]
-  if(!missing(n)){
-    # figure out spacing. Want n equally space points along 
-    # entire length of line.
-    spacing <- tot.len / n
-  } 
-  l.out <- seq(0,tot.len-spacing,by=spacing)
-
-  if( random.start ){
-    m <- 
-    l.out <- l.out + runif(1, 0, spacing)
+  f <- c(0, seq(n/N, n, by=n/N))
+  ind <- rep(NA, n)
+  for(i in 1:n){
+    ind[i] <- which( (f[-(N+1)] < m[i]) & (m[i] <= f[-1]) )
   }
-
-  # Extract or compute points on the parameterized line, and indices (tt)
-  x.out <- aprox( mline[,"l"], mline[,3], l.out)
-  y.out <- aprox( mline[,"l"], mline[,4], l.out)
-  t.out <- aprox( mline[,"l"], mline[,"t"], l.out)
   
-  # Extract line ID's at each point
-  geoID.out <- mline.ids[ceiling(t.out)]
-    
+  # Extract sample
+  samp <- x[ind,]
 
-  # output ===========================================================
-  crds <- data.frame(x.out,y.out)
-  names(crds)<- dimnames(mline)[[2]][3:4]
-  row.names(crds) <- 1:length(x.out)
-  samp<-SpatialPoints( crds, proj4string = CRS(proj4string(x)) )
-  
-  if( inherits(x, "SpatialLinesDataFrame") ){
-    # x has attributes, extract them at the points
-    df <- data.frame(x)[geoID.out, ]
-    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out, df)
-    row.names(df) <- 1:length(x.out)
-  } else {
-    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out )
-    row.names(df) <- 1:length(x.out)
+  # Turn into correct output object type.
+  if( inherits(x, "SpatialPointsDataFrame") ){
+    samp@data <- data.frame(siteID=1:n, geometryID=row.names(samp), samp@data )    
+  } else if( inherits(x, "data.frame")){
+    samp <- data.frame(siteID=1:n,  samp )    
+  } else { # SpatialPoints only
+     df <- data.frame(siteID=1:n, geometryID=row.names(samp) )
+     samp <- SpatialPointsDataFrame(samp, df, proj4string = CRS(proj4string(samp)))
   }
-  samp <- SpatialPointsDataFrame(samp, df, proj4string = CRS(proj4string(x)), match.ID = TRUE)
+  
 
   #   Add additional attributes
   attr(samp, "frame") <- deparse(substitute(x))
-  attr(samp, "frame.type") <- "line"
+  attr(samp, "frame.type") <- "point"
   attr(samp, "sample.type") <- "SSS"
-  attr(samp, "sample.spacing") <- spacing
-  attr(samp, "random.start") <- random.start
+  attr(samp, "random.start") <- m[1]
   
   samp
 }
 
 # # test with SpatialPoints object (no data frame)
-# tmp <-  sss.line(as(HI.coast, "SpatialLines"), 100)
-# plot(HI.coast)
-# points(tmp, pch=16)
+# tmp <-  sss.point(as(WA.cities, "SpatialPoints"), 10)
+# plot(WA.cities)
+# points(tmp, pch=16, col="red")
 # 
 # # Test with a SpatialLinesDataFrame
-# tmp <- sss.line(HI.coast, spacing=20000)
-# plot(HI.coast[1,])  # HI.coast[1] is the big island only
-# points(tmp,pch=16)
+# tmp <- sss.point(WA.cities, 100)
+# plot(WA.cities)
+# points(tmp, pch=16, col="red")
 # 
-# # tmp <- sss.line(Sl, 10)
-# # plot(Sl)
-# # points(tmp)
-# 
-# library(sp)
-# Sll <- SpatialLinesDataFrame(Sl, data.frame(color=c("red","blue"), elev=c(1000, 848), row.names = c("a","b")))
-# tmp <- sss.line(Sll, 10)
-# plot(Sll)
-# points(tmp)
-# print(data.frame(tmp))
-
-# # test on lat-long coordinate system
-# HI.ll <- spTransform(HI.coast, CRS("+init=epsg:4326"))
-# tmp <- sss.line(HI.ll, 50)
+# tmp <- data.frame(a=1:300, b=runif(300))
+# tmp <- sss.point( tmp, 50)
