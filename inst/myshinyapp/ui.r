@@ -18,10 +18,10 @@ shinyUI(fluidPage(
   
   sidebarLayout(
   sidebarPanel(
-    fileInput("shape", "Upload Shapefile Here", 
+    fileInput("shape", "Upload Shapefile:", 
               accept = c('.shp', '.dbf', '.sbn', '.sbx', '.shx', '.prj'), multiple = TRUE),
      selectInput(inputId = 'outputType', label = 'Export File Type:',
-                 choices = c('csv'='csv', 'shp'='ESRI Shapefile')),
+                 choices = c('CSV'='CSV', 'SHP'='ESRI Shapefile', 'KML'='KML')),
    width = 4
     ),
   

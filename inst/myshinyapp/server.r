@@ -61,14 +61,21 @@ server <- function(session,input, output){
   output$Export<- downloadHandler(
     filename = filename,
     content = function(file){
-      if(input$outputType == 'csv'){
+      if(input$outputType == 'CSV'){
         write.csv(shape@data, paste0(choose.dir(),'\\',filename,'.csv'))
-      } else {
-        writeOGR(obj=shape,
+      } 
+      if(input$outputType == 'SHP'){
+        writeOGR(obj=shape2,
                  #dsn='c:/users/mkauffman/downloads',
                  dsn = choose.dir(),
                  layer=filename,
-                 #driver='ESRI Shapefile')
+                 driver='ESRI Shapefile')
+                 #driver = input$outputType)
+      }
+      if(input$outputType == 'KML'){
+        writeOGR(obj = shape2,
+                 dsn = choose.dir(),
+                 layer = filename,
                  driver = input$outputType)
       }
     }
