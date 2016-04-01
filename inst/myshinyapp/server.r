@@ -62,10 +62,10 @@ server <- function(session,input, output){
     filename = filename,
     content = function(file){
       if(input$outputType == 'CSV'){
-        write.csv(shape@data, paste0(choose.dir(),'\\',filename,'.csv'))
+        write.csv(shape2()@data, paste0(choose.dir(),'\\',filename,'.csv'))
       } 
       if(input$outputType == 'SHP'){
-        writeOGR(obj=shape2,
+        writeOGR(obj=shape2(),
                  #dsn='c:/users/mkauffman/downloads',
                  dsn = choose.dir(),
                  layer=filename,
@@ -73,7 +73,7 @@ server <- function(session,input, output){
                  #driver = input$outputType)
       }
       if(input$outputType == 'KML'){
-        writeOGR(obj = shape2,
+        writeOGR(obj = shape2(),
                  dsn = choose.dir(),
                  layer = filename,
                  driver = input$outputType)
