@@ -93,14 +93,14 @@
 #' 
 #' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the SSS sample, 
-#' in row-wise order starting in the south (see \code{siteID}, \code{row}, \code{col} 
+#' in row-wise order starting in the south (see \code{sampleID}, \code{row}, \code{col} 
 #' in returned data frame).  Attributes of the sample points (in the 
 #' embedded data frame) are 
 #' as follows: 
 #' \itemize{
-#'   \item \code{siteID}: A unique identifier for every sample point.  For 
-#'   rectangular grids, \code{siteID} is incremented west to east by row from 
-#'   the south.  For triangular grids, \code{siteID} is assigned west to east 
+#'   \item \code{sampleID}: A unique identifier for every sample point.  For 
+#'   rectangular grids, \code{sampleID} is incremented west to east by row from 
+#'   the south.  For triangular grids, \code{sampleID} is assigned west to east 
 #'   to points in every other row from the south. Then, 
 #'   starts over in the southwest and assigns ID's to previously-skipped 
 #'   rows.
@@ -262,7 +262,7 @@ if( triangular ){
     grd <- rbind(grd1, grd2)
     df <- rbind(df1, df2)
 
-    df <- data.frame( siteID=1:nrow(df), df )    
+    df <- data.frame( sampleID=1:nrow(df), df )    
     
 } else {
     
@@ -280,7 +280,7 @@ if( triangular ){
     seq.y <- seq( bb[2,"min"]-d/2, bb[2,"min"] + 2*d, by=delta[2] ) + m.y
     
     grd <- expand.grid( x=seq.x, y=seq.y )
-    df <- data.frame( siteID=1:(length(seq.x)*length(seq.y)), row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)) )
+    df <- data.frame( sampleID=1:(length(seq.x)*length(seq.y)), row=rep(1:length(seq.y), each=length(seq.x)), col=rep(1:length(seq.x), length(seq.y)) )
 }
 
 

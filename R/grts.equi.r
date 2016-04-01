@@ -75,10 +75,13 @@ grts.equi <- function( shp, n, over.n=0 ){
   #   Add a column of sample/oversample for convieneince
   Equalsites$pointType <- c(rep("Sample",n), rep("OverSample",over.n))
   
-  #   Drop all columns that spsurvey::grts added, except 'siteID'.  None 
+  #   Drop all columns that spsurvey::grts added, except 'sampleID'.  None 
   #   of the dropped ones are important for equal probable designs
   keep.cols <- c("siteID", "pointType", names(shp))
   Equalsites <- Equalsites[, keep.cols ]
+  
+  #   Rename "siteID" to "sampleID" to be compatible with the rest of SDraw
+  names(Equalsites)[ names(Equalsites) == "siteID" ] <- "sampleID"
 
   #   Store some extra attributes
   attr(Equalsites, "sp.object") <- deparse(substitute(shp))

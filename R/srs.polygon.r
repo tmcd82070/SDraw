@@ -22,7 +22,7 @@
 #' embedded data frame) are 
 #' as follows: 
 #' \itemize{
-#'   \item \code{siteID}: A unique identifier for every sample point.   
+#'   \item \code{sampleID}: A unique identifier for every sample point.   
 #'   
 #'   \item \code{geometryID}: The ID of the polygon in \code{x} which each 
 #'   sample point falls.  The 
@@ -77,7 +77,7 @@ srs.polygon <- function( x, n ){
   m.x <- runif( 200 )   
   
   #  make sure data frame has at least one numeric column
-  x@data <- data.frame( siteID=1:length(x), geometryID=row.names(geometry(x)), data.frame(x),  zzz=1 )   
+  x@data <- data.frame( sampleID=1:length(x), geometryID=row.names(geometry(x)), data.frame(x),  zzz=1 )   
   
   # Loop until we get enough samples inside the polygons
   samp.pts.x <- samp.pts.y <- NULL

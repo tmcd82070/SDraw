@@ -30,9 +30,9 @@
 #' embedded data frame) are 
 #' as follows: 
 #' \itemize{
-#'   \item \code{siteID}: A unique identifier for every sample point.  
-#'   \code{siteID} starts with 1 at the first point and 
-#'   increments by one for each.  \code{siteID} orders 
+#'   \item \code{sampleID}: A unique identifier for every sample point.  
+#'   \code{sampleID} starts with 1 at the first point and 
+#'   increments by one for each.  \code{sampleID} orders 
 #'   sample points along the amalgomated line.
 #'   \item \code{geometryID}: The ID of the lines object in \code{x} on which each 
 #'   sample point falls.  The 
@@ -102,10 +102,10 @@ srs.line <- function(x, n){
   if( inherits(x, "SpatialLinesDataFrame") ){
     # x has attributes, extract them at the points
     df <- data.frame(x)[geoID.out, ]
-    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out, df)
+    df <- data.frame( sampleID=1:length(x.out), geometryID=geoID.out, df)
     row.names(df) <- 1:length(x.out)
   } else {
-    df <- data.frame( siteID=1:length(x.out), geometryID=geoID.out )
+    df <- data.frame( sampleID=1:length(x.out), geometryID=geoID.out )
     row.names(df) <- 1:length(x.out)
   }
   samp <- SpatialPointsDataFrame(samp, df, proj4string = CRS(proj4string(x)), match.ID = TRUE)

@@ -24,13 +24,14 @@
 #' order they are to be visited.  Attributes of the sample points (in the embedded data frame) are 
 #' as follows: 
 #' \itemize{
-#'   \item \code{siteID} Gives the GRTS ordering of the sample.  The output object
-#'   comes pre-sorted in GRTS order (i.e., sorted by \code{siteID}).  
+#'   \item \code{sampleID}: A unique identifier for points in the sample. 
+#'   This encodes the GRTS ordering of the sample.  The output object
+#'   comes pre-sorted in GRTS order.  
 #'   If the sample becomes un-GRTS-ordered, resort 
-#'   by \code{siteID} (i.e., \code{samp <- samp[order(samp$siteID),]}). 
-#'   \item \code{pointType} A string identifying regular sample points (\code{pointType=="Sample"})
+#'   by \code{sampleID} (i.e., \code{samp <- samp[order(samp$sampleID),]}). 
+#'   \item \code{pointType}: A string identifying regular sample points (\code{pointType=="Sample"})
 #'   and over-sample points (\code{pointType=="OverSample"}).
-#'   \item \code{geometryID} The ID of the line in \code{x} onto which sample points fall.
+#'   \item \code{geometryID}: The ID of the line in \code{x} onto which sample points fall.
 #'   The ID's of lines in \code{x} are \code{row.names(geometry(x))}.
 #'   \item Any attributes of the original lines (in \code{x}) onto which sample points 
 #'   fall. 
