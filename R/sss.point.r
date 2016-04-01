@@ -25,7 +25,7 @@
 #'  unit appears in the frame. 
 #'  \item To start the systematic sample, the routine choses a random number between 0 and 1. 
 #' Let this random number be \eqn{m}.
-#'  \item The sample unit associated with the line segment containing the numbers \eqn{m + i} for 
+#'  \item The sample units associated with the line segments containing the numbers \eqn{m + i} for 
 #' \eqn{i} = 0,1,...,(\eqn{n-1}), are selected for the sample.       
 #' }
 #' 
@@ -40,8 +40,8 @@
 #' If input \code{x} is a \code{data.frame}, a \code{data.frame} is returned. 
 #' Attributes of the returned sample points are: 
 #' \itemize{
-#'   \item \code{siteID}: A unique identifier for every sample point.  
-#'   \code{siteID} starts with 1 at the first point and 
+#'   \item \code{sampleID}: A unique identifier for every sample point.  
+#'   \code{sampleID} starts with 1 at the first point and 
 #'   increments by one for each.  
 #'   \item If \code{x} inherits from \code{SpatialPoints}, 
 #'   returned points have attribute \code{geometryID} -- the ID (=\code{row.names(x)}) of 
@@ -105,11 +105,11 @@ sss.point <- function(x, n){
 
   # Turn into correct output object type.
   if( inherits(x, "SpatialPointsDataFrame") ){
-    samp@data <- data.frame(siteID=1:n, geometryID=row.names(samp), samp@data )    
+    samp@data <- data.frame(sampleID=1:n, geometryID=row.names(samp), samp@data )    
   } else if( inherits(x, "data.frame")){
-    samp <- data.frame(siteID=1:n,  samp )    
+    samp <- data.frame(sampleID=1:n,  samp )    
   } else { # SpatialPoints only
-     df <- data.frame(siteID=1:n, geometryID=row.names(samp) )
+     df <- data.frame(sampleID=1:n, geometryID=row.names(samp) )
      samp <- SpatialPointsDataFrame(samp, df, proj4string = CRS(proj4string(samp)))
   }
   
