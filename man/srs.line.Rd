@@ -20,9 +20,9 @@ second, etc. Attributes of the sample points (in the
 embedded data frame) are 
 as follows: 
 \itemize{
-  \item \code{siteID}: A unique identifier for every sample point.  
-  \code{siteID} starts with 1 at the first point and 
-  increments by one for each.  \code{siteID} orders 
+  \item \code{sampleID}: A unique identifier for every sample point.  
+  \code{sampleID} starts with 1 at the first point and 
+  increments by one for each.  \code{sampleID} orders 
   sample points along the amalgomated line.
   \item \code{geometryID}: The ID of the lines object in \code{x} on which each 
   sample point falls.  The 

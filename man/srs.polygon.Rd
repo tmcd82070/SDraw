@@ -21,7 +21,7 @@ in arbitrary order.  Attributes of the sample points (in the
 embedded data frame) are 
 as follows: 
 \itemize{
-  \item \code{siteID}: A unique identifier for every sample point.   
+  \item \code{sampleID}: A unique identifier for every sample point.   
   
   \item \code{geometryID}: The ID of the polygon in \code{x} which each 
   sample point falls.  The 

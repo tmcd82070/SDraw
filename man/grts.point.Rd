@@ -20,10 +20,11 @@ A \code{SpatialPointsDataFrame} containing locations in the GRTS sample, in
 order they are to be visited.  Attributes of the sample points (in the embedded data frame) are 
 as follows: 
 \itemize{
-  \item \code{siteID}: Gives the GRTS ordering of the sample.  The output object
-  comes pre-sorted in GRTS order (i.e., sorted by \code{siteID}).  
+  \item \code{sampleID}: Unique identifier for sample points. This 
+  encodes the GRTS ordering of the sample.  The output object
+  comes pre-sorted in GRTS order.  
   If the sample  becomes un-GRTS-ordered, resort 
-  by \code{siteID} (i.e., \code{samp <- samp[order(samp$siteID),]}). 
+  by \code{sampleID} (i.e., \code{samp <- samp[order(samp$sampleID),]}). 
   \item \code{pointType}: A string identifying regular sample points (\code{pointType=="Sample"})
   and over-sample points (\code{pointType=="OverSample"}).
   \item \code{geometryID}: The ID of the point in \code{x} which was sampled.  The 

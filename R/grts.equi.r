@@ -14,7 +14,7 @@ grts.equi <- function( shp, n, over.n=0 ){
     # Make sure xx is a Spatial*DataFrame, and has at least one 
     # attribute. 
     geom <- geometry(xx)  # these are just the points, lines or polygons.  No data frame
-    id <- row.names(geom)  # these are ID's of geometry unlist(lapply(xx@lines, slot, "ID"))
+    id <- row.names(xx)  # these are ID's of geometry unlist(lapply(xx@lines, slot, "ID"))
     if( length(id) == 0 ) id <- 1:length(geom) # pretty sure xx must have row.names, but just in case...
     if( "data" %in% slotNames(xx) ){
       # xx is a SpatialXDataFrame

@@ -40,14 +40,14 @@ of the grid cells is computed prior to rotation.}
 }
 \value{
 A \code{SpatialPointsDataFrame} containing locations in the SSS sample, 
-in row-wise order starting in the south (see \code{siteID}, \code{row}, \code{col} 
+in row-wise order starting in the south (see \code{sampleID}, \code{row}, \code{col} 
 in returned data frame).  Attributes of the sample points (in the 
 embedded data frame) are 
 as follows: 
 \itemize{
-  \item \code{siteID}: A unique identifier for every sample point.  For 
-  rectangular grids, \code{siteID} is incremented west to east by row from 
-  the south.  For triangular grids, \code{siteID} is assigned west to east 
+  \item \code{sampleID}: A unique identifier for every sample point.  For 
+  rectangular grids, \code{sampleID} is incremented west to east by row from 
+  the south.  For triangular grids, \code{sampleID} is assigned west to east 
   to points in every other row from the south. Then, 
   starts over in the southwest and assigns ID's to previously-skipped 
   rows.
