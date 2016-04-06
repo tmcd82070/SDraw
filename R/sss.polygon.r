@@ -8,17 +8,12 @@
 #' a square or triangular grid is produced, and whether the grid baseline has 
 #' random orientation.
 #' 
-#' @details The projection system of the input shape object (\code{x}) is checked.  
-#' If the projection system is anything other than UTM (e.g., "longlat"),
-#' \code{x} is converted to UTM prior to constructing the systematic grid.
-#' UTM coordinate systems are necessary to obtain correct spacings (in UTM
-#' space).  At the end, if the orginal projection system was not UTM, the
-#' sample grid is projected back to the original.  This will make the output
-#' grid lines non-parrallel in the orginal system.  To get a proper grid, with
-#' consistent spacing, in the orginal projection, you must start with UTM's.
+#' @details The projection system of the input shape object (\code{x}) is 
+#' not considered. But, a projected coordinate system is necessary to 
+#' obtain correct spacing on the ground.  
 #' The author STRONGLY recommends converting \code{x} to a UTM coordinate
 #' system prior to calling this function.
-#' 
+#'
 #' Spacing (size and shape of grid cells) is determined by \code{n} and 
 #' \code{spacing}. If \code{spacing} is not given,
 #' grid spacing is equal in X and Y directions, which produces square grid
@@ -41,18 +36,18 @@
 #' realized sample size will not always equal \code{n}.  Across an infinite number
 #' of calls, the average sample size will be \code{n}
 #' 
-#' One view of triangular grids (i.e., \code{triangular=TRUE}) is that 
-#' the resulting cells are triangles (hence the name).  Another view 
-#' is that every other point (diagonally) in a triangular grid is the center of a 
-#' hexagonal cell. When \code{triangular=TRUE} and 
-#' \code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
-#' horizontal direction, but remain hexagons. Under the hexagon view, the 
-#' actual hexagonal cells are formed by connecting the six 
-#' points surrouding a center. 
-#' In this way, specifying 
-#' \code{triangular=TRUE} can be viewed as selecting hexagons. When 
-#' sampling geographic space, 
-#' sample designs that select of hexagons can have desirable properties.
+# One view of triangular grids (i.e., \code{triangular=TRUE}) is that 
+# the resulting cells are triangles (hence the name).  Another view 
+# is that every other point (diagonally) in a triangular grid is the center of a 
+# hexagonal cell. When \code{triangular=TRUE} and 
+# \code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
+# horizontal direction, but remain hexagons. Under the hexagon view, the 
+# actual hexagonal cells are formed by connecting the six 
+# points surrouding a center. 
+# In this way, specifying 
+# \code{triangular=TRUE} can be viewed as selecting hexagons. When 
+# sampling geographic space, 
+# sample designs that select of hexagons can have desirable properties.
 #' 
 #' In all cases, the grid is randomly shifted in the X and Y directions, 
 #' before rotation (if called for).  The amount of the random shift is 
@@ -190,39 +185,11 @@
 sss.polygon <- function( x, n, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE ){
 
 
-
-#   First, convert to UTM, if x is not already
-# the next statment identify longlat systems. But, I think
-# we want to use is.projected() here.
-#regexpr("proj=longlat", ps) > 0
-  
-if( !is.projected(x) ){
-    #   We have a lat-long system  - convert
-    #   All other systems leave alone
-    #   Compute an "okay" zone = zone of center of x.
-    warning( paste("SDRAW: Converting from Lat-Long to UTM for sampling, then back.  This will cause non-parallel grid lines\n", 
-    "when plotted in Lat-Long coordinate systems.  Recommend conversion of original spatial frame to UTM and re-drawing sample.\n"))
-  
-    # Save original projection system for later conversion back.
-    ps <- proj4string(x)
-  
-    mean.x <- mean( bbox(x)[1,] )
-    utm.zone <- floor((mean.x + 180)/6) + 1;  # screw exceptions near Svalbaard.  Don't matter here.
-    
-    cat( paste("UTM Zone used for conversion =", utm.zone, "\n" ))
-    
-    #   x tranformed to UTM
-    x <- spTransform( x, CRS(paste("+proj=utm +zone=", utm.zone, " +datum=WGS84", sep="")) )
-} else {
-    utm.zone <- NA
-}
-
-
 #   Bounding box of shapefile
 bb <- bbox( x )
 
-# area of shapefile.  Because we made sure we have UTM, this is square meters. 
-A <- sum(unlist(lapply( x@polygons, function(x){ x@area})))  
+# area of shapefile.  Does not care whether x is projected 
+A <- polygonArea(x)  
 
 
 #   Compute spacing assuming equal x and y spacing
@@ -321,12 +288,6 @@ tmp2 <- data.frame(grd)
 tmp2 <- tmp2[,!(names(tmp2) %in% c("x","y","optional"))] 
 grd@data <- data.frame( tmp2, tmp )
 grd <- grd[ keep, ]
-
-#   Translate back to original projection, if necessary. 
-if( !is.na(utm.zone) ){
-    # the original projection was not UTM - convert back
-    grd <- spTransform( grd, CRS(ps) )
-}
 
 
 #   Add spacing as attribute

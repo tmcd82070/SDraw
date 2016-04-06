@@ -67,8 +67,7 @@ srs.polygon <- function( x, n ){
   A.bb <- diff(bb[1,])*diff(bb[2,])
   
   #   Find area of all polygons
-  A <- rgeos::gArea(x)  # If x is not projected, this generates a warning. 
-  #A <- sum(unlist(lapply( x@polygons, function(x){ x@area}))) #this always works, but I don't know about holes
+  A <- polygonArea(x)  # Does not care whether x is projected 
   
   # Compute number of points to generate to get approx n inside shape
   n.big <- ceiling((A.bb/A)*n)

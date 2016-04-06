@@ -4,38 +4,55 @@
 \alias{bas.polygon}
 \title{Draws a Balanced Asseptance Sample (BAS) from an area resource (polygons).}
 \usage{
-bas.polygon(n, shp)
+bas.polygon(x, n)
 }
 \arguments{
-\item{n}{Sample size.  Number of locations to draw from the set of all
-polygons contained in \code{shp}.}
-
-\item{shp}{A SpatialPolygons or SpatialPolygonsDataFrame object. This object
+\item{x}{A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object. 
+This object
 must contain at least 1 polygon.  If it contains more than 1 polygon, the
 BAS sample is drawn from the union of all polygons.}
+
+\item{n}{Sample size.  Number of locations to draw from the union of all
+polygons contained in \code{x}.}
 }
 \value{
-A SpatialPointsDataFrame containing locations in the BAS sample, in
-order they are to be visited.  A 'siteID' attribute is attached to each
-point (in the embedded data frame) and gives the BAS ordering of the sample
-(i.e., sort on 'siteID' to get proper BAS order).  In addition, if the input
-object has an attached data frame (i.e., is a SpatialPolygonsDataFrame), the
-attrributes of the polygon in which each BAS point fell is attached in the
-associated data frame.
+A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
+in BAS order.
+ Attributes of the sample points are: 
+\itemize{
+  \item \code{sampleID}: A unique identifier for every sample point.  This 
+  encodes the BAS order.  \code{return[order(return$sampleID),]} will sort the 
+  returned object in BAS order.
+  \item \code{geometryID}: The ID of the polygon in \code{x} which each 
+  sample point falls.  The 
+  ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
+  \item Any attributes of the original polygons (in \code{x}). 
+}
+
+Additional attributes of the output object, beyond those which 
+make it a \code{SpatialPointsDataFrame}, are:
+\itemize{
+   \item \code{frame}: Name of the input sampling frame.
+   \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+   \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+}
 }
 \description{
-Draws a BAS sample from a SpatialPolygons object
+Draws a BAS sample from a SpatialPolygons* object
 }
 \details{
-A BAS sample is drawn from the union of all polygons in \code{shp} by
+A BAS sample is drawn from the union of all polygons in \code{x} by
 enclosing all polygons in a bounding square and selecting a randomized
 Halton sequence of points from the bounding square.  Points falling outside
 all polygons are discarded until exactly \code{n} locations are selected
 inside the polygons.
+
+The sampling frame for routine is infinite and contains all (infintesibly 
+small) points in the union of polygons in \code{x}.
 }
 \examples{
 #   Draw sample
-WA_sample <- bas.polygon(200, WA)  
+WA_sample <- bas.polygon(WA, 100)  
 
 #   Plot
 plot( WA )
@@ -52,7 +69,7 @@ plot( WA_sample[ WA_sample$siteID >  100, ], pch=1, add=TRUE )
 Trent McDonald
 }
 \seealso{
-\code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{spsample}}
+\code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{sdraw}}
 }
 \keyword{design}
 \keyword{survey}

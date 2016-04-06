@@ -113,14 +113,9 @@ a square or triangular grid is produced, and whether the grid baseline has
 random orientation.
 }
 \details{
-The projection system of the input shape object (\code{x}) is checked.  
-If the projection system is anything other than UTM (e.g., "longlat"),
-\code{x} is converted to UTM prior to constructing the systematic grid.
-UTM coordinate systems are necessary to obtain correct spacings (in UTM
-space).  At the end, if the orginal projection system was not UTM, the
-sample grid is projected back to the original.  This will make the output
-grid lines non-parrallel in the orginal system.  To get a proper grid, with
-consistent spacing, in the orginal projection, you must start with UTM's.
+The projection system of the input shape object (\code{x}) is 
+not considered. But, a projected coordinate system is necessary to 
+obtain correct spacing on the ground.  
 The author STRONGLY recommends converting \code{x} to a UTM coordinate
 system prior to calling this function.
 
@@ -146,18 +141,6 @@ In general, realized sample size is not fixed.  Across multiple calls,
 realized sample size will not always equal \code{n}.  Across an infinite number
 of calls, the average sample size will be \code{n}
 
-One view of triangular grids (i.e., \code{triangular=TRUE}) is that 
-the resulting cells are triangles (hence the name).  Another view 
-is that every other point (diagonally) in a triangular grid is the center of a 
-hexagonal cell. When \code{triangular=TRUE} and 
-\code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
-horizontal direction, but remain hexagons. Under the hexagon view, the 
-actual hexagonal cells are formed by connecting the six 
-points surrouding a center. 
-In this way, specifying 
-\code{triangular=TRUE} can be viewed as selecting hexagons. When 
-sampling geographic space, 
-sample designs that select of hexagons can have desirable properties.
 
 In all cases, the grid is randomly shifted in the X and Y directions, 
 before rotation (if called for).  The amount of the random shift is 
