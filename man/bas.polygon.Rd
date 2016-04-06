@@ -35,6 +35,14 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+   \item \code{random.start}: The start for the randomized Halton sequence 
+   that produced the sample.  This is a vector of length 2 of random 
+   uniform numbers between 0 and 10e7.  This routine ensures that this index 
+   in the randomized Halton sequence falls inside a polygon of interest.  i.e., 
+   that \code{halton(1,2,random.start)} scaled by the bounding box 
+   lies inside a polygon of \code{x}.  \code{halton(1,2,random.start+i)}, for 
+   \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
+   when scaled by the bounding box. 
 }
 }
 \description{
@@ -58,15 +66,20 @@ WA_sample <- bas.polygon(WA, 100)
 plot( WA )
 
 # Plot first 100 sample locations
-plot( WA_sample[ WA_sample$siteID <= 100, ], pch=16, add=TRUE ) 
+points( WA_sample[ WA_sample$siteID <= 100, ], pch=16 ) 
 
 # Plot second 100 locations 
-plot( WA_sample[ WA_sample$siteID >  100, ], pch=1, add=TRUE )  
+points( WA_sample[ WA_sample$siteID >  100, ], pch=1 )  
 
 
 }
 \author{
 Trent McDonald
+}
+\references{
+Robertson, B.L., J. A. Brown, T. L. McDonald, and P. Jaksons
+(2013) "BAS: Balanced Acceptance Sampling of Natural Resources", Biometrics,
+v69, p. 776-784.
 }
 \seealso{
 \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{sdraw}}

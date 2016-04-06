@@ -61,5 +61,6 @@ Collate:
     'srs.point.r'
     'merge.lines.r'
     'aprox.r'
+    'polygonArea.r'
     'voronoi.polygons.r'
     'zzz.r'
