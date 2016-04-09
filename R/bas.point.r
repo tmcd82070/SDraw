@@ -106,8 +106,6 @@ bas.point <- function(x, n, ...){
 
   pixels <- SpatialPolygonsDataFrame( pixels, data=df )
 
-#  plot(pixels, xlim=c(549246, 573600), ylim=c(5251379, 5283039), col=rainbow(length(pixels)))
-  plot(pixels, col=rainbow(length(pixels)))
   #   Now that we have polygons around points, call bas.polygon. 
   #   But, points can be sampled more than once when the Halton sequence comes 
   #   back around.  To deal with this, take an oversample and keep going 

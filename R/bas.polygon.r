@@ -140,8 +140,6 @@ repeat{
   halt.pts <- SpatialPointsDataFrame(halt.samp, data=data.frame(sampleID=1:n.init),
                                      proj4string=crs.obj )
   
-  points(halt.pts, pch=16, col="red", cex=.5)
-  
   in.poly <- over( halt.pts, x )
   
   keep <- !is.na( in.poly$sampleID )
@@ -149,14 +147,10 @@ repeat{
   if(any(keep)) break
 }
 
-points(halt.pts[keep,], pch=16, col="green", cex=1)
-
 
 # Keep first (or any) that are in the polygon
 m <- m[keep][1]
 halt.pts <- halt.pts[keep,][1,]
-
-points(halt.pts, pch=16, col="blue", cex=1)
 
 #   Take initial number of Halton numbers that is approximately correct
 #   This is number of samples to take to be Alpha% sure that we get n 
@@ -181,15 +175,13 @@ repeat{
   halt.pts2 <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(sampleID=1:nrow(halt.samp)) )
   halt.pts <- rbind(halt.pts, halt.pts2)
   
-  points(halt.pts, pch=16, col="orange", cex=.5)
-  
+
   in.poly <- over( halt.pts, x )
   
   #   Reject the points outside the polygon, and attach other attributes if present
   keep <- !is.na( in.poly$sampleID )  # in.poly$sampleID is row num of polygon in x
 
-  print(c(sum(keep), length(halt.pts)))
-  
+
   halt.pts@data <- data.frame( in.poly )
   halt.pts <- halt.pts[ keep, ]
 
