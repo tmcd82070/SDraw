@@ -7,7 +7,7 @@
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
 #' contained in \code{x}.
-#' @param x A \code{SpatialLines or \code{SpatialLinesDataFrame} object. This object must
+#' @param x A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. This object must
 #' contain at least 1 line.  If it contains more than 1 line, the BAS sample is
 #' drawn from the union of all lines.
 #' 
@@ -24,7 +24,7 @@
 #' 
 #' Under "2D" a systematic sample of points along the union of all lines 
 #' in \code{x} is drawn first, and a 2-dimensional BAS sample of the points
-#' is drawn (see \link{\code{bas.point}}).  This maintains 2D spatial balance of sample locations on the lines. 
+#' is drawn (see \code{\link{bas.point}}).  This maintains 2D spatial balance of sample locations on the lines. 
 #'     
 #' @param init.n.factor If \code{balance == "2D"}, this is a 
 #' scalar controling the number of points to
@@ -77,23 +77,15 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
-#'    \item \code{random.start}: If \code{balance=="2D"}, this is the start 
-#'    for the randomized Halton sequence 
+#'    \item \code{random.start}: The start 
+#'    for the 1D or 2D randomized Halton sequence 
 #'    that produced the sample (see \code{\link{bas.polygon}}).  
-#'    When present, this is a vector of length 2 of random 
-#'    uniform numbers between 0 and 10e7.   
+#'    If \code{balance=="1D"}, this is a single uniform random 
+#'    integer between 0 and 10e7. If \code{balance=="2D"}, this is 
+#'    vector of two uniform random 
+#'    integers between 0 and 10e7.      
 #' }
-#' @return A \code{SpatialPointsDataFrame} containing locations in the BAS 
-#' sample, in BAS
-#' order.  \code{siteID} in the 
-#' embedded data frame  gives the BAS ordering of the sample
-#' (i.e., BAS ordering can be restored by sorting on \code{siteID}.  
-#' In addition, if the input
-#' object has an attached data frame (i.e., is a \code{SpatialLinessDataFrame}), 
-#' attrributes of the line on which each BAS point falls is included in the
-#' output object's embedded data frame. The number of the line 
-#' in \code{x} on which each
-#' point falls is also included in the attribute data frame.
+#' 
 #' @author Trent McDonald
 #' @seealso \code{\link{bas.line}}, \code{\link{bas.polygon}}, \code{\link{sdraw}}
 #' @keywords design survey
@@ -102,13 +94,13 @@
 #' #   Draw sample of Hawaii coastline
 #' #   This takes approximately 60 seconds to run
 #' \dontrun{
-#' samp <- bas.line( 100, HI.coast )
+#' samp <- bas.line( HI.coast, 50 )
 #' plot(HI.coast, col=rainbow(length(HI.coast)))
 #' points( samp, pch=16 )
 #' }
 #' 
 #' 
-bas.line <- function(x, n, balance="2D", n.pixel.factor=10){
+bas.line <- function(x, n, balance="2D", init.n.factor=10){
 
 #   Function to draw a bas sample from a shapefile
 #   containing linear 1-d features.
@@ -127,7 +119,7 @@ if( !inherits(x, "SpatialLines") ) stop("Must call bas.line with a SpatialLines*
 
 if( tolower(balance) == "2d"){
   #   Discretize the line with n.pixel.factor more points than needed for sample
-  pt.frame <- sss.line( x, n*n.pixel.factor )
+  pt.frame <- sss.line( x, n*init.n.factor )
   
   #   Sample as points
   samp <- bas.point( pt.frame, n )

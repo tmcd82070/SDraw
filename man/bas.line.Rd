@@ -4,43 +4,87 @@
 \alias{bas.line}
 \title{Draws a Balanced Asseptance Sample (BAS) from a linear resource (line).}
 \usage{
-bas.line(x, n, n.pixel.factor = 5)
+bas.line(x, n, balance = "2D", init.n.factor = 10)
 }
 \arguments{
-\item{x}{A SpatialLines or SpatialLinesDataFrame object. This object must
+\item{x}{A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. This object must
 contain at least 1 line.  If it contains more than 1 line, the BAS sample is
 drawn from the union of all lines.}
 
 \item{n}{Sample size.  Number of locations to draw from the set of all lines
 contained in \code{x}.}
 
-\item{n.pixel.factor}{Scalar controling the number of underlying pixels to
-create on the lines.  Number of pixels created on the line is
-\code{n*n.pixel.factor}, so this number can grow quickly.  On average, this
+\item{balance}{Option specifying how spatial balance is maintained. The options
+are "1D" or "2D".  
+
+Under "1D" all lines in \code{x} are stretched straight 
+and laid end-to-end in the order the appear in \code{x} and a 1-dimensional 
+BAS sample is taken from the amalgomated line.  Sample locations are then 
+mapped back to two dimensional space and appear on the original lines.  This
+method maintains 1D spatial balance, but not 2D balance.  Spatially 
+balanced samples in 1D may not look spatially balanced when plotted 
+in 2 dimensions.   
+
+Under "2D" a systematic sample of points along the union of all lines 
+in \code{x} is drawn first, and a 2-dimensional BAS sample of the points
+is drawn (see \code{\link{bas.point}}).  This maintains 2D spatial balance of sample locations on the lines.}
+
+\item{init.n.factor}{If \code{balance == "2D"}, this is a 
+scalar controling the number of points to
+place on the lines before drawing the 2D BAS sample.  
+Number of points created on the line is
+\code{n*init.n.factor}, so this number can grow quickly.  On average, this
 is the number of unselected points between each selected point.  See
 Details.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the BAS 
-sample, in BAS
-order.  \code{siteID} in the 
-embedded data frame  gives the BAS ordering of the sample
-(i.e., BAS ordering can be restored by sorting on \code{siteID}.  
-In addition, if the input
-object has an attached data frame (i.e., is a \code{SpatialLinessDataFrame}), 
-attrributes of the line on which each BAS point falls is included in the
-output object's embedded data frame. The number of the line 
-in \code{x} on which each
-point falls is also included in the attribute data frame.
+A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
+in BAS order.
+ Attributes of the sample points are: 
+\itemize{
+  \item \code{sampleID}: A unique identifier for every sample point.  This 
+  encodes the BAS order.  \code{return[order(return$sampleID),]} will sort the 
+  returned object in BAS order.
+  
+  \item \code{geometryID}: The ID of the line in \code{x} on which each 
+  sample point falls.  The 
+  ID of lines in \code{x} are \code{row.names(x)}. 
+  \item Any attributes of the original lines (in \code{x}). 
+}
+
+Additional attributes of the output object, beyond those which 
+make it a \code{SpatialPointsDataFrame}, are:
+\itemize{
+   \item \code{frame}: Name of the input sampling frame.
+   \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
+   \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+   \item \code{random.start}: The start 
+   for the 1D or 2D randomized Halton sequence 
+   that produced the sample (see \code{\link{bas.polygon}}).  
+   If \code{balance=="1D"}, this is a single uniform random 
+   integer between 0 and 10e7. If \code{balance=="2D"}, this is 
+   vector of two uniform random 
+   integers between 0 and 10e7.      
+}
 }
 \description{
-Draws a BAS sample from a SpatialLines object.
+Draws a BAS sample from a SpatialLines* object.
 }
 \details{
-A BAS sample is drawn from the union of all lines in \code{x} by first
-discretizing lines with a dense systematic sample of points.  The number of
-points in this dense systematic sample is \code{n*n.pixel.factor}.  After
-discretizing the line, points on the lines are sampled using the BAS method
+If a "1D" sample is requested, spatial balance is maintained on the 
+lines when laid end-to-end in the order they appear.  Points far appart 
+in 1 dimension may be close together in 2 dimensions, and vice versa. 
+Thus the sample may not look spatially balanced on a 2D map. This is a 
+true infinite sample in that any of an infinite number of points 
+along the lines could be selected.
+
+If a "2D" BAS sample is requested, spatial balance is maintained 
+in 2 dimensions.  Points are well balance on a 2D map.  This is 
+done by first
+discretizing lines with a dense systematic sample of points (with 
+random start).  The number of
+points in this dense systematic sample is \code{n*init.n.factor}.  After
+discretizing the line, points on the lines are selecte using the BAS method
 for points (see \code{\link{bas.point}}).  The BAS method for points places
 a small square (pixel) around each point and samples the set of all squares
 using the BAS method for polygons (see \code{\link{bas.polygon}}).  The BAS
@@ -54,7 +98,7 @@ line.
 #   Draw sample of Hawaii coastline
 #   This takes approximately 60 seconds to run
 \dontrun{
-samp <- bas.line( 100, HI.coast )
+samp <- bas.line( HI.coast, 50 )
 plot(HI.coast, col=rainbow(length(HI.coast)))
 points( samp, pch=16 )
 }

@@ -122,22 +122,41 @@ x <- SpatialPolygonsDataFrame( x, data=df )
 crs.obj <- CRS(proj4string(x))
 
 #   Draw initial random start, but make sure the first point is inside the study area.
+q <- 1 - p
+z <- qnorm(0.90)
+n.init <- (1 / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*1)  # term in sqrt is >0 because we have control on all terms
+n.init <- ceiling(n.init)
 repeat{
-  m <- ceiling(max.u * runif( my.dim ))
-  halt.samp <- matrix( halton( 1, my.dim, m), 1, 2)
-
+  m <- ceiling(max.u * runif( n.init ))
+  halt.samp <- matrix(NA, n.init, my.dim)
+  for(i in 1:n.init){
+    halt.samp[i,] <- halton( 1, my.dim, m[i] )
+  }
+  
   #   Convert from [0,1] to a square box covering [bb]
   halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
   halt.samp <- t(halt.samp)
   
-  halt.pts <- SpatialPointsDataFrame(halt.samp, data=data.frame(sampleID=1), proj4string=crs.obj )
+  halt.pts <- SpatialPointsDataFrame(halt.samp, data=data.frame(sampleID=1:n.init),
+                                     proj4string=crs.obj )
+  
+  points(halt.pts, pch=16, col="red", cex=.5)
   
   in.poly <- over( halt.pts, x )
-
+  
   keep <- !is.na( in.poly$sampleID )
-
-  if(keep) break
+  
+  if(any(keep)) break
 }
+
+points(halt.pts[keep,], pch=16, col="green", cex=1)
+
+
+# Keep first (or any) that are in the polygon
+m <- m[keep][1]
+halt.pts <- halt.pts[keep,][1,]
+
+points(halt.pts, pch=16, col="blue", cex=1)
 
 #   Take initial number of Halton numbers that is approximately correct
 #   This is number of samples to take to be Alpha% sure that we get n 
@@ -162,11 +181,15 @@ repeat{
   halt.pts2 <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(sampleID=1:nrow(halt.samp)) )
   halt.pts <- rbind(halt.pts, halt.pts2)
   
+  points(halt.pts, pch=16, col="orange", cex=.5)
+  
   in.poly <- over( halt.pts, x )
   
   #   Reject the points outside the polygon, and attach other attributes if present
   keep <- !is.na( in.poly$sampleID )  # in.poly$sampleID is row num of polygon in x
 
+  print(c(sum(keep), length(halt.pts)))
+  
   halt.pts@data <- data.frame( in.poly )
   halt.pts <- halt.pts[ keep, ]
 

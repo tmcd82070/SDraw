@@ -2,9 +2,10 @@
 #' 
 #' @title Draws a Balanced Asseptance Sample (BAS) from a discrete resource (points).
 #' 
-#' @description Draws a BAS sample from a SpatialPoints object
+#' @description Draws a BAS sample from a \code{SpatialPoints*} object.
 #' 
-#' @details The BAS method for points computs the minimum distance between all points in
+#' @details The BAS method for points computes the minimum distance between 
+#' any two points in
 #' \code{x} and places a small square (pixel) around each.  Size of the
 #' square around each point is d/sqrt(2) on a side, where d is the minimum
 #' distance between points. The BAS method for points then selects a BAS sample
@@ -19,12 +20,38 @@
 #' @param n Sample size.  Number of points to select from the set of points
 #' contained in \code{x}.
 #'
-#' @return A SpatialPointsDataFrame containing locations in the BAS sample, in
-#' order they are to be visited.  A 'siteID' attribute is attached to each
-#' point (in the embedded data frame) and gives the BAS ordering of the sample
-#' (i.e., sort on 'siteID' to get proper BAS order).  In addition, if the input
-#' object has an attached data frame (i.e., is a SpatialPointsDataFrame), the
-#' attrributes of the point are attached in the associated data frame.
+#' @return A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
+#' in BAS order.
+#'  Attributes of the sample points are: 
+#' \itemize{
+#'   \item \code{sampleID}: A unique identifier for every sample point.  This 
+#'   encodes the BAS order.  \code{return[order(return$sampleID),]} will sort the 
+#'   returned object in BAS order.
+#'   \item \code{geometryID}: The ID of the point in \code{x} that has been
+#'   selected. The 
+#'   ID of points in \code{x} are \code{row.names(x)}. 
+#'   \item Any attributes of the original lines (in \code{x}). 
+#' }
+#'
+#' Additional attributes of the output object, beyond those which 
+#' make it a \code{SpatialPointsDataFrame}, are:
+#' \itemize{
+#'    \item \code{frame}: Name of the input sampling frame.
+#'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
+#'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+#'    \item \code{random.start}: The start of the 2D randomized Halton sequence 
+#'    that produced the sample.  This is a vector of length 2 of random 
+#'    uniform numbers between 0 and 10e7.  This routine ensures that this index 
+#'    in the randomized Halton sequence falls inside the pixel surrounding 
+#'    a point. i.e., 
+#'    that \code{halton(1,2,random.start)} scaled by the bounding box
+#'    around all points  
+#'    lies inside a pixel surrounding a point in \code{x}.  
+#'    \code{halton(1,2,random.start+i)}, for 
+#'    \code{i} > 0, is not guarenteed to fall inside a pixel 
+#'    when scaled by the bounding box. 
+#' }
+#' 
 #' @author Trent McDonald
 #' @seealso \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{spsample}}
 #' @keywords design survey
@@ -53,7 +80,8 @@ bas.point <- function(x, n, ...){
 
   #   Find minimum distance between two points.  
   #   This is expensive, but necessary. 
-  d <- min(stats::dist( pts ))  # minimum distance.  Use dist from stats package. Keep in mind this is decimal degrees if x is lat long.
+  #   Use dist from stats package. Keep in mind this is decimal degrees if x is lat long.
+  d <- min(stats::dist( pts ))  # minimum distance.  
 
   #   Make pixels around points 
   d <- d / (2*sqrt(2))   # reduce minimum so no pixels over lap
@@ -78,10 +106,12 @@ bas.point <- function(x, n, ...){
 
   pixels <- SpatialPolygonsDataFrame( pixels, data=df )
 
-
+#  plot(pixels, xlim=c(549246, 573600), ylim=c(5251379, 5283039), col=rainbow(length(pixels)))
+  plot(pixels, col=rainbow(length(pixels)))
   #   Now that we have polygons around points, call bas.polygon. 
-  #   But, because points can be sampled more than once when the Halton sequence comes 
-  #   back around.  To deal with this, take an oversample and keep going until we get n distinct points. 
+  #   But, points can be sampled more than once when the Halton sequence comes 
+  #   back around.  To deal with this, take an oversample and keep going 
+  #   until we get n distinct points. 
   samp <- NULL
   crs.obj <- CRS(x@proj4string@projargs)
   cord.names <- dimnames(bbox(x))[[1]]
@@ -89,9 +119,11 @@ bas.point <- function(x, n, ...){
 
 
   repeat{
-    samp2 <- bas.polygon( n * (1 + n/N), pixels )  # at most, a 2*n sample
+    samp2 <- bas.polygon( pixels, round(n * (1 + n/N)) )  # at most, a 2*n sample
+    m <- attr(samp2,"random.start")  # save for later
   
-    #   Snap the halton points to the pixel center points, which were a part of the input data frame
+    #   Snap the halton points to the pixel center points, 
+    #   which were a part of the input data frame
     cords.df <- data.frame(samp2)
     cords <- cords.df[,cord.names]
   
@@ -107,7 +139,8 @@ bas.point <- function(x, n, ...){
                           
     dups <- duplicated(samp.cords)
     
-    samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], proj4string=crs.obj)
+    samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], 
+                                    proj4string=crs.obj)
     
     if( length(samp) >= n ){
       samp <- samp[1:n,]
@@ -115,7 +148,11 @@ bas.point <- function(x, n, ...){
     }  
   }
 
-
+  attr(samp, "frame") <- deparse(substitute(x))
+  attr(samp, "frame.type") <- "point"
+  attr(samp, "sample.type") <- "BAS"
+  attr(samp, "random.start") <- m
+  
   samp
 
 }
