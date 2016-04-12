@@ -8,8 +8,7 @@
 #' user can change the maximum integer and hence the number of 
 #' possible BAS samples. 
 #'
-#' @details 
-#' CAUTION: The following comment is intended for 
+#' @details CAUTION: The following comment is intended for 
 #' those who wish to simulate or study statistical
 #' properties of BAS, and want to completely enumerate
 #' the sample space.  Don't do this if you are 
@@ -21,14 +20,14 @@
 #'  Random starts are = (0,1,2,3,4) X (0,1,2,3,4).
 #'  
 #'  In general,
-#'  \code{all.possible.starts} = \code{expand.grid(x=0:maxU(),y=0:maxU()))
+#'  \code{all.possible.starts} = \code{expand.grid(x=0:maxU(),y=0:maxU()))}
 #' 
 #'  Number of possible BAS samples is less than or equal to
 #'   \code{(maxU()+1)^2}
 #'  because the first sample point is required to land in a 
 #'  valid polygon. So, starts that do not land in polygon 
 #'  are discarded.   
-
+#'  
 #' @return 10e7 or 100,000,000  
 #' 
 #' @author Trent McDonald
