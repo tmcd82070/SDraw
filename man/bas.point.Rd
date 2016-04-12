@@ -4,7 +4,7 @@
 \alias{bas.point}
 \title{Draws a Balanced Asseptance Sample (BAS) from a discrete resource (points).}
 \usage{
-bas.point(x, n, ...)
+bas.point(x, n)
 }
 \arguments{
 \item{x}{A SpatialPoints or SpatialPointsDataFrame object. This object
@@ -33,17 +33,23 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
-   \item \code{random.start}: The start of the 2D randomized Halton sequence 
-   that produced the sample.  This is a vector of length 2 of random 
-   uniform numbers between 0 and 10e7.  This routine ensures that this index 
-   in the randomized Halton sequence falls inside the pixel surrounding 
-   a point. i.e., 
-   that \code{halton(1,2,random.start)} scaled by the bounding box
-   around all points  
-   lies inside a pixel surrounding a point in \code{x}.  
-   \code{halton(1,2,random.start+i)}, for 
-   \code{i} > 0, is not guarenteed to fall inside a pixel 
-   when scaled by the bounding box. 
+   \item \code{random.start}: The random seed of the random-start Halton sequence 
+   that produced the sample.  This is a vector of length 2 whose elements are 
+   random intergers between 0 and \code{\link{max.U()}}. 
+   This routine ensures that the first sample point
+   corresponding to this index in the random-start Halton sequence 
+   falls inside a polygon of interest.  i.e., 
+   that \code{halton(1,2,random.start)} scaled by a square bounding box
+   lies inside a polygon of \code{x}.  The square bounding box scaling
+   is \code{bb[,"min"] +} \code{t(random.start) *} 
+   \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
+   
+   Note that \code{halton(1,2,random.start+i)}, for 
+   \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
+   when scaled by the square bounding box. The sample consists of the point 
+   associated with \code{random.start} and the next \code{n-1}
+   Halton points in sequence that fall inside a polygon
+   of \code{x}. 
 }
 }
 \description{

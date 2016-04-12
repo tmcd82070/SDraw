@@ -41,14 +41,23 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
-#'    \item \code{random.start}: The start for the randomized Halton sequence 
-#'    that produced the sample.  This is a vector of length 2 of random 
-#'    uniform numbers between 0 and 10e7.  This routine ensures that this index 
-#'    in the randomized Halton sequence falls inside a polygon of interest.  i.e., 
-#'    that \code{halton(1,2,random.start)} scaled by the bounding box 
-#'    lies inside a polygon of \code{x}.  \code{halton(1,2,random.start+i)}, for 
+#'    \item \code{random.start}: The random seed of the random-start Halton sequence 
+#'    that produced the sample.  This is a vector of length 2 whose elements are 
+#'    random intergers between 0 and \code{\link{max.U()}}. 
+#'    This routine ensures that the first sample point
+#'    corresponding to this index in the random-start Halton sequence 
+#'    falls inside a polygon of interest.  i.e., 
+#'    that \code{halton(1,2,random.start)} scaled by a square bounding box
+#'    lies inside a polygon of \code{x}.  The square bounding box scaling
+#'    is \code{bb[,"min"] +} \code{t(random.start) *} 
+#'    \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
+#'    
+#'    Note that \code{halton(1,2,random.start+i)}, for 
 #'    \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
-#'    when scaled by the bounding box. 
+#'    when scaled by the square bounding box. The sample consists of the point 
+#'    associated with \code{random.start} and the next \code{n-1}
+#'    Halton points in sequence that fall inside a polygon
+#'    of \code{x}. 
 #' }
 #' 
 #' @references 
@@ -100,12 +109,8 @@ area <- polygonArea(x)
 #   Find fraction of the square Halton box covered by the polygons
 p <- min(1, area / max(diff(t(bb)))^2 )
 
-#   Maximum number for random start.  Random start is uniform on integers between 1 and this number. 
-max.u <- 10e7
-
-
-my.dim <- 2 # number of dimensions we are sampling
-
+my.dim <- 2 # number of dimensions we are sampling. leave this here
+            # to make it easier to expand to dim > 2
 
 #   Make sure there is a non-missing attribute associated with each polygon in x.
 #   This is because over() extracts attributes of x, and missingness is used 
@@ -126,11 +131,18 @@ q <- 1 - p
 z <- qnorm(0.90)
 n.init <- (1 / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*1)  # term in sqrt is >0 because we have control on all terms
 n.init <- ceiling(n.init)
+if (!is.null(mxU <- get0("maxU", envir = .GlobalEnv, mode="function"))) {
+  max.u <- mxU()
+} else {
+  max.u <- SDraw::maxU()
+}
+
 repeat{
-  m <- ceiling(max.u * runif( n.init ))
+  m <- floor( runif( n.init*my.dim, min=0, max=max.u+1 ))
+  m <- matrix(m,n.init,my.dim)
   halt.samp <- matrix(NA, n.init, my.dim)
   for(i in 1:n.init){
-    halt.samp[i,] <- halton( 1, my.dim, m[i] )
+    halt.samp[i,] <- halton( 1, dim=my.dim, start=m[i,] )
   }
   
   #   Convert from [0,1] to a square box covering [bb]
@@ -148,9 +160,10 @@ repeat{
 }
 
 
-# Keep first (or any) that are in the polygon
-m <- m[keep][1]
-halt.pts <- halt.pts[keep,][1,]
+# Keep first that is in a polygon
+which.pt.in <- which(keep)[1]  # or min(which(keep))
+m <- m[which.pt.in,]
+halt.pts <- halt.pts[which.pt.in,]
 
 #   Take initial number of Halton numbers that is approximately correct
 #   This is number of samples to take to be Alpha% sure that we get n 
@@ -162,7 +175,7 @@ halt.start <- m  # save for attributes later
 repeat{
   n.init <- (n / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*n)  # term in sqrt is >0 because we have control on all terms
   n.init <- ceiling(n.init)
-  halt.samp <- halton( n.init, my.dim, m+1 )
+  halt.samp <- halton( n.init, dim=my.dim, start=m+1 )
   
   #   Convert from [0,1] to a square box covering [bb]
   halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)

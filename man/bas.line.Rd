@@ -58,13 +58,14 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
-   \item \code{random.start}: The start 
-   for the 1D or 2D randomized Halton sequence 
-   that produced the sample (see \code{\link{bas.polygon}}).  
+   \item \code{random.start}: The random seed for the random-start 
+   1D or 2D Halton sequence 
+   that produced the sample.  
    If \code{balance=="1D"}, this is a single uniform random 
-   integer between 0 and 10e7. If \code{balance=="2D"}, this is 
+   integer between 0 and \code{\link{max.U()}}. If \code{balance=="2D"}, this is 
    vector of two uniform random 
-   integers between 0 and 10e7.      
+   integers between 0 and \code{\link{max.U()}}.  See \code{\link{bas.polygon}} 
+   explanation on how to scale Halton points to fit in the study area. 
 }
 }
 \description{
