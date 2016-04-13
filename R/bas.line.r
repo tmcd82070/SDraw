@@ -94,14 +94,12 @@
 #' 
 #' #   Draw sample of Hawaii coastline
 #' #   This takes approximately 60 seconds to run
-#' \dontrun{
 #' samp <- bas.line( HI.coast, 50 )
-#' plot(HI.coast, col=rainbow(length(HI.coast)))
-#' points( samp, pch=16 )
-#' }
+#' plot(HI.coast)
+#' points( samp, pch=16, col="red" )
 #' 
 #' 
-bas.line <- function(x, n, balance="2D", init.n.factor=10){
+bas.line <- function(x, n, balance="1D", init.n.factor=10){
 
 #   Function to draw a bas sample from a shapefile
 #   containing linear 1-d features.
