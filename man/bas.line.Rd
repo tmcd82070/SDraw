@@ -4,7 +4,7 @@
 \alias{bas.line}
 \title{Draws a Balanced Asseptance Sample (BAS) from a linear resource (line).}
 \usage{
-bas.line(x, n, balance = "2D", init.n.factor = 10)
+bas.line(x, n, balance = "1D", init.n.factor = 10)
 }
 \arguments{
 \item{x}{A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. This object must
@@ -98,11 +98,9 @@ line.
 
 #   Draw sample of Hawaii coastline
 #   This takes approximately 60 seconds to run
-\dontrun{
 samp <- bas.line( HI.coast, 50 )
-plot(HI.coast, col=rainbow(length(HI.coast)))
-points( samp, pch=16 )
-}
+plot(HI.coast)
+points( samp, pch=16, col="red" )
 
 
 }

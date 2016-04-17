@@ -13,7 +13,7 @@ voronoi.polygons(x, bounding.polygon)
 bounding polygon(s) for the Voronoi polygons.  If present, the 
 Voronoi polygons from points in \code{x} are clipped to the outside 
 bounding polygon of \code{bounding.polygon}.  The outside bounding polygon
-is the union of all polygon 
+is the union of all polygons 
 in \code{bounding.polygon}.  If this is not present, the Voronoi polygons
 extend to a rectangle outside the range of the input points in all directions
 by 10 percent.}

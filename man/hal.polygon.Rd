@@ -4,25 +4,27 @@
 \alias{hal.polygon}
 \title{Draws a Halton Lattice sample from an area (polygon) resource.}
 \usage{
-hal.polygon(n, shp, J = NULL, eta = c(1, 1), triangular = FALSE,
-  bases = c(2, 3))
+hal.polygon(x, n, J = NULL, eta = c(1, 1), triangular = FALSE,
+  bases = c(2, 3), init.n.factor = 1000)
 }
 \arguments{
-\item{n}{Sample size.  Number of locations to draw from the set of points
-contained in \code{shp}.}
+\item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
+This object must contain at least 1 polygon.}
 
-\item{shp}{A SpatialPointss or SpatialPointssDataFrame object. This object must
-contain at least 1 point.}
+\item{n}{Sample size.  Number of locations to draw from the union of all 
+polygons contained in \code{x}.}
 
 \item{J}{A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 \code{J[2]} for vertical dimension. \code{J} determines the size and shape
 of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
-of Halton boxes over \code{shp}'s bounding box, and \code{bases[2]^J[2]} 
+of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
 horizontal rows of Halton boxes over the bounding box, for a total 
 of \code{prod(bases^J)} total boxes.  The dimension of each box is 
 \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
-vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
-\code{J} is choosen so that Halton boxes are as square as possible.}
+vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
+\code{J} is choosen so that approximately \code{1000*n} Halton boxes are placed 
+in the bounding box of polygons, each as 
+square as possible and each containing one point,}
 
 \item{eta}{A 2X1 vector specifying the number of points to add in the 
 horizontal and vertical dimensions of each Halton box.  e.g., if 
@@ -37,27 +39,66 @@ bounding box of the polygons.
 If FALSE, a rectangluar Halton lattice is constructed.}
 
 \item{bases}{2X1 vector of Halton bases.  These must be co-prime.}
+
+\item{init.n.factor}{A
+scalar factor controling the approximate number of points 
+in the Halton lattice to place inside the polygons before sampling. 
+If \code{J} is not specified, approximately \code{init.n.factor*n} 
+points are placed in the Halton lattice overlaid on the polygons 
+of \code{x}.  Points in the Halton lattice are then sampled 
+using the HAL method for points.  \code{init.n.factor*n} is the 
+approximate frame size.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the HAL sample, in
-the order they are to be visited.  A 'siteID' attribute is attached to each
-point (in the embedded data frame) and gives the HAL ordering of the sample
-(i.e., sort on 'siteID' to get proper HAL order).  In addition, if the input
-object has an attached data frame (i.e., is a \code{SpatialPolygonsDataFrame}), the
-attributes of the polygon in which each HAL point fell is attached in the
-associated data frame. The ID  of the polygon in \code{shp} in which each
-point fell is an attribute of the output points.
+A \code{SpatialPointsDataFrame} containing locations in the HAL sample, 
+in HAL order.
+ Attributes of the sample points are: 
+\itemize{
+  \item \code{sampleID}: A unique identifier for every sample point.  This 
+  encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
+  returned object in HAL order.
+  
+  \item \code{geometryID}: The ID of the polygon in \code{x} containing each 
+  sample point.  The 
+  ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
+  \item Any attributes of the original polygons (in \code{x}). 
+}
+
+Additional attributes of the output object, beyond those which 
+make it a \code{SpatialPointsDataFrame}, are:
+\itemize{
+   \item \code{frame}: Name of the input sampling frame.
+   \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+   \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
+   \item \code{random.start}: The random seed of the random-start Halton sequence 
+   that produced the sample.  This is a vector of length 2 whose elements are 
+   random intergers between 0 and \code{\link{max.U()}}. 
+   This routine ensures that the first sample point
+   corresponding to this index in the random-start Halton sequence 
+   falls inside a polygon of interest.  i.e., 
+   that \code{halton(1,2,random.start)} scaled by a square bounding box
+   lies inside a polygon of \code{x}.  The square bounding box scaling
+   is \code{bb[,"min"] +} \code{t(random.start) *} 
+   \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
+   
+   Note that \code{halton(1,2,random.start+i)}, for 
+   \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
+   when scaled by the square bounding box. The sample consists of the point 
+   associated with \code{random.start} and the next \code{n-1}
+   Halton points in sequence that fall inside a polygon
+   of \code{x}. 
+}
 }
 \description{
 Draws a Halton Lattice sample from a \code{SpatialPolygons} object.
 }
 \details{
-\emph{Brief description of Halton Lattice sampling for polygons:} 
+\emph{A brief description of Halton Lattice sampling for polygons:} 
 Given a set of Halton Lattice parameters \code{J}, \code{bases}, \code{eta}, 
-and  \code{triangular}, the union of all polygons is discretized by placing 
+and  \code{triangular}, the bounding box around all polygons is partitioned using  
 a Halton lattice of \code{prod(bases^J)} boxes, each containing  \code{prod(eta)}
-points, over the bounding box of all polygons. Points outside any polygon are
-dropped, and the resulting Halton lattice frame is passed to \code{hal.point} 
+points. Points not inside at least one polygon are
+dropped.  The resulting points (the Halton lattice frame) are passed to \code{hal.point} 
 for sampling.
 }
 \note{
@@ -66,14 +107,12 @@ The number of points in the Halton lattice is \code{prod(bases^J)*prod(eta)}.
 }
 \examples{
 
-#   Draw sample of Hawaii coastline
-#   This takes approximately 30 seconds to run
-samp <- hal.polygon( 100, WA )
+samp <- hal.polygon( WA, 100 )
 plot(WA)
 points( samp, pch=16, col="red" )
   
 #   Different lattice topology
-samp <- hal.polygon( 100, WA, J=c(8,2), eta=c(2,1), triangular=TRUE)
+samp <- hal.polygon( WA, 100, J=c(8,2), eta=c(2,1), triangular=TRUE)
 points( samp, pch=15, col="blue")
   
 

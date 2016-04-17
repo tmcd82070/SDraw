@@ -4,15 +4,12 @@
 \alias{hal.point}
 \title{Draws a Halton Lattice sample from a discrete (point) resource.}
 \usage{
-hal.point(n, shp, J = NULL, bases = c(2, 3), plot = TRUE,
+hal.point(x, n, J = NULL, bases = c(2, 3), plot = TRUE,
   plot.lattice = FALSE)
 }
 \arguments{
 \item{n}{Sample size.  Number of locations to draw from the set of points
 contained in \code{shp}.}
-
-\item{shp}{A SpatialPointss or SpatialPointssDataFrame object. This object must
-contain at least 1 point.}
 
 \item{J}{A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 \code{J[2]} for vertical dimension. \code{J} determines the size and shape
@@ -31,6 +28,9 @@ vertical extents of \code{shp}'s bounding box.  If \code{J=NULL} (the default),
 \item{plot.lattice}{Logical indicating whether to plot the Halton lattice used 
 to draw the sample.  \code{plot.lattice = TRUE} produces same map 
 as \code{plot=TRUE}, with the addition of the Halton lattice.}
+
+\item{shp}{A SpatialPointss or SpatialPointssDataFrame object. This object must
+contain at least 1 point.}
 }
 \value{
 A SpatialPointsDataFrame containing locations in the HAL sample, in
@@ -43,7 +43,7 @@ associated data frame. The number of the line in \code{shp} on which each
 point falls also appears in the attribute data frame.
 }
 \description{
-Draws a Halton Lattice sample from a \code{SpatialPoints} object.
+Draws a Halton Lattice sample from a \code{SpatialPoints*} object.
 }
 \details{
 Given a set of Halton Lattice parameters \code{J} and \code{bases},
