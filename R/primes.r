@@ -8,7 +8,9 @@
 #' 
 #' @details This routine is brute-force and works well for the low primes, i.e., 
 #' for \code{n} less than a couple thousand.  It is not particularly 
-#' efficient for large \code{n}. 
+#' efficient for large \code{n}. For example, \code{primes(2000)} on a 
+#' Windows laptop takes approximately 4 seconds, 
+#' while \code{primes(5000)} takes approximately 30 seconds. 
 #' 
 #' @return A vector of length \code{n} containing prime numbers, in order, 
 #' starting at 2.  
