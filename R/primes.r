@@ -7,7 +7,7 @@ primes = function(n)
   
   # return the first n primes
   n = as.integer(n)
-  if(n > 1e8) stop("n too large")
+  if(n > 1e8) stop("Number of primes requested too large")
   ans <- rep(NA,n)
   ans[1] <- 2
   i <- 3
