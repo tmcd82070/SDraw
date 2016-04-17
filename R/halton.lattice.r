@@ -1,43 +1,113 @@
-halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1,nrow(bbox)), triangular=FALSE, bases=NULL){
-  # 
-  # Return coordinates in a D-dimensional Halton lattice, as a set of vectors in a data frame.
-  #
-  # Input: 
-  #   bbox = Dx2 matrix equal to the bounding box for the Halton lattice. bbox[1,] = c(min, max) of dimension 1, bbox[2,] = c(min, max)
-  #     of dimension 2, etc. Default is the unit box [0,1]X[0,1].  Number rows is number of dimensions.  dimnames(bbox)[[1]] is the name
-  #     of the columns on output (i.e., coordinate names). 
-  #   J = DX1 vector of base powers.  J[1] is for dimention 1, J[2] for dimension 2, etc.
-  #     J determines the size and shape of the lowest level of Halton boxes. If J=NULL (the default), 
-  #     J is choosen so that Halton boxes are as square as possible. 
-  #   N = Approximate number of points to place in the lattice total.  If J is specified, it 
-  #     takes precedence.  If J is NULL, the algorithm attempts to place N points in the bounding box 
-  #     using Halton boxes that are as close to square as possible.  This N is not exact, but is a target. 
-  #   eta = DX1 vector of number of points to add inside each Halton box.  e.g., if 
-  #     eta = c(3,2), a small grid of 3 by 2 points is added inside each Halton box. eta[1] is for 
-  #     dimension 1, eta[2] is for dimension 2, etc. 
-  #   triangular = boolean, if TRUE, construct a triangular grid. If FALSE, construct rectangluar grid.
-  #   bases = DX1 vector of Halton bases.  These must be co-prime. If bases = NULL (the default), the 
-  #     first D prime integers are used. 
-  # 
-  # Output: 
-  # a data frame of halton lattice points. 
+#' @export halton.lattice
+#' 
+#' @title Halton lattice inside a rectangle
+#' 
+#' @description Constructs a lattice of Halton boxes (a Halton lattice) inside 
+#' a rectangular box. 
+#' 
+#' @details This is designed to be called with the bounding box of a spatial 
+#' object.  See examples.
+#' 
+#' \emph{Definition of Halton lattice}: A Halton lattice has the same number 
+#' of points in every Halton box.  Halton boxes are the \code{bases[1]^J[1]} X 
+#' \code{bases[2]^J[2]} matrix of rectangles over a square. Each Halton box 
+#' contains \code{prod(eta)} points. 
+#' 
+#' @param box A 2X2 matrix containing coordinates of the box. 
+#' One row per dimension. Column 1 is the minimum, column 2 is the maximum. 
+#' \code{box[1,]} contains \code{c(min,max)} coordinates of the box in dimension 1
+#' (horizontal).  \code{box[2,]} contains \code{c(min,max)} coordinates of 
+#' the box in dimension 2 (vertical).  Default is the unit box.
+#' 
+#' @param J A 2X1 vector of base powers which determines the size and shape 
+#' of the Halton boxes. Elements of \code{J} less than or equal 
+#' to 1 are re-set to 1. See additional description in help for 
+#' \code{\link{hal.polygon}} function.  
+#' 
+#' @param N Approximate number of points to place in the box.  If \code{J} 
+#' is specified, it takes precedence.  If \code{J} is NULL, the 
+#' algorithm attempts to place \code{N} points in the bounding box 
+#' using Halton boxes that are as close to square as possible.  
+#' This \code{N} is not exact, but is a target. 
+#' 
+#' @param eta A 2X1 vector of the number of points to add inside each Halton box.  
+#' e.g., if \code{eta} = \code{c(3,2)}, a small grid of 3 by 2 points is 
+#' added inside each Halton box. \code{eta[1]} is for the
+#' horizontal dimension, \code{eta[2]} is for the vertical dimension. 
+#' 
+#' @param triangular boolean, if TRUE, construct a triangular grid. 
+#' If FALSE, construct rectangluar grid.  See help for \code{\link{hal.polygon}}.
+#' 
+#' @param bases A 2X1 vector of Halton bases.  These must be co-prime. 
+#' 
+#' @return A data frame containing coordinates in the 2-D Halton lattice. 
+#' Names of the coordinates are \code{dimnames(box)[1]}.  If \code{box} does not 
+#' have dimnames, names of the coordinates are \code{c("d1", "d2")} (d1 is 
+#' horizontal, d2 is vertical).
+#' 
+#' In addtion, return has following attributes:
+#' \itemize{
+#'    \item \code{J}: the \code{J} vector used to construct the lattice. 
+#'      This is either the input \code{J} or the computed \code{J} when 
+#'      only \code{N} is specified. 
+#'    \item \code{eta}: the \code{eta} vector used in the lattice.
+#'    \item \code{bases}: Bases of the van der Corput sequences used in the lattice, 
+#'      one per dimension.
+#'    \item \code{triangular}: Whether the lattice is triangular or square.
+#'    \item \code{hl.bbox}: The input \code{box}.  If \code{box} does not 
+#'    have dimnames, this attribute will be assigned dimnames of 
+#'    \code{list(c("d1","d2"),c("min","max"))}. 
+#' }
+#'
+#' @author Trent McDonald
+#' 
+#' @seealso \code{\link{halton.lattice}}, \code{\link{hal.polygon}}
+#' 
+#' @examples 
+#' 
+#' # Lattice of 2^3*3^2 = 72 points in unit box
+#' hl <- halton.lattice( J=c(3,2) )
+#' 
+#' # Plot
+#' hl.J <- attr(hl,"J")
+#' hl.b <- attr(hl,"bases")
+#' hl.bb <- attr(hl,"hl.bbox") 
+#'
+#' plot( hl.bb[1,], hl.bb[2,], type="n", pty="s")
+#' points( hl[,1], hl[,2], pch=16, cex=.75, col="red")
+#' 
+#' for(d in 1:ncol(hl)){
+#'   tmp2 <- hl.bb[d,1] + (0:(hl.b[d]^hl.J[d]))*(diff(hl.bb[d,]))/(hl.b[d]^hl.J[d])
+#'   if( d == 1){
+#'       abline(v=tmp2)
+#'   } else{
+#'       abline(h=tmp2)
+#'   }
+#' }
+#' 
+#' # Lattice of approx 1000 points over bounding box of spatial object
+#' hl <- halton.lattice( bbox(HI.coast), N=1000 )
 
-  D <- nrow( bbox )   # number of dimensions
+halton.lattice <- function(box=matrix(c(0,0,1,1),2), N=10000, J=NULL, 
+                           eta=rep(1,nrow(box)), triangular=FALSE, bases=NULL){
+
+  D <- nrow( box )   # number of dimensions
   
-  delta <- apply( bbox, 1, diff )   # size/extent of box in each dimension
+  delta <- apply( box, 1, diff )   # size/extent of box in each dimension
   
-  ll.corner <- apply(bbox, 1, min)  # minimum coordinate of bbox in each dimension
+  ll.corner <- apply(box, 1, min)  # minimum coordinate of box in each dimension
   
   if(is.null(bases)){
     bases <- primes(D)
   } else if(length(bases)!=D){
-    stop("Dimensions must equal length of bases. Make nrow(bbox) == length(bases)")
+    stop("Dimensions must equal length of bases. Make nrow(box) == length(bases)")
   }
   
   if( length(eta) != D) stop("Dimensions must equal length of Eta parameter.")
   
   if( triangular & (D!=2)) warning("Triangular grids for D!=2 not implemented. Rectangular grid produced.")
   
+  # it is interesting to set elements of J to non-integers
   
   if(is.null(J)){
     # Compute n.boxes, because prod(eta) points are added inside each halton box and we desire N points
@@ -61,6 +131,7 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
     #n[tmp2] <- round(n[tmp2])
     #n[-tmp2] <- round( sqrt(N * c(dx,dy)[-tmp2]/c(dx,dy)[tmp2]) )
   } else {
+    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
     n.boxes <- bases^J
   }
   
@@ -70,11 +141,11 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   
   # Construct sequences in each direction
   coords <-vector("list",D)
-  if( is.null(dimnames(bbox)[[1]]) ){
+  if( is.null(dimnames(box)[[1]]) ){
     names(coords) <- paste("d",1:D, sep="")
-    dimnames(bbox) <- list(paste("d",1:D, sep=""),c("min","max"))
+    dimnames(box) <- list(paste("d",1:D, sep=""),c("min","max"))
   } else {
-    names(coords) <- dimnames(bbox)[[1]]
+    names(coords) <- dimnames(box)[[1]]
   }
   for( i in 1:D ){
     c.seq <- seq( 1, n[i] )
@@ -97,29 +168,9 @@ halton.lattice <- function(bbox=matrix(c(0,0,1,1),2), N=10000, J=NULL, eta=rep(1
   attr(hl.coords,"J") <- J
   attr(hl.coords,"eta") <- eta
   attr(hl.coords,"bases") <- bases
-  attr(hl.coords,"hl.bbox") <- bbox
+  attr(hl.coords,"hl.bbox") <- box
   attr(hl.coords,"triangular") <- triangular
   
   hl.coords
 }
 
-# tmp <- halton.lattice(bbox(WA.utm), N=220, J=c(4,2), eta=c(2,2), triangular=T)
-# tmp <- halton.lattice(bbox(WA.utm), N=220, triangular=T)
-# 
-# tmp.J <- attr(tmp,"J")
-# tmp.b <- attr(tmp,"bases")
-# tmp.bb <- attr(tmp,"hl.bbox") 
-# 
-# 
-# plot( tmp.bb[1,], tmp.bb[2,], type="n")
-# points( tmp[,1], tmp[,2], pch=16, cex=.75, col="red")
-# 
-# 
-# for(d in 1:ncol(tmp)){
-#   tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
-#   if( d == 1){
-#       abline(v=tmp2)
-#   } else{
-#       abline(h=tmp2)
-#   }
-# }
