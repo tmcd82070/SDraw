@@ -1,14 +1,4 @@
-plot.samp <- function(shp, samp){
-
-#    print(ls(envir=environment()))
-#    cat("*****\n")
-#    print(ls(envir=parent.env(environment())))
-#    cat("*****\n")
-#    
-#    SDrawPackageSpace <- as.environment( "package:SDraw" )
-#    print( ls(envir=as.environment("equi.GUI")) )
-        
-
+plot.samp <- function(x, frame, plot.lattice=T){
 
     #   plot shape file
     if( regexpr("^SpatialPolygons", class(shp)[1]) > 0 ){
@@ -19,6 +9,25 @@ plot.samp <- function(shp, samp){
         plot(shp, col="gray", pch=16)#rainbow(length(shp),start=3/6,end=4/6,alpha=0.5), pch=16)                    # traditional R plot
     }
 
+  if(attr(x,"sample.type") == "HAL" & plot.lattice){
+    bb <- attr(x,"hl.bbox")
+    bases <- attr(x,"bases")
+    J <- attr(x,"J")
+    
+    for(d in 1:2){
+      tmp2 <- bb[d,1] + (0:(bases[d]^J[d]))*(diff(bb[d,]))/(bases[d]^J[d])
+      if( d == 1){
+        for(i in 1:length(tmp2)){
+          lines(rep(tmp2[i],2), bb[2,], col="blue")
+        }
+      } else{
+        for(i in 1:length(tmp2)){
+          lines(bb[1,], rep(tmp2[i],2), col="blue")
+        }
+      }
+    }    
+  }
+  
     #   If the sample object exists, plot points on the map
     if( !missing(samp) ){
         stype <- attr(samp, "sample.type")        

@@ -64,8 +64,7 @@
 #' n.boxes <- c(16,9)
 #' tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
 #' 
-halton.indicies.CRT <- function(hl.coords, n.boxes, b=c(2,3), delta=c(1,1), 
-                                ll.corner=c(0,0)){
+halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
   
 
   # Scale points to [0,1]

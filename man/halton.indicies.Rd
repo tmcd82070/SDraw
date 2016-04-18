@@ -2,29 +2,52 @@
 % Please edit documentation in R/halton.indicies.r
 \name{halton.indicies}
 \alias{halton.indicies}
-\title{Compute Halton indicies}
+\title{Halton indicies}
 \usage{
-halton.indicies(hl, index.name = "SDraw.HaltonIndex", use.CRT = FALSE)
+halton.indicies(x, J = NULL, hl.bbox, bases = c(2, 3),
+  index.name = "HaltonIndex", use.CRT = FALSE)
 }
 \arguments{
-\item{hl}{Either a data frame or a \code{SpatialPoints} object, both of 
-which must have 
-additional attributes (see Details). Suitable input objects are the output of 
-functions \code{halton.lattice} (a data frame with attributes) and 
-\code{halton.lattice.polygon} (a \code{SpatialPoints} object with attributes). 
+\item{x}{Either a data frame or a \code{SpatialPoints*} object.
+Suitable input objects are the output of 
+functions \code{halton.lattice} (a data frame) and 
+ \code{halton.lattice.polygon} (a \code{SpatialPointsDataFrame} object). 
+ 
+ If \code{x} is a data frame, it must either contain the names of 
+ coordinates columns as attribute "coordnames", or coordinates must 
+ be the first D columns of the data frame.  
+ I.e., coordinates are either \code{x[,attr(x,"coordnames")]} or 
+ \code{x[,1:length(bases)]}. 
+ 
+ This function  works for dimensions >2 if \code{x} is a data.frame.  
+ \code{SpatialPoints*} objects are not defined for D>2.}
 
-If \code{hl} is a data frame, it must contain coordinates columns 
-named the same as 
-row names of the Halton bounding box attribute (i.e., 
-\code{dimnames(attr(hl,"hl.bbox"))[[1]]} name the coordinate columns). 
-That is, coordinates are \code{hl[,dimnames(bb)[[1]]]]}, where \code{bb}
-is the "hl.bbox" bounding box attribute of \code{hl}. 
+\item{J}{A DX1 vector of base powers.  \code{J} determines the size and shape
+of the smallest Halton boxes in D space. There are \code{bases[i]^J[i]} boxes
+over the i-th dimension of \code{x}'s bounding box.  Total number Halton boxes 
+is \code{prod(bases^J)}.  The size of each box in the i-th dimension is 
+\code{delta[i]/(bases[i]^J[i])}, where \code{delta[i]} is the  
+extent of \code{x}'s bounding box along the i-th dimension.  
+If \code{J} is NULL (the default), approximately \code{length(x)} boxes 
+will be choosen (approx. one point per box) and boxes will be as square 
+as possible.}
 
-If \code{hl} is a data.frame, this function 
-works for dimensions >2.}
+\item{hl.bbox}{DX2 matrix containing bounding box of the full set of Halton boxes. 
+First column of this matrix is the lower-left coordinate (i.e., minimums) 
+of the bounding box, while the second column is the upper-right coordinate 
+(i.e., maximums) of the bounding box.
+For example, if \code{D} = 2, \code{hl.bbox} = 
+\code{matrix( c(min(x),min(y),max(x),max(y)),2)}.  If \code{hl.bbox} is 
+missing (the default), the bounding box of \code{x} is used, but expanded 
+on the top and right by 1% to include any points exactly on the top and right 
+boundaries. If \code{hl.bbox} is supplied, keep in mind that all point outside
+the box, or on the maximums (i.e., \code{hl.bbox[,2]}), will not be assigned 
+a Halton index.}
+
+\item{bases}{DX1 vector of Halton bases.  These must be co-prime.}
 
 \item{index.name}{A character string giving the name of the column in 
-the output data frame or SpatialPoints object to contain 
+the output data frame or \code{SpatialPoints} object to contain 
 the Halton indicies.  This name is saved as an attribute attached to 
 the output object.}
 
@@ -35,48 +58,32 @@ but requires multiple huge vectors be allocated (size of vectors is
 \code{prod{bases^J}}, see Details). As the number of points grows, 
 eventually the direct method will not be able to allocate sufficient  
 memory (tips: Make sure to run 64-bit R, and try increasing 
-memory limit with \code{memory.limiit}).   
+memory limit with \code{\link{memory.limiit}}).   
 The CRT method, while much  (much) slower, does not require 
 as much memory, and should eventually complete a much larger problem.
 Patience is required if your problem is big enough to require 
 \code{use.CRT == TRUE}.}
 }
 \value{
-A data frame, structured like \code{data.frame(hl)}, but with indicies of the 
- Halton sequence attached in a column named \code{index.name}.
+If \code{x} is a data frame, \code{x} is returned
+with an addition column.  The additional column is named \code{index.name} 
+and stores the index of the Halton box containing the point represented 
+on that line of \code{x}.  If \code{x} is a \code{SpatialPoints*} object, 
+a \code{SpatialPointsDataFrame} is returned containing the points in \code{x}. 
+The attributes of \code{x} have an additional column, the index of the Halton 
+box containing the point. Name of the attribut is\code{index.name}.
 }
 \description{
 Compute and attach indicies of the Halton sequence to points.  Points can be
  an abitrary set or a Halton lattice.
 }
-\details{
-The input object \code{hl} must have the following attributes:   
- \itemize{
-   \item \code{bases} = Dx1 vector of bases to use in each dimension.  
-   \item \code{J} = DX1 vector of the exponents for bases defining the Halton boxes.
-    The number of Halton divisions in dimension \code{i} is \code{bases[i]^J[i]}.  
-    Total number of Halton boxes is \code{prod(bases^J)}. 
-   \item \code{hl.bbox} = DX2 matrix containing bounding box of the full set of Halton boxes. 
-   First column of this matrix is the lower-left coordinate (i.e., minimums in D dimensions) 
-   of the bounding box, while the second column is the upper-right coordinate 
-   (i.e., maximums in D dimensions) of the bounding box.
-   For example, if \code{D} = 2, \code{hl.bbox} = \code{matrix( c(min(x),min(y),max(x),max(y)),2)} 
- }
- 
- If, in addition, \code{hl} has attributes \code{eta} or \code{triangular}, their values  
- are transfered to the output object for continuity of attributes within the more general  
- sample frame object.
-}
 \examples{
-# Define the Halton lattice
-attr(WA.cities,"J") <- c(3,2)
-attr(WA.cities,"bases") <- c(2,3)
 # Add tiny amount to right and top of bounding box because Halton boxes are 
 # closed on the left and bottom.  This includes points exactly on the bounding lines.
-attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1) 
+bb <- bbox(WA.cities) + c(0,0,1,1) 
 
 # Compute Halton indicies
-frame <- halton.indicies( WA.cities )
+frame <- halton.indicies( WA.cities, J=c(3,2), hl.box=bb  )
 
 
 }

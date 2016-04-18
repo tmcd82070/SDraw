@@ -2,15 +2,17 @@
 #' 
 #' @title  Draws a Halton Lattice sample from an area (polygon) resource.
 #' 
-#' @description  Draws a Halton Lattice sample from a \code{SpatialPolygons} object. 
+#' @description  Draws a Halton Lattice sample from a \code{SpatialPolygons*} object. 
 #' 
 #' @details  \emph{A brief description of Halton Lattice sampling for polygons:} 
 #' Given a set of Halton Lattice parameters \code{J}, \code{bases}, \code{eta}, 
 #' and  \code{triangular}, the bounding box around all polygons is partitioned using  
 #' a Halton lattice of \code{prod(bases^J)} boxes, each containing  \code{prod(eta)}
-#' points. Points not inside at least one polygon are
-#' dropped.  The resulting points (the Halton lattice frame) are passed to \code{hal.point} 
-#' for sampling.  
+#' points. Points not inside at 
+#' least one polygon are
+#' dropped. See \code{\link{halton.lattice.polygon}}.  
+#' The resulting points (the Halton lattice frame) are passed to \code{hal.point} 
+#' and sampled using the HAL method for points.  
 #' 
 #' @note The number of points in the Halton lattice becomes large very quickly. 
 #' The number of points in the Halton lattice is \code{prod(bases^J)*prod(eta)}.
@@ -76,23 +78,8 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
-#'    \item \code{random.start}: The random seed of the random-start Halton sequence 
-#'    that produced the sample.  This is a vector of length 2 whose elements are 
-#'    random intergers between 0 and \code{\link{max.U()}}. 
-#'    This routine ensures that the first sample point
-#'    corresponding to this index in the random-start Halton sequence 
-#'    falls inside a polygon of interest.  i.e., 
-#'    that \code{halton(1,2,random.start)} scaled by a square bounding box
-#'    lies inside a polygon of \code{x}.  The square bounding box scaling
-#'    is \code{bb[,"min"] +} \code{t(random.start) *} 
-#'    \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
-#'    
-#'    Note that \code{halton(1,2,random.start+i)}, for 
-#'    \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
-#'    when scaled by the square bounding box. The sample consists of the point 
-#'    associated with \code{random.start} and the next \code{n-1}
-#'    Halton points in sequence that fall inside a polygon
-#'    of \code{x}. 
+#'    \item \code{random.start}: The random seed of the Halton lattice sample.  
+#'    See \code{\link{hal.point}}. 
 #' }
 #' 
 #' 

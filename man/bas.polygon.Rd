@@ -38,7 +38,7 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
    \item \code{random.start}: The random seed of the random-start Halton sequence 
    that produced the sample.  This is a vector of length 2 whose elements are 
-   random intergers between 0 and \code{\link{max.U()}}. 
+   random intergers between 0 and \code{\link{maxU()}}. 
    This routine ensures that the first sample point
    corresponding to this index in the random-start Halton sequence 
    falls inside a polygon of interest.  i.e., 
