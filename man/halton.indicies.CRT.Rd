@@ -4,8 +4,8 @@
 \alias{halton.indicies.CRT}
 \title{Halton indicies by the Chinese Remainder Theorem (CRT)}
 \usage{
-halton.indicies.CRT(hl.coords, n.boxes, b = c(2, 3), delta = c(1, 1),
-  ll.corner = c(0, 0))
+halton.indicies.CRT(hl.coords, n.boxes, D = 2, b = c(2, 3), delta = c(1,
+  1), ll.corner = c(0, 0))
 }
 \arguments{
 \item{hl.coords}{nXD vector of coordinates for points. No points can be outside 
