@@ -108,20 +108,29 @@ halton.lattice.polygon <- function(x, N=10000, J=NULL, eta=c(1,1), triangular=FA
   # Make sue x has a data frame attached with attributes we want 
   # so over() works
   if( inherits(x, "SpatialPolygonsDataFrame") ){
-    #   x has a data frame
-    df <- data.frame( sampleID=1:length(x), geometryID=row.names(x), data.frame(x) )
+    #   x has a data frame, save it
+    x.df <- x@data
   } else {
-    df <- data.frame( sampleID=1:length(x), geometryID=row.names(x),  row.names=row.names(x) )
+    x.df <- NULL
   }
   
-  x <- SpatialPolygonsDataFrame( x, data=df )
+  x <- SpatialPolygonsDataFrame( x, data=data.frame( geometryID=row.names(x), row.names=row.names(x) ) )
 
   pip <- over( hl.points, x )
 
-  hl.points <- hl.points[!is.na(pip$sampleID),]
-  pip <- pip[!is.na(pip$sampleID),]
-  hl.points <- SpatialPointsDataFrame(hl.points, data=pip, proj4string = CRS(proj4string(x)))
+  hl.points <- hl.points[!is.na(pip),]
+  pip <- pip[!is.na(pip),]
 
+  if( !is.null(x.df) ){
+    x.df <- data.frame(geometryID=pip, x.df[pip,])
+  } else {
+    x.df <- data.frame(geometryID=pip)
+  }
+  hl.points <- SpatialPointsDataFrame(hl.points, data=x.df, proj4string = CRS(proj4string(x)))
+
+  # Erase row names
+  row.names(hl.points)<-1:length(hl.points)
+  
   # Add attributes
   attr(hl.points,"J") <- attr(hl, "J")
   attr(hl.points,"eta") <- attr(hl, "eta")

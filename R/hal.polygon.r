@@ -118,8 +118,20 @@ hal.polygon <- function( x, n, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3
   # Construct Halton lattice  
   hl.points <- halton.lattice.polygon( x, N, J, eta, triangular, bases )
   
+  # Renames some attributes
+  names(hl.points)[names(hl.points) == "geometryID"] <- "polygonID"
+  
   # Now that we have points, we can draw a HAL point sample. 
   samp <- hal.point( hl.points, n, attr(hl.points, "J"), attr(hl.points, "bases") )
+  
+  # Drop the point geometry ID
+  samp <- samp[,which(names(samp) != "geometryID")]
+  
+  # Renames polygonID to geometryID 
+  names(samp)[names(samp) == "polygonID"] <- "geometryID"
+
+  # Erase row.names because they are the point id's and not useful
+  row.names(samp) <- 1:length(samp)
   
   samp
   
