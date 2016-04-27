@@ -129,20 +129,24 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
     J <- ifelse(J <= 0,1,J)  # ensure all J > 0
   }
   
+  
+  # Reduce x to just it's coordinates, leave attributes of x for later
+  N.frame <- length(x)
+  x.coords <- data.frame(coordinates(x), geometryID=row.names(x))
 
+    
   # Compute halton indicies of every point in x.  The Halton index is the index of the 
   # Halton box that the point falls in. 
-  # Note: halton.indicies takes a SpatialPoints* object OR a data frame, but 
-  # because we checked above, we know x is a SpatialPoints* object and halton.indicies
-  # will return a SpatialPointsDataFrame object.
-  hl.points <- halton.indicies(x, J=J, bases=bases)
+  # Note: halton.indicies takes a SpatialPoints* object OR a data frame, so 
+  # we could pass it x. but to save space I'm only passing the coordinates of 
+  # x and a column that will allow us to select the sample
+  hl.points <- halton.indicies(x.coords, J=J, bases=bases)
   
   # Make a Halton frame, which takes halton.index and adds cycles to points in same Halton box
   # This frame comes back sorted by halton order, ready to sample
   hl.points <- halton.frame( hl.points )
   
   # Draw sample from the frame
-  N.frame <- nrow(hl.points)
   m <- floor(runif(1, 0, N.frame)) # Integer 0,...,N.frame-1
   n <- min( n, N.frame )  # Can't take more than a census. 
   ind <- (((0:(n-1))+m) %% N.frame ) + 1  # Cycle the indicies around to start of frame if necessary
@@ -150,13 +154,15 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
   samp <- hl.points[ind,]
   
   # Rearrange and rename columns
-  cnames <- coordnames(samp)
-  hl.order.col <- which(names(samp) == attr(hl.points,"order.name"))
-  samp@data <- data.frame(sampleID=samp@data[,hl.order.col], 
-                     geometryID = row.names(samp),
-                     samp@data[,-hl.order.col]
-                     )
+  coord.cols <- names(samp) %in% coordnames(x)
+  samp.coords <- samp[,coord.cols]
+  samp <- data.frame(samp[,!coord.cols], x@data[samp$geometryID,])
 
+  names(samp)[names(samp)==attr(hl.points,"order.name")] <- "sampleID"
+
+  samp.coords <- SpatialPoints(samp.coords, proj4string = CRS(proj4string(x)))
+  samp <- SpatialPointsDataFrame(samp.coords, samp)
+  
   # Add attributes
   attr(samp, "frame") <- deparse(substitute(x))
   attr(samp, "frame.type") <- "point"
@@ -173,3 +179,5 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
   
 }
 
+# here!!! test hal.point with SpatialPoint object, SpatialPoint object without coordinate names
+# check and fix row.names(samp), rename HaltonOrder as sampleID.
