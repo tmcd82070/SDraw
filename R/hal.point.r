@@ -70,13 +70,13 @@
 #'    \item \code{hl.box}: The bounding box around points in \code{x} used to 
 #'    draw the sample.  See \code{\link{halton.indicies}}.
 #'    \item \code{random.start}: The random start of the sample in the Halton
-#'    frame.  The Halton frame is a list of all points sorted by their
-#'    Halton indices, after adding random cycles to multiple points 
-#'    in the same Halton box.  This number then is the 
-#'    start of the sample in the frame.  
-#'    It is a random number between 1 and the number of points in \code{x}.
+#'    frame.  The Halton frame is a list of all points sorted in 
+#'    Halton order.  Halton order is the Halton index of each point, with 
+#'    random cycles added to multiple points 
+#'    in the same Halton box.  
+#'    This is a random number between 1 and the number of points in \code{x}.
 #'    The sample consists of the 
-#'    \code{n} consecutive units starting at \code{random.start} in 
+#'    \code{n} consecutive units starting at \code{random.start+1} in 
 #'    the sorted Halton frame. 
 #' }
 #' 
