@@ -121,7 +121,8 @@ halton.frame <- function( x, index.name=attr(x,"index.name"),
     # Add cycle to hl.index to make it easy to sort outside this routine
     hl.digits <- floor(log10(max(hl.index))) + 1
     cycle.hl.index <- cycle * 10^hl.digits + hl.index
-    df <- data.frame(zzzzframe.order=cycle.hl.index, df)
+
+    df <- data.frame(zzzzframe.order=cycle.hl.index, df, row.names=row.names(df))
 
     # Sort data frame by cycle, hl.index.  This puts points in same box at least one cycle away from each other in frame.
     ord <- order( cycle.hl.index )
@@ -130,7 +131,7 @@ halton.frame <- function( x, index.name=attr(x,"index.name"),
     df <- data.frame(zzzzframe.order=hl.index, df) # a duplicate copy of halton.index when one point per box
   }
   names(df)[names(df)=="zzzzframe.order"] <- order.name
-  
+
   # Convert to SpatialPOintsDataFrame if input was same
   if( is.points ){
     # Return a SpatialPoints* object
