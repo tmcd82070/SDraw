@@ -4,7 +4,7 @@
 #' 
 #' @description  Draws a Halton Lattice sample from a \code{SpatialPoints*} object. 
 #' 
-#' @details  \emph{A brief description of Halton Lattice sampling for points:} 
+#' @details  \bold{A brief description of Halton Lattice sampling for points:} 
 #' Given a set of Halton Lattice parameters \code{J} and \code{bases},
 #' a lattice of Halton boxes is constructed over the bounding box of the input points.  
 #' This results in \code{prod(bases^J)} Halton boxes on the bounding box. 
@@ -44,12 +44,16 @@
 #' in HAL order.
 #' Attributes of the sample points are: 
 #' \itemize{
-#'   \item \code{sampleID}: A unique identifier for every sample point.  This 
+#'   \item \code{sampleID}: A unique identifier for every sample point that 
 #'   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
-#'   returned object in HAL order.
-#'   
+#'   returned object in HAL order.  \code{sampleID}'s, in the HAL case, are not 
+#'   consecutive. \code{sampleID}'s are the Halton indicies for the Halton boxes 
+#'   containing the point, after adding random cycles to multiple points in 
+#'   the same box (see \code{\link{halton.frame}}). 
+#'    
 #'   \item \code{geometryID}: The ID of the sampled point in \code{x} The 
 #'   ID of points in \code{x} are \code{row.names(x)}. 
+#'   
 #'   \item Any attributes of the original points (in \code{x}). 
 #' }
 #'
@@ -59,11 +63,21 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
-#'    \item \code{random.start}: The random seed of the Halton lattice sample. 
-#'    This is the random number between 1 and the largest Halton (index+cycle) 
-#'    that initiated the sample.  The sample consists of the 
+#'    \item \code{J}: Exponents of the bases used to form the lattice of 
+#'    Halton boxes. This is either the input \code{J}, or the \code{J} vector
+#'    computed by \code{\link{halton.indicies}}.  
+#'    \item \code{bases}: Bases of the Halton sequence used to draw the sample. 
+#'    \item \code{hl.box}: The bounding box around points in \code{x} used to 
+#'    draw the sample.  See \code{\link{halton.indicies}}.
+#'    \item \code{random.start}: The random start of the sample in the Halton
+#'    frame.  The Halton frame is a list of all points sorted by their
+#'    Halton indices, after adding random cycles to multiple points 
+#'    in the same Halton box.  This number then is the 
+#'    start of the sample in the frame.  
+#'    It is a random number between 1 and the number of points in \code{x}.
+#'    The sample consists of the 
 #'    \code{n} consecutive units starting at \code{random.start} in 
-#'    the Halton order. 
+#'    the sorted Halton frame. 
 #' }
 #' 
 #' 
@@ -77,14 +91,16 @@
 #' 
 #'#   Draw sample of Hawaii coastline
 #'#   This takes approximately 30 seconds to run
-#'samp <- hal.point( 100, WA.cities, plot.lattice=TRUE )
+#'samp <- hal.point( 100, WA.cities )
 #'
 #'#   Different lattice topology
-#'samp <- hal.point( 100, WA.cities, J=c(10,4), plot.lattice=TRUE)
+#'samp <- hal.point( 100, WA.cities, J=c(10,4))
 #'   
 #' 
 hal.point <- function( x, n, J=NULL, bases=c(2,3)){
 
+  if( !(inherits(x, "SpatialPoints"))  ) stop("Must call hal.point with a SpatialPoints* object.")
+  
   #   Check n
   if( n < 1 ){
     n <- 1
@@ -116,6 +132,9 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
 
   # Compute halton indicies of every point in x.  The Halton index is the index of the 
   # Halton box that the point falls in. 
+  # Note: halton.indicies takes a SpatialPoints* object OR a data frame, but 
+  # because we checked above, we know x is a SpatialPoints* object and halton.indicies
+  # will return a SpatialPointsDataFrame object.
   hl.points <- halton.indicies(x, J=J, bases=bases)
   
   # Make a Halton frame, which takes halton.index and adds cycles to points in same Halton box
@@ -130,21 +149,27 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
   
   samp <- hl.points[ind,]
   
+  # Rearrange and rename columns
+  cnames <- coordnames(samp)
+  hl.order.col <- which(names(samp) == attr(hl.points,"order.name"))
+  samp@data <- data.frame(sampleID=samp@data[,hl.order.col], 
+                     geometryID = row.names(samp),
+                     samp@data[,-hl.order.col]
+                     )
+
   # Add attributes
+  attr(samp, "frame") <- deparse(substitute(x))
+  attr(samp, "frame.type") <- "point"
+  attr(samp, "sample.type") <- "HAL"
   attr(samp,"J") <- attr(hl.points, "J")
   attr(samp,"bases") <- attr(hl.points, "bases")
   attr(samp,"hl.bbox") <- attr(hl.points, "hl.bbox")
-  attr(samp,"index.name") <- attr(hl.points, "index.name")
-  attr(samp,"random.start") <- m  # needed if we want more points from this frame
+  attr(samp,"random.start") <- m  # needed if we want more points from this frame,
+      # actually, you need the randomized frame as well.  so you would have to 
+      # reconstruct the whole frame to get more points.
 
   samp
   
   
 }
 
-
-# ----- Some examples
-
-# samp<- hal.polygon(1000, WA.utm)
-# plot(WA.utm)
-# points(samp)

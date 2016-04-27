@@ -2,46 +2,74 @@
 % Please edit documentation in R/halton.frame.r
 \name{halton.frame}
 \alias{halton.frame}
-\title{Construction of sampling frame from a Halton lattice and indicies.}
+\title{Construct a Halton sampling frame.}
 \usage{
-halton.frame(hl.points, order.name = "SDraw.siteID")
+halton.frame(x, index.name = attr(x, "index.name"),
+  order.name = "HaltonOrder")
 }
 \arguments{
-\item{hl.points}{Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
+\item{x}{Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
 particular, the output of \code{halton.indicies} is acceptable.
 The data frame, or data frame of the \code{SpatialPointsDataFrame}, 
 must contain the Halton indicies, which is assumed to be named 
-\code{attr(hl.points, "index.name")}.  The default name for this column when using output from 
-\code{halton.indicies} is \code{SDraw.HaltonIndex}.  Each row of the data frame is a sampling unit
+\code{attr(x, "index.name")}.  The default name for this column when using output from 
+\code{halton.indicies} is \code{HaltonIndex}.  
+Each row of the data frame is a sampling unit
 to be included in the frame, and the Halton index of the unit is the Halton box 
 the unit falls in. A \code{SpatialPoints} object without the data frame is not 
 acceptable.}
 
-\item{order.name}{Name of the column in the output object by which the frame should 
-be sorted to produce the proper sampling order.  This index is unique to all units.  This 
-parameter is saved as an attribute of the output object.}
+\item{index.name}{Name of the Halton index column in the input object. This 
+names the column of \code{x} containing the index of the Halton box that contains 
+the point represented on that row of \code{x}.  In reality, this could be any 
+ordering for the rows in \code{x}.  Duplicate values of this column are randomly 
+moved to the end of the frame.  If \code{index.name} is missing (the default), 
+\code{x} is assumed to have an attribute names \code{index.name}}
+
+\item{order.name}{Name of the Halton order column in the output object. 
+See description of returned object. 
+This parameter is saved as an attribute of the output object.}
 }
 \value{
-A data frame suitable for use as a sampling frame. This is a data frame, 
- like \code{hl.points}, but with a new index column separating points in the same Halton box.  
- The output data frame is sorted by the new indicies.  New indicies are in column 
- specified by the "order.name" attribute (i.e., \code{attr(obj, "order.name")} ).
+A data frame or \code{SpatialPointsDataFrame} suitable for use as 
+ a sampling frame. The  data frame, or attributes of the points,
+ contain a new index column separating points in the same Halton box, and the  
+ output is sorted by this new index.  Returned object has the following 
+ attributes, 
+ \itemize{
+   \item \code{index.name}: Name of the Halton index column used to construct 
+   the frame.
+   \item \code{order.name}:  The name of the Halton ordering column. 
+   This column is unique across rows of the output, and orders 
+   the output frame, but is not consecutive. This differs from column 
+   \code{index.name} because points with identical \code{index.name} 
+   indicies have been randomly moved to the end of the frame by adding 
+   random Halton cycles. 
+   \item \code{J}: Halton base powers defining lattice of Halton boxes, 
+   if \code{x} has a \code{J} attribute. 
+   \item \code{bases}: Base powers defining lattice of Halton boxes, 
+   if \code{x} has a \code{bases} attribute. 
+   \item \code{hl.bbox}: Bounding box for lattice of Halton boxes, 
+   if \code{x} has a \code{hl.bbox} attribute. 
+ }
 }
 \description{
 Makes a Halton frame from a set of points that have  
-their Halton indicies attached. This function uses a Halton index column
-to identify points in the same Halton box,  and 
-randomly adds Halton cycles to separate geographically nearby points in the frame. 
+their Halton indicies attached. This function identifies points in the 
+same Halton box,  and 
+randomly adds Halton cycles to geographically separate nearby points. 
 The frame is then sorted by the new frame indicies for sampling.
 }
 \examples{
-# This is the "brute force" method to draw HAL samples. hal.point does all this.
+# The following is equivalent to hal.point(WA.cities,20,J=c(6,3))
 
 # Define Halton lattice
 attr(WA.cities,"J") <- c(6,3)
 attr(WA.cities,"bases") <- c(2,3)
+
 # Add tiny amount to right and top of bounding box because Halton boxes are 
-# closed on the left and bottom.  This includes points exactly on the bounding lines.
+# closed on the left and bottom.  This includes points exactly on top and right 
+# bounding lines.
 attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1) 
 
 # Compute Halton indicies

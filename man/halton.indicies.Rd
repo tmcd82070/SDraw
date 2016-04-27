@@ -34,7 +34,7 @@ as possible.}
 
 \item{hl.bbox}{DX2 matrix containing bounding box of the full set of Halton boxes. 
 First column of this matrix is the lower-left coordinate (i.e., minimums) 
-of the bounding box, while the second column is the upper-right coordinate 
+of the bounding box.  Second column is the upper-right coordinate 
 (i.e., maximums) of the bounding box.
 For example, if \code{D} = 2, \code{hl.bbox} = 
 \code{matrix( c(min(x),min(y),max(x),max(y)),2)}.  If \code{hl.bbox} is 
@@ -42,7 +42,7 @@ missing (the default), the bounding box of \code{x} is used, but expanded
 on the top and right by 1% to include any points exactly on the top and right 
 boundaries. If \code{hl.bbox} is supplied, keep in mind that all point outside
 the box, or on the maximums (i.e., \code{hl.bbox[,2]}), will not be assigned 
-a Halton index.}
+Halton indices.}
 
 \item{bases}{DX1 vector of Halton bases.  These must be co-prime.}
 
@@ -70,14 +70,18 @@ with an addition column.  The additional column is named \code{index.name}
 and stores the index of the Halton box containing the point represented 
 on that line of \code{x}.  If \code{x} is a \code{SpatialPoints*} object, 
 a \code{SpatialPointsDataFrame} is returned containing the points in \code{x}. 
-The attributes of \code{x} have an additional column, the index of the Halton 
-box containing the point. Name of the attribut is\code{index.name}.
+The attributes of the returned object have an additional column, the index of the Halton 
+box containing the point. Name of the attribute is \code{index.name}. 
+If multiple points fall in the same Halton box, their Halton indicies are 
+identical.
 }
 \description{
 Compute and attach indicies of the Halton sequence to points.  Points can be
  an abitrary set or a Halton lattice.
 }
 \examples{
+# The following is equivalent to hal.point(WA.cities,25,J=c(3,2))
+#
 # Add tiny amount to right and top of bounding box because Halton boxes are 
 # closed on the left and bottom.  This includes points exactly on the bounding lines.
 bb <- bbox(WA.cities) + c(0,0,1,1) 
@@ -85,12 +89,21 @@ bb <- bbox(WA.cities) + c(0,0,1,1)
 # Compute Halton indicies
 frame <- halton.indicies( WA.cities, J=c(3,2), hl.box=bb  )
 
+# Construct Halton frame
+frame <- halton.frame( frame )
+
+# Draw HAL sample
+N.frame <- nrow(frame)
+m <- floor(runif(1, 0, N.frame)) # Integer 0,...,N.frame-1
+ind <- (((0:(n-1))+m) \%\% N.frame ) + 1  # Cycle around frame if necessary
+samp <- frame[ind,]  # draw sample
+
 
 }
 \author{
 Trent McDonald
 }
 \seealso{
-\code{\link{halton.frame}}
+\code{\link{halton.frame}}, \code{\link{hal.point}}
 }
 
