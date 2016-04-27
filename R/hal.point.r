@@ -50,6 +50,10 @@
 #'   consecutive. \code{sampleID}'s are the Halton indicies for the Halton boxes 
 #'   containing the point, after adding random cycles to multiple points in 
 #'   the same box (see \code{\link{halton.frame}}). 
+#'   
+#'   \item \code{HaltonIndex}: The index of the Halton box containing the point. 
+#'   This column is not, in general, unique.  Points with the same \code{HaltonIndex}
+#'   are in the same Halton box, and are "close" in space.
 #'    
 #'   \item \code{geometryID}: The ID of the sampled point in \code{x} The 
 #'   ID of points in \code{x} are \code{row.names(x)}. 
@@ -63,12 +67,16 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
+#'    
 #'    \item \code{J}: Exponents of the bases used to form the lattice of 
 #'    Halton boxes. This is either the input \code{J}, or the \code{J} vector
 #'    computed by \code{\link{halton.indicies}}.  
+#'    
 #'    \item \code{bases}: Bases of the Halton sequence used to draw the sample. 
+#'    
 #'    \item \code{hl.box}: The bounding box around points in \code{x} used to 
 #'    draw the sample.  See \code{\link{halton.indicies}}.
+#'    
 #'    \item \code{random.start}: The random start of the sample in the Halton
 #'    frame.  The Halton frame is a list of all points sorted in 
 #'    Halton order.  Halton order is the Halton index of each point, with 

@@ -58,6 +58,10 @@ in HAL order.
   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
   returned object in HAL order.
   
+  \item \code{HaltonIndex}: The index of the Halton box containing the point. 
+  This column is not, in general, unique.  Points with the same \code{HaltonIndex}
+  are in the same Halton box, and are "close" in space.
+  
   \item \code{geometryID}: The ID of the polygon in \code{x} containing each 
   sample point.  The 
   ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
@@ -68,8 +72,24 @@ Additional attributes of the output object, beyond those which
 make it a \code{SpatialPointsDataFrame}, are:
 \itemize{
    \item \code{frame}: Name of the input sampling frame.
+   
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+   
    \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
+   
+   \item \code{J}: Exponents of the bases used to form the lattice of 
+   Halton boxes. This is either the input \code{J}, or the \code{J} vector
+   computed by \code{\link{halton.lattice}}.  
+   
+   \item \code{bases}: Bases of the Halton sequence used to draw the sample. 
+   
+   \item \code{eta}: the \code{eta} vector used in the lattice.
+   
+   \item \code{hl.box}: The bounding box around points in \code{x} used to 
+   draw the sample.  See \code{\link{halton.indicies}}.
+   
+   \item \code{triangular}: Whether the lattice is triangular or square.
+           
    \item \code{random.start}: The random seed of the Halton lattice sample.  
    See \code{\link{hal.point}}. 
 }

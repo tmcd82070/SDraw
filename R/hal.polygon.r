@@ -4,13 +4,13 @@
 #' 
 #' @description  Draws a Halton Lattice sample from a \code{SpatialPolygons*} object. 
 #' 
-#' @details  \emph{A brief description of Halton Lattice sampling for polygons:} 
+#' @details  \bold{A brief description of Halton Lattice sampling for polygons:} 
 #' Given a set of Halton Lattice parameters \code{J}, \code{bases}, \code{eta}, 
 #' and  \code{triangular}, the bounding box around all polygons is partitioned using  
 #' a Halton lattice of \code{prod(bases^J)} boxes, each containing  \code{prod(eta)}
 #' points. Points not inside at 
 #' least one polygon are
-#' dropped. See \code{\link{halton.lattice.polygon}}.  
+#' dropped. All this is done by \code{\link{halton.lattice.polygon}}.  
 #' The resulting points (the Halton lattice frame) are passed to \code{hal.point} 
 #' and sampled using the HAL method for points.  
 #' 
@@ -66,6 +66,10 @@
 #'   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
 #'   returned object in HAL order.
 #'   
+#'   \item \code{HaltonIndex}: The index of the Halton box containing the point. 
+#'   This column is not, in general, unique.  Points with the same \code{HaltonIndex}
+#'   are in the same Halton box, and are "close" in space.
+#'   
 #'   \item \code{geometryID}: The ID of the polygon in \code{x} containing each 
 #'   sample point.  The 
 #'   ID of polygons in \code{x} are \code{row.names(geometry(x))}. 
@@ -76,8 +80,24 @@
 #' make it a \code{SpatialPointsDataFrame}, are:
 #' \itemize{
 #'    \item \code{frame}: Name of the input sampling frame.
+#'    
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "polygon").
+#'    
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "HAL").
+#'    
+#'    \item \code{J}: Exponents of the bases used to form the lattice of 
+#'    Halton boxes. This is either the input \code{J}, or the \code{J} vector
+#'    computed by \code{\link{halton.lattice}}.  
+#'    
+#'    \item \code{bases}: Bases of the Halton sequence used to draw the sample. 
+#'    
+#'    \item \code{eta}: the \code{eta} vector used in the lattice.
+#'    
+#'    \item \code{hl.box}: The bounding box around points in \code{x} used to 
+#'    draw the sample.  See \code{\link{halton.indicies}}.
+#'    
+#'    \item \code{triangular}: Whether the underlying lattice is triangular or square.
+#'            
 #'    \item \code{random.start}: The random seed of the Halton lattice sample.  
 #'    See \code{\link{hal.point}}. 
 #' }
@@ -133,6 +153,15 @@ hal.polygon <- function( x, n, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3
   # Erase row.names because they are the point id's and not useful
   row.names(samp) <- 1:length(samp)
   
+  # Add attributes. 
+  # J, bases, hl.box, random.start come from hal.point
+  attr(samp, "frame") <- deparse(substitute(x))
+  attr(samp, "frame.type") <- "polygon"
+  attr(samp, "sample.type") <- "HAL"
+  attr(samp, "eta") <- attr(hl.points, "eta")
+  attr(samp, "triangular") <- attr(hl.points, "triangular")
+  
+
   samp
   
   
