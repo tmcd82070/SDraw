@@ -12,7 +12,7 @@ merge.lines <- function(x){
   
   # Construct matrix of all coordinates, with duplicate 
   # indicies and lengths between 
-  # lines. Do this so that aprox (below) works.
+  # lines. 
   merged.line <- matrix(NA, length(unlist(tmp))/2, 4)
   merged.ids <- rep(NA, nrow(merged.line))
   l.id <- l.id[rep(1:length(l.id), nline)]  # reps out ID's so loop works
