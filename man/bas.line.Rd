@@ -58,6 +58,7 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+   \item \code{balance}: The type of balance ("1d" or "2d").
    \item \code{random.start}: The random seed for the random-start 
    1D or 2D Halton sequence 
    that produced the sample.  
@@ -69,7 +70,7 @@ make it a \code{SpatialPointsDataFrame}, are:
 }
 }
 \description{
-Draws a BAS sample from a SpatialLines* object.
+Draws a BAS sample from a \code{SpatialLines*} object.
 }
 \details{
 If a "1D" sample is requested, spatial balance is maintained on the 

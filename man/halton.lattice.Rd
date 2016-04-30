@@ -8,38 +8,40 @@ halton.lattice(box = matrix(c(0, 0, 1, 1), 2), N = 10000, J = NULL,
   eta = rep(1, nrow(box)), triangular = FALSE, bases = NULL)
 }
 \arguments{
-\item{box}{A 2X2 matrix containing coordinates of the box. 
+\item{box}{A DX2 matrix containing coordinates of the box. 
 One row per dimension. Column 1 is the minimum, column 2 is the maximum. 
 \code{box[1,]} contains \code{c(min,max)} coordinates of the box in dimension 1
 (horizontal).  \code{box[2,]} contains \code{c(min,max)} coordinates of 
-the box in dimension 2 (vertical).  Default is the unit box.}
+the box in dimension 2 (vertical). Etc for higher dimensions.  
+Default is the 2D unit box.}
 
-\item{N}{Approximate number of points to place in the box.  If \code{J} 
+\item{N}{Approximate number of points to place in the whole box.  If \code{J} 
 is specified, it takes precedence.  If \code{J} is NULL, the 
 algorithm attempts to place \code{N} points in the bounding box 
 using Halton boxes that are as close to square as possible.  
 This \code{N} is not exact, but is a target.}
 
-\item{J}{A 2X1 vector of base powers which determines the size and shape 
+\item{J}{A DX1 vector of base powers which determines the size and shape 
 of the Halton boxes. Elements of \code{J} less than or equal 
 to 1 are re-set to 1. See additional description in help for 
 \code{\link{hal.polygon}} function.}
 
-\item{eta}{A 2X1 vector of the number of points to add inside each Halton box.
+\item{eta}{A DX1 vector of the number of points to add inside each Halton box.
 e.g., if \code{eta} = \code{c(3,2)}, a small grid of 3 by 2 points is 
 added inside each Halton box. \code{eta[1]} is for the
-horizontal dimension, \code{eta[2]} is for the vertical dimension.}
+horizontal dimension, \code{eta[2]} is for the vertical dimension, etc for 
+higher dimensions.}
 
 \item{triangular}{boolean, if TRUE, construct a triangular grid. 
 If FALSE, construct rectangluar grid.  See help for \code{\link{hal.polygon}}.}
 
-\item{bases}{A 2X1 vector of Halton bases.  These must be co-prime.}
+\item{bases}{A DX1 vector of Halton bases.  These must be co-prime.}
 }
 \value{
-A data frame containing coordinates in the 2-D Halton lattice. 
+A data frame containing coordinates in the Halton lattice. 
 Names of the coordinates are \code{dimnames(box)[1]}.  If \code{box} does not 
-have dimnames, names of the coordinates are \code{c("d1", "d2")} (d1 is 
-horizontal, d2 is vertical).
+have dimnames, names of the coordinates are \code{c("d1", "d2", ...)} (d1 is 
+horizontal, d2 is vertical, etc).
 
 In addtion, return has following attributes:
 \itemize{
@@ -63,7 +65,7 @@ a rectangular box.
 This is designed to be called with the bounding box of a spatial 
 object.  See examples.
 
-\emph{Definition of Halton lattice}: A Halton lattice has the same number 
+\bold{Definition of Halton lattice}: A Halton lattice has the same number 
 of points in every Halton box.  Halton boxes are the \code{bases[1]^J[1]} X 
 \code{bases[2]^J[2]} matrix of rectangles over a square. Each Halton box 
 contains \code{prod(eta)} points.

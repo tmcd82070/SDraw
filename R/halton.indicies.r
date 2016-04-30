@@ -2,8 +2,24 @@
 #'  
 #' @title Halton indicies
 #'  
-#' @description Compute and attach indicies of the Halton sequence to points.  Points can be
+#' @description Compute and attach "inverse" or indicies of the Halton sequence to points. 
+#' Points can be
 #'  an abitrary set or a Halton lattice. 
+#'  
+#' @details Halton indices are the arguments to the Halton sequence.  This 
+#' routine is the inverse function for the Halton sequence.  Given a point 
+#' in D space, this routine computes the index (a non-negative integer) 
+#' of the Halton sequence which maps to the Halton region containing the 
+#' point.  
+#' 
+#' For example, in 1D, with \code{bases == 2}, \code{J == 3}, and 
+#' \code{hl.bbox=} \code{matrix(c(0,1),1)}, 
+#' all points in the interval [0,1/8) have Halton index equal to 0, all 
+#' point in [1/8,2/8) have Halton index 4, points in [2/8,3/8) have index
+#' 2, etc. To check, note that the Halton sequence maps x (mod 8) = 4 to the interval 
+#' [1/8,2/8), x (mod 8) = 2 are mapped to [2/8,3/8), etc. (i.e., check 
+#' \code{range(halton(200)[(0:199) \%\% 8 == 4])} and 
+#' \code{range(halton(200)[(0:199) \%\% 8 == 2])}  )  
 #'  
 #' @param x Either a data frame or a \code{SpatialPoints*} object.
 #' Suitable input objects are the output of 
@@ -19,7 +35,7 @@
 #'  This function  works for dimensions >2 if \code{x} is a data.frame.  
 #'  \code{SpatialPoints*} objects are not defined for D>2. 
 #'  
-#' @param J A DX1 vector of base powers.  \code{J} determines the size and shape
+#' @param J A vector of length D containing base powers.  \code{J} determines the size and shape
 #' of the smallest Halton boxes in D space. There are \code{bases[i]^J[i]} boxes
 #' over the i-th dimension of \code{x}'s bounding box.  Total number Halton boxes 
 #' is \code{prod(bases^J)}.  The size of each box in the i-th dimension is 
@@ -29,7 +45,7 @@
 #' will be choosen (approx. one point per box) and boxes will be as square 
 #' as possible. 
 #' 
-#' @param bases DX1 vector of Halton bases.  These must be co-prime.
+#' @param bases A vector of length D containing Halton bases.  These must be co-prime.
 #' 
 #' @param hl.bbox  DX2 matrix containing bounding box of the full set of Halton boxes. 
 #'    First column of this matrix is the lower-left coordinate (i.e., minimums) 
@@ -38,7 +54,7 @@
 #'    For example, if \code{D} = 2, \code{hl.bbox} = 
 #'    \code{matrix( c(min(x),min(y),max(x),max(y)),2)}.  If \code{hl.bbox} is 
 #'    missing (the default), the bounding box of \code{x} is used, but expanded 
-#'    on the top and right by 1% to include any points exactly on the top and right 
+#'    on the top and right by 1 percent to include any points exactly on the top and right 
 #'    boundaries. If \code{hl.bbox} is supplied, keep in mind that all point outside
 #'    the box, or on the maximums (i.e., \code{hl.bbox[,2]}), will not be assigned 
 #'    Halton indices.
@@ -105,12 +121,15 @@ halton.indicies <- function(x, J=NULL, hl.bbox, bases=c(2,3),
     if( inherits(x, "SpatialPoints")){
       hl.bbox <- bbox(x)
     } else if( !is.null(cnames<-attr(x,"coordnames")) ){
-      hl.bbox <- t(apply( x[,cnames], 2, range, na.rm=TRUE ))
+      hl.bbox <- t(apply( x[,cnames,drop=FALSE], 2, range, na.rm=TRUE ))
     } else {
-      hl.bbox <- t(apply( x[,1:D], 2, range, na.rm=TRUE ))
+      hl.bbox <- t(apply( x[,1:D,drop=FALSE], 2, range, na.rm=TRUE ))
     }
     # Add a bit to top and right
-    hl.bbox[,2] <- hl.bbox[,2] + 0.01*apply(hl.bbox,1,diff) 
+    # Take care of degenerate case when one dimension is constant (e.g., a line)
+    delta <- apply(hl.bbox,1,diff)
+    delta <- ifelse(delta == 0, max(delta), delta)
+    hl.bbox[,2] <- hl.bbox[,2] + 0.01*delta
   }
   
   # size/extent of box in each dimension
@@ -161,7 +180,6 @@ halton.indicies <- function(x, J=NULL, hl.bbox, bases=c(2,3),
   
   # Note, this is the hard part.  This is where we invert the Halton sequence
   # either directly or using the Chinese Remainder Theorem. 
-
 
   if( !use.CRT ){
     x.out <- halton.indicies.vector(x.coords, n.boxes, D, bases, delta, ll.corner)

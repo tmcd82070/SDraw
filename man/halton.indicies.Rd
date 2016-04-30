@@ -22,7 +22,7 @@ functions \code{halton.lattice} (a data frame) and
  This function  works for dimensions >2 if \code{x} is a data.frame.  
  \code{SpatialPoints*} objects are not defined for D>2.}
 
-\item{J}{A DX1 vector of base powers.  \code{J} determines the size and shape
+\item{J}{A vector of length D containing base powers.  \code{J} determines the size and shape
 of the smallest Halton boxes in D space. There are \code{bases[i]^J[i]} boxes
 over the i-th dimension of \code{x}'s bounding box.  Total number Halton boxes 
 is \code{prod(bases^J)}.  The size of each box in the i-th dimension is 
@@ -39,12 +39,12 @@ of the bounding box.  Second column is the upper-right coordinate
 For example, if \code{D} = 2, \code{hl.bbox} = 
 \code{matrix( c(min(x),min(y),max(x),max(y)),2)}.  If \code{hl.bbox} is 
 missing (the default), the bounding box of \code{x} is used, but expanded 
-on the top and right by 1% to include any points exactly on the top and right 
+on the top and right by 1 percent to include any points exactly on the top and right 
 boundaries. If \code{hl.bbox} is supplied, keep in mind that all point outside
 the box, or on the maximums (i.e., \code{hl.bbox[,2]}), will not be assigned 
 Halton indices.}
 
-\item{bases}{DX1 vector of Halton bases.  These must be co-prime.}
+\item{bases}{A vector of length D containing Halton bases.  These must be co-prime.}
 
 \item{index.name}{A character string giving the name of the column in 
 the output data frame or \code{SpatialPoints} object to contain 
@@ -76,8 +76,25 @@ If multiple points fall in the same Halton box, their Halton indicies are
 identical.
 }
 \description{
-Compute and attach indicies of the Halton sequence to points.  Points can be
+Compute and attach "inverse" or indicies of the Halton sequence to points. 
+Points can be
  an abitrary set or a Halton lattice.
+}
+\details{
+Halton indices are the arguments to the Halton sequence.  This 
+routine is the inverse function for the Halton sequence.  Given a point 
+in D space, this routine computes the index (a non-negative integer) 
+of the Halton sequence which maps to the Halton region containing the 
+point.  
+
+For example, in 1D, with \code{bases == 2}, \code{J == 3}, and 
+\code{hl.bbox=} \code{matrix(c(0,1),1)}, 
+all points in the interval [0,1/8) have Halton index equal to 0, all 
+point in [1/8,2/8) have Halton index 4, points in [2/8,3/8) have index
+2, etc. To check, note that the Halton sequence maps x (mod 8) = 4 to the interval 
+[1/8,2/8), x (mod 8) = 2 are mapped to [2/8,3/8), etc. (i.e., check 
+\code{range(halton(200)[(0:199) \%\% 8 == 4])} and 
+\code{range(halton(200)[(0:199) \%\% 8 == 2])}  )
 }
 \examples{
 # The following is equivalent to hal.point(WA.cities,25,J=c(3,2))

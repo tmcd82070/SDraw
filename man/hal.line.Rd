@@ -4,8 +4,8 @@
 \alias{hal.line}
 \title{Draws a Halton Lattice sample from a linear (line) resource .}
 \usage{
-hal.line(x, n, J = NULL, pt.spacing = NULL, bases = c(2, 3),
-  plot = TRUE, plot.lattice = FALSE)
+hal.line(x, n, J = NULL, eta = c(1, 1), bases = c(2, 3), balance = "1D",
+  frame.spacing = NULL)
 }
 \arguments{
 \item{x}{A SpatialLines or SpatialLinesDataFrame object. This object must
@@ -25,38 +25,96 @@ of \code{prod(bases^J)} total boxes.  The dimension of each box is
 vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 \code{J} is choosen so that Halton boxes are as square as possible.}
 
-\item{pt.spacing}{Desired spacing of points on lines prior to sampling via
-HAL.  The first step in sampling is descritization which places
+\item{bases}{If \code{balance == "2D"}, this is a 2X1 vector of co-prime Halton bases.
+If \code{balance == "1D"}, this is the single (scalar) Halton base to use.  
+If \code{length(bases) == 2} and \code{balance == "1D"}, the first element of 
+\code{bases} is used.}
+
+\item{balance}{Option specifying how spatial balance is maintained. The options
+are "1D" or "2D".  
+
+Under "1D" all lines in \code{x} are stretched straight 
+and laid end-to-end in the order the appear in \code{x} and a 1-dimensional 
+BAS sample is taken from the amalgomated line.  Sample locations are then 
+mapped back to two dimensional space and appear on the original lines.  This
+method maintains 1D spatial balance, but not 2D balance.  Spatially 
+balanced samples in 1D may not look spatially balanced when plotted 
+in 2 dimensions.   
+
+Under "2D" a systematic sample of points along the union of all lines 
+in \code{x} is drawn first, and a 2-dimensional BAS sample of the points
+is drawn (see \code{\link{bas.point}}).  This maintains 2D spatial 
+balance of sample locations on the lines, but is slower than "1D".}
+
+\item{frame.spacing}{If \code{balance == "2D"}, this is the desired spacing of 
+points on lines prior to sampling via
+HAL.  If \code{balance == "2D"}, the first step is descritization of lines by 
+placing 
 equaly-spaced points on all lines. Then, points are sampled using Halton sampling
 (see \code{hal.point}) for points.  This parameter controls spacing of points during the
 discretization of lines.  For example, specifying 50, and assuming
 \code{x} is projected to UTM meters, means points will be placed every 50
-meters along all lines in \code{x}. \code{x} should be projected before
+meters along all lines in \code{x} before sampling. \code{x} should be projected before
 sampling so that \code{pt.spacing} makes sense.  If \code{pt.spacing} is not
-specified, 1000*\code{n} points will be placed along the lines during
+specified and \code{balance == "2D"}, 1000*\code{n} points will be placed along 
+all lines during
 descretization.}
-
-\item{bases}{2X1 vector of Halton bases.  These must be co-prime.}
-
-\item{plot}{Logical indicating whether to plot \code{x} and selected points.}
-
-\item{plot.lattice}{Logical indicating whether to plot the Halton lattice used 
-to draw the sample.  \code{plot.lattice = TRUE} produces same map 
-as \code{plot=TRUE}, with the addition of the Halton lattice.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the HAL sample, in
-the order they are to be visited.  A 'siteID' attribute is attached to each
-point (in the embedded data frame) and gives the HAL ordering of the sample
-(i.e., sort on 'siteID' to get proper HAL order).  In addition, if the input
-object has an attached data frame (i.e., is a  \code{SpatialLinessDataFrame}), the
-attrributes of the line on which each HAL point fell is attached in the
-associated data frame. The number of the line in \code{x} on which each
-point falls is an attribute of the output points.
+A \code{SpatialPointsDataFrame} containing locations in the HAL sample, 
+in HAL order.
+ Attributes of the sample points are: 
+\itemize{
+  \item \code{sampleID}: A unique identifier for every sample point.  This 
+  encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
+  returned object in HAL order. \code{sampleID}'s, in the HAL case, are not 
+  consecutive. \code{sampleID}'s are usually the Halton 
+  indicies for the Halton boxes 
+  containing the point, after adding random cycles for multiple points in 
+  the same box (see \code{\link{halton.frame}}). If the sample 
+  cycled around
+  to the beginning of the frame, because random start 
+  fell at the end, the sample number is appended 
+  to the beginning of the normal \code{sampleID}'s so they
+  will sort the frame in the proper order.
+  
+  
+  \item \code{geometryID}: The ID of the line in \code{x} on which each 
+  sample point falls.  The 
+  ID of lines in \code{x} are \code{row.names(x)}. 
+  \item Any attributes of the original lines (in \code{x}). 
+}
+
+Additional attributes of the output object, beyond those which 
+make it a \code{SpatialPointsDataFrame}, are:
+\itemize{
+   \item \code{frame}: Name of the input sampling frame.
+   \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
+   \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+   \item \code{balance}: The type of balance ("1d" or "2d").
+   \item \code{random.start}: The random seed for the random-start 
+   1D or 2D Halton sequence 
+   that produced the sample.  
+   If \code{balance=="1D"}, 
+   \item \code{random.start}: The random start of the sample in the 
+   1D or 2D Halton
+   frame.  The Halton frame is a list of all points sorted in 
+   Halton order.  Halton order is the Halton index of each point, with 
+   random cycles added to multiple points 
+   in the same Halton box.  If \code{balance=="2D"},
+   this is a random number between 0 and the number of points 
+   in the discretization of \code{x} (see \code{frame.spacing}).
+   If \code{balance=="1D"}, this is a random number between 0 
+   and the number of points in the 1D Halton lattice 
+   discretization of \code{x} (see parameters \code{J} and \code{eta}).
+   The sample consists of the 
+   \code{n} consecutive units starting at \code{random.start+1} in 
+   the sorted Halton frame. 
+   
+}
 }
 \description{
-Draws a Halton Lattice sample from a SpatialLines object, where SpatialLines
-are defined in library 'sp'.
+Draws a Halton Lattice sample from a \code{SpatialLines*} object.
 }
 \details{
 A HAL sample is drawn from the union of all lines in \code{x} by first
@@ -66,21 +124,25 @@ for points (see \code{\link{hal.point}}).
 }
 \examples{
 
-  #   Default sample of Hawaii coastline
-  samp <- hal.line( 100, HI.coast )
+# Default sample of Hawaii coastline. 1D balance
+samp <- hal.line( HI.coast, 100 )
+
+   
+# Frame spacing ~157 meters. 
+# Frame has ~10,000 = lineLength(HI.coast)/157 points
+samp <- hal.line( HI.coast, 100, balance="2D", frame.spacing=157.1855)
   
-  #   Frame spacing ~157 meters. Frame has ~10,000 points
-  samp <- hal.line( 100, HI.coast, pt.spacing=157.1855, plot.lattice=TRUE )
-  
-  #   Different Halton lattice 
-  samp <- hal.line( 100, HI.coast, J=c(5,3), pt.spacing=157.1855, plot.lattice=TRUE)
+# Different Halton lattice 
+samp <- hal.line( HI.coast, 100, J=c(5,3), balance="2D", frame.spacing=157.1855)
+
 
 }
 \author{
 Trent McDonald
 }
 \seealso{
-\code{\link{bas.line}}, \code{\link{hal.point}}, \code{\link{hal.polygon}}, \code{\link{spsample}}
+\code{\link{bas.line}}, \code{\link{hal.point}}, \code{\link{hal.polygon}}, 
+\code{\link{sdraw}}
 }
 \keyword{design}
 \keyword{survey}

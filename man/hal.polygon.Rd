@@ -88,7 +88,7 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{hl.box}: The bounding box around points in \code{x} used to 
    draw the sample.  See \code{\link{halton.indicies}}.
    
-   \item \code{triangular}: Whether the lattice is triangular or square.
+   \item \code{triangular}: Whether the underlying lattice is triangular or square.
            
    \item \code{random.start}: The random seed of the Halton lattice sample.  
    See \code{\link{hal.point}}. 
@@ -98,13 +98,13 @@ make it a \code{SpatialPointsDataFrame}, are:
 Draws a Halton Lattice sample from a \code{SpatialPolygons*} object.
 }
 \details{
-\emph{A brief description of Halton Lattice sampling for polygons:} 
+\bold{A brief description of Halton Lattice sampling for polygons:} 
 Given a set of Halton Lattice parameters \code{J}, \code{bases}, \code{eta}, 
 and  \code{triangular}, the bounding box around all polygons is partitioned using  
 a Halton lattice of \code{prod(bases^J)} boxes, each containing  \code{prod(eta)}
 points. Points not inside at 
 least one polygon are
-dropped. See \code{\link{halton.lattice.polygon}}.  
+dropped. All this is done by \code{\link{halton.lattice.polygon}}.  
 The resulting points (the Halton lattice frame) are passed to \code{hal.point} 
 and sampled using the HAL method for points.
 }

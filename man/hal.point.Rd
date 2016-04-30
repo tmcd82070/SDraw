@@ -41,7 +41,11 @@ Attributes of the sample points are:
   returned object in HAL order.  \code{sampleID}'s, in the HAL case, are not 
   consecutive. \code{sampleID}'s are the Halton indicies for the Halton boxes 
   containing the point, after adding random cycles to multiple points in 
-  the same box (see \code{\link{halton.frame}}). 
+  the same box (see \code{\link{halton.frame}}). If the sample cycled around
+  to the beginning of the frame, because random start 
+  fell at the end, the sample number is appended 
+  to the beginning of the normal \code{sampleID}'s so they
+  will sort the frame in the proper order.
   
   \item \code{HaltonIndex}: The index of the Halton box containing the point. 
   This column is not, in general, unique.  Points with the same \code{HaltonIndex}
@@ -74,7 +78,8 @@ make it a \code{SpatialPointsDataFrame}, are:
    Halton order.  Halton order is the Halton index of each point, with 
    random cycles added to multiple points 
    in the same Halton box.  
-   This is a random number between 1 and the number of points in \code{x}.
+   This is a random number between 0 and the number of points in 
+   \code{x} minus 1 .
    The sample consists of the 
    \code{n} consecutive units starting at \code{random.start+1} in 
    the sorted Halton frame. 

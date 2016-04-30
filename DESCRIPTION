@@ -63,5 +63,6 @@ Collate:
     'aprox.r'
     'max.U.r'
     'polygonArea.r'
+    'lineLength.r'
     'voronoi.polygons.r'
     'zzz.r'

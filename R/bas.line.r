@@ -2,7 +2,7 @@
 #' 
 #' @title Draws a Balanced Asseptance Sample (BAS) from a linear resource (line).
 #' 
-#' @description Draws a BAS sample from a SpatialLines* object.
+#' @description Draws a BAS sample from a \code{SpatialLines*} object.
 #' 
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
@@ -77,6 +77,7 @@
 #'    \item \code{frame}: Name of the input sampling frame.
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
+#'    \item \code{balance}: The type of balance ("1d" or "2d").
 #'    \item \code{random.start}: The random seed for the random-start 
 #'    1D or 2D Halton sequence 
 #'    that produced the sample.  
@@ -125,6 +126,8 @@ if( tolower(balance) == "2d"){
   
   attr(samp, "frame") <- deparse(substitute(x))  
   attr(samp, "frame.type") <- "line"
+  attr(samp, "balance") <- tolower(balance)
+  
 } else {
   # Get all coordinates from all lines "back to back" in a matrix
   mline.ids <- merge.lines(x)
@@ -169,6 +172,7 @@ if( tolower(balance) == "2d"){
   
   attr(samp, "frame") <- deparse(substitute(x))
   attr(samp, "frame.type") <- "line"
+  attr(samp, "balance") <- tolower(balance)
   attr(samp, "sample.type") <- "BAS"
   attr(samp, "random.start") <- m
 }
