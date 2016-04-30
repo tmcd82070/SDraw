@@ -180,7 +180,7 @@ hal.point <- function( x, n, J=NULL, bases=c(2,3)){
   if( m+n > N ){
     # We have cycled. Fix up sort index
     hl.digits <- floor(log10(max(samp$sampleID))) + 1
-    hl.ind <- (1:nrow(samp)) * 10^hl.digits + samp$sampleID
+    samp$sampleID <- (1:nrow(samp)) * 10^hl.digits + samp$sampleID
   } 
   
   samp.coords <- SpatialPoints(samp.coords, proj4string = CRS(proj4string(x)))
