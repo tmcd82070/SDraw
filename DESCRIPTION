@@ -27,6 +27,7 @@ Collate:
     'HI.coast.r'
     'WA.cities.r'
     'WA.r'
+    'WY.r'
     'SDraw-package.r'
     'sdraw.SpatialPoints.r'
     'sdraw.SpatialLines.r'
