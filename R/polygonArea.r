@@ -30,8 +30,18 @@
 
 polygonArea <- function(x){
 
-  holes <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"hole")})
-  areas <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"area")})
+  print(class(x))
+  
+  if(inherits(x, "SpatialPolygons")){
+    holes <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"hole")})
+    areas <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"area")})
+  } else if( inherits( x, "Polygons") ){ # a single polygons list
+    holes <- sapply(x@Polygons,slot,"hole")
+    areas <- sapply(x@Polygons,slot,"area")
+  } else {  # assume we have a list of polygons, an @polygons list
+    holes <- sapply(x,function(xx){sapply(xx@Polygons,slot,"hole")})
+    areas <- sapply(x,function(xx){sapply(xx@Polygons,slot,"area")})
+  }
 
   sum((-2*unlist(holes)+1) * unlist(areas))
   
