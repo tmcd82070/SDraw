@@ -131,8 +131,7 @@ bas.point <- function(x, n){
     samp2 <- bas.polygon( pixels, round(n.iter * (1 + n.iter/N)) )  # at most, a 2*n sample
     ran.start <- attr(samp2,"random.start")  # assign later to m if first time through
 
-    print(length(samp2))
-    
+
     #   Snap the halton points to the pixel center points, 
     #   which were a part of the input data frame
     cords.df <- samp2@data
@@ -151,13 +150,11 @@ bas.point <- function(x, n){
                           
     dups <- duplicated(samp.df$geometryID)
     
-    print(sum(dups))
 
     samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], 
                                     proj4string=crs.obj)
 
-    print(length(samp) )
-    
+
     if( length(samp) >= n ){
       samp <- samp[1:n,]
       break
@@ -166,9 +163,6 @@ bas.point <- function(x, n){
     # Prep for next iteration, cut down sample size and frame.
     n.iter <- n - length(samp)
     pixels <- pixels[ !(row.names(pixels) %in% samp$geometryID), ]
-    print(length(pixels))
-    
-    print("-------")
   }
 
   samp@data$sampleID <- 1:nrow(samp)
