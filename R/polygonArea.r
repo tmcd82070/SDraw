@@ -30,8 +30,6 @@
 
 polygonArea <- function(x){
 
-  print(class(x))
-  
   if(inherits(x, "SpatialPolygons")){
     holes <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"hole")})
     areas <- sapply(x@polygons, function(xx){sapply(xx@Polygons,slot,"area")})
