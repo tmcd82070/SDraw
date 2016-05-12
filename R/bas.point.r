@@ -83,7 +83,8 @@ bas.point <- function(x, n){
   }
 
   pts <- coordinates( x )
-
+  rnames.x <- row.names( x )
+  
   #   Find minimum distance between two points.  
   #   This is expensive, but necessary. 
   #   Use dist from stats package. Keep in mind this is decimal degrees if x is lat long.
@@ -100,14 +101,16 @@ bas.point <- function(x, n){
   pixels <- vector( "list", nrow(pts) )
   for( i in 1:nrow(pts)){
       Sr1 <- Polygon( cbind( c(ll.x[i],ll.x[i],ur.x[i],ur.x[i],ll.x[i]), c(ll.y[i],ur.y[i],ur.y[i],ll.y[i],ll.y[i]) ) )
-      pixels[[i]] <- Polygons( list( Sr1 ), paste("p",i,sep="") )    
+      pixels[[i]] <- Polygons( list( Sr1 ), rnames.x[i] )    
   }
   pixels <- SpatialPolygons( pixels, 1:nrow(pts), proj4string=CRS(proj4string(x))   )
   
+  # Create data frame for pixels, need coordinates of original points 
+  # for snapping later.
   if( inherits( x, "SpatialPointsDataFrame" )){
-      df <- data.frame(x, row.names=row.names(pixels))  # coordinates are included here, by default
+      df <- data.frame( data.frame(x), row.names=row.names(pixels))  # coordinates are included here, by default
   } else {
-      df <- data.frame(pts, row.names=row.names(pixels))
+      df <- data.frame( pts, row.names=row.names(pixels))
   }
 
   pixels <- SpatialPolygonsDataFrame( pixels, data=df )
@@ -119,39 +122,57 @@ bas.point <- function(x, n){
   samp <- NULL
   crs.obj <- CRS(x@proj4string@projargs)
   cord.names <- dimnames(bbox(x))[[1]]
-  df.col.names <- names(df)
+  df.col.names <- c("sampleID", "geometryID", names(df))  # cols to keep in output data frame
+  df.col.names <- df.col.names[!(df.col.names %in% c(cord.names,"optional"))]
 
-
+  n.iter <- n
   repeat{
-    samp2 <- bas.polygon( pixels, round(n * (1 + n/N)) )  # at most, a 2*n sample
-    m <- attr(samp2,"random.start")  # save for later
-  
+    # Geometry ID returned by bas.polygon is correct because we assigned row.names when we made pixels
+    samp2 <- bas.polygon( pixels, round(n.iter * (1 + n.iter/N)) )  # at most, a 2*n sample
+    ran.start <- attr(samp2,"random.start")  # assign later to m if first time through
+
+    print(length(samp2))
+    
     #   Snap the halton points to the pixel center points, 
     #   which were a part of the input data frame
-    cords.df <- data.frame(samp2)
+    cords.df <- samp2@data
     cords <- cords.df[,cord.names]
   
     samp2 <- SpatialPointsDataFrame( cords, data=cords.df, proj4string=crs.obj )  
     
     if( length(samp) > 0){
       samp.cords <- rbind(coordinates(samp), cords)
-      samp.df <- rbind(data.frame(samp)[,df.col.names], cords.df[,df.col.names])
+      samp.df <- rbind(data.frame(samp)[,df.col.names,drop=FALSE], cords.df[,df.col.names,drop=FALSE])
     } else {
       samp.cords <- cords
-      samp.df <- cords.df[,df.col.names]
+      samp.df <- cords.df[,df.col.names,drop=FALSE]
+      m <- ran.start  # save for later
     }
                           
-    dups <- duplicated(samp.cords)
+    dups <- duplicated(samp.df$geometryID)
     
+    print(sum(dups))
+
     samp <- SpatialPointsDataFrame( samp.cords[!dups,], data=samp.df[!dups,], 
                                     proj4string=crs.obj)
+
+    print(length(samp) )
     
     if( length(samp) >= n ){
       samp <- samp[1:n,]
       break
     }  
+    
+    # Prep for next iteration, cut down sample size and frame.
+    n.iter <- n - length(samp)
+    pixels <- pixels[ !(row.names(pixels) %in% samp$geometryID), ]
+    print(length(pixels))
+    
+    print("-------")
   }
 
+  samp@data$sampleID <- 1:nrow(samp)
+  
   attr(samp, "frame") <- deparse(substitute(x))
   attr(samp, "frame.type") <- "point"
   attr(samp, "sample.type") <- "BAS"
