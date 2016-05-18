@@ -1,6 +1,6 @@
 #' @export bas.polygon
 #' 
-#' @title Draws a Balanced Asseptance Sample (BAS) from an area resource (polygons).
+#' @title Draws a Balanced Acceptance Sample (BAS) from an area resource (polygons).
 #' 
 #' @description Draws a BAS sample from a SpatialPolygons* object
 #' 
@@ -10,7 +10,7 @@
 #' all polygons are discarded until exactly \code{n} locations are selected
 #' inside the polygons.
 #' 
-#' The sampling frame for routine is infinite and contains all (infintesibly 
+#' The sampling frame for routine is infinite and contains all (infinitesimally 
 #' small) points in the union of polygons in \code{x}. 
 #' 
 #' @param n Sample size.  Number of locations to draw from the union of all
@@ -43,7 +43,7 @@
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
 #'    \item \code{random.start}: The random seed of the random-start Halton sequence 
 #'    that produced the sample.  This is a vector of length 2 whose elements are 
-#'    random intergers between 0 and \code{\link{maxU()}}. 
+#'    random integers between 0 and \code{\link{maxU()}}. 
 #'    This routine ensures that the first sample point
 #'    corresponding to this index in the random-start Halton sequence 
 #'    falls inside a polygon of interest.  i.e., 
@@ -53,7 +53,7 @@
 #'    \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
 #'    
 #'    Note that \code{halton(1,2,random.start+i)}, for 
-#'    \code{i} > 0, is not guarenteed to fall inside a polygon of \code{x}
+#'    \code{i} > 0, is not guaranteed to fall inside a polygon of \code{x}
 #'    when scaled by the square bounding box. The sample consists of the point 
 #'    associated with \code{random.start} and the next \code{n-1}
 #'    Halton points in sequence that fall inside a polygon

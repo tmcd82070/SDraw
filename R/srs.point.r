@@ -3,7 +3,7 @@
 #' @title Draw a Simple Random Sample (SRS) from a point resource or finite population frame. 
 #' 
 #' @description Draw a systematic sample from a \code{SpatialPoints*} object or a \code{data.frame}.   
-#' \code{SpatialPoints*} objects can represent point resouces in 2-dimensional space, such as towns, event locations, 
+#' \code{SpatialPoints*} objects can represent point resources in 2-dimensional space, such as towns, event locations, 
 #' or grid cell centers.
 #' 
 #' @details When \code{x} is a data frame, the simple random sample is drawn from the rows.  That is, 

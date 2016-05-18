@@ -1,8 +1,8 @@
 #' @export halton.indicies.vector
 #'  
-#' @title Halton indicies for an entire vector of coordinates 
+#' @title Halton indices for an entire vector of coordinates 
 #' 
-#' @description Computes Halton indicies of an entire vector of points by matching 
+#' @description Computes Halton indices of an entire vector of points by matching 
 #' them with a vector of the Halton sequence. 
 #' This function is relatively fast, but can only handle reasonably sized vectors. 
 #' 
@@ -14,25 +14,25 @@
 #'  \code{delta[i]} units wide in dimension \code{i}.
 #' @param ll.corner DX1 vector containing minimum coordinates in all dimensions.
 #' 
-#' @return A nX1 vector of Halton indicies corresponding to points in \code{hl.coords}. 
+#' @return A nX1 vector of Halton indices corresponding to points in \code{hl.coords}. 
 #' 
-#' @details The Halton sequence maps the non-negative integers (the Halton indicies) to D-space.  
+#' @details The Halton sequence maps the non-negative integers (the Halton indices) to D-space.  
 #' This routine does the inverse.
 #' Given a point in D-space and a grid of Halton boxes, the point's Halton index  
 #' is any integer N which gets mapped to the Halton box containing the point.  
 #' (i.e., any integer in the set $\{x:N = x mod C\}$, where $C$ 
 #' = \code{prod(n.boxes)}).  
 #' 
-#' This routine uses the Halton sequence and modular arithmetic to find Halton indicies.
+#' This routine uses the Halton sequence and modular arithmetic to find Halton indices.
 #' This means several vectors of size \code{nrow(hl.coords)} must be created.  Depending on 
-#' memory, this approach fails for a sufficently large number of points. When this routine 
-#' fails, see the slower \code{\link{halton.indicies.CRT}}, which computes indicies by solving 
+#' memory, this approach fails for a sufficiently large number of points. When this routine 
+#' fails, see the slower \code{\link{halton.indicies.CRT}}, which computes indices by solving 
 #' the Chinese Remainder Theorem. 
 #' 
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{halton.indicies.CRT}}, \code{\link{halton.indicies}}
+#' @seealso \code{\link{halton.indicies.CRT}}, \code{\link{halton.indices}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
@@ -42,7 +42,7 @@
 #' pt <- data.frame(x=143, y=164)
 #' halton.indicies.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
 #' 
-#' # Plot Halton boxes and indicies to check
+#' # Plot Halton boxes and indices to check
 #' b <- c(2,3)
 #' J <- c(4,2)
 #' hl.ind <- halton( prod(n.boxes), 2,0 )
@@ -59,10 +59,10 @@
 halton.indicies.vector <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
 
   # Halton index matrix, stored as a vector in column-major order for now.  
-  # Each cell cooresponds to a Halton box. 
+  # Each cell corresponds to a Halton box. 
   hl.vec <- rep(NA, prod(n.boxes))
   
-  # Fill Halton matrix with Halton indicies
+  # Fill Halton matrix with Halton indices
   hl.ind <- halton( prod(n.boxes), D, start=0, bases=b)
   
   # This sets up the column major ordering of our array. 

@@ -23,18 +23,18 @@
 #' 
 #' If \code{x} inherits from \code{SpatialPoints}, returned 
 #' value is 0.  If \code{x} inherits from \code{SpatialLines}, returned 
-#' value contains line lengths or the sum of line lenghs in \code{x}. 
+#' value contains line lengths or the sum of line lengths in \code{x}. 
 #' If \code{x} inherits from \code{SpatialPolygons}, returned
 #' value contains lengths of the perimeter of all polygons, or 
 #' the sum of perimeters, in \code{x}. When \code{x} contains polygons with 
 #' holes, the perimeter of the holes is included (i.e., perimeter of holes
-#' is postive, not negative).    
+#' is positive, not negative).    
 #' 
 #' 
 #' Units of the returned value are same as units of coordinates 
 #' in \code{x}.  E.g., 
 #' meters if coordinates in \code{x} are UTM meters, 
-#' decimal degrees if coordinates in \code{x} are lat-long decimial 
+#' decimal degrees if coordinates in \code{x} are lat-long decimal 
 #' degrees.
 #' 
 #' @author Trent McDonald

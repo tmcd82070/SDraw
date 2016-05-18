@@ -15,7 +15,7 @@
 #' @return Area of all polygons in \code{x}, taking account of holes. 
 #' Units of area are squared units of coordinates in \code{x}.  E.g., 
 #' square meters if coordinates in \code{x} are UTM meters, square
-#' decimal degrees if coordinates in \code{x} are lat-long decimial 
+#' decimal degrees if coordinates in \code{x} are lat-long decimal 
 #' degrees.
 #' 
 #' @author Trent McDonald

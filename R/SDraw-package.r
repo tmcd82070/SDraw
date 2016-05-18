@@ -3,7 +3,7 @@
 #' @description SDraw provides a set of R functions that draw
 #' Halton-Lattice samples (HAL),
 #' Balanced-Acceptance-Samples (BAS), 
-#' Generalized-Random-Tesselation-Stratified (GRTS) samples, 
+#' Generalized-Random-Tessellation-Stratified (GRTS) samples, 
 #' Simple-Systematic-Samples (SSS), and 
 #' Simple-Random-Samples (SRS).  The types of input 
 #' frames accepted are points (0-D, finite), lines (1-D, infinite), or polygons (2-D,

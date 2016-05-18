@@ -11,13 +11,13 @@
 #' @param n Desired sample size.  Some \code{type}'s of samples are fixed-size (see DETAILS), 
 #' in which case 
 #' exactly \code{n} points are returned.  Other \code{type}'s are variable-size, 
-#' and this number is the expected sample size (i.e., average over many repititions). 
+#' and this number is the expected sample size (i.e., average over many repetitions). 
 #' @param type Character, naming the type of sample to draw. Valid \code{type}'s are:
 #' \itemize{
 #' \item \code{"HAL"}  : HAlton Lattice sampling (Robertson et al., (Forthcoming)) 
 #' \item \code{"BAS"}  : Balanced Acceptance Sampling (Robertson et al., 2013) 
 #' \item \code{"SSS"}  : Simple Systematic (grid) Sampling, with random start and orientation 
-#' \item \code{"GRTS"} : Generalized Random Tesselation Stratified sampling 
+#' \item \code{"GRTS"} : Generalized Random Tessellation Stratified sampling 
 #'      (Stevens and Olsen, 2004) 
 #' \item \code{"SRS"}  : Simple Random Sampling 
 #' }
@@ -33,7 +33,7 @@
 #'
 #' Options which determine characteristics of each 
 #' sample time are passed via \code{...}.  For example, 
-#' spacing and "shape" of the grid in \code{sss.*} are controled via
+#' spacing and "shape" of the grid in \code{sss.*} are controlled via
 #' \code{spacing=} and \code{triangular=}, while the
 #' \code{J} and \code{eta} parameters (which determine box sizes) 
 #' are passed to \code{hal.*}.  See documentation for 
@@ -50,7 +50,7 @@
 #' frame contains all attributes of \code{x} evaluated at the locations of the sample points.
 #' 
 #' Certain sampling routine add attributes 
-#' that are pertenent to the design. For example, the \code{grts.*} routines add
+#' that are pertinent to the design. For example, the \code{grts.*} routines add
 #' a \code{pointType} attribute.  See documentation for the underlying sampling routine
 #' to interpret extra output point attributes.  
 #' 

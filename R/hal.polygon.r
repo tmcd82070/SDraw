@@ -31,7 +31,7 @@
 #' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
 #' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 #' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
-#' \code{J} is choosen so that approximately \code{1000*n} Halton boxes are placed 
+#' \code{J} is chosen so that approximately \code{1000*n} Halton boxes are placed 
 #' in the bounding box of polygons, each as 
 #' square as possible and each containing one point, 
 #' 
@@ -42,15 +42,15 @@
 #' 
 #' @param triangular A boolean scalar. If TRUE, odd horizontal rows of the 
 #' Halton lattice are moved one-quarter a Halton box width to the right, while 
-#' even rows of the Halton lattic are moved one-quarter of a Halton box width 
+#' even rows of the Halton lattice are moved one-quarter of a Halton box width 
 #' to the left. This creates a triangular Halton lattice over the 
 #' bounding box of the polygons. 
-#' If FALSE, a rectangluar Halton lattice is constructed. 
+#' If FALSE, a rectangular Halton lattice is constructed. 
 #' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
 #' 
 #' @param init.n.factor A
-#' scalar factor controling the approximate number of points 
+#' scalar factor controlling the approximate number of points 
 #' in the Halton lattice to place inside the polygons before sampling. 
 #' If \code{J} is not specified, approximately \code{init.n.factor*n} 
 #' points are placed in the Halton lattice overlaid on the polygons 
@@ -94,7 +94,7 @@
 #'    \item \code{eta}: the \code{eta} vector used in the lattice.
 #'    
 #'    \item \code{hl.box}: The bounding box around points in \code{x} used to 
-#'    draw the sample.  See \code{\link{halton.indicies}}.
+#'    draw the sample.  See \code{\link{halton.indices}}.
 #'    
 #'    \item \code{triangular}: Whether the underlying lattice is triangular or square.
 #'            
@@ -138,12 +138,14 @@ hal.polygon <- function( x, n, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3
   # Construct Halton lattice  
   hl.points <- halton.lattice.polygon( x, N, J, eta, triangular, bases )
   
+  # Save box upon which lattice was based. hal.point overwrites this.
+  hl.bbox <- attr(hl.points,"hl.bbox")
+  
   # Renames some attributes
   names(hl.points)[names(hl.points) == "geometryID"] <- "polygonID"
   
   # Now that we have points, we can draw a HAL point sample. 
   samp <- hal.point( hl.points, n, attr(hl.points, "J"), attr(hl.points, "bases") )
-  
   # Drop the point geometry ID
   samp <- samp[,which(names(samp) != "geometryID")]
   
@@ -160,6 +162,7 @@ hal.polygon <- function( x, n, J=NULL, eta=c(1,1), triangular=FALSE, bases=c(2,3
   attr(samp, "sample.type") <- "HAL"
   attr(samp, "eta") <- attr(hl.points, "eta")
   attr(samp, "triangular") <- attr(hl.points, "triangular")
+  attr(samp, "hl.bbox") <- hl.bbox
   
 
   samp

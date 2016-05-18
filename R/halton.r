@@ -26,11 +26,11 @@
 #' 3, 5, and 7.  The 6-dimensional Halton sequence would use 2, 3, 5, 7, 11,
 #' and 13. Etc.
 #' @return A matrix of size \code{n} X \code{dim}.  Each column corresponds to
-#' a dimension.  Each row is a \code{dim}-dimenisional Halton point.
+#' a dimension.  Each row is a \code{dim}-dimensional Halton point.
 #' 
 #' @author Trent McDonald
 #' 
-#' @seealso \code{\link{halton.indicies}}
+#' @seealso \code{\link{halton.indices}}
 #' 
 #' @references van der Corput sequences are described here:
 #' \url{http://en.wikipedia.org/wiki/Van_der_Corput_sequence}

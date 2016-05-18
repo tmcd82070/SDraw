@@ -1,10 +1,10 @@
-#' @export halton.indicies
+#' @export halton.indices
 #'  
-#' @title Halton indicies
+#' @title Halton indices
 #'  
-#' @description Compute and attach "inverse" or indicies of the Halton sequence to points. 
+#' @description Compute and attach "inverse" or indices of the Halton sequence to points. 
 #' Points can be
-#'  an abitrary set or a Halton lattice. 
+#'  an arbitrary set or a Halton lattice. 
 #'  
 #' @details Halton indices are the arguments to the Halton sequence.  This 
 #' routine is the inverse function for the Halton sequence.  Given a point 
@@ -42,7 +42,7 @@
 #' \code{delta[i]/(bases[i]^J[i])}, where \code{delta[i]} is the  
 #' extent of \code{x}'s bounding box along the i-th dimension.  
 #' If \code{J} is NULL (the default), approximately \code{length(x)} boxes 
-#' will be choosen (approx. one point per box) and boxes will be as square 
+#' will be chosen (approx. one point per box) and boxes will be as square 
 #' as possible. 
 #' 
 #' @param bases A vector of length D containing Halton bases.  These must be co-prime.
@@ -61,7 +61,7 @@
 #'    
 #' @param index.name A character string giving the name of the column in 
 #'  the output data frame or \code{SpatialPoints} object to contain 
-#'  the Halton indicies.  This name is saved as an attribute attached to 
+#'  the Halton indices.  This name is saved as an attribute attached to 
 #'  the output object.
 #'  
 #' @param use.CRT A logical values specifying whether to invert the 
@@ -71,7 +71,7 @@
 #'  \code{prod{bases^J}}, see Details). As the number of points grows, 
 #'  eventually the direct method will not be able to allocate sufficient  
 #'  memory (tips: Make sure to run 64-bit R, and try increasing 
-#'  memory limit with \code{\link{memory.limiit}}).   
+#'  memory limit with \code{\link{memory.limit}}).   
 #'  The CRT method, while much  (much) slower, does not require 
 #'  as much memory, and should eventually complete a much larger problem.
 #'  Patience is required if your problem is big enough to require 
@@ -85,7 +85,7 @@
 #' a \code{SpatialPointsDataFrame} is returned containing the points in \code{x}. 
 #' The attributes of the returned object have an additional column, the index of the Halton 
 #' box containing the point. Name of the attribute is \code{index.name}. 
-#' If multiple points fall in the same Halton box, their Halton indicies are 
+#' If multiple points fall in the same Halton box, their Halton indices are 
 #' identical. 
 #'   
 #' @author Trent McDonald
@@ -99,8 +99,8 @@
 #'# closed on the left and bottom.  This includes points exactly on the bounding lines.
 #'bb <- bbox(WA.cities) + c(0,0,1,1) 
 #'
-#'# Compute Halton indicies
-#'frame <- halton.indicies( WA.cities, J=c(3,2), hl.box=bb  )
+#'# Compute Halton indices
+#'frame <- halton.indices( WA.cities, J=c(3,2), hl.box=bb  )
 #'
 #'# Construct Halton frame
 #'frame <- halton.frame( frame )
@@ -112,7 +112,7 @@
 #'samp <- frame[ind,]  # draw sample
 #'
 #'
-halton.indicies <- function(x, J=NULL, hl.bbox, bases=c(2,3),  
+halton.indices <- function(x, J=NULL, hl.bbox, bases=c(2,3),  
                             index.name="HaltonIndex", use.CRT=FALSE){
 
   D <- length(bases)

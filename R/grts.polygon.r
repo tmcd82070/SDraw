@@ -3,7 +3,7 @@
 #' @title Draw a equi-probable GRTS sample from an area (polygon) resource.
 #' 
 #' @description Draws an equi-probable unstratified Generalized Random
-#' Tesselation Stratified (GRTS) sample from a \code{SpatialPolygons*} object
+#' Tessellation Stratified (GRTS) sample from a \code{SpatialPolygons*} object
 #' 
 #' @details This is a wrapper for the \code{grts} function in package \code{spsurvey}.
 #' This simplifies calling \code{grts} when equi-probable samples are 

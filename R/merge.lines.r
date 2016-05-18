@@ -1,4 +1,4 @@
-# Merge lines functtion ==========================================
+# Merge lines function ==========================================
 merge.lines <- function(x){
   # "merge" all the lines into one big matrix of coordinates with NA's between
   

@@ -1,8 +1,8 @@
 #' @export halton.indicies.CRT
 #'  
-#' @title Halton indicies by the Chinese Remainder Theorem (CRT)
+#' @title Halton indices by the Chinese Remainder Theorem (CRT)
 #' 
-#' @description Computes Halton indicies of D-dimensional points by solving the Chinese Remainder Theorem. 
+#' @description Computes Halton indices of D-dimensional points by solving the Chinese Remainder Theorem. 
 #' This function is slightly slower than \code{halton.indicies.vector}, but 
 #' it works for large problems. 
 #' 
@@ -15,19 +15,19 @@
 #'  of bounding cube is \code{prod{delta}} units to the \code{D} power. 
 #' @param ll.corner DX1 vector containing minimum coordinates in all dimensions.
 #' 
-#' @return A nX1 vector of Halton indicies corresponding to points in \code{hl.coords}. 
+#' @return A nX1 vector of Halton indices corresponding to points in \code{hl.coords}. 
 #' 
-#' @details The Halton sequence maps the non-negative integers (the Halton indicies) to D-space.  
+#' @details The Halton sequence maps the non-negative integers (the Halton indices) to D-space.  
 #' This routine does the inverse.
 #' Given a point in D-space and a grid of Halton boxes, the point's Halton index  
 #' is any integer N which gets mapped to the Halton box containing the point.  
 #' (i.e., any integer in the set $\{x:N = x mod C\}$, where $C$ 
 #' = \code{prod(n.boxes)}).  
 #' 
-#' This routine solves the Chinese Remainder Theorem to find Halton indicies.
+#' This routine solves the Chinese Remainder Theorem to find Halton indices.
 #' This routine loops over the points in  \code{hl.coords}, and as such minimizes memory usage 
 #' but sacrifices speed. For small problems,  see  \code{\link{halton.indicies.vector}}, 
-#' which computes indicies by actually placing points in Halton boxes to find their indicies. 
+#' which computes indices by actually placing points in Halton boxes to find their indices. 
 #' 
 #' No point can be less than it's corresponding \code{ll.corner}.  No point 
 #' can be equal to or greater than it's corresponding \code{ll.corner + delta}. 
@@ -38,14 +38,14 @@
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{halton.indicies.vector}}, \code{\link{halton.indicies}}
+#' @seealso \code{\link{halton.indicies.vector}}, \code{\link{halton.indices}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
 #' n.boxes <- c(16,9) 
 #' halton.indicies.vector(pt, n.boxes) # should equal 70
 #' 
-#' # Plot Halton boxes and indicies to check.  
+#' # Plot Halton boxes and indices to check.  
 #' # pt should plot in box labeled 70
 #' b <- c(2,3)
 #' J <- log(n.boxes,b)  # J must be integers
@@ -108,14 +108,14 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1),
   
   # Solve CRT.  Find N s.t., N = Ax mod n.boxes[1] and N= Ay mod n.boxes[2]
   # This involves taking a modular inverse, which requires the Extended 
-  # Euclidean Algorithm to find the greatest common demoninator.
+  # Euclidean Algorithm to find the greatest common denominator.
   # Note, because bases are co-prime, gcd should be 1.  We need the s and t 
   # coefficients here.
   gcd <- extended.gcd(n.boxes[1], n.boxes[2])
   
    # print(gcd)
   
-  # Compute Halton indicies
+  # Compute Halton indices
   hl.out <- Ax*n.boxes[2]*gcd$s + Ay*n.boxes[1]*gcd$t
   hl.out <- hl.out %% prod(n.boxes)
   
@@ -137,7 +137,7 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1),
 # tmp<- halton.indicies.CRT(pt, n.boxes) # should equal 70
 # cat(paste("Halton index from CRT routine:", tmp, "\n"))
 
-# # Plot Halton boxes and indicies to check
+# # Plot Halton boxes and indices to check
 # b <- c(2,3)
 # J <- c(4,2)
 # hl.ind <- halton( 3*prod(n.boxes), 2,0 )
@@ -166,7 +166,7 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1),
 # # )
 # # tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
 # # print(tmp2[10:60,])
-# # cat("Number of non-equal indicies: ")
+# # cat("Number of non-equal indices: ")
 # # cat(sum(tmp2$H.ind.vector != tmp2$H.ind.CRT))
 # # cat("\n")
 # cat("Time for VECTOR routine to complete:\n")

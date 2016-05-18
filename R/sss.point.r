@@ -3,7 +3,7 @@
 #' @title Draw a Simple Systematic Sample (SSS) from a point resource or finite population frame. 
 #' 
 #' @description Draw a systematic sample from a \code{SpatialPoints*} object or a \code{data.frame}.   
-#' \code{SpatialPoints*} objects can represent point resouces in 2-dimensional space, such as towns, event locations, 
+#' \code{SpatialPoints*} objects can represent point resources in 2-dimensional space, such as towns, event locations, 
 #' or grid cell centers.
 #' 
 #' @details The points in \code{x} are systematically sampled in the order

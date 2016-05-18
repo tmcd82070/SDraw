@@ -38,7 +38,7 @@
 #' higher dimensions. 
 #' 
 #' @param triangular boolean, if TRUE, construct a triangular grid. 
-#' If FALSE, construct rectangluar grid.  See help for \code{\link{hal.polygon}}.
+#' If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.
 #' 
 #' @param bases A DX1 vector of Halton bases.  These must be co-prime. 
 #' 
@@ -47,7 +47,7 @@
 #' have dimnames, names of the coordinates are \code{c("d1", "d2", ...)} (d1 is 
 #' horizontal, d2 is vertical, etc).
 #' 
-#' In addtion, return has following attributes:
+#' In addition, return has following attributes:
 #' \itemize{
 #'    \item \code{J}: the \code{J} vector used to construct the lattice. 
 #'      This is either the input \code{J} or the computed \code{J} when 

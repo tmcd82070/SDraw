@@ -21,7 +21,7 @@
 #' (= \code{sqrt(A/n)}, where
 #' \code{A} = area of union of all polygons in \code{x}.
 #' 
-#' Relative shape of grid cells is controled by the \code{spacing} vector.  If
+#' Relative shape of grid cells is controlled by the \code{spacing} vector.  If
 #' \code{spacing = c(rx, ry)}, spacing in X and Y directions is
 #' \code{spacing*delta/rev(spacing)}, where \code{delta} 
 #' = \code{sqrt(A/n)}. Conceptually, a square cell of size \code{delta^2} 
@@ -43,7 +43,7 @@
 # \code{!all(spacing==1)}, the hexagons are "squashed" in the vertical or 
 # horizontal direction, but remain hexagons. Under the hexagon view, the 
 # actual hexagonal cells are formed by connecting the six 
-# points surrouding a center. 
+# points surrounding a center. 
 # In this way, specifying 
 # \code{triangular=TRUE} can be viewed as selecting hexagons. When 
 # sampling geographic space, 
@@ -110,7 +110,7 @@
 #'   in the sample may not be 1.  Visualize row i with 
 #'   \code{points(samp[samp$row==i,])}. 
 #'   \item \code{col}: Column number of the sampled point in the grid. Column 
-#'   numbers are the horizontal indicies of the grid in a direction parallel to
+#'   numbers are the horizontal indices of the grid in a direction parallel to
 #'   the (potentially rotated) main horizontal axis. Cell (1,1) is in 
 #'   the lower left (southwest) corner of the shape's bounding box.
 #'   Thus, column 1 is defined 

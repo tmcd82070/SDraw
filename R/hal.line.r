@@ -4,9 +4,9 @@
 #' 
 #' @description  Draws a Halton Lattice sample from a \code{SpatialLines*} object.
 #' 
-#' @details  A HAL sample is drawn from the union of all lines in \code{x} by first
-#' discretizing lines with points spaced \code{pt.spacing} apart. After
-#' discretizing the lines, discretization points are sampled using the HAL method
+#' @details  A HAL sample is drawn from the union of all lines in \code{x} by 
+#' discretization of lines using points spaced \code{pt.spacing} apart. The
+#' discretized points are then sampled using the HAL method
 #' for points (see \code{\link{hal.point}}).
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
@@ -22,7 +22,7 @@
 #' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
 #' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 #' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
-#' \code{J} is choosen so that Halton boxes are as square as possible.
+#' \code{J} is chosen so that Halton boxes are as square as possible.
 #' 
 #' 
 #' @param balance Option specifying how spatial balance is maintained. The options
@@ -30,7 +30,7 @@
 #' 
 #' Under "1D" all lines in \code{x} are stretched straight 
 #' and laid end-to-end in the order the appear in \code{x} and a 1-dimensional 
-#' BAS sample is taken from the amalgomated line.  Sample locations are then 
+#' BAS sample is taken from the amalgamated line.  Sample locations are then 
 #' mapped back to two dimensional space and appear on the original lines.  This
 #' method maintains 1D spatial balance, but not 2D balance.  Spatially 
 #' balanced samples in 1D may not look spatially balanced when plotted 
@@ -43,9 +43,9 @@
 #' 
 #' @param frame.spacing If \code{balance == "2D"}, this is the desired spacing of 
 #' points on lines prior to sampling via
-#' HAL.  If \code{balance == "2D"}, the first step is descritization of lines by 
+#' HAL.  If \code{balance == "2D"}, the first step is discretization of lines by 
 #' placing 
-#' equaly-spaced points on all lines. Then, points are sampled using Halton sampling
+#' equally-spaced points on all lines. Then, points are sampled using Halton sampling
 #' (see \code{hal.point}) for points.  This parameter controls spacing of points during the
 #' discretization of lines.  For example, specifying 50, and assuming
 #' \code{x} is projected to UTM meters, means points will be placed every 50
@@ -53,7 +53,7 @@
 #' sampling so that \code{pt.spacing} makes sense.  If \code{pt.spacing} is not
 #' specified and \code{balance == "2D"}, 1000*\code{n} points will be placed along 
 #' all lines during
-#' descretization.
+#' discretization.
 #' 
 #' @param bases If \code{balance == "2D"}, this is a 2X1 vector of co-prime Halton bases.  
 #' If \code{balance == "1D"}, this is the single (scalar) Halton base to use.  
@@ -68,7 +68,7 @@
 #'   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
 #'   returned object in HAL order. \code{sampleID}'s, in the HAL case, are not 
 #'   consecutive. \code{sampleID}'s are usually the Halton 
-#'   indicies for the Halton boxes 
+#'   indices for the Halton boxes 
 #'   containing the point, after adding random cycles for multiple points in 
 #'   the same box (see \code{\link{halton.frame}}). If the sample 
 #'   cycled around
@@ -199,8 +199,8 @@ hal.line <- function( x, n, J=NULL, eta=c(1,1), bases=c(2,3), balance="1D",
     hl.bbox <- attr(hl.lattice,"hl.bbox") #save for attributes later
     J <- attr(hl.lattice, "J")
     
-    # Compute Halton indicies in 1D ==========================
-    hl.ind <- halton.indicies( hl.lattice, 
+    # Compute Halton indices in 1D ==========================
+    hl.ind <- halton.indices( hl.lattice, 
                                J=attr(hl.lattice,"J"), 
                                bases=attr(hl.lattice,"bases"), 
                                hl.bbox = hl.bbox)
@@ -213,7 +213,7 @@ hal.line <- function( x, n, J=NULL, eta=c(1,1), bases=c(2,3), balance="1D",
     N <- nrow(hl.ind)
     m <- floor(runif(1, 0, N)) # Integer 0,...,N-1
     n <- min( n, N )  # Can't take more than a census. 
-    ind <- (((0:(n-1))+m) %% N ) + 1  # Cycle the indicies around to start of frame if necessary
+    ind <- (((0:(n-1))+m) %% N ) + 1  # Cycle the indices around to start of frame if necessary
     
     
     samp <- hl.ind[ind,]

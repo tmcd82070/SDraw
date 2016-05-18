@@ -4,7 +4,7 @@
 #' 
 #' 
 #' @description Draws an equi-probable unstratified Generalized Random
-#' Tesselation Stratified (GRTS) sample from a \code{SpatialLines*} object
+#' Tessellation Stratified (GRTS) sample from a \code{SpatialLines*} object
 #' 
 #' @details This is a wrapper for the \code{grts} function in package \code{spsurvey}.
 #' This simplifies calling \code{grts} when equi-probable samples are 

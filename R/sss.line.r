@@ -6,14 +6,14 @@
 #' \code{SpatialLines*} object represents a 2-dimensional line resource, such as a
 #' river, highway, or coastline.  
 #' 
-#' @details If \code{x} contains multiple lines, the lines are amalgomated before
-#' sampling.   Conceptually, under amalgomation the lines in \code{x} are 
-#' "stretched" straight and laid end-to-end in order of appearence in \code{x}.
-#' The simple systematic sample is then drawn from the amalgomated line. 
-#' Finally, sample points on the amalgomated line are mapped back to 2-dimensional 
+#' @details If \code{x} contains multiple lines, the lines are amalgamated before
+#' sampling.   Conceptually, under amalgamation the lines in \code{x} are 
+#' "stretched" straight and laid end-to-end in order of appearance in \code{x}.
+#' The simple systematic sample is then drawn from the amalgamated line. 
+#' Finally, sample points on the amalgamated line are mapped back to 2-dimensional 
 #' space to fall on the lines in \code{x}. 
 #' 
-#' Note that spacing between sample points is enforced on the amalgomated 
+#' Note that spacing between sample points is enforced on the amalgamated 
 #' line, and may not look correct if the lines loop back on themselves. 
 #' For example, consider a line tracing a circle.  The spacing between 
 #' the first and last sample point along the circle will not be the 
@@ -29,11 +29,11 @@
 #' This object must contain at least 1 line.  
 #' 
 #' @param spacing Assuming, \code{n} is not given, this is the distance 
-#' between sample points on the amalgomated line 
+#' between sample points on the amalgamated line 
 #' in \code{x}. For example, if \code{x} is projected 
 #' in UTM coordinates and \code{spacing=100}, the returned sample has one point 
-#' every 100 meters along the amalgomated line in \code{x}. Keep in mind that the start
-#' of line i+1 in \code{x} may not coencide with the end of line i in \code{x}, and that 
+#' every 100 meters along the amalgamated line in \code{x}. Keep in mind that the start
+#' of line i+1 in \code{x} may not coincide with the end of line i in \code{x}, and that 
 #' lines in \code{x} may not be straight.  Thus, 2-dimensional distances between
 #' sample points will not, in general, equal \code{spacing}.   
 #' 
@@ -45,7 +45,7 @@
 #' the first sample point occurs at 0 (first vertex of the lines).
 #' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the SSS sample, in
-#' order along the amalgomated line.  Those on line 1 appear first, those on line 2 
+#' order along the amalgamated line.  Those on line 1 appear first, those on line 2 
 #' second, etc. Attributes of the sample points (in the 
 #' embedded data frame) are 
 #' as follows: 
@@ -53,7 +53,7 @@
 #'   \item \code{sampleID}: A unique identifier for every sample point.  
 #'   \code{sampleID} starts with 1 at the first point and 
 #'   increments by one for each.  \code{sampleID} orders 
-#'   sample points along the amalgomated line.
+#'   sample points along the amalgamated line.
 #'   \item \code{geometryID}: The ID of the lines object in \code{x} on which each 
 #'   sample point falls.  The 
 #'   ID of lines in \code{x} are \code{row.names(geometry(x))}. 
@@ -69,7 +69,7 @@
 #'    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "SSS").
 #'    \item \code{sample.spacing}: The spacing between sample points along the 
-#'    amalgomated line. This is the input \code{spacing} parameter if specified,
+#'    amalgamated line. This is the input \code{spacing} parameter if specified,
 #'    or is computed as (length/n) if \code{n} is specified.
 #'    \item \code{random.start}: The random start of the systematic sample.  NA 
 #'    corresponds to no random start.
