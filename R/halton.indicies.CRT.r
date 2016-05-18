@@ -1,9 +1,9 @@
-#' @export halton.indicies.CRT
+#' @export halton.indices.CRT
 #'  
 #' @title Halton indices by the Chinese Remainder Theorem (CRT)
 #' 
 #' @description Computes Halton indices of D-dimensional points by solving the Chinese Remainder Theorem. 
-#' This function is slightly slower than \code{halton.indicies.vector}, but 
+#' This function is slightly slower than \code{halton.indices.vector}, but 
 #' it works for large problems. 
 #' 
 #' @param hl.coords nXD vector of coordinates for points. No points can be outside 
@@ -26,7 +26,7 @@
 #' 
 #' This routine solves the Chinese Remainder Theorem to find Halton indices.
 #' This routine loops over the points in  \code{hl.coords}, and as such minimizes memory usage 
-#' but sacrifices speed. For small problems,  see  \code{\link{halton.indicies.vector}}, 
+#' but sacrifices speed. For small problems,  see  \code{\link{halton.indices.vector}}, 
 #' which computes indices by actually placing points in Halton boxes to find their indices. 
 #' 
 #' No point can be less than it's corresponding \code{ll.corner}.  No point 
@@ -38,12 +38,12 @@
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{halton.indicies.vector}}, \code{\link{halton.indices}}
+#' @seealso \code{\link{halton.indices.vector}}, \code{\link{halton.indices}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
 #' n.boxes <- c(16,9) 
-#' halton.indicies.vector(pt, n.boxes) # should equal 70
+#' halton.indices.vector(pt, n.boxes) # should equal 70
 #' 
 #' # Plot Halton boxes and indices to check.  
 #' # pt should plot in box labeled 70
@@ -62,9 +62,9 @@
 #' # Longer vector
 #' tmp <- data.frame(x=(0:100)/101,y=.2)
 #' n.boxes <- c(16,9)
-#' tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+#' tmp.crt <- halton.indices.CRT(tmp, n.boxes)
 #' 
-halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+halton.indices.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
   
 
   # Scale points to [0,1]
@@ -131,10 +131,10 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1),
 #  pt <- rbind(pt.1, pt.2, pt.3, pt.4)
 #  
 #  n.boxes <- c(16,9) 
-# tmp<- halton.indicies.vector(pt, n.boxes) # should equal 70
+# tmp<- halton.indices.vector(pt, n.boxes) # should equal 70
 # cat(paste("Halton index from vector routine:", tmp, "\n"))
 # 
-# tmp<- halton.indicies.CRT(pt, n.boxes) # should equal 70
+# tmp<- halton.indices.CRT(pt, n.boxes) # should equal 70
 # cat(paste("Halton index from CRT routine:", tmp, "\n"))
 
 # # Plot Halton boxes and indices to check
@@ -159,10 +159,10 @@ halton.indicies.CRT <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1),
 # tmp <- data.frame(x=runif(tmp.n), y=runif(tmp.n))
 # n.boxes <- c(16,9)
 # tmp.vec.time <- system.time( 
-#   tmp.vec <- halton.indicies.vector(tmp, n.boxes) 
+#   tmp.vec <- halton.indices.vector(tmp, n.boxes) 
 # )
 # # tmp.crt.time <- system.time(
-#   # tmp.crt <- halton.indicies.CRT(tmp, n.boxes)
+#   # tmp.crt <- halton.indices.CRT(tmp, n.boxes)
 # # )
 # # tmp2 <- data.frame(row=1:length(tmp.vec), H.ind.vector=tmp.vec, H.ind.CRT=tmp.crt)
 # # print(tmp2[10:60,])

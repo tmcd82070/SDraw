@@ -1,4 +1,4 @@
-#' @export halton.indicies.vector
+#' @export halton.indices.vector
 #'  
 #' @title Halton indices for an entire vector of coordinates 
 #' 
@@ -26,21 +26,21 @@
 #' This routine uses the Halton sequence and modular arithmetic to find Halton indices.
 #' This means several vectors of size \code{nrow(hl.coords)} must be created.  Depending on 
 #' memory, this approach fails for a sufficiently large number of points. When this routine 
-#' fails, see the slower \code{\link{halton.indicies.CRT}}, which computes indices by solving 
+#' fails, see the slower \code{\link{halton.indices.CRT}}, which computes indices by solving 
 #' the Chinese Remainder Theorem. 
 #' 
 #' @author Trent McDonald
 #' 
 #' 
-#' @seealso \code{\link{halton.indicies.CRT}}, \code{\link{halton.indices}}
+#' @seealso \code{\link{halton.indices.CRT}}, \code{\link{halton.indices}}
 #' 
 #' @examples 
 #' pt <- data.frame(x=0.43, y=0.64)
 #' n.boxes <- c(16,9) 
-#' halton.indicies.vector(pt, n.boxes) # should equal 70
+#' halton.indices.vector(pt, n.boxes) # should equal 70
 #' 
 #' pt <- data.frame(x=143, y=164)
-#' halton.indicies.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
+#' halton.indices.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
 #' 
 #' # Plot Halton boxes and indices to check
 #' b <- c(2,3)
@@ -56,7 +56,7 @@
 #' points(pt$x, pt$y, col=6, pch=16, cex=2)
 #' 
 #' 
-halton.indicies.vector <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
+halton.indices.vector <- function(hl.coords, n.boxes, D=2, b=c(2,3), delta=c(1,1), ll.corner=c(0,0)){
 
   # Halton index matrix, stored as a vector in column-major order for now.  
   # Each cell corresponds to a Halton box. 
