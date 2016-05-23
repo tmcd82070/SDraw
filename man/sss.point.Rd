@@ -38,7 +38,7 @@ Using these additional attributes, one could reconstruct the sample.
 }
 \description{
 Draw a systematic sample from a \code{SpatialPoints*} object or a \code{data.frame}.   
-\code{SpatialPoints*} objects can represent point resouces in 2-dimensional space, such as towns, event locations, 
+\code{SpatialPoints*} objects can represent point resources in 2-dimensional space, such as towns, event locations, 
 or grid cell centers.
 }
 \details{

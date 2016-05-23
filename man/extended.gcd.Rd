@@ -28,11 +28,11 @@ This routine computes the element-wise gcd and
  The Wikipedia page, from which this algorithm was stolen, has the 
  following statement, 'The quotients of a and b by their greatest common divisor, 
  which are output, may have an incorrect sign.  this is easy to correct at the end
- of the computation, but has not been done here for simpligying the code. 
+ of the computation, but has not been done here for simplifying the code. 
  I have absolutely no 
  idea what that means, but include it as a warning.  For purposes of 
  \code{SDraw}, elements of a and b are always positive, and I have never 
- observed "incorrect signs".  But, there may be some pathelogical cases 
+ observed "incorrect signs".  But, there may be some pathological cases 
  where "incorrect signs" occur, and the user should "correct" for this.  
  This routine does check that the output gcd is 
  positive, and corrects this and the signs of s and t if so.

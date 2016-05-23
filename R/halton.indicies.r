@@ -100,12 +100,13 @@
 #'bb <- bbox(WA.cities) + c(0,0,1,1) 
 #'
 #'# Compute Halton indices
-#'frame <- halton.indices( WA.cities, J=c(3,2), hl.box=bb  )
+#'frame <- halton.indices( WA.cities, J=c(3,2), hl.bbox=bb  )
 #'
 #'# Construct Halton frame
 #'frame <- halton.frame( frame )
 #'
 #'# Draw HAL sample
+#'n <- 25
 #'N.frame <- nrow(frame)
 #'m <- floor(runif(1, 0, N.frame)) # Integer 0,...,N.frame-1
 #'ind <- (((0:(n-1))+m) %% N.frame ) + 1  # Cycle around frame if necessary
@@ -182,9 +183,9 @@ halton.indices <- function(x, J=NULL, hl.bbox, bases=c(2,3),
   # either directly or using the Chinese Remainder Theorem. 
 
   if( !use.CRT ){
-    x.out <- halton.indicies.vector(x.coords, n.boxes, D, bases, delta, ll.corner)
+    x.out <- halton.indices.vector(x.coords, n.boxes, D, bases, delta, ll.corner)
   } else {
-    x.out <- halton.indicies.CRT(x.coords, n.boxes, D, bases, delta, ll.corner)
+    x.out <- halton.indices.CRT(x.coords, n.boxes, D, bases, delta, ll.corner)
   }
   
   if(is.null(x)){
@@ -214,10 +215,10 @@ halton.indices <- function(x, J=NULL, hl.bbox, bases=c(2,3),
 # tmp <- as.data.frame(cbind(runif(nrow(tmp)), tmp))
 # attr(tmp, "coordnames")<-coordnames(WA.cities)
 # 
-#   tmp1 <- halton.indicies(as.data.frame(tmp))
-#   tmp2 <- halton.indicies(tmp)
-#   tmp3 <- halton.indicies(tmp,use.CRT = T)
+#   tmp1 <- halton.indices(as.data.frame(tmp))
+#   tmp2 <- halton.indices(tmp)
+#   tmp3 <- halton.indices(tmp,use.CRT = T)
 # 
-# tmp2 <- halton.indicies(WA.cities)
+# tmp2 <- halton.indices(WA.cities)
 # print(class(tmp2))
 # print(tmp2[1:10,])

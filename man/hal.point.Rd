@@ -21,7 +21,7 @@ horizontal rows of Halton boxes over the bounding box, for a total
 of \code{prod(bases^J)} boxes.  The dimension of each box is 
 \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
-\code{J} is choosen so that Halton boxes are as square as possible.}
+\code{J} is chosen so that Halton boxes are as square as possible.}
 
 \item{bases}{2X1 vector of Halton bases.  These must be co-prime.}
 
@@ -39,7 +39,7 @@ Attributes of the sample points are:
   \item \code{sampleID}: A unique identifier for every sample point that 
   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
   returned object in HAL order.  \code{sampleID}'s, in the HAL case, are not 
-  consecutive. \code{sampleID}'s are the Halton indicies for the Halton boxes 
+  consecutive. \code{sampleID}'s are the Halton indices for the Halton boxes 
   containing the point, after adding random cycles to multiple points in 
   the same box (see \code{\link{halton.frame}}). If the sample cycled around
   to the beginning of the frame, because random start 
@@ -66,12 +66,12 @@ make it a \code{SpatialPointsDataFrame}, are:
    
    \item \code{J}: Exponents of the bases used to form the lattice of 
    Halton boxes. This is either the input \code{J}, or the \code{J} vector
-   computed by \code{\link{halton.indicies}}.  
+   computed by \code{\link{halton.indices}}.  
    
    \item \code{bases}: Bases of the Halton sequence used to draw the sample. 
    
    \item \code{hl.box}: The bounding box around points in \code{x} used to 
-   draw the sample.  See \code{\link{halton.indicies}}.
+   draw the sample.  See \code{\link{halton.indices}}.
    
    \item \code{random.start}: The random start of the sample in the Halton
    frame.  The Halton frame is a list of all points sorted in 
@@ -96,7 +96,7 @@ This results in \code{prod(bases^J)} Halton boxes on the bounding box.
 The Halton index of all boxes is computed and assigned to points that lie 
 in each box.  Points that lie in the same Halton box are randomly assigned 
 unique Halton cycle numbers. This separates points in the same Halton box by
-at least \code{prod(bases^J)} units when indicies are mapped to the real line. 
+at least \code{prod(bases^J)} units when indices are mapped to the real line. 
 Finally, a random number between 1 and the largest Halton (index+cycle) is 
 drawn, and the next \code{n} units in the mapped real numbers are taken as 
 the sample, restarting from the beginning if necessary.

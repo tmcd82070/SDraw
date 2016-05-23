@@ -28,7 +28,7 @@ and 13. Etc.}
 }
 \value{
 A matrix of size \code{n} X \code{dim}.  Each column corresponds to
-a dimension.  Each row is a \code{dim}-dimenisional Halton point.
+a dimension.  Each row is a \code{dim}-dimensional Halton point.
 }
 \description{
 Computes points in a multi-dimensional Halton sequence, beginning at
@@ -61,7 +61,7 @@ Robertson, B.L., J. A. Brown, T. L. McDonald, and P. Jaksons (2013) BAS:
 776-784.
 }
 \seealso{
-\code{\link{halton.indicies}}
+\code{\link{halton.indices}}
 }
 \keyword{design}
 \keyword{survey}

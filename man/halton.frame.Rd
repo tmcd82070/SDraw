@@ -9,11 +9,11 @@ halton.frame(x, index.name = attr(x, "index.name"),
 }
 \arguments{
 \item{x}{Either a data frame or a \code{SpatialPointsDataFrame} object.  In 
-particular, the output of \code{halton.indicies} is acceptable.
+particular, the output of \code{halton.indices} is acceptable.
 The data frame, or data frame of the \code{SpatialPointsDataFrame}, 
-must contain the Halton indicies, which is assumed to be named 
+must contain the Halton indices, which is assumed to be named 
 \code{attr(x, "index.name")}.  The default name for this column when using output from 
-\code{halton.indicies} is \code{HaltonIndex}.  
+\code{halton.indices} is \code{HaltonIndex}.  
 Each row of the data frame is a sampling unit
 to be included in the frame, and the Halton index of the unit is the Halton box 
 the unit falls in. A \code{SpatialPoints} object without the data frame is not 
@@ -43,7 +43,7 @@ A data frame or \code{SpatialPointsDataFrame} suitable for use as
    This column is unique across rows of the output, and orders 
    the output frame, but is not consecutive. This differs from column 
    \code{index.name} because points with identical \code{index.name} 
-   indicies have been randomly moved to the end of the frame by adding 
+   indices have been randomly moved to the end of the frame by adding 
    random Halton cycles. 
    \item \code{J}: Halton base powers defining lattice of Halton boxes, 
    if \code{x} has a \code{J} attribute. 
@@ -55,10 +55,10 @@ A data frame or \code{SpatialPointsDataFrame} suitable for use as
 }
 \description{
 Makes a Halton frame from a set of points that have  
-their Halton indicies attached. This function identifies points in the 
+their Halton indices attached. This function identifies points in the 
 same Halton box,  and 
 randomly adds Halton cycles to geographically separate nearby points. 
-The frame is then sorted by the new frame indicies for sampling.
+The frame is then sorted by the new frame indices for sampling.
 }
 \examples{
 # The following is equivalent to hal.point(WA.cities,20,J=c(6,3))
@@ -72,8 +72,8 @@ attr(WA.cities,"bases") <- c(2,3)
 # bounding lines.
 attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1) 
 
-# Compute Halton indicies
-frame <- halton.indicies( WA.cities )
+# Compute Halton indices
+frame <- halton.indices( WA.cities )
 
 # Separate points in frame that are in same box
 frame <- halton.frame( frame )
@@ -88,6 +88,6 @@ samp <- frame[ ( ((0:(n-1))+random.start) \%\% nrow(frame) ) + 1, ]
 Trent McDonald
 }
 \seealso{
-\code{\link{halton.indicies}}
+\code{\link{halton.indices}}
 }
 

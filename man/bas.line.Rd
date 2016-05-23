@@ -2,7 +2,7 @@
 % Please edit documentation in R/bas.line.r
 \name{bas.line}
 \alias{bas.line}
-\title{Draws a Balanced Asseptance Sample (BAS) from a linear resource (line).}
+\title{Draws a Balanced Acceptance Sample (BAS) from a linear resource (line).}
 \usage{
 bas.line(x, n, balance = "1D", init.n.factor = 10)
 }
@@ -19,7 +19,7 @@ are "1D" or "2D".
 
 Under "1D" all lines in \code{x} are stretched straight 
 and laid end-to-end in the order the appear in \code{x} and a 1-dimensional 
-BAS sample is taken from the amalgomated line.  Sample locations are then 
+BAS sample is taken from the amalgamated line.  Sample locations are then 
 mapped back to two dimensional space and appear on the original lines.  This
 method maintains 1D spatial balance, but not 2D balance.  Spatially 
 balanced samples in 1D may not look spatially balanced when plotted 
@@ -30,7 +30,7 @@ in \code{x} is drawn first, and a 2-dimensional BAS sample of the points
 is drawn (see \code{\link{bas.point}}).  This maintains 2D spatial balance of sample locations on the lines.}
 
 \item{init.n.factor}{If \code{balance == "2D"}, this is a 
-scalar controling the number of points to
+scalar controlling the number of points to
 place on the lines before drawing the 2D BAS sample.  
 Number of points created on the line is
 \code{n*init.n.factor}, so this number can grow quickly.  On average, this
@@ -74,7 +74,7 @@ Draws a BAS sample from a \code{SpatialLines*} object.
 }
 \details{
 If a "1D" sample is requested, spatial balance is maintained on the 
-lines when laid end-to-end in the order they appear.  Points far appart 
+lines when laid end-to-end in the order they appear.  Points far apart 
 in 1 dimension may be close together in 2 dimensions, and vice versa. 
 Thus the sample may not look spatially balanced on a 2D map. This is a 
 true infinite sample in that any of an infinite number of points 
@@ -82,11 +82,11 @@ along the lines could be selected.
 
 If a "2D" BAS sample is requested, spatial balance is maintained 
 in 2 dimensions.  Points are well balance on a 2D map.  This is 
-done by first
-discretizing lines with a dense systematic sample of points (with 
+done by discretization of lines with a dense systematic 
+sample of points (with 
 random start).  The number of
 points in this dense systematic sample is \code{n*init.n.factor}.  After
-discretizing the line, points on the lines are selecte using the BAS method
+discretization of the line, points on the lines are selected using the BAS method
 for points (see \code{\link{bas.point}}).  The BAS method for points places
 a small square (pixel) around each point and samples the set of all squares
 using the BAS method for polygons (see \code{\link{bas.polygon}}).  The BAS

@@ -34,7 +34,7 @@ as follows:
 }
 \description{
 Draws an equi-probable unstratified Generalized Random
-Tesselation Stratified (GRTS) sample from a \code{SpatialPoints*} object
+Tessellation Stratified (GRTS) sample from a \code{SpatialPoints*} object
 }
 \details{
 This is a wrapper for the \code{grts} function in package \code{spsurvey}.

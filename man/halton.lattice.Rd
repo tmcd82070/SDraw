@@ -33,7 +33,7 @@ horizontal dimension, \code{eta[2]} is for the vertical dimension, etc for
 higher dimensions.}
 
 \item{triangular}{boolean, if TRUE, construct a triangular grid. 
-If FALSE, construct rectangluar grid.  See help for \code{\link{hal.polygon}}.}
+If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.}
 
 \item{bases}{A DX1 vector of Halton bases.  These must be co-prime.}
 }
@@ -43,7 +43,7 @@ Names of the coordinates are \code{dimnames(box)[1]}.  If \code{box} does not
 have dimnames, names of the coordinates are \code{c("d1", "d2", ...)} (d1 is 
 horizontal, d2 is vertical, etc).
 
-In addtion, return has following attributes:
+In addition, return has following attributes:
 \itemize{
    \item \code{J}: the \code{J} vector used to construct the lattice. 
      This is either the input \code{J} or the computed \code{J} when 

@@ -26,7 +26,7 @@ added inside each Halton box. \code{eta[1]} is for the
 horizontal dimension, \code{eta[2]} is for the vertical dimension.}
 
 \item{triangular}{boolean, if TRUE, construct a triangular grid. 
-If FALSE, construct rectangluar grid.  See help for \code{\link{hal.polygon}}.}
+If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.}
 
 \item{bases}{A 2X1 vector of Halton bases.  These must be co-prime.}
 }

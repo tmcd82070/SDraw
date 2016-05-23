@@ -9,7 +9,7 @@ voronoi.polygons(x, bounding.polygon)
 \arguments{
 \item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object}
 
-\item{bounding.polygon}{If present, this is a \code{SpatialPolygons*} object specifing the 
+\item{bounding.polygon}{If present, this is a \code{SpatialPolygons*} object specifying the 
 bounding polygon(s) for the Voronoi polygons.  If present, the 
 Voronoi polygons from points in \code{x} are clipped to the outside 
 bounding polygon of \code{bounding.polygon}.  The outside bounding polygon
@@ -20,25 +20,25 @@ by 10 percent.}
 }
 \value{
 A \code{SpatialPolygonsDataFrame} containing the Voronoi polygons
- (or tesselations) surrounding the points in \code{x}. Attributes of the 
+ (or tessellations) surrounding the points in \code{x}. Attributes of the 
  output polygons are: 
  \itemize{
-   \item x : the horizontal coordinate of the tesselation's defining point
-   \item y : the vertical coordinate of the tesselations's defining point
-   \item area : area of tesselation, in units of \code{x}'s projection.
+   \item x : the horizontal coordinate of the tessellation's defining point
+   \item y : the vertical coordinate of the tessellation's defining point
+   \item area : area of tessellation, in units of \code{x}'s projection.
  }
 }
 \description{
-Calculate Voronoi polygons (or tesselations) from a 
+Calculate Voronoi polygons (or tessellations) from a 
  \code{SpatialPoints*} object
 }
 \details{
-This is a convieniece routine for the 
+This is a convenience routine for the 
 \code{deldir} function.  The hard work, computing the Voronoi polygons,
 is done by the \code{deldir::deldir} and \code{deldir::tile.list} functions. 
 See documentation for those functions for details of computations.
 
-This function is convienient because it takes a \code{SpatialPoints*} 
+This function is convenient because it takes a \code{SpatialPoints*} 
 object and returns a \code{SpatialPolygonsDataFrame} object.
 }
 \examples{
@@ -55,7 +55,7 @@ plot(WA.tess, add=T, col=rainbow(length(WA.samp)))
 plot(WA.samp, add=T, pch=16)
 
 # One way to measure spatial balance: 
-# Compare varinace of Voronoi polygons to same sized 
+# Compare variance of Voronoi polygons to same sized 
 # SRS sample.  
 WA.bas <- bas.polygon(WA, 100)
 WA.srs <- srs.polygon(WA, 100)
