@@ -36,20 +36,27 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{random.start}: The random seed of the random-start Halton sequence 
    that produced the sample.  This is a vector of length 2 whose elements are 
    random integers between 0 and \code{\link{max.U()}}. 
-   This routine ensures that the first sample point
-   corresponding to this index in the random-start Halton sequence 
+   This routine ensures that the point
+   associated with this index  
    falls inside a polygon of interest.  i.e., 
    that \code{halton(1,2,random.start)} scaled by a square bounding box
-   lies inside a polygon of \code{x}.  The square bounding box scaling
-   is \code{bb[,"min"] +} \code{t(random.start) *} 
-   \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
+   (see attribute \code{bas.bbox} below)
+   lies inside a polygon of \code{x}.  
    
    Note that \code{halton(1,2,random.start+i)}, for 
    \code{i} > 0, is not guaranteed to fall inside a polygon of \code{x}
-   when scaled by the square bounding box. The sample consists of the point 
+   when scaled by \code{bas.bbox}. The sample consists of the point 
    associated with \code{random.start} and the next \code{n-1}
    Halton points in sequence that fall inside a polygon
    of \code{x}. 
+   
+
+   \item \code{bas.bbox}: The square bounding box surrounding \code{x}
+   used to scale Halton points.  A scaled Halton sequence of n points
+   is \code{bas.bbox[,"min"] +} \code{t(halton(n,2,random.start)) *} 
+   \code{rep( max(diff(t(bas.bbox))), 2)}.
+   
+   
 }
 }
 \description{
