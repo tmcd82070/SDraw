@@ -19,7 +19,7 @@
 #' @param x A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object. 
 #' This object
 #' must contain at least 1 polygon.  If it contains more than 1 polygon, the
-#' BAS sample is drawn from the union of all polygons.
+#' BAS sample is drawn from the union of all.
 #' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
 #' in BAS order.
@@ -44,20 +44,26 @@
 #'    \item \code{random.start}: The random seed of the random-start Halton sequence 
 #'    that produced the sample.  This is a vector of length 2 whose elements are 
 #'    random integers between 0 and \code{\link{maxU()}}. 
-#'    This routine ensures that the first sample point
-#'    corresponding to this index in the random-start Halton sequence 
-#'    falls inside a polygon of interest.  i.e., 
+#'    This routine ensures that the point
+#'    associated with this index 
+#'    falls inside a polygon of \code{x}.  i.e., 
 #'    that \code{halton(1,2,random.start)} scaled by a square bounding box
-#'    lies inside a polygon of \code{x}.  The square bounding box scaling
-#'    is \code{bb[,"min"] +} \code{t(random.start) *} 
-#'    \code{rep( max(diff(t(bb))), 2)}, where \code{bb} is \code{bbox(x)}.
+#'    (see attribute \code{bas.bbox} below)
+#'    lies inside a polygon of \code{x}.  
 #'    
 #'    Note that \code{halton(1,2,random.start+i)}, for 
 #'    \code{i} > 0, is not guaranteed to fall inside a polygon of \code{x}
-#'    when scaled by the square bounding box. The sample consists of the point 
+#'    when scaled by \code{bas.bbox}. The sample consists of the point 
 #'    associated with \code{random.start} and the next \code{n-1}
 #'    Halton points in sequence that fall inside a polygon
 #'    of \code{x}. 
+#'    
+#'    
+#'    \item \code{bas.bbox}: The square bounding box surrounding \code{x}
+#'    used to scale Halton points.  A scaled Halton sequence of n points
+#'    is \code{bas.bbox[,"min"] +} \code{t(halton(n,2,random.start)) *} 
+#'    \code{rep( max(diff(t(bas.bbox))), 2)}.
+#'    
 #' }
 #' 
 #' @references 
@@ -131,24 +137,45 @@ q <- 1 - p
 z <- qnorm(0.90)
 n.init <- (1 / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*1)  # term in sqrt is >0 because we have control on all terms
 n.init <- ceiling(n.init)
-if (!is.null(mxU <- get0("maxU", envir = .GlobalEnv, mode="function"))) {
-  max.u <- mxU()
+# Not sure the following is needed.  I.e., exists() seems to always return 
+# TRUE because maxU is in the SDraw namespace.  I don't understand.  
+# seems like just "get("maxU")" would get the first instance of maxU,
+# whether in .GlobalEnv or SDraw namespace.  Nonetheless, I will leave this 
+# code with "exists" in it.
+if (exists("maxU", envir = .GlobalEnv, mode="function")) {
+  max.u <- get( "maxU", envir=.GlobalEnv, mode="function" )
+  max.u <- max.u()
 } else {
   max.u <- SDraw::maxU()
 }
 
+# Compute bounding box around x. If you want a non-square surrounding x
+# set d.box to c(delta.x, delta.y)
+d.box <- rep(max(diff(t(bb))), 2)
+xl <- bb[1,"min"]
+xr <- bb[1,"min"] + d.box[1]
+yl <- bb[2,"min"]
+yu <- bb[2,"min"] + d.box[2]
+bas.bbox <- matrix( c(xl,yl,xr,yu), 2)
+dimnames(bas.bbox) <- list(coordnames(x),c("min","max"))
+
+# Find first Halton point after random start that is in polygon
 repeat{
   m <- floor( runif( n.init*my.dim, min=0, max=max.u+1 ))
   m <- matrix(m,n.init,my.dim)
   halt.samp <- matrix(NA, n.init, my.dim)
+
   for(i in 1:n.init){
     halt.samp[i,] <- halton( 1, dim=my.dim, start=m[i,] )
   }
   
   #   Convert from [0,1] to a square box covering [bb]
-  halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
+  halt.samp <- bas.bbox[,"min"] + t(halt.samp) * d.box
   halt.samp <- t(halt.samp)
   
+#  cat("dim halt.samp : "); cat(nrow(halt.samp)); cat("\n")
+#  cat(paste("n.init=",n.init,"\n"))
+                                                    
   halt.pts <- SpatialPointsDataFrame(halt.samp, data=data.frame(sampleID=1:n.init),
                                      proj4string=crs.obj )
   
@@ -160,10 +187,27 @@ repeat{
 }
 
 
+
+# The following is debugging code.  Uncomment (down to "+=+=+") to see the 
+# bounding box around x and the first point in x
+# bb.plot <- cbind(c(xl, xr), 
+#                  c(yl, yu))
+# bb.plot <- SpatialPoints(bb.plot, proj4string = crs.obj)
+# plot(bb.plot, pch=16, cex=.1)
+# lines(c(xl,xr), rep(yu,2) )
+# lines(c(xl,xr), rep(yl,2) )
+# lines(rep(xl,2), c(yl,yu) )
+# lines(rep(xr,2), c(yl,yu) )
+# plot(x, add=T)
+# points(halt.pts, pch=16, col="blue")
+# points(halt.pts[which(keep)[1]],pch=16,col="red")
+# +=+=+
+
 # Keep first that is in a polygon
 which.pt.in <- which(keep)[1]  # or min(which(keep))
 m <- m[which.pt.in,]
 halt.pts <- halt.pts[which.pt.in,]
+
 
 #   Take initial number of Halton numbers that is approximately correct
 #   This is number of samples to take to be Alpha% sure that we get n 
@@ -172,48 +216,53 @@ halt.pts <- halt.pts[which.pt.in,]
 q <- 1 - p
 z <- qnorm(0.99)
 halt.start <- m  # save for attributes later
+n.cur <- n
 repeat{
-  n.init <- (n / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*n)  # term in sqrt is >0 because we have control on all terms
+  n.init <- (n.cur / p) + (q*z*z/(2*p)) + (z / p)*sqrt(z*z*q*q/4 + q*n.cur)  # term in sqrt is >0 because we have control on all terms    
   n.init <- ceiling(n.init)
   halt.samp <- halton( n.init, dim=my.dim, start=m+1 )
   
   #   Convert from [0,1] to a square box covering [bb]
-  halt.samp <- bb[,"min"] + t(halt.samp) * rep( max(diff(t(bb))), 2)
+  halt.samp <- bas.bbox[,"min"] + t(halt.samp) * d.box
   halt.samp <- t(halt.samp)
   
   #   Check which are in the polygon, after first converting halt.samp to SpatialPoints
   #   And adding to points from previous iteration
   #   sampleID in this data frame gets overwritten below when assign to @data
 
-  halt.pts2 <- SpatialPointsDataFrame(halt.samp, proj4string=crs.obj, data=data.frame(sampleID=1:nrow(halt.samp)) )
-  halt.pts <- rbind(halt.pts, halt.pts2)
-  
+  crds <- rbind(coordinates(halt.pts), halt.samp)
+  halt.pts <- SpatialPointsDataFrame(crds, 
+                    data=data.frame(sampleID=1:nrow(crds)),
+                    proj4string = crs.obj)
 
   in.poly <- over( halt.pts, x )
   
   #   Reject the points outside the polygon, and attach other attributes if present
   keep <- !is.na( in.poly$sampleID )  # in.poly$sampleID is row num of polygon in x
 
-
-  halt.pts@data <- data.frame( in.poly )
-  halt.pts <- halt.pts[ keep, ]
-
-  #   The way we computed n.init, there should be more points in halt.pts than we need. Keep the initial ones.
-  if( length(halt.pts) >= n ){
-      halt.pts <- halt.pts[1:n,]
-      halt.pts$sampleID <- 1:n   # renumber the site ID's because some (those outside polygon) were tossed above
+  if( sum(keep) >= n ){
       break
   } else {
-      n <- n - length(halt.pts)
-      m <- m + length(halt.pts)  # place in Halton sequence to start next iter
+      n.cur <- n - sum(keep)
+      m <- m + n.init  # place in Halton sequence to start next iter minus one (+1 added above in call to Halton)
   }
 
 }  
+
+
+# Attach attributes
+halt.pts@data <- data.frame( in.poly )
+halt.pts <- halt.pts[ keep, ]
+
+halt.pts <- halt.pts[1:n,]
+halt.pts$sampleID <- 1:n   # renumber the site ID's because some (those outside polygon) were tossed above
+
 
 attr(halt.pts, "frame") <- deparse(substitute(x))
 attr(halt.pts, "frame.type") <- "polygon"
 attr(halt.pts, "sample.type") <- "BAS"
 attr(halt.pts, "random.start") <- halt.start
+attr(halt.pts, "bas.bbox") <- bas.bbox
 
 halt.pts
 
