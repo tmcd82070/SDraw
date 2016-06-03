@@ -14,8 +14,9 @@
 #' 
 #' @param lattice Boolean. Whether to plot the Halton Lattice if \code{x} is a HAL sample. 
 #' 
-#' @param hl.bbox Boolean. Whether to plot the Halton bounding box used to construct the 
-#' Halton Lattice.  Assumes \code{x} is a HAL sample.  \code{lattice==TRUE} sets \code{hl.bbox == TRUE}.
+#' @param bbox Boolean. Whether to plot the bounding box if the sample 
+#' has a bounding box attribute. This generally means \code{x} 
+#' is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.
 #' 
 #' @param background Either the background image (from a previous call to this routine) or 
 #' the type of background image to plot.  If NULL (the default), no background image is plotted. 
@@ -25,7 +26,7 @@
 #' "esri", and "esri-topo".  When a background is retrieved, it slows execution and requires 
 #' an internet connection.  When \code{background} is the returned value from a previous call 
 #' to this function, it is plotted without retrieving a new image.  This will speed multiple 
-#' iterations of plotting when the sample frame does not change (see Examples).
+#' iterations of plotting when the sample frame does not change.
 #' 
 #'    
 #' @return The set of tiles used in the background image is silently returned. If 
@@ -37,61 +38,87 @@
 #' 
 #' @examples 
 #' data(WY)
-#' samp <- sdraw(wY, 100, type="HAL", J=c(4,3))
+#' samp <- sdraw(WY, 100, type="HAL", J=c(4,3))
 #' plot.samp( samp, WY )
 #'
 #'
 
 
-plot.samp <- function(x, frame, lattice=T, hl.bbox=F, background=NULL){
+plot.samp <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
 
-  #hl.bbox = whether to plot bounding box
 
   stype <- attr(x, "sample.type")         
-
+  wps <- proj4string(x)
+  baltype <- attr(x,"balance")
+  if(is.null(baltype)){
+    baltype = "2d"
+  }
+  ftype <- attr(x,"frame.type")
+  
+  
+  if( (bbox | lattice) & (stype == "HAL") & !((ftype=="line") & (baltype=="1d"))){
+    bb <- attr(x,"hl.bbox")
+  } else if ((bbox | lattice) & (stype == "BAS") & !((ftype=="line") & (baltype=="1d"))){
+    bb <- attr(x,"bas.bbox")
+  } else {
+    # use bb tight around x or frame
+    
+    if(missing(frame)){
+      bb <- bbox(x)
+    } else {
+      bb <- bbox(frame)
+    }
+  }
+  bb.sp <- SpatialPoints(t(bb), proj4string = CRS(wps))
+  plot(bb.sp, col=0)
+  
   # Plot background if called for
   if( !is.null(background) ){
     
     require(OpenStreetMap)
     
-    if(missing(frame)){
-      fr <- x
-    }
-    
-    if(length( grep("proj=longlat", proj4string(fr)) ) == 0){
-      # Need to project frame to lat long to get bounding box
-      tmp <- spTransform(fr, CRS("+init=epsg:4326"))
-      bb <- bbox(tmp)
+    if( inherits(background, "OpenStreetMap") ){
+      openMap <- background 
     } else {
-      bb <- bbox(fr)
+      
+      if(length( grep("proj=longlat", wps )) == 0){
+        # Need to project bounding box to lat long for OpenMap
+        tmp <- SpatialPoints( t(bb), proj4string = CRS(wps))
+        tmp <- spTransform(tmp, CRS("+init=epsg:4326"))
+        bb.openmap <- bbox(tmp)
+      } else {
+        bb.openmap <- bb
+      }
+      
+      ULcoords <- c(bb.openmap[2,2], bb.openmap[1,1])
+      BRcoords <- c(bb.openmap[2,1], bb.openmap[1,2])
+  
+      cat("Fetching background image...")
+      
+      # Read in desired background.  The coordinates to openmap must be lat long.
+      #openMap <- openmap(ULcoords, BRcoords, type = "esri-topo")
+      suppressWarnings(openMap <- openmap(ULcoords, BRcoords, type = background))
+  
+      # See the below link for a good site that gives visuals for the different backgrounds
+      # and their corresponding 'type' arguments
+      # http://www.r-bloggers.com/the-openstreetmap-package-opens-up/
+      
+      cat("Projecting background image...")
+      # Transform to desired projection
+      openMap <- openproj(openMap, projection = CRS(wps)) 
+      
+      cat("\n")
     }
-    ULcoords <- c(bb[2,2], bb[1,1])
-    BRcoords <- c(bb[2,1], bb[1,2])
-
-    cat("Fetching background image...")
-    
-    # Read in desired background.  The coordinates to openmap must be lat long.
-    #openMap <- openmap(ULcoords, BRcoords, type = "esri-topo")
-    openMap <- openmap(ULcoords, BRcoords, type = background)
   
-    # See the below link for a good site that gives visuals for the different backgrounds
-    # and their corresponding 'type' arguments
-    # http://www.r-bloggers.com/the-openstreetmap-package-opens-up/
-    
-    cat("Projecting background image...")
-    # Transform to desired projection
-    openMap <- openproj(openMap, projection = CRS(proj4string(fr))) 
-    
-    print(class(openMap))
   
-    cat("\n")
-    
     # Plot new layer (can be used with sp class objects)
-    plot(openMap)
+    plot(openMap, add=TRUE)
+  } else {
+    openMap <- NULL
   }
 
     
-  #   plot shape file
+  #   plot frame
   if( !missing(frame) ){
     if( !is.null(background) ){
       if( inherits(frame, "SpatialPolygons") ){
@@ -106,54 +133,52 @@ plot.samp <- function(x, frame, lattice=T, hl.bbox=F, background=NULL){
       # What happens when no background
       my.cols <- rainbow(length(frame),start=3/6,end=4/6,alpha=0.5)
       if( inherits(frame, "SpatialPolygons") ){
-          plot(frame, col=my.cols, border="white")#rainbow(length(x@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
+          plot(frame, add=T, col=my.cols, border="white")#rainbow(length(x@polygons),start=3/6,end=4/6,alpha=0.5),border="white")                   # traditional R plot
       } else if (inherits(x, "SpatialLines") ){
-          plot(frame, col=my.cols, lwd=3)
+          plot(frame, add=T, col=my.cols, lwd=3)
       } else if (inherits(x, "SpatialPoints") ){
-          plot(frame, col=my.cols, pch=16)
+          plot(frame, add=T, col=my.cols, pch=16)
       }
     }
   }
 
 
-  
-  if(stype == "HAL" & lattice){
-    bb <- attr(x,"hl.bbox")
-    bases <- attr(x,"bases")
-    J <- attr(x,"J")
-    
-    for(d in 1:2){
-      tmp2 <- bb[d,1] + (0:(bases[d]^J[d]))*(diff(bb[d,]))/(bases[d]^J[d])
-      if( d == 1){
-        for(i in 1:length(tmp2)){
-          lines(rep(tmp2[i],2), bb[2,], col="blue")
+  if(stype == "HAL" & lattice ){
+    if( !(ftype =="line" & baltype == "1d")){
+      bb <- attr(x,"hl.bbox")
+      bases <- attr(x,"bases")
+      J <- attr(x,"J")
+      
+      for(d in 1:2){
+        tmp2 <- bb[d,1] + (0:(bases[d]^J[d]))*(diff(bb[d,]))/(bases[d]^J[d])
+        if( d == 1){
+          for(i in 1:length(tmp2)){
+            lines(rep(tmp2[i],2), bb[2,], col="blue")
+          }
+        } else{
+          for(i in 1:length(tmp2)){
+            lines(bb[1,], rep(tmp2[i],2), col="blue")
+          }
         }
-      } else{
-        for(i in 1:length(tmp2)){
-          lines(bb[1,], rep(tmp2[i],2), col="blue")
-        }
-      }
-    }    
+      }    
+    }
   }
 
-  if( hl.bbox | lattice ){
-    bb.col <- heat.colors(10)[4]
-    bb <- attr(x,"hl.bbox")
-    lines( rep(bb[1,1],2), bb[2,], col=bb.col )
-    lines( rep(bb[1,2],2), bb[2,], col=bb.col )
-    lines( bb[1,], rep(bb[2,1],2), col=bb.col )
-    lines( bb[1,], rep(bb[2,2],2), col=bb.col )
+  if( (bbox | lattice) & (stype=="HAL" | stype=="BAS") ){
+    if( !(ftype =="line" & baltype == "1d")){
+      bb.col <- heat.colors(10)[4]
+      lines( rep(bb[1,1],2), bb[2,], col=bb.col )
+      lines( rep(bb[1,2],2), bb[2,], col=bb.col )
+      lines( bb[1,], rep(bb[2,1],2), col=bb.col )
+      lines( bb[1,], rep(bb[2,2],2), col=bb.col )
+    } else {
+      warning("bbox not plotted. bbox is not 2-dimensional for 1D balanced line samples")
+    }
   }
 
-  if( !is.null(background) | !missing(frame) ){
-    # plot is on screen, use points
-    points(x, col="#FF0000FF", pch=16)
-  } else {
-    # No previous plot
-    plot( x, col="#FF0000FF", pch=16)
-  }
+  points(x, col="#FF0000FF", pch=16)
 
-  
+  invisible(openMap)
   
     
 #     #   If the sample object exists, plot points on the map

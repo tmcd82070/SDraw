@@ -4,7 +4,7 @@
 \alias{plot.samp}
 \title{Plot sample and frame}
 \usage{
-plot.samp(x, frame, lattice = T, hl.bbox = F, background = NULL)
+plot.samp(x, frame, lattice = FALSE, bbox = FALSE, background = NULL)
 }
 \arguments{
 \item{x}{A \code{SpatialPointsDataFrame} produced by an SDraw sampling function.  For example, 
@@ -16,8 +16,9 @@ either a \code{SpatialPoints*}, \code{SpatialLines*}, or \code{SpatialPolygons*}
 
 \item{lattice}{Boolean. Whether to plot the Halton Lattice if \code{x} is a HAL sample.}
 
-\item{hl.bbox}{Boolean. Whether to plot the Halton bounding box used to construct the 
-Halton Lattice.  Assumes \code{x} is a HAL sample.  \code{lattice==TRUE} sets \code{hl.bbox == TRUE}.}
+\item{bbox}{Boolean. Whether to plot the bounding box if the sample 
+has a bounding box attribute. This generally means \code{x} 
+is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.}
 
 \item{background}{Either the background image (from a previous call to this routine) or 
 the type of background image to plot.  If NULL (the default), no background image is plotted. 
@@ -27,7 +28,7 @@ any allowed by \code{\link{openmap}}  in the OpenStreetMap package.  Popular opt
 "esri", and "esri-topo".  When a background is retrieved, it slows execution and requires 
 an internet connection.  When \code{background} is the returned value from a previous call 
 to this function, it is plotted without retrieving a new image.  This will speed multiple 
-iterations of plotting when the sample frame does not change (see Examples).}
+iterations of plotting when the sample frame does not change.}
 }
 \value{
 The set of tiles used in the background image is silently returned. If 
@@ -39,7 +40,7 @@ Plot the sample and optionally the frame, background image (terrain), and lattic
 }
 \examples{
 data(WY)
-samp <- sdraw(wY, 100, type="HAL", J=c(4,3))
+samp <- sdraw(WY, 100, type="HAL", J=c(4,3))
 plot.samp( samp, WY )
 
 
