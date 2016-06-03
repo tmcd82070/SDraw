@@ -110,6 +110,7 @@ frame <- halton.indices( WA.cities, J=c(3,2), hl.bbox=bb  )
 frame <- halton.frame( frame )
 
 # Draw HAL sample
+n <- 25
 N.frame <- nrow(frame)
 m <- floor(runif(1, 0, N.frame)) # Integer 0,...,N.frame-1
 ind <- (((0:(n-1))+m) \%\% N.frame ) + 1  # Cycle around frame if necessary
