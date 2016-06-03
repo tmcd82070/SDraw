@@ -136,8 +136,9 @@ if( tolower(balance) == "2d"){
   
   # Figure out l.out sequence along parameterized line ("l","x","y")
   tot.len <- mline[nrow(mline),"l"]
-  if (!is.null(mxU <- get0("maxU", envir = .GlobalEnv, mode="function"))) {
-    max.u <- mxU()
+  if (exists("maxU", envir = .GlobalEnv, mode="function")) {
+    max.u <- get( "maxU", envir=.GlobalEnv, mode="function" )
+    max.u <- max.u()
   } else {
     max.u <- SDraw::maxU()
   }
