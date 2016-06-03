@@ -87,17 +87,26 @@ if( is.null(bases)){
 pos <- t(sapply(start, FUN=function(x,k){ x:(x+k-1) }, k=n ))
 
 
-
 #   Find halton sequence numbers using the finite sum formula Blair cooked up
+if( (n == 1) & all(start==0) ){
+  return( matrix(0,1,dim) )
+}
+
 n.sum.terms <- max(floor( log(start + n - 1)/ log(bases) ) + 1)  # number of digits in base b needed to represent maximum pos in each dim
+
 
 ans <- matrix( 0, nrow(pos), ncol(pos) )
 for( j in 0:n.sum.terms ){
     ans <- ans + ((pos %/% bases^j) %% bases) / bases^(j+1)
 }
 
-t(ans)
+if( n == 1){
+  return(matrix(ans,1))
+} else {
+  return(t(ans))
+}
 
-}   
-    
+}
+
+
     
