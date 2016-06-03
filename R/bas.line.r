@@ -15,16 +15,21 @@
 #' are "1D" or "2D".  
 #' 
 #' Under "1D" all lines in \code{x} are stretched straight 
-#' and laid end-to-end in the order the appear in \code{x} and a 1-dimensional 
-#' BAS sample is taken from the amalgamated line.  Sample locations are then 
-#' mapped back to two dimensional space and appear on the original lines.  This
-#' method maintains 1D spatial balance, but not 2D balance.  Spatially 
+#' and laid end-to-end in the order they appear in \code{x} and a 1-dimensional 
+#' BAS sample is taken from the amalgamated line.  1D sample locations on the 
+#' amalgomated line are  
+#' mapped back to two dimensional space for output and 
+#' appear on the original lines.  This
+#' method maintains 1D spatial balance, but not necessarily 2D balance.  Spatially 
 #' balanced samples in 1D may not look spatially balanced when plotted 
 #' in 2 dimensions.   
 #' 
 #' Under "2D" a systematic sample of points along the union of all lines 
 #' in \code{x} is drawn first, and a 2-dimensional BAS sample of the points
-#' is drawn (see \code{\link{bas.point}}).  This maintains 2D spatial balance of sample locations on the lines. 
+#' is drawn (see \code{init.n.factor} below and \code{\link{bas.point}}).  
+#' This maintains 2D spatial balance of sample locations on the lines. Depending 
+#' on \code{init.n.factor}, the "2D" balance option can take significantly 
+#' longer to run than the "1D" option.
 #'     
 #' @param init.n.factor If \code{balance == "2D"}, this is a 
 #' scalar controlling the number of points to
@@ -33,6 +38,10 @@
 #' \code{n*init.n.factor}, so this number can grow quickly.  On average, this
 #' is the number of unselected points between each selected point.  See
 #' Details.
+#' 
+#' If one desires an underlying grid spaced \emph{w} meters appart, set 
+#' \code{init.n.factor} to \emph{L/(w*n)}, where \emph{L} is total length 
+#' of all lines in \code{x} and \emph{n} is sample size.
 #' 
 #' @details 
 #' If a "1D" sample is requested, spatial balance is maintained on the 
@@ -46,16 +55,18 @@
 #' in 2 dimensions.  Points are well balance on a 2D map.  This is 
 #' done by discretization of lines with a dense systematic 
 #' sample of points (with 
-#' random start).  The number of
-#' points in this dense systematic sample is \code{n*init.n.factor}.  After
-#' discretization of the line, points on the lines are selected using the BAS method
-#' for points (see \code{\link{bas.point}}).  The BAS method for points places
-#' a small square (pixel) around each point and samples the set of all squares
+#' random start) where density of the systematic points is controled 
+#' by \code{init.n.factor}.  After
+#' discretization of the line, points are selected 
+#' using \code{\link{bas.point}}.  The BAS method for points places
+#' a small square (pixel) around each and samples the set of squares
 #' using the BAS method for polygons (see \code{\link{bas.polygon}}).  The BAS
-#' method of polygons selects Halton points until \code{n} points are located
-#' inside the squares that surround points.  When a square contains a Halton
-#' point, the sample location is the center of the square, which falls on the
-#' line.
+#' method of polygons computes Halton points until \code{n} fall
+#' inside the squares surrounding discretization points.  When a 
+#' Halton
+#' point falls in a square, the square is selected and the 
+#' sample location is the center of the square (which falls somewhere on the
+#' original lines).
 #' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
 #' in BAS order.
@@ -83,9 +94,21 @@
 #'    that produced the sample.  
 #'    If \code{balance=="1D"}, this is a single uniform random 
 #'    integer between 0 and \code{\link{max.U()}}. If \code{balance=="2D"}, this is 
-#'    vector of two uniform random 
-#'    integers between 0 and \code{\link{max.U()}}.  See \code{\link{bas.polygon}} 
-#'    explanation on how to scale Halton points to fit in the study area. 
+#'    a vector of two uniform random 
+#'    integers between 0 and \code{\link{max.U()}}.  
+#'    
+#'    \item \code{bas.bbox}: If \code{balance=="2D"}, this is the square 
+#'    bounding box surrounding \code{x}
+#'    used to scale Halton points.  A scaled Halton sequence of n points
+#'    used to sample points on the lines of \code{x} is 
+#'    \code{bas.bbox[,"min"] + t(halton(n,2,random.start)) * 
+#'    rep( max(diff(t(bas.bbox))), 2)}.
+#'    If \code{balance=="1D"}, this is a vector containing the 1D 
+#'    bounding box. The 1D bounding box is 0 to the total 
+#'    length of all lines in \code{x}.  In this case, Halton points 
+#'    are scaled as \code{bas.bbox[,"min"] + halton(n,1,random.start) * 
+#'    diff(bas.bbox)} which is equivalent to \code{halton(n,1,random.start) * 
+#'    bas.bbox[2]} because \code{bas.bbox[1]} is zero in this case.
 #' }
 #' 
 #' @author Trent McDonald
@@ -127,7 +150,7 @@ if( tolower(balance) == "2d"){
   attr(samp, "frame") <- deparse(substitute(x))  
   attr(samp, "frame.type") <- "line"
   attr(samp, "balance") <- tolower(balance)
-  
+
 } else {
   # Get all coordinates from all lines "back to back" in a matrix
   mline.ids <- merge.lines(x)
@@ -136,6 +159,7 @@ if( tolower(balance) == "2d"){
   
   # Figure out l.out sequence along parameterized line ("l","x","y")
   tot.len <- mline[nrow(mline),"l"]
+  names(tot.len) <- NULL  # wipe out name so attribute bas.bbox and proper names
   if (exists("maxU", envir = .GlobalEnv, mode="function")) {
     max.u <- get( "maxU", envir=.GlobalEnv, mode="function" )
     max.u <- max.u()
@@ -176,6 +200,8 @@ if( tolower(balance) == "2d"){
   attr(samp, "balance") <- tolower(balance)
   attr(samp, "sample.type") <- "BAS"
   attr(samp, "random.start") <- m
+  attr(samp, "bas.bbox") <- c(min=0,max=tot.len)
+  
 }
   
 samp
