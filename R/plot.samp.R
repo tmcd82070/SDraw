@@ -75,8 +75,6 @@ plot.samp <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
   # Plot background if called for
   if( !is.null(background) ){
     
-    require(OpenStreetMap)
-    
     if( inherits(background, "OpenStreetMap") ){
       openMap <- background 
     } else {
