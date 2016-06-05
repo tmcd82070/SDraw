@@ -1,3 +1,8 @@
+#' @rdname sdraw
+#'  
+#' @method sdraw SpatialLines
+#'
+#' @aliases sdraw,SpatialLines-method 
 
 sdraw.SpatialLines <- function(x, n, type, ...){
   

@@ -1,5 +1,9 @@
 #' @export sdraw
 #' 
+#' @name sdraw
+#' 
+#' @docType methods
+#'  
 #' @title Sample draws from spatial objects.
 #'
 #' @description Draw samples (point locations) from \code{SpatialPoints}, \code{SpatialLines}, 
@@ -72,15 +76,10 @@
 #' \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 #'    
 #' @examples 
-#'  WA.sample <- sdraw(WA, 100, "HAL")
+#'  WA.sample <- sdraw(WA, 100, "BAS")
+#'  WA.sample <- sdraw(WA, 100, "HAL", J=c(6,4))
 #'  WA.sample <- sdraw(WA, 100, "SSS", spacing=c(1,2))
 #'  
-#' @name sdraw
-#'  
-#' @aliases sdraw sdraw.SpatialLines sdraw.SpatialPoints sdraw.SpatialPolygons
-#'  
-#' 
-#' @docType methods
 
 sdraw <- function(x, n, type="BAS", ...) UseMethod("sdraw")
 

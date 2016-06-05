@@ -1,8 +1,8 @@
-#    
-#  @rdname sdraw
-#  
-#  @method sdraw SpatialPolygons 
-#  
+#' @rdname sdraw
+#'  
+#' @method sdraw SpatialPolygons 
+#'  
+#' @aliases sdraw,SpatialPolygons-method 
 
 
 

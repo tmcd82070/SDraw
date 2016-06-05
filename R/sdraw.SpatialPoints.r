@@ -1,3 +1,10 @@
+#' @rdname sdraw
+#'  
+#' @name sdraw
+#' 
+#' @method sdraw SpatialPoints
+#'  
+#' @aliases sdraw,SpatialPoints-method
 
 sdraw.SpatialPoints <- function(x, n, type, ...){
   
