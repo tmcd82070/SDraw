@@ -78,7 +78,8 @@ for the full list of
 parameters which determine sample characteristics.
 }
 \examples{
- WA.sample <- sdraw(WA, 100, "HAL")
+ WA.sample <- sdraw(WA, 100, "BAS")
+ WA.sample <- sdraw(WA, 100, "HAL", J=c(6,4))
  WA.sample <- sdraw(WA, 100, "SSS", spacing=c(1,2))
  
 }
