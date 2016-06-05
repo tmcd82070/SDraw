@@ -43,7 +43,7 @@
 #'    \item \code{sample.type}: Type of sample drawn. (i.e., "BAS").
 #'    \item \code{random.start}: The random seed of the random-start Halton sequence 
 #'    that produced the sample.  This is a vector of length 2 whose elements are 
-#'    random integers between 0 and \code{\link{maxU()}}. 
+#'    random integers between 0 and \code{\link{maxU}}. 
 #'    This routine ensures that the point
 #'    associated with this index 
 #'    falls inside a polygon of \code{x}.  i.e., 
