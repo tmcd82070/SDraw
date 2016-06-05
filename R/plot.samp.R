@@ -97,7 +97,7 @@ plot.samp <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
       
       # Read in desired background.  The coordinates to openmap must be lat long.
       #openMap <- openmap(ULcoords, BRcoords, type = "esri-topo")
-      suppressWarnings(openMap <- openmap(ULcoords, BRcoords, type = background))
+      suppressWarnings(openMap <- OpenStreetMap::openmap(ULcoords, BRcoords, type = background))
   
       # See the below link for a good site that gives visuals for the different backgrounds
       # and their corresponding 'type' arguments
@@ -105,7 +105,7 @@ plot.samp <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
       
       cat("Projecting background image...")
       # Transform to desired projection
-      openMap <- openproj(openMap, projection = CRS(wps)) 
+      openMap <- OpenStreetMap::openproj(openMap, projection = CRS(wps)) 
       
       cat("\n")
     }
