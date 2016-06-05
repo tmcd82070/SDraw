@@ -13,6 +13,8 @@ the bounding box or exactly on the right or top boundary.  See Details.}
 
 \item{n.boxes}{DX1 vector containing number of Halton boxes in each dimension.}
 
+\item{D}{Number of dimensions}
+
 \item{b}{DX1 vector of bases to use in the Halton sequence.}
 
 \item{delta}{DX1 vector of study area bounding box extents in each dimension.  Study area is 

@@ -29,7 +29,7 @@
 #' is specified, it takes precedence.  If \code{J} is NULL, the 
 #' algorithm attempts to place \code{N} points in the bounding box 
 #' using Halton boxes that are as close to square as possible.  
-#' This \code{N} is not exact, but is a target. 
+#' \code{N} is not exact, but is a target. 
 #' 
 #' @param eta A DX1 vector of the number of points to add inside each Halton box.  
 #' e.g., if \code{eta} = \code{c(3,2)}, a small grid of 3 by 2 points is 
@@ -110,7 +110,7 @@ halton.lattice <- function(box=matrix(c(0,0,1,1),2), N=10000, J=NULL,
   if( triangular & (D!=2)) warning("Triangular grids for D!=2 not implemented. Rectangular grid produced.")
   
   # it is interesting to set elements of J to non-integers
-  
+
   if(is.null(J)){
     # Compute n.boxes, because prod(eta) points are added inside each halton box and we desire N points
     N.boxes <- N / prod(eta)
@@ -137,6 +137,7 @@ halton.lattice <- function(box=matrix(c(0,0,1,1),2), N=10000, J=NULL,
     n.boxes <- bases^J
   }
   
+
   # Inflate n.boxes by eta (n.boxes is number of halton boxes in each dimension, now we need 
   # number of points)
   n <- eta * n.boxes

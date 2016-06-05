@@ -72,9 +72,9 @@ make it a \code{SpatialPointsDataFrame}, are:
    1D or 2D Halton sequence 
    that produced the sample.  
    If \code{balance=="1D"}, this is a single uniform random 
-   integer between 0 and \code{\link{max.U()}}. If \code{balance=="2D"}, this is 
+   integer between 0 and \code{\link{maxU}}. If \code{balance=="2D"}, this is 
    a vector of two uniform random 
-   integers between 0 and \code{\link{max.U()}}.  
+   integers between 0 and \code{\link{maxU}}.  
    
    \item \code{bas.bbox}: If \code{balance=="2D"}, this is the square 
    bounding box surrounding \code{x}

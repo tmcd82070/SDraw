@@ -42,7 +42,11 @@ Draws a simple random sample from a \code{SpatialPolygons} or
 \code{SpatialPolygonsDataFrame} object.
 }
 \details{
-
+The SRS sample is drawn by generating uniform random deviates 
+for coordinates in the bounding box surrounding polygons
+(e.g., \code{c(xmin, ymin) + c(dx,dy)*runif(2)}), tossing 
+locations outside polygons 
+until the required number is achieved.
 }
 \examples{
 

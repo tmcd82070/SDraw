@@ -24,12 +24,6 @@ vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 \code{J} is chosen so that Halton boxes are as square as possible.}
 
 \item{bases}{2X1 vector of Halton bases.  These must be co-prime.}
-
-\item{plot}{Logical indicating whether to plot \code{x} and selected points.}
-
-\item{plot.lattice}{Logical indicating whether to plot the Halton lattice used 
-to draw the sample.  \code{plot.lattice = TRUE} produces same map 
-as \code{plot=TRUE}, with the addition of the Halton lattice.}
 }
 \value{
 A \code{SpatialPointsDataFrame} containing locations in the HAL sample, 
@@ -105,10 +99,11 @@ the sample, restarting from the beginning if necessary.
 
 #   Draw sample of Hawaii coastline
 #   This takes approximately 30 seconds to run
-samp <- hal.point( 100, WA.cities )
+data(WA.cities)
+samp <- hal.point( WA.cities, 100 )
 
 #   Different lattice topology
-samp <- hal.point( 100, WA.cities, J=c(10,4))
+samp <- hal.point( WA.cities, 100, J=c(10,4))
   
 
 }

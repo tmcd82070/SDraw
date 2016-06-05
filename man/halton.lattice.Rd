@@ -19,7 +19,7 @@ Default is the 2D unit box.}
 is specified, it takes precedence.  If \code{J} is NULL, the 
 algorithm attempts to place \code{N} points in the bounding box 
 using Halton boxes that are as close to square as possible.  
-This \code{N} is not exact, but is a target.}
+\code{N} is not exact, but is a target.}
 
 \item{J}{A DX1 vector of base powers which determines the size and shape 
 of the Halton boxes. Elements of \code{J} less than or equal 

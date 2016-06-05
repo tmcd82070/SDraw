@@ -76,8 +76,8 @@ points( WA.samp, col="red", pch=16 )
 df <- data.frame( a=1:100, b=runif(100) )
 samp <- sss.point( df, 5 )   
 
-# One way to draw a simple random sample: randomly sort frame.
-samp <- sss.point( df[order(df$b),] 5 )
+# Equivalent to simple random sample: randomly sort frame.
+samp <- sss.point( df[order(df$b),], 5 )
 
 }
 \author{

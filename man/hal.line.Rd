@@ -25,6 +25,13 @@ of \code{prod(bases^J)} total boxes.  The dimension of each box is
 vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 \code{J} is chosen so that Halton boxes are as square as possible.}
 
+\item{eta}{When \code{balance} is "2D", \code{eta} is a 2X1 vector 
+specifying the number of points to add in the 
+horizontal and vertical dimensions of each Halton box.  e.g., if 
+\code{eta} = c(3,2), a grid of 3 (horizontal) by 2 (vertical) points is 
+added inside each Halton box. Size and shape of Halton boxes is controlled 
+by \code{J} parameter.}
+
 \item{bases}{If \code{balance == "2D"}, this is a 2X1 vector of co-prime Halton bases.
 If \code{balance == "1D"}, this is the single (scalar) Halton base to use.  
 If \code{length(bases) == 2} and \code{balance == "1D"}, the first element of 
