@@ -1,7 +1,10 @@
 #' @import sp spsurvey graphics methods
 #' 
 #' @importFrom rgdal readOGR
-#' @importFrom rgeos gArea
+#' @importFrom rgeos gArea gUnion gIntersection
+# @importFrom deldir deldir tile.list
+#' @importFrom stats qnorm runif
+#' @importFrom grDevices heat.colors rainbow
 
 .onAttach<-function(libname, pkgname){
 

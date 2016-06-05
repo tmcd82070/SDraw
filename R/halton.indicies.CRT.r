@@ -15,6 +15,8 @@
 #'  of bounding cube is \code{prod{delta}} units to the \code{D} power. 
 #' @param ll.corner DX1 vector containing minimum coordinates in all dimensions.
 #' 
+#' @param D Number of dimensions
+#' 
 #' @return A nX1 vector of Halton indices corresponding to points in \code{hl.coords}. 
 #' 
 #' @details The Halton sequence maps the non-negative integers (the Halton indices) to D-space.  

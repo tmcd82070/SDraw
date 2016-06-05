@@ -1,3 +1,5 @@
+#' @export sdraw
+#' 
 #' @title Sample draws from spatial objects.
 #'
 #' @description Draw samples (point locations) from \code{SpatialPoints}, \code{SpatialLines}, 
@@ -77,7 +79,6 @@
 #'  
 #' @aliases sdraw sdraw.SpatialLines sdraw.SpatialPoints sdraw.SpatialPolygons
 #'  
-#' @export
 #' 
 #' @docType methods
 

@@ -11,9 +11,11 @@
 #' 
 #' @param n Sample size.  Number of locations to draw from the set of all lines
 #' contained in \code{x}.
+#' 
 #' @param x A SpatialLines or SpatialLinesDataFrame object. This object must
 #' contain at least 1 line.  If it contains more than 1 line, the HAL sample is
 #' drawn from the union of all lines.
+#' 
 #' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
 #' \code{J[2]} for vertical dimension. \code{J} determines the size and shape
 #' of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
@@ -24,6 +26,12 @@
 #' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is chosen so that Halton boxes are as square as possible.
 #' 
+#' @param eta When \code{balance} is "2D", \code{eta} is a 2X1 vector 
+#' specifying the number of points to add in the 
+#' horizontal and vertical dimensions of each Halton box.  e.g., if 
+#' \code{eta} = c(3,2), a grid of 3 (horizontal) by 2 (vertical) points is 
+#' added inside each Halton box. Size and shape of Halton boxes is controlled 
+#' by \code{J} parameter.
 #' 
 #' @param balance Option specifying how spatial balance is maintained. The options
 #' are "1D" or "2D".  

@@ -34,11 +34,6 @@
 #' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
 #' 
-#' @param plot Logical indicating whether to plot \code{x} and selected points.  
-#' 
-#' @param plot.lattice Logical indicating whether to plot the Halton lattice used 
-#' to draw the sample.  \code{plot.lattice = TRUE} produces same map 
-#' as \code{plot=TRUE}, with the addition of the Halton lattice.  
 #' 
 #' @return A \code{SpatialPointsDataFrame} containing locations in the HAL sample, 
 #' in HAL order.

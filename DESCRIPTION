@@ -18,7 +18,8 @@ Imports:
     methods,
     shiny,
     deldir,
-    OpenStreetMap
+    OpenStreetMap,
+    stats
 Depends:
     sp
 LazyData: true
