@@ -20,3 +20,4 @@ Testing
 .*\.dll$
 ^source_all.r$
 ^R\jasonHelper.R$
+^SDrawExFrames.RData$
