@@ -21,7 +21,8 @@
 #' must contain at least 1 polygon.  If it contains more than 1 polygon, the
 #' BAS sample is drawn from the union of all.
 #' 
-#' @return A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
+#' @return A \code{SDrawSample} object, which is a  
+#' \code{SpatialPointsDataFrame} object containing points in the BAS sample, 
 #' in BAS order.
 #'  Attributes of the sample points are: 
 #' \itemize{

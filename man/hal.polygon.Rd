@@ -114,7 +114,7 @@ The number of points in the Halton lattice is \code{prod(bases^J)*prod(eta)}.
 }
 \examples{
 
-samp <- hal.polygon( WA, 100 )
+samp <- hal.polygon( WA, 100, J=c(4,3) )
 plot(WA)
 points( samp, pch=16, col="red" )
   

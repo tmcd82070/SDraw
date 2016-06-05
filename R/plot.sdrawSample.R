@@ -1,5 +1,5 @@
-#' @export plot.samp
-#'  
+#' @export plotSample
+#' 
 #' @title Plot sample and frame
 #'  
 #' @description Plot the sample and optionally the frame, background image (terrain), and lattice 
@@ -39,12 +39,12 @@
 #' @examples 
 #' data(WY)
 #' samp <- sdraw(WY, 100, type="HAL", J=c(4,3))
-#' plot.samp( samp, WY )
+#' plotSample( samp, WY )
 #'
 #'
 
 
-plot.samp <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
+plotSample <- function(x, frame, lattice=FALSE, bbox=FALSE, background=NULL){
 
 
   stype <- attr(x, "sample.type")         

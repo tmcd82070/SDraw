@@ -16,7 +16,8 @@ BAS sample is drawn from the union of all.}
 polygons contained in \code{x}.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
+A \code{SDrawSample} object, which is a  
+\code{SpatialPointsDataFrame} object containing points in the BAS sample, 
 in BAS order.
  Attributes of the sample points are: 
 \itemize{

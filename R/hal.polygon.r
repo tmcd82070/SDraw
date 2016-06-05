@@ -108,7 +108,7 @@
 #' @keywords design survey
 #' @examples
 #' 
-#'samp <- hal.polygon( WA, 100 )
+#'samp <- hal.polygon( WA, 100, J=c(4,3) )
 #'plot(WA)
 #'points( samp, pch=16, col="red" )
 #'   

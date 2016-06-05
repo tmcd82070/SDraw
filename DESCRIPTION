@@ -53,7 +53,7 @@ Collate:
     'halton.lattice.polygon.r'
     'halton.lattice.r'
     'halton.r'
-    'plot.samp.R'
+    'plot.sdrawSample.R'
     'primes.r'
     'readShape.r'
     'sss.point.r'
