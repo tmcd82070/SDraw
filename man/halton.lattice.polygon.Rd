@@ -72,14 +72,14 @@ normally called by the user.
 \examples{
 
 # Take and plot Halton lattice to illustrate
-WA.hgrid <- halton.lattice.polygon( WA, J=c(3,2), eta=c(3,2), triangular=T )
+WA.hgrid <- halton.lattice.polygon( WA, J=c(3,2), eta=c(3,2), triangular=TRUE )
 plot(WA)
 points(WA.hgrid, pch=16, cex=.5, col="red" )
 
 # Plot the Halton boxes
-tmp.J <- attr(tmp,"J")
-tmp.b <- attr(tmp,"bases")
-tmp.bb <- attr(tmp,"hl.bbox")
+tmp.J <- attr(WA.hgrid,"J")
+tmp.b <- attr(WA.hgrid,"bases")
+tmp.bb <- attr(WA.hgrid,"hl.bbox")
 
 for(d in 1:2){
   tmp2 <- tmp.bb[d,1] + (0:(tmp.b[d]^tmp.J[d]))*(diff(tmp.bb[d,]))/(tmp.b[d]^tmp.J[d])
