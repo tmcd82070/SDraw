@@ -90,7 +90,7 @@ halton.lattice.polygon <- function(x, N=10000, J=NULL, eta=c(1,1), triangular=FA
 
   if( is.null(J)){
     # Get area of object, subtracting holes.  
-    sp.area <- SDraw:::polygonArea( x )
+    sp.area <- polygonArea( x )
     
     # Bump up the N requested to account for area outside polygons, but within bbox.
     bb.area <- prod(apply(bbox(x),1,diff))
