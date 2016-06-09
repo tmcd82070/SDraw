@@ -13,8 +13,9 @@
 #' \tab SDraw\cr 
 #' Type: \tab Package\cr 
 #' License: \tab GNU General Public License\cr 
-#' Dependencies: \tab sp, spsurvey, rgdal, rgeos, shiny, deldir\cr 
-#' (other than standard packages)
+#' Imports: \tab spsurvey,utils,rgdal,rgeos,graphics,
+#' methods,deldir,OpenStreetMap,stats
+#' Depends: \tab sp
 #' } 
 #' 
 #' 

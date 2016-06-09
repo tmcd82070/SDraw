@@ -2,7 +2,7 @@ Package: SDraw
 Type: Package
 Title: Sample Draw
 Version: 2.1.2
-Date: 2016-06-03
+Date: 2016-06-08
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for drawing samples, especially spatially balanced HAL, BAS, GRTS, and SSS
@@ -16,7 +16,6 @@ Imports:
     rgeos,
     graphics,
     methods,
-    shiny,
     deldir,
     OpenStreetMap,
     stats
@@ -25,7 +24,6 @@ Depends:
 LazyData: true
 RoxygenNote: 5.0.1
 Collate:
-    'runUI.r'
     'HI.coast.r'
     'WA.cities.r'
     'WA.r'
