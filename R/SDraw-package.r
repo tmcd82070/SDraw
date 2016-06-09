@@ -14,8 +14,8 @@
 #' Type: \tab Package\cr 
 #' License: \tab GNU General Public License\cr 
 #' Imports: \tab spsurvey,utils,rgdal,rgeos,graphics,
-#' methods,deldir,OpenStreetMap,stats
-#' Depends: \tab sp
+#' methods,deldir,OpenStreetMap,stats \cr
+#' Depends: \tab sp \cr
 #' } 
 #' 
 #' 

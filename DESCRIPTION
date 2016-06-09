@@ -8,6 +8,7 @@ Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for drawing samples, especially spatially balanced HAL, BAS, GRTS, and SSS
     samples from points, lines, and polygons.
 License: GNU General Public License
+URL: https://github.com/tmcd82070/SDraw/wiki/SDraw
 BugReports: https://github.com/tmcd82070/SDraw/issues
 Imports:
     spsurvey,
