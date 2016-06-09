@@ -1,24 +1,20 @@
-# SDraw
-An R package to draw samples
-
-Description: This package draws several types of statistical samples, but focuses on spatially balanced samples that are  especially suited for environmental monitoring.  It draws BAS, GRTS, HAL, SSS and SRS samples from points, lines, and polygons.  An friendly Shiny interface is included for the common functions.  See package help (`help("SDraw")`) and help for function `sdraw` (`help("sdraw")`) to get started.  A list of available functions can be obtained with `help(package="SDraw")`. [For the newby: all of R is case sensitive.  `SDraw` is different than `sdraw`.] 
-
-License: GNU General Public License
-
 # Dependencies
 
-The author has found it best to install dependencies before attempting to install SDraw. To install dependencies, execute the following: 
-* `install.packages( c("spsurvey", "rgdal", "rgeos", "sp", "shiny", "deldir"), repos="http://cran.r-project.org")`
+The author has found it best to install dependencies before attempting to install **SDraw**. To install dependencies, execute the following: 
+* `install.packages( c("spsurvey", "rgdal", "rgeos", "sp", "deldir", "OpenStreetMap"), repos="http://cran.r-project.org")`
 
 `rgdal` and `rgeos` require java routines, so java must be installed *a priori*.  On Unix systems, the libraries needed for `rgdal` and `rgeos` are criptically named.  Google 'install rgdal unix'.   
 
 # Installation
 
-There are multiple ways to install the current version.  
+## From CRAN
+
+The current stable release of **SDraw** can be installed like any other package: 
+* `install.packages( c("SDraw"), repos="http://cran.r-project.org")`
 
 ## Using `devtools`
 
-Assuming `devtools` is installed and loaded, the following should work:
+The current development version of **SDraw** can be installed from _GitHub_. Assuming `devtools` is installed and loaded, the following should work:
 
 * `install_github("tmcd82070/SDraw")`
 
@@ -33,8 +29,4 @@ Assuming `devtools` is installed and loaded, the following should work:
 # After installation
 Issue `library(SDraw)` at the command prompt.  
 
-To bring up the Shiny interface (which is barely working as of version 2.1.2), issue `runUI()` at the command prompt.
 
-# Bugs
-
-https://github.com/tmcd82070/SDraw/issues
