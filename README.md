@@ -1,9 +1,9 @@
 # Dependencies
 
 The author has found it best to install dependencies before attempting to install **SDraw**. To install dependencies, execute the following: 
-* `install.packages( c("spsurvey", "rgdal", "rgeos", "sp", "deldir", "OpenStreetMap"), repos="http://cran.r-project.org")`
+* `install.packages( c("spsurvey", "rgeos", "sp", "deldir"), repos="http://cran.r-project.org")`
 
-`rgdal` and `rgeos` require java routines, so java must be installed *a priori*.  On Unix systems, the libraries needed for `rgdal` and `rgeos` are criptically named.  Google 'install rgdal unix'.   
+`rgeos` requires java. Java should be installed *a priori*.  On Unix systems, the libraries needed for `rgeos` are criptically named.  Google 'install rgeos unix'.   
 
 # Installation
 
