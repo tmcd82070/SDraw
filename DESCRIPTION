@@ -1,12 +1,16 @@
 Package: SDraw
 Type: Package
-Title: Sample Draw
-Version: 2.1.2
-Date: 2016-06-08
+Title: Spatially balanced sample draws for spatial objects 
+Version: 2.1.3
+Date: 2016-06-10
 Author: Trent McDonald
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
-Description: Routines for drawing samples, especially spatially balanced HAL, BAS, GRTS, and SSS
-    samples from points, lines, and polygons.
+Description: Routines for drawing samples, focusing on spatially balanced algorithms. 
+Draws Halton Lattice (HAL), 
+Balanced Acceptance Samples (BAS), Generalized Random Tesselation Stratified (GRTS), 
+Simple Systematic Samples (SSS) and Simple Random Samples (SRS) from point, line, and polygon 
+resources.  Frames are SpatialPoints, SpatialLines, or SpatialPolygons objects from 
+package 'sp'. 
 License: GNU General Public License
 URL: https://github.com/tmcd82070/SDraw/wiki/SDraw
 BugReports: https://github.com/tmcd82070/SDraw/issues
