@@ -32,6 +32,6 @@ A \code{SpatialPolygonsDataFrame} containing polygons
 for the 23 counties in the state of Wyoming.
 }
 \examples{
-plot(WY, col=heat.colors(length(WY)))
+plot(WY, col=rainbow(length(WY)))
 }
 

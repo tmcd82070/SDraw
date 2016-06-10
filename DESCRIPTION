@@ -16,7 +16,6 @@ Imports:
     graphics,
     methods,
     deldir,
-    OpenStreetMap,
     stats
 Depends:
     sp

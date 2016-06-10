@@ -1,8 +1,10 @@
 #' @import sp spsurvey graphics methods
 #' 
+# A list of functions needed from some imports
 #' @importFrom rgeos gArea gUnion gIntersection
+#' @importFrom deldir deldir tile.list
 #' @importFrom stats qnorm runif
-#' @importFrom grDevices heat.colors rainbow
+#' @importFrom grDevices rainbow
 
 .onAttach<-function(libname, pkgname){
 

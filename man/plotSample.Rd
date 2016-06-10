@@ -4,7 +4,8 @@
 \alias{plotSample}
 \title{Plot sample and frame}
 \usage{
-plotSample(x, frame, lattice = FALSE, bbox = FALSE, background = NULL)
+plotSample(x, frame, lattice = FALSE, bbox = FALSE, add = FALSE,
+  poly.fill = TRUE)
 }
 \arguments{
 \item{x}{A \code{SpatialPointsDataFrame} produced by an SDraw sampling function.  For example, 
@@ -14,25 +15,19 @@ with additional attributes that record the sampling design.}
 \item{frame}{The sample frame used to draw the sample contained in \code{x}. This is 
 either a \code{SpatialPoints*}, \code{SpatialLines*}, or \code{SpatialPolygons*} object.}
 
-\item{lattice}{Boolean. Whether to plot the Halton Lattice if \code{x} is a HAL sample.}
+\item{lattice}{Logical. Whether to plot the Halton Lattice if \code{x} is a HAL sample.}
 
-\item{bbox}{Boolean. Whether to plot the bounding box if the sample 
+\item{bbox}{Logical. Whether to plot the bounding box if the sample 
 has a bounding box attribute. This generally means \code{x} 
 is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.}
 
-\item{background}{Either the background image (from a previous call to this routine) or 
-the type of background image to plot.  If NULL (the default), no background image is plotted. 
-If \code{background} is a string, it names the type of background image 
-to retrieve from the Open Maps project.  Background types are 
-any allowed by \code{\link{openmap}}  in the OpenStreetMap package.  Popular options are "osm", 
-"esri", and "esri-topo".  When a background is retrieved, it slows execution and requires 
-an internet connection.  When \code{background} is the returned value from a previous call 
-to this function, it is plotted without retrieving a new image.  This will speed multiple 
-iterations of plotting when the sample frame does not change.}
+\item{add}{Logical. Whether to add to an existig plot.  See Examples.}
+
+\item{poly.fill}{Logical. Whether to fill polygons (TRUE) or leave them transparent (FALSE). 
+Only applies to \code{SpatialPolygon*} frames.}
 }
 \value{
-The set of tiles used in the background image is silently returned. If 
-\code{background==NULL}, NULL is silently returned.
+Nothing (NULL is invisibly returned)
 }
 \description{
 Plot the sample and optionally the frame, background image (terrain), and lattice 
@@ -42,8 +37,27 @@ Plot the sample and optionally the frame, background image (terrain), and lattic
 data(WY)
 samp <- sdraw(WY, 100, type="HAL", J=c(4,3))
 plotSample( samp, WY )
+plotSample( samp, WY, lattice=TRUE )
 
-
+# A map-like background under frame and sample ----
+# Requires 'OpenStreetMap' package and internet connection
+\dontrun{
+library(OpenStreetMap)
+# 1:convert to Lat-Long
+WY.ll <- spTransform(WY, CRS("+init=epsg:4326"))
+# 2:Specify bounding box for OpenStreetMap
+bb.openmap <- bbox(WY.ll)
+ULcoords <- c(bb.openmap[2,2], bb.openmap[1,1])
+BRcoords <- c(bb.openmap[2,1], bb.openmap[1,2])
+# 3:Fetch image (see 'openmap' help for 'type' parameter)
+openMap <- OpenStreetMap::openmap(ULcoords, BRcoords, type = "esri")
+# 4:Project background image to original coordinate system
+openMap <- OpenStreetMap::openproj(openMap, projection = CRS(proj4string(WY))) 
+# 5:plot background
+plot(openMap)
+# 6:plot frame and sample
+plotSample(samp, WY, add=TRUE, poly.fill=FALSE)
+}
 }
 \author{
 Trent McDonald

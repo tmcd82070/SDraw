@@ -30,6 +30,6 @@
 #' }
 #' 
 #' @examples
-#'plot(WY, col=heat.colors(length(WY)))
+#'plot(WY, col=rainbow(length(WY)))
 #'@name WY
 NULL
