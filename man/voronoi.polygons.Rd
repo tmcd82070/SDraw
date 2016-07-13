@@ -39,7 +39,7 @@ is done by the \code{deldir::deldir} and \code{deldir::tile.list} functions.
 See documentation for those functions for details of computations.
 
 This function is convenient because it takes a \code{SpatialPoints*} 
-object and returns a \code{SpatialPolygonsDataFrame} object.
+object and returns a \code{Spatial} \code{Polygons} \code{DataFrame} object.
 }
 \examples{
 

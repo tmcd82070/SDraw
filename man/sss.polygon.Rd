@@ -92,7 +92,7 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{rand.dir}: The (potentially randomly chosen) direction for the grid's 
    horizontal axis. This is in radians between -pi/4 and pi/4. 
    \code{rand.dir} = 0 corresponds to no rotation 
-   (i.e., \code{rand.dir = FALSE}).  
+   (i.e., \code{rand.dir =} \code{FALSE}).  
    
    \item \code{rand.shift}: The random shift of the grid.  This is a vector 
    of length 2 containing the  random shifts in the horizontal and vertical 

@@ -26,7 +26,7 @@ functions \code{halton.lattice} (a data frame) and
 of the smallest Halton boxes in D space. There are \code{bases[i]^J[i]} boxes
 over the i-th dimension of \code{x}'s bounding box.  Total number Halton boxes 
 is \code{prod(bases^J)}.  The size of each box in the i-th dimension is 
-\code{delta[i]/(bases[i]^J[i])}, where \code{delta[i]} is the  
+\code{delta[i]/} \code{(bases[i]^J[i])}, where \code{delta[i]} is the  
 extent of \code{x}'s bounding box along the i-th dimension.  
 If \code{J} is NULL (the default), approximately \code{length(x)} boxes 
 will be chosen (approx. one point per box) and boxes will be as square 

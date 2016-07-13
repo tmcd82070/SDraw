@@ -87,7 +87,7 @@ make it a \code{SpatialPointsDataFrame}, are:
    limit of the 1D box is the total 
    length of lines in \code{x}.  In this case, Halton points 
    are scaled as \code{bas.bbox[,"min"]+} \code{halton(n,1,random.start)*} 
-   \code{diff(bas.bbox)} which is equivalent to \code{halton(n,1,random.start)*} 
+   \code{diff(bas.bbox)} which is equivalent to \code{halton(n,1,} \code{random.start)*} 
    \code{bas.bbox[2]} because \code{bas.bbox[1]} is zero.
 }
 }

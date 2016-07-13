@@ -3,7 +3,7 @@
 #' @title Halton lattice inside a \code{SpatialPolygon*} object.
 #' 
 #' @description Constructs a lattice of Halton boxes (a Halton lattice) inside a 
-#' \code{SpatialPolygons} or \code{Spatial}\code{Polygons}\code{DataFrame} object. This is a wrapper for
+#' \code{SpatialPolygons} or \code{Spatial}\code{Polygons} \code{DataFrame} object. This is a wrapper for
 #' \code{halton.lattice}, which does all the hard work. 
 #' 
 #' @param x A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object. 

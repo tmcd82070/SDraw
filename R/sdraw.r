@@ -11,9 +11,9 @@
 #'  
 #'  
 #' @param x A spatial object.  Methods are implemented for \code{SpatialPoints}, 
-#' \code{Spatial}\code{Points}\code{DataFrame}, \code{SpatialLines}, \code{Spatial}\code{Lines}\code{DataFrame}, 
+#' \code{Spatial}\code{Points} \code{DataFrame}, \code{SpatialLines}, \code{Spatial}\code{Lines}\code{DataFrame}, 
 #' \code{SpatialPolygons}, and 
-#' \code{Spatial}\code{Polygons}\code{DataFrame} objects. 
+#' \code{Spatial} \code{Polygons}\code{DataFrame} objects. 
 #' 
 #' @param n Desired sample size.  Some \code{type}'s of samples are fixed-size (see DETAILS), 
 #' in which case 
