@@ -6,7 +6,7 @@
 #'  (if HAL sample). 
 #'  
 #' @param x A \code{SpatialPointsDataFrame} produced by an SDraw sampling function.  For example, 
-#'  as produced by \code{sdraw(frame,n)}.  This object is a standard \code{SpatialPointsDataFrame} object
+#'  as produced by \code{sdraw(frame,n)}.  This object is a standard \code{Spatial}\code{Polygons}\code{DataFrame} object
 #'  with additional attributes that record the sampling design. 
 #'  
 #' @param frame The sample frame used to draw the sample contained in \code{x}. This is 

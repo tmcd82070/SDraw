@@ -27,8 +27,9 @@
 #'  Attributes of the sample points are: 
 #' \itemize{
 #'   \item \code{sampleID}: A unique identifier for every sample point.  This 
-#'   encodes the BAS order.  \code{return[order(return$sampleID),]} will sort the 
-#'   returned object in BAS order.
+#'   encodes the BAS order. If BAS order is lost, \code{return[} \code{order(} 
+#'   \code{return$sampleID} \code{),]} will resort the 
+#'   returned object (i.e., \code{return}) into BAS order.
 #'   
 #'   \item \code{geometryID}: The ID of the polygon in \code{x} which each 
 #'   sample point falls.  The 

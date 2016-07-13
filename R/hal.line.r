@@ -22,7 +22,7 @@
 #' of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
 #' horizontal rows of Halton boxes over the bounding box, for a total 
 #' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
-#' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+#' \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 #' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is chosen so that Halton boxes are as square as possible.
 #' 
@@ -64,8 +64,8 @@
 #' discretization.
 #' 
 #' @param bases If \code{balance == "2D"}, this is a 2X1 vector of co-prime Halton bases.  
-#' If \code{balance == "1D"}, this is the single (scalar) Halton base to use.  
-#' If \code{length(bases) == 2} and \code{balance == "1D"}, the first element of 
+#' If \code{balance==} \code{"1D"}, this is the single (scalar) Halton base to use.  
+#' If \code{length(bases)==} \code{2} and \code{balance==} \code{"1D"}, the first element of 
 #' \code{bases} is used.
 #'
 #' @return A \code{SpatialPointsDataFrame} containing locations in the HAL sample, 
@@ -73,17 +73,19 @@
 #'  Attributes of the sample points are: 
 #' \itemize{
 #'   \item \code{sampleID}: A unique identifier for every sample point.  This 
-#'   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
-#'   returned object in HAL order. \code{sampleID}'s, in the HAL case, are not 
-#'   consecutive. \code{sampleID}'s are usually the Halton 
+#'   encodes the HAL order.  If HAL order is lost, \code{return[} \code{order(} 
+#'   \code{return$sampleID} \code{),]} will resort the 
+#'   returned object (i.e., \code{return}) into HAL order. In the HAL case, 
+#'   \code{sampleID}'s are not 
+#'   consecutive. \code{sampleID}'s are the Halton 
 #'   indices for the Halton boxes 
 #'   containing the point, after adding random cycles for multiple points in 
 #'   the same box (see \code{\link{halton.frame}}). If the sample 
 #'   cycled around
-#'   to the beginning of the frame, because random start 
-#'   fell at the end, the sample number is appended 
+#'   to the beginning of the frame, because the random start 
+#'   happened to fall near the end, the sample number is appended 
 #'   to the beginning of the normal \code{sampleID}'s so they
-#'   will sort the frame in the proper order.
+#'   can re-sort the frame in proper HAL order.
 #'   
 #'   
 #'   \item \code{geometryID}: The ID of the line in \code{x} on which each 

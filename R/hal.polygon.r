@@ -29,7 +29,7 @@
 #' of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
 #' horizontal rows of Halton boxes over the bounding box, for a total 
 #' of \code{prod(bases^J)} total boxes.  The dimension of each box is 
-#' \code{c(dx,dy)/(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+#' \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
 #' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
 #' \code{J} is chosen so that approximately \code{1000*n} Halton boxes are placed 
 #' in the bounding box of polygons, each as 
@@ -63,8 +63,9 @@
 #'  Attributes of the sample points are: 
 #' \itemize{
 #'   \item \code{sampleID}: A unique identifier for every sample point.  This 
-#'   encodes the HAL order.  \code{return[order(return$sampleID),]} will sort the 
-#'   returned object in HAL order.
+#'   encodes the HAL order.  If HAL order is lost, \code{return[} \code{order(} 
+#'   \code{return$sampleID} \code{),]} will resort the 
+#'   returned object (i.e., \code{return}) into HAL order.
 #'   
 #'   \item \code{HaltonIndex}: The index of the Halton box containing the point. 
 #'   This column is not, in general, unique.  Points with the same \code{HaltonIndex}

@@ -40,8 +40,9 @@
 #' n.boxes <- c(16,9) 
 #' halton.indices.vector(pt, n.boxes) # should equal 70
 #' 
+#' # The following should also equal 70
 #' pt <- data.frame(x=143, y=164)
-#' halton.indices.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) # should also equal 70
+#' halton.indices.vector(pt, n.boxes, delta=c(100,100), ll.corner=c(100,100)) 
 #' 
 #' # Plot Halton boxes and indices to check
 #' b <- c(2,3)

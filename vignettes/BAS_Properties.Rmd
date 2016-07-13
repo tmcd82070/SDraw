@@ -1,0 +1,149 @@
+---
+title: "BAS Basics"
+author: "Trent McDonald"
+date: "July 2, 2016"
+output: pdf_document
+---
+This vigette demonstrates basic Balanced Acceptance Sampling (BAS) of a point resource.
+BAS will sample a simple point resouce consisting of a 10 X 10 grid of points evenly spaced on a square study area with width 100. The following code creates the example population.  
+
+```{r}
+library(sp)
+# Create the bounding study area as a single polygon 
+study.area <- Polygon( data.frame(x=c(0,100,100,0,0), y=c(0,0,100,100,0)) )
+study.area <- Polygons(list(study.area), "1")
+study.area <- SpatialPolygons(list(study.area))
+# Create population of points
+popln.points <- GridTopology( c(5,5), c(10,10), c(10,10) )
+popln.points <- SpatialGrid(popln.points)
+popln.points <- SpatialPoints(popln.points)
+# Create population of pixels for visualization and sample selection
+popln.pixels <- SpatialPixelsDataFrame(popln.points, data.frame(val=1:100))
+```
+
+# Plot with Halton boxes
+
+The Halton sequence is an integral part of BAS. See Robertson et al. (2015) and documentation of `halton()` for ways to compute the Halton sequence.  Here, I plot the Halton boxes induced by using base 2 in the horizontal direction and base 3 in the vertical. 
+
+```{r fig.width=6.5,fig.height=6.5,fig.cap="Example population with base c(2,3) Halton boxes plotted. Population consists of 100 points in regular grid.  Study area extent is 100 X 100 units.  Point coordinates are 5, 15, 25, ..., 95"}
+plot(popln.pixels, what="image", axes=TRUE, xaxt="n",yaxt="n")
+axis(2, at=seq(5,100,by=10), labels = FALSE)
+axis(2, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+axis(1, at=seq(5,100,by=10), labels = FALSE)
+axis(1, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+points(popln.points, pch=16, col="red")
+
+abline(v=c(1/2)*100)
+abline(h=c(1/3,2/3)*100)
+```
+
+# Halton sequence
+
+We wish to draw a sample of size n=12.  To do this, we construct a random start Halton sequence. To do this, we select two random integers between 0 and U.  In `SDraw`, U is defined in the function `maxU()` and defaults to 100,000,000.  First random number is for the horizontal 
+sequence, second is for the vertical.
+
+```{r}
+library(SDraw)
+random.start <- floor(runif(2,max=maxU()+1))
+random.start
+```
+
+The random start Halton sequence starts at the random place, and proceeds for n = 12 indices. The Halton sequence 
+produces numbers between 0 and 1, so these numbers need to be scaled to fit the study area.
+
+```{r}
+n <- 12
+halt.seq <- halton(n, dim=2, start=random.start, bases=c(2,3))
+# The unscaled random start Halton sequence
+halt.seq
+# The scaled random start Halton sequence
+halt.seq <- halt.seq * 100
+halt.seq
+```
+
+Next is a plot the scaled random start Halton points on the study area. Note in the plot that exactly 2 Halton points fall in each Halton box.  This occurs because sample size (here, 12) is a multiple of a Halton cycle (here, 6).  
+
+```{r echo=F,fig.width=6.5,fig.height=6.5}
+plot(popln.pixels, what="image", axes=TRUE, xaxt="n",yaxt="n")
+axis(2, at=seq(5,100,by=10), labels = FALSE)
+axis(2, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+axis(1, at=seq(5,100,by=10), labels = FALSE)
+axis(1, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+points(popln.points, pch=16, col="red")
+
+abline(v=c(1/2)*100)
+abline(h=c(1/3,2/3)*100)
+
+points(halt.seq[,1], halt.seq[,2], pch=15, col="orange", cex=1.5)
+points(halt.seq[,1], halt.seq[,2], pch=3, col="black", cex=1.5)
+```
+
+
+
+The cyclic property of the Halton sequence extends to larger cyles, and it is this property that ensures spatial balance of BAS samples.  The first cyle equating to the largest Halton boxes is the product of bases, i.e., 2(3) = 6 here.  Larger cycles are any higher power of 6, like 36, 216, etc.  The second cycle equating to the next size smaller Halton boxes is 36 = 6*6.  Any sequence of 36 Halton points will have exactly one point in each of the 36 Halton boxes. Any sequence of 2(36) = 72 Halton points will have exactly 2 points in each of the 36 Halton boxes.  This is illustrated in the next plot.    
+
+```{r echo=F,fig.width=6.5,fig.height=6.5,fig.cap="Study area with 72 Halton points. Exactly 2 Halton points appear in each of the 36 Halton boxes."}
+plot(popln.pixels, what="image", axes=TRUE, xaxt="n",yaxt="n")
+axis(2, at=seq(5,100,by=10), labels = FALSE)
+axis(2, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+axis(1, at=seq(5,100,by=10), labels = FALSE)
+axis(1, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+points(popln.points, pch=16, col="red")
+
+abline(v=((1:3)/4)*100, lty=2)
+abline(h=((1:8)/9)*100, lty=2)
+abline(v=c(1/2)*100, lwd=2)
+abline(h=c(1/3,2/3)*100, lwd=2)
+
+rs.halt.seq <- halton(72, dim=2, start=random.start, bases=c(2,3))
+rs.halt.seq <- rs.halt.seq * 100
+
+points(rs.halt.seq[,1], rs.halt.seq[,2], pch=15, col="orange", cex=1.5)
+points(rs.halt.seq[,1], rs.halt.seq[,2], pch=3, col="black", cex=1.5)
+```
+
+
+
+# BAS sampling
+
+Units (pixels) are in the sample if a random start Halton sequence points falls inside the pixel. The following code determines pixel membership for all Halton points.  In this case, determining sampled points is easy because the grid is square and regular.  In general, one needs to apply point-in-polygon methods to determine sample membership.  We demonstrate both methods below. 
+
+
+```{r}
+# Simple method to determine sampled points.  
+x.cell <- floor(halt.seq[,1]/10)
+y.cell <- floor(halt.seq[,2]/10)
+
+x.pt <- x.cell*10 + 5
+y.pt <- y.cell*10 + 5
+
+bas.samp <- data.frame(x=x.pt, y=y.pt)
+bas.samp
+```
+
+The final BAS sample as a `SpatialPoints' object: 
+
+```{r}
+bas.samp <- SpatialPoints(bas.samp)
+bas.samp
+```
+
+```{r echo=F,fig.width=6.5,fig.height=6.5,fig.cap="Example study area with n = 12 selected points (filled circles)."}
+plot(popln.pixels, what="image", axes=TRUE, xaxt="n",yaxt="n")
+axis(2, at=seq(5,100,by=10), labels = FALSE)
+axis(2, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+axis(1, at=seq(5,100,by=10), labels = FALSE)
+axis(1, at=seq(5,95,by=20), labels = seq(5,95,by=20))
+points(popln.points, pch=1, col="red")
+points(bas.samp, pch=15, col="red")
+```
+
+
+The less illuminating but more general method of determining sample membership is to apply a point-in-polygon method.
+
+```{r}
+halt.pts <- SpatialPoints(halt.seq)
+keep <- over( halt.pts, popln.pixels)
+bas.samp <- popln.pixels[keep$val,]
+bas.samp
+```

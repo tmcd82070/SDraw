@@ -28,7 +28,7 @@ as follows:
   \item \code{pointType}: A string identifying regular sample points (\code{pointType=="Sample"})
   and over-sample points (\code{pointType=="OverSample"}).
   \item \code{geometryID}: The ID of the point in \code{x} which was sampled.  The 
-  ID of points in \code{x} are \code{row.names(geometry(x))}. 
+  ID of points in \code{x} are \code{row.names(} \code{geometry(x))}. 
   \item Any attributes of the original points (in \code{x}). 
 }
 }
