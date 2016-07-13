@@ -52,8 +52,9 @@ in BAS order.
  Attributes of the sample points are: 
 \itemize{
   \item \code{sampleID}: A unique identifier for every sample point.  This 
-  encodes the BAS order.  \code{return[order(return$sampleID),]} will sort the 
-  returned object in BAS order.
+  encodes the BAS order.  If BAS order is lost, \code{return[} \code{order(} 
+  \code{return$sampleID} \code{),]} will resort the 
+  returned object (i.e., \code{return}) into BAS order.
   
   \item \code{geometryID}: The ID of the line in \code{x} on which each 
   sample point falls.  The 
@@ -76,18 +77,18 @@ make it a \code{SpatialPointsDataFrame}, are:
    a vector of two uniform random 
    integers between 0 and \code{\link{maxU}}.  
    
-   \item \code{bas.bbox}: If \code{balance=="2D"}, this is the square 
+   \item \code{bas.bbox}: If \code{balance=="2D"}, this is the 
    bounding box surrounding \code{x}
-   used to scale Halton points.  A scaled Halton sequence of n points
-   used to sample points on the lines of \code{x} is 
-   \code{bas.bbox[,"min"] + t(halton(n,2,random.start)) * 
-   rep( max(diff(t(bas.bbox))), 2)}.
+   used to scale Halton points.  The scaled Halton sequence is 
+   \code{bas.bbox[,"min"]+} \code{t(halton(n,2,random.start))*} 
+   \code{rep(max(} \code{diff(t(bas.bbox))),} \code{2)}.
    If \code{balance=="1D"}, this is a vector containing the 1D 
-   bounding box. The 1D bounding box is 0 to the total 
-   length of all lines in \code{x}.  In this case, Halton points 
-   are scaled as \code{bas.bbox[,"min"] + halton(n,1,random.start) * 
-   diff(bas.bbox)} which is equivalent to \code{halton(n,1,random.start) * 
-   bas.bbox[2]} because \code{bas.bbox[1]} is zero in this case.
+   bounding box. Lower limit of the 1D bounding box is 0.  Upper
+   limit of the 1D box is the total 
+   length of lines in \code{x}.  In this case, Halton points 
+   are scaled as \code{bas.bbox[,"min"]+} \code{halton(n,1,random.start)*} 
+   \code{diff(bas.bbox)} which is equivalent to \code{halton(n,1,random.start)*} 
+   \code{bas.bbox[2]} because \code{bas.bbox[1]} is zero.
 }
 }
 \description{

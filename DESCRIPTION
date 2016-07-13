@@ -21,6 +21,8 @@ Depends:
     sp
 LazyData: true
 RoxygenNote: 5.0.1
+Suggests: knitr
+VignetteBuilder: knitr
 Collate:
     'HI.coast.r'
     'WA.cities.r'

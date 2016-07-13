@@ -15,7 +15,8 @@ Attributes of the polygons are:
  \item  NAME = Name of the county
 }
 
-The proj4string is \code{"+init=epsg:26912 +proj=utm +zone=12 +datum=NAD83 +units=m +no_defs +ellps=GRS80 +towgs84=0,0,0"}, 
+The proj4string is \code{"+init=epsg:26912} \code{+proj=utm} \code{+zone=12} \code{+datum=NAD83} 
+\code{+units=m} \code{+no_defs} \code{+ellps=GRS80} \code{+towgs84=0,0,0"}, 
 meaning among other things that the coordinates are projected zone 12 UTM's in meters. 
 The rectangular bounding box of all polygons is
  

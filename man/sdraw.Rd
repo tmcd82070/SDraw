@@ -21,9 +21,9 @@ sdraw(x, n, type = "BAS", ...)
 }
 \arguments{
 \item{x}{A spatial object.  Methods are implemented for \code{SpatialPoints}, 
-\code{SpatialPointsDataFrame}, \code{SpatialLines}, \code{SpatialLinesDataFrame}, 
+\code{Spatial}\code{Points}\code{DataFrame}, \code{SpatialLines}, \code{Spatial}\code{Lines}\code{DataFrame}, 
 \code{SpatialPolygons}, and 
-\code{SpatialPolygonsDataFrame} objects.}
+\code{Spatial}\code{Polygons}\code{DataFrame} objects.}
 
 \item{n}{Desired sample size.  Some \code{type}'s of samples are fixed-size (see DETAILS), 
 in which case 
