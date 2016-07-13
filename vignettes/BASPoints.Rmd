@@ -1,8 +1,12 @@
 ---
-title: "BAS Basics"
+title: "Balanced Acceptance Sampling (BAS) for Points"
 author: "Trent McDonald"
-date: "July 2, 2016"
+date: "July 13, 2016"
 output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{BAS for point resources explained}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 This vigette demonstrates basic Balanced Acceptance Sampling (BAS) of a point resource.
 BAS will sample a simple point resouce consisting of a 10 X 10 grid of points evenly spaced on a square study area with width 100. The following code creates the example population.  
