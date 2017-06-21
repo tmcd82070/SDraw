@@ -32,6 +32,7 @@ Collate:
     'sdraw.SpatialPoints.r'
     'sdraw.SpatialLines.r'
     'sdraw.SpatialPolygons.r'
+    'sdraw.stratified.r'
     'sdraw.r'
     'bas.line.r'
     'bas.point.r'

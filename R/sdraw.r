@@ -21,7 +21,7 @@
 #' and this number is the expected sample size (i.e., average over many repetitions). 
 #' @param type Character, naming the type of sample to draw. Valid \code{type}'s are:
 #' \itemize{
-#' \item \code{"HAL"}  : HAlton Lattice sampling (Robertson et al., (Forthcoming)) 
+#' \item \code{"HAL"}  : Halton Lattice sampling (Robertson et al., (Forthcoming)) 
 #' \item \code{"BAS"}  : Balanced Acceptance Sampling (Robertson et al., 2013) 
 #' \item \code{"SSS"}  : Simple Systematic (grid) Sampling, with random start and orientation 
 #' \item \code{"GRTS"} : Generalized Random Tessellation Stratified sampling 
@@ -82,11 +82,32 @@
 #'  WA.sample <- sdraw(WA, 100, "SSS", spacing=c(1,2))
 #'  
 
-sdraw <- function(x, n, type="BAS", ...) UseMethod("sdraw")
+sdraw <- function(x, n, type="BAS", stratified=F, ...){
+  if(stratified){
+    ans <- sdraw.stratified(x, n, type, ...)
+  }
+  else{
+    if(class(x) == "SpatialPolygons" | class(x) == "SpatialPolygonsDataFrame"){
+      ans <- sdraw.SpatialPolygons(x, n, type, ...)
+    }
+    else if(class(x) == "SpatialLines" | class(x) == "SpatialLinesDataFrame"){
+      ans <- sdraw.SpatialLines(x, n, type, ...)
+    }
+    else if(class(x) == "SpatialPoints" | class(x) == "SpatialPointsDataFrame"){
+      ans <- sdraw.SpatialPoints(x, n, type, ...)
+    }
+    else{
+      stop("x is unknown class")
+    }
+  }
+  ans
+}
 
-setMethod("sdraw", c(x="SpatialPolygons"), sdraw.SpatialPolygons)
+#setMethod("sdraw", c(x="SpatialPolygons"), definition = sdraw.SpatialPolygons)
 
-setMethod("sdraw", c(x="SpatialLines"), sdraw.SpatialLines)
+#setMethod("sdraw", c(x="SpatialLines"), definition = sdraw.SpatialLines)
 
-setMethod("sdraw", c(x="SpatialPoints"), sdraw.SpatialPoints)
+#setMethod("sdraw", c(x="SpatialPoints"), definition = sdraw.SpatialPoints)
+
+#setMethod("sdraw.stratified", definition = sdraw.stratified)
 

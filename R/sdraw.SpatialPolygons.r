@@ -8,6 +8,8 @@
 
 sdraw.SpatialPolygons <- function(x, n, type, ...){
   
+  print("WHYYYYYY?????!!!!?!?!?!")
+  
   ans <- switch(type,
     HAL = hal.polygon( x, n, ...), 
     BAS = bas.polygon( x, n ), 
