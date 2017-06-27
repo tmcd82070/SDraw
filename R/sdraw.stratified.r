@@ -4,37 +4,8 @@ sdraw.stratified <- function(x, n, type = "BAS", stratified.by = NULL, ...){
     stop("stratified.by is required for SpatialPoints or SpatialLines or if n is a data frame")
   }
   
-  if(!is.data.frame(n)){
-    if(length(n) == 1){
-      n <- rep(n, length(x))
-    }
-    else if(!(length(n) == length(x))){
-      stop("Invalid input for n")
-    }
-  }
-    
   if(!is.null(stratified.by)){
     strat.vals <- eval(parse(text = paste0("x@data$", stratified.by)))
-    
-    # Rearrange into the correct order if n is a data frame
-    if(is.data.frame(n)){
-      if(!(any(colnames(n) == "n") & any(colnames(n) == stratified.by))){
-        stop(paste("n must have columns named 'n' and", stratified.by))
-      }
-      n.names <- eval(parse(text = paste0("n$", stratified.by)))
-      
-      new.n <- c()
-      for(i in 1:nrow(n)){
-        for(j in 1:length(x))
-        {
-          if(n.names[i] == strat.vals[j]){
-            new.n[j] <- n$n[i]
-            break
-          }
-        }
-      }
-      n <- new.n
-    }
     
     # Sort rows into strata based on entries in strat.vals
     unique.strat.vals <- unique(strat.vals)
@@ -50,6 +21,41 @@ sdraw.stratified <- function(x, n, type = "BAS", stratified.by = NULL, ...){
         }
       }
     }
+    
+    # Rearrange into the correct order if n is a data frame
+    if(is.data.frame(n)){
+      if(!(any(colnames(n) == "n") & any(colnames(n) == stratified.by))){
+        stop(paste("n must have columns named 'n' and", stratified.by))
+      }
+      n.names <- eval(parse(text = paste0("n$", stratified.by)))
+      
+      if(length(unique.strat.vals) != nrow(n)){
+        stop("Number of rows in n does not equal the number of strata")
+      }
+      
+      new.n <- c()
+      for(i in 1:nrow(n)){
+        for(j in 1:length(unique.strat.vals))
+        {
+          if(n.names[i] == unique.strat.vals[j]){
+            new.n[j] <- n$n[i]
+            break
+          }
+        }
+      }
+      n <- new.n
+      if(length(unique.strat.vals) != length(n)){
+        stop("Error in rearranging n. Possibly strata name in n not found in spatial data frame")
+      }
+    }
+    else{
+      if(length(n) == 1){
+        n <- rep(n, length(x))
+      }
+      else if(!(length(n) == length(x))){
+        stop("Invalid input for n")
+      }
+    }
   }
   else{
     for(j in 1:length(x)){
@@ -57,8 +63,6 @@ sdraw.stratified <- function(x, n, type = "BAS", stratified.by = NULL, ...){
       strata[[j]] <- x[j,]
     }
   }
-  
-  
   
   # Run sdraw function (with stratified = F) length(x) times
   raw.samples <- list()
