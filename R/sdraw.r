@@ -28,10 +28,13 @@
 #'      (Stevens and Olsen, 2004) 
 #' \item \code{"SRS"}  : Simple Random Sampling 
 #' }
+#' 
+#' @param stratified Boolean. Should the sample drawing be stratified? See documentation for 
+#' \code{sdraw.stratified.r} for more details.
 #'
 #' @param ... Optional arguments passed to underlying sample type method.  See DETAILS.
 #'  
-#' @details This is a S4 generic method for types \code{SpatialPoints*}, \code{SpatialLines*}, 
+#' @details This is a generic method for types \code{SpatialPoints*}, \code{SpatialLines*}, 
 #' and \code{SpatialPolygons*} objects.  
 #'  
 #' \code{HAL, BAS, GRTS, SRS} are fixed-size designs (return exactly \code{n} points).
