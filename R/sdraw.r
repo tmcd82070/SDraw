@@ -105,12 +105,3 @@ sdraw <- function(x, n, type="BAS", stratified=F, ...){
   }
   ans
 }
-
-#setMethod("sdraw", c(x="SpatialPolygons"), definition = sdraw.SpatialPolygons)
-
-#setMethod("sdraw", c(x="SpatialLines"), definition = sdraw.SpatialLines)
-
-#setMethod("sdraw", c(x="SpatialPoints"), definition = sdraw.SpatialPoints)
-
-#setMethod("sdraw.stratified", definition = sdraw.stratified)
-

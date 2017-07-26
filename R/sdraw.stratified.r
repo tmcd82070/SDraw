@@ -63,7 +63,7 @@
 #' a \code{pointType} attribute.  See documentation for the underlying sampling routine
 #' to interpret extra output point attributes.  
 #' 
-#' @author Aidan McDonald
+#' @author Aidan McDonald, WEST, Inc.
 #'
 #' @references 
 #'  Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) "BAS: 
@@ -136,8 +136,11 @@ sdraw.stratified <- function(x, n, type = "BAS", stratified.by = NULL, ...){
     }
   }
   else{
+    if(length(n) == 1){
+      n <- rep(n, times = length(x))
+    }
+    strata <- vector("list", length = length(x))
     for(j in 1:length(x)){
-      strata <- vector("list", length = length(x))
       strata[[j]] <- x[j,]
     }
   }
@@ -150,8 +153,10 @@ sdraw.stratified <- function(x, n, type = "BAS", stratified.by = NULL, ...){
   
   # Merge the length(x) individual SpatialPointsDataFrames into 1 SpatialPointsDataFrame
   ans <- raw.samples[[1]]
-  for(i in 2:length(strata)){
-    ans <- rbind(ans, raw.samples[[i]])
+  if(length(raw.samples)>1){
+    for(i in 2:length(strata)){
+      ans <- rbind(ans, raw.samples[[i]])
+    }
   }
   ans
 }
