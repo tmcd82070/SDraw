@@ -44,9 +44,6 @@ halt.pts <- halton(10,dim=2,start=u,bases=c(2,3))
 
 
 }
-\author{
-Trent McDonald
-}
 \references{
 Robertson, B.L., J. A. Brown, T. L. McDonald, and P. Jaksons
 (2013) "BAS: Balanced Acceptance Sampling of Natural Resources", Biometrics,
@@ -55,4 +52,6 @@ v69, p. 776-784.
 \seealso{
 \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{bas.polygon}}
 }
-
+\author{
+Trent McDonald
+}

@@ -68,10 +68,9 @@ points(pt$x, pt$y, col=6, pch=16, cex=2)
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{halton.indices.CRT}}, \code{\link{halton.indices}}
 }
-
+\author{
+Trent McDonald
+}

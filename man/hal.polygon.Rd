@@ -125,12 +125,11 @@ points( samp, pch=15, col="blue")
   
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{hal.line}}, \code{\link{hal.point}}, \code{\link{spsample}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

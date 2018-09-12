@@ -44,11 +44,10 @@ This routine computes the element-wise gcd and
  cbind(x$a*x$t + x$b*x$s, x$gcd)
  
 }
-\author{
-Trent McDonald
-}
 \references{
 Code is based on the following Wikipedia pseudo-code: 
  \url{https://en.wikipedia.org/wiki/Extended_Euclidean_algorithm}
 }
-
+\author{
+Trent McDonald
+}

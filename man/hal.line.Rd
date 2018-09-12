@@ -150,13 +150,12 @@ samp <- hal.line( HI.coast, 100, J=c(5,4), balance="2D",
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{bas.line}}, \code{\link{hal.point}}, \code{\link{hal.polygon}}, 
 \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

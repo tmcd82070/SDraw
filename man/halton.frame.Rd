@@ -84,10 +84,9 @@ random.start <- floor( runif(1,0,nrow(frame)-1 ) )
 samp <- frame[ ( ((0:(n-1))+random.start) \%\% nrow(frame) ) + 1, ]
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{halton.indices}}
 }
-
+\author{
+Trent McDonald
+}

@@ -80,12 +80,11 @@ samp <- sss.point( df, 5 )
 samp <- sss.point( df[order(df$b),], 5 )
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{sss.polygon}}, \code{\link{sss.line}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

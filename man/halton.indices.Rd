@@ -118,10 +118,9 @@ samp <- frame[ind,]  # draw sample
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{halton.frame}}, \code{\link{hal.point}}
 }
-
+\author{
+Trent McDonald
+}

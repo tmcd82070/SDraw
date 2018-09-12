@@ -75,10 +75,9 @@ n.boxes <- c(16,9)
 tmp.crt <- halton.indices.CRT(tmp, n.boxes)
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{halton.indices.vector}}, \code{\link{halton.indices}}
 }
-
+\author{
+Trent McDonald
+}

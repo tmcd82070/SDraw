@@ -109,13 +109,12 @@ samp <- hal.point( WA.cities, 100, J=c(10,4))
   
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{hal.line}}, \code{\link{hal.polygon}}, \code{\link{sdraw}}, 
 \code{\link{bas.point}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

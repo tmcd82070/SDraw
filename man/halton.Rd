@@ -46,9 +46,6 @@ halton(10,2)
 halton(10,2, floor(runif(2,max=100000))) # A random-start 2-D Halton sequence of length 10
 
 }
-\author{
-Trent McDonald
-}
 \references{
 van der Corput sequences are described here:
 \url{http://en.wikipedia.org/wiki/Van_der_Corput_sequence}
@@ -63,6 +60,8 @@ Robertson, B.L., J. A. Brown, T. L. McDonald, and P. Jaksons (2013) BAS:
 \seealso{
 \code{\link{halton.indices}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

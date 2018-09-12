@@ -57,12 +57,11 @@ df <- data.frame( a=1:100, b=runif(100) )
 samp <- srs.point( df, 5 )   
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{srs.polygon}}, \code{\link{srs.line}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

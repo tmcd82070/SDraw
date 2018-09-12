@@ -35,4 +35,3 @@ for the 23 counties in the state of Wyoming.
 \examples{
 plot(WY, col=rainbow(length(WY)))
 }
-

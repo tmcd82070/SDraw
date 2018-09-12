@@ -63,9 +63,6 @@ plot( HI.sample[ HI.sample$pointType == "OverSample", ], pch=1, add=TRUE, col="b
 
 
 }
-\author{
-Trent McDonald
-}
 \references{
 Stevens, D. L. and A. R. Olsen (1999). Spatially restricted
 surveys over time for aquatic resources. Journal of Agricultural,
@@ -79,6 +76,8 @@ natural resources. Journal of the American Statistical Association 99,
 \code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hal.line}}
 , \code{\link{spsample}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

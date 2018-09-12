@@ -174,12 +174,11 @@ WA.samp <- sss.polygon( WA, 100, spacing=c(2,3), triangular=TRUE )
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{bas.polygon}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

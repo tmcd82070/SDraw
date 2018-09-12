@@ -95,10 +95,9 @@ for(d in 1:ncol(hl)){
 # Lattice of approx 1000 points over bounding box of spatial object
 hl <- halton.lattice( bbox(HI.coast), N=1000 )
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{halton.lattice}}, \code{\link{hal.polygon}}
 }
-
+\author{
+Trent McDonald
+}

@@ -92,12 +92,11 @@ for(d in 1:2){
 
 # To explore, re-run the above changing J, eta, and triangular, 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{hal.polygon}}, \code{\link{halton.lattice}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

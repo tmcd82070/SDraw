@@ -67,12 +67,11 @@ points( HI.samp, col="red", pch=16 )
 # Inspect attributes of points with HI.samp@data
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{srs.polygon}}, \code{\link{srs.point}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

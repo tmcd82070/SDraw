@@ -91,9 +91,6 @@ points( WA_sample[ WA_sample$siteID >  100, ], pch=1 )
 
 
 }
-\author{
-Trent McDonald
-}
 \references{
 Robertson, B.L., J. A. Brown, T. L. McDonald, and P. Jaksons
 (2013) "BAS: Balanced Acceptance Sampling of Natural Resources", Biometrics,
@@ -102,6 +99,8 @@ v69, p. 776-784.
 \seealso{
 \code{\link{bas.line}}, \code{\link{bas.point}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

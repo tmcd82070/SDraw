@@ -64,4 +64,3 @@ WA.srs.tess <- voronoi.polygons(WA.srs)
 rel.balance <- var(WA.bas.tess$area)/var(WA.srs.tess$area)
 
 }
-

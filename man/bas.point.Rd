@@ -84,12 +84,11 @@ bas.point( WA.cities, 100)
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{spsample}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

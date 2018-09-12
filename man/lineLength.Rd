@@ -50,10 +50,9 @@ fire a warning if \code{x} is un-projected (i.e., lat-long).
 l <- lineLength( HI.coast ) / 1000
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{sp::SpatialLines-class}
 }
-
+\author{
+Trent McDonald
+}

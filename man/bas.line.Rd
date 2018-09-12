@@ -129,12 +129,11 @@ points( samp, pch=16, col="red" )
 
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{bas.line}}, \code{\link{bas.polygon}}, \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

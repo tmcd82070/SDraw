@@ -62,9 +62,6 @@ plot( WA.city.samp[ WA.city.samp$pointType == "OverSample", ], pch=2, add=TRUE, 
 
 
 }
-\author{
-Trent McDonald
-}
 \references{
 Stevens, D. L. and A. R. Olsen (1999). Spatially restricted
 surveys over time for aquatic resources. Journal of Agricultural,
@@ -78,6 +75,8 @@ natural resources. Journal of the American Statistical Association 99,
 \code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hal.point}},
  \code{\link{sdraw}}
 }
+\author{
+Trent McDonald
+}
 \keyword{design}
 \keyword{survey}
-

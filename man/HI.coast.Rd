@@ -34,4 +34,3 @@ outlining the coast of the Hawaiian Islands, USA.
 plot(HI.coast)
 
 }
-

@@ -32,10 +32,9 @@ fire a warning if \code{x} is un-projected (i.e., lat-long).
 a <- polygonArea( WA ) / (100*100)
 
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{sp::SpatialPolygons-class}
 }
-
+\author{
+Trent McDonald
+}

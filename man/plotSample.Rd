@@ -59,10 +59,9 @@ plot(openMap)
 plotSample(samp, WY, add=TRUE, poly.fill=FALSE)
 }
 }
-\author{
-Trent McDonald
-}
 \seealso{
 \code{\link{sdraw}}
 }
-
+\author{
+Trent McDonald
+}

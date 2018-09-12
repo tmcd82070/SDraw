@@ -36,4 +36,3 @@ cbind(p[-length(p)][p.diff==2], p[-1][p.diff==2])
 \author{
 Trent McDonald
 }
-
