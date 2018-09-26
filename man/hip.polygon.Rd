@@ -70,7 +70,7 @@ the sample.
 # Draw sample of cities in the state of Washington
 data(WA)
 samp <- hip.polygon( WA, 100 )
-  
+
 
 }
 \seealso{
