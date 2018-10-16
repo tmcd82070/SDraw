@@ -28,7 +28,7 @@
 #'
 #' # Take a simple HIP lattice for illustration
 #' # make a plot for test
-#' plot(x = c(0,1), y = c(0,1), xlim = c(0,1), ylim=c(0,1))
+#' plot(x = c(0,1), y = c(0,1), type="n")
 #'
 #' # create data.frame of points to plot
 #' pnts <- matrix(c(0.2, 0.2,

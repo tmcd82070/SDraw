@@ -1,30 +1,36 @@
 #' @export hip.point
 #' 
-#' @title  Draws a Halton Iterative Partition (HIP) sample from a discrete 
-#' 2-dimensional (point) resource. 
+#' @title  hip.point - Halton Iterative Partition (HIP) of point resources. 
 #' 
 #' @description  Draws a Halton Iterative Partition (HIP) sample from a 
 #' \code{SpatialPoints*} object. 
 #' 
 #' @details  \bold{A brief description of Halton Iterative Partition (HIP) sampling for points:} 
-#' Given a set of Halton Iterative Partition parameters \code{x} (SpatialPoints* object) and \code{n} (sample size),
-#' a lattice of Halton boxes is constructed iteratively over the bounding box of the input points.  
-#' This results in enough Halton boxes on the bounding box to uniquely cover all points in the point resource (one box
-#' for each point in the point resource). 
-#' The Halton index of all boxes is computed and assigned to points that lie 
+#' Given a set of Halton Iterative Partition parameters
+#' \code{x} (SpatialPoints* object) and \code{n} (sample size),
+#' a lattice of Halton boxes is constructed iteratively over the bounding box 
+#' of \code{x}.  
+#' This results in enough Halton boxes on the bounding box to uniquely 
+#' cover the point resource.  That is, one and only one point per 
+#' box.   
+#' The Halton index (the inverse of the Halton sequence) of all boxes 
+#' is computed and assigned to points that lie 
 #' in each box. Finally, a random number between 0 and the largest Halton index is 
-#' drawn, and the next \code{n} coordinates in the mapped real numbers are taken as 
-#' the sample. 
+#' drawn, and the next \code{n} points associated with the 
+#' next \code{n} Halton boxes are taken as 
+#' the sample, wrapping to the beginning if necessary. 
 #' 
-#' @param n Target sample size.  Target number of locations to draw from the set of points
+#' @param n Sample size.  The number locations to draw from the set of points
 #' contained in \code{x}. If the sample size returned is less than the desired sample size,
 #' increase \code{n} until the desired sample size is reached.
 #' 
-#' @param x A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
-#' This object must contain at least 1 point. \code{x} is the 2-dimensional point resource
-#' from which samples are taken.
+#' @param x A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object
+#' representing the 2-dimensional point resource
+#' from which samples are taken. 
+#' This object must contain at least 1 point. 
 #' 
-#' @return A \code{SpatialPoints} containing locations in the HIP sample.
+#' @return A \code{SpatialPoints} objects containing locations in the 
+#' HIP sample, in HIP order.
 #'
 #' Additional attributes of the output object, beyond those which 
 #' make it a \code{SpatialPoints}, are:
@@ -58,15 +64,13 @@
 #'samp <- hip.point( WA.cities, 100 )
 #'   
 #' 
-hip.point <- function( x, n ){
+hip.point <- function( x, n, J=NULL ){
   
   ########################## Check inputs ###########################################
   
   if( !(inherits(x, "SpatialPoints"))  ) stop("Must call hal.point with a SpatialPoints* object.")
   
   bases <- c(2,3) # Fix bases to 2 and 3
-  
-  J <- NULL
   
   #   Check n
   if( n < 1 ){
@@ -78,58 +82,31 @@ hip.point <- function( x, n ){
   
   if ( n > N ) {
     n <- N
-    warning("Sample size is greater than points available to sample from. 
-            n has been reset to the maximum possible points to sample from.")
+    warning("Sample size is greater than points in the sample frame. 
+            n has been reset to the total number of points (i.e., drawing a census).")
   }
   
   #######################################################################################
   
   #######################################################################################
-  # If lattice is not specified, set approximate number of boxes
-  # to number of points in frame, so approximately one per box.
+  # If lattice is not specified, set number of boxes
+  # to greater than number of points in frame
   if(is.null(J)){
-    # bb <- bbox( x )
-    # Make call to hip.lattice to partition the box
-    box <- matrix(c(0,1,0,1), byrow = TRUE, nrow = 2)
-    
-    D <- nrow( box )   # number of dimensions
-    
-    if(D != 2) { stop("HIP point implemented for 2-dimensional objects.
-                      Use HIP.line for line objects.") }
-    
-    delta <- apply( box, 1, diff )   # size/extent of box in each dimension
-    
-    # Set default values of J so Halton boxes are as close to squares as possible
-    n.boxes <- rep(NA,D)  # n boxes in each dimension
-    for( i in 1:D ){
-      n.boxes[i] <- ((delta[i]^(D-1))/prod(delta[-i]) * N)^(1/D)
-    }
-    
-    # compute J which gives something close to n
-    J <- round( log(n.boxes)/log(bases) )
-    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
+    J <- getJ( N, bases )
   }
-  # While J yields less than the number of points in the space, 
-  # increase J until the space is covered by at least one box each
-  while ( prod(bases^J) < N ) {
-    if ( bases[1]^J[1] > bases[2]^J[2] ) {
-      J[2] <- J[2] + 1
-    } else {
-      J[1] <- J[1] + 1
-    }
-  }
-  #######################################################################################
+  B <- prod(bases ^ J)
+
   
-  # construct box from coordinates
-  coordis <- coordinates(x)
+  ## ---- Before the partition, construct indices of boxes to be sampled
+  k <- trunc( runif(1, 0, B) )
+  Sk <- (k:(k+n-1)) %% B
+  box <- bbox(x)
+  coords <- coordinates(x)
+
+  ## ---- Partion the points
+  hipPartition <- hip.partition(coords, Sk, J, bases)
   
-  if (length(coordis[1,]) > 2) {
-    stop("hip.point only implemented for 2 dimensions.")
-  }
-  
-  # Obtain lattice in Halton order
-  latt <- hip.lattice.polygon( box = box, J = J, bases = bases )
-  
+  HERE!!!
   ############# My halton index function ##################################
   hal.ind <- function(boxn) {
     ## Scale incoming points to between 0 and 1
@@ -157,6 +134,10 @@ hip.point <- function( x, n ){
   # Get halton indices for each box
   hal.indices <- lapply(latt, hal.ind)
   hal.indices <- unlist(hal.indices)
+  
+  # If you want a plot of the Halton boxes to check:
+  # hal.indices <- hal.indices %% prod(bases^J)
+  # plotLattice(latt, indices=hal.indices, J=J)
   
   ########################################################################
   ### Here are the guts of HIP.point. We correctly order the points to 

@@ -44,7 +44,6 @@ SDraw*.zip
 SDraw*.tar.gz
 SDraw*.piz
 .Rproj.user
-SDraw.Rproj
 .Rhistory
 .RData
 SDrawExFrames.RData
