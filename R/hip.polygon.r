@@ -58,7 +58,7 @@
 #' }
 #' 
 #' 
-#' @author Michael Kleinsasser
+#' @author Michael Kleinsasser, Aidan McDonald
 #' 
 #' @seealso \code{\link{hip.line}}, \code{\link{hip.point}}, \code{\link{SDraw}}, 
 #' \code{\link{bas.point}}
@@ -71,14 +71,14 @@
 #'samp <- hip.polygon( WA, 100 )
 #'   
 #' 
-hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
+hip.polygon <- function( x, n, bases=c(2,3), J=c(8,5)){
   
   ####################  Check inputs #################################################
   
   # Stop function if user wants 3-D sampling
   if (length(bases) > 2) {
     stop("HIP polygon sampling not implemented for dimensions greater
-         than 2. ")
+         than 2.")
   }
   # Check n
   if( n < 1 ){
@@ -96,37 +96,7 @@ hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
     stop("Bases must be 2-dimensional, i.e. c(2,3)")
   }
   
-  ####################################################################################
-  
-  N <- n
-  
-  #################### If J and or Bases not given, construct sizes based on n ########
-  
-  if(is.null(J)){
-    # bb <- bbox( x )
-    # Make call to hip.lattice to partition the box
-    box <- matrix(c(0,1,0,1), byrow = TRUE, nrow = 2)
-    
-    D <- nrow( box )   # number of dimensions
-    
-    if(D != 2) { stop("HIP point implemented for 2-dimensional objects.
-                      Use HIP.line for line objects.") }
-    
-    delta <- apply( box, 1, diff )   # size/extent of box in each dimension
-    
-    # Set default values of J so Halton boxes are as close to squares as possible
-    n.boxes <- rep(NA,D)  # n boxes in each dimension
-    for( i in 1:D ){
-      n.boxes[i] <- ((delta[i]^(D-1))/prod(delta[-i]) * N)^(1/D)
-    }
-    
-    # compute J which gives something close to n
-    J <- round( log(n.boxes)/log(bases) )
-    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
-  }
-  
   #####################################################################################
-  
   
   # construct box from coordinates
   box <- sp.df@bbox
@@ -135,9 +105,8 @@ hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
   delta <- apply( box, 1, diff )   
   
   # Make call to hip.lattice to partition the box
-  latt <- hip.lattice.polygon( box = box, J = J, bases = bases )
+  latt <- hip.lattice.polygon( box = box, J = J, bases = bases)
   
-
   ############# My halton index function ##################################
   hal.ind <- function(boxn) {
     ## Scale incoming points to between 0 and 1
@@ -168,8 +137,7 @@ hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
   hal.indices <- unlist(hal.indices)
   
   # Get a random start from the the set of integers 0 to B-1 i.e. k to k+n-1 mod B, where k is random
-  Kstart <- sample(0:(prod(bases^J)-1), 1)
-  
+  B <- prod(bases^J)
   
   # take a random draw from a box
   rudraw <- function(boxl) {
@@ -179,71 +147,43 @@ hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
     return(coord) # Return X,Y coordinate of draw
   }
   
-  # # Get box in latt with index Kstart from hal.ind
-  # Subsets latt to the matrices we want to sample, in the correct order
-  drawSet <- latt[match(Kstart, hal.indices)]
-  beginbox <- drawSet[[1]]
-  
-  # get first point to draw
-  beginpt <- rudraw(beginbox)
-  beginpt <- rbind(beginpt, beginpt); rownames(beginpt) <- c("beginpt", "2")
-  
-  # Convert pnts to SpatialPointsDataFrame
-  pspac <- SpatialPointsDataFrame(beginpt, data.frame(id=1:2))
-  proj4string(pspac) <- proj4string(sp.df)
-  pt.in.poly <- sp::over( x = pspac, y = sp.df )
-  
-  # If beginpt is not in poygon, loop until one is
-  while (is.na(pt.in.poly[1,1])) {
-    # Generate new first box to draw from
-    Kstart <- sample(0:(prod(bases^J)-1), 1)
-    # Get box in latt with index Kstart from hal.ind
-    # Subsets latt to the matrices we want to sample, in the correct order
-    beginbox <- latt[match(Kstart, hal.indices)]
+  # Until the first sample is in the polygon, randomly choose starting box and sample
+  pointInPolygon <- FALSE
+  while(!pointInPolygon){
+    # Randomly choose index of first box
+    kStart <- sample(0:(B-1), 1)
     
-    # get first point to draw
-    beginpt <- rudraw(beginbox[[1]])
-    beginpt <- rbind(beginpt, beginpt); rownames(beginpt) <- c("beginpt", "2")
+    # Draw sample from first box
+    point <- rudraw(latt[[match(kStart,hal.indices)]])
     
-    # Convert pnts to SpatialPointsDataFrame
-    pspac <- SpatialPointsDataFrame(beginpt, data.frame(id=1:2))
+    # Check if sample is in the polygon
+    point <- rbind(point, point)
+    rownames(point) <- c('samplePointx','samplePointy')
+    pspac <- SpatialPointsDataFrame(point, data.frame(id=1:2))
     proj4string(pspac) <- proj4string(sp.df)
-    pt.in.poly <- sp::over( x = pspac, y = sp.df )
+    pointInPolygon <- !is.na(sp::over(x = pspac, y = sp.df)[1,1])
   }
+  draws = list()
+  draws[[1]] <- point[1,]
   
-  # If it is, do this:
-  Kvec <- Kstart:(Kstart + n - 1) %% prod(bases^J)
-  
-  # Subsets latt to the matrices we want to sample, in the correct order
-  drawSet <- latt[match(Kvec, hal.indices)]
-  
-  draws <- list()
-  # Add first draw back to list
-  draws[[1]] <- beginpt[1,]
-  ic <- 1; i <- 1; ndraw <- 1 # need = TRUE
-  while(ndraw < n) {
-    i <- i + 1; ic <- ic + 1
-    if (ic > length(drawSet)) ic <- 1 # reset i because end of Kvec reached
-    # Make a draw from Kvec at the appropriate position
-    draws[[i]] <- rudraw(drawSet[[ic]])
-    # If the draw is not in the poygon, move Kvec up one and repeat process
-    pt <- rbind(draws[[i]], draws[[i]]); rownames(pt) <- c("pt", "2")
-    pspac <- SpatialPointsDataFrame(pt, data.frame(id=1:2))
-    proj4string(pspac) <- proj4string(sp.df)
-    pt.in.poly <- sp::over( x = pspac, y = sp.df )
+  # Choose remaining samples from successive halton index boxes, skipping boxes for which the sample is not in the polygon
+  index <- kStart
+  for(i in 2:n){ # For each remaining sample
+    pointInPolygon <- FALSE
+    while(!pointInPolygon){
+    index <- (index + 1)%%B # Go to next halton index, go back to 0 if we reach B
     
-    while(is.na(pt.in.poly[1,1])) {
-      ic <- ic + 1
-      if (ic > length(drawSet)) ic <- 1 # reset i because end of Kvec reached
-      # Make a draw from Kvec at the appropriate position
-      draws[[i]] <- rudraw(drawSet[[ic]])
-      # If the draw is not in the poygon, move Kvec up one and repeat process
-      pt <- rbind(draws[[i]], draws[[i]]); rownames(pt) <- c("pt", "2")
-      pspac <- SpatialPointsDataFrame(pt, data.frame(id=1:2))
-      proj4string(pspac) <- proj4string(sp.df)
-      pt.in.poly <- sp::over( x = pspac, y = sp.df )
+    # Draw sample
+    point <- rudraw(latt[[match(index,hal.indices)]])
+    
+    # Check if sample is in polygon
+    point <- rbind(point, point)
+    rownames(point) <- c('samplePointx','samplePointy')
+    pspac <- SpatialPointsDataFrame(point, data.frame(id=1:2))
+    proj4string(pspac) <- proj4string(sp.df)
+    pointInPolygon <- !is.na(sp::over(x = pspac, y = sp.df)[1,1])
     }
-    ndraw <- ndraw + 1
+    draws[[i]] <- point[1,]
   }
   
   draws <- data.frame(matrix(data = unlist(draws), byrow = TRUE, ncol = 2))
@@ -270,5 +210,5 @@ hip.polygon <- function( x, n, bases=c(2,3), J = NULL ){
 # samp<- hip.polygon(1000, WA)
 # plot(WA)
 # points(samp)
-
+# points(draws[[1]][1],draws[[1]][2], col="red")
 

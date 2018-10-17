@@ -50,40 +50,11 @@
 #' }
 #' 
 #' 
-hip.lattice.polygon <- function(box, J = NULL, bases, ...) {
+hip.lattice.polygon <- function(box, J, bases) {
   
   delta <- apply( box, 1, diff )   # size/extent of box in each dimension
-  
   D <- nrow( box ) # number of dimensions
-  
-  if(is.null(bases)){ # If bases not specified, retrieve them
-    
-    bases <- primes(D) ## where is primes function
-    
-  } else if(length(bases)!=D){
-    
-    stop("Dimensions must equal length of bases. Make nrow(box) == length(bases)")
-    
-  }
-  
-  if (is.null(J)) { # If J is not specified, construct J to make the boxes as square as possible
-    
-    n.boxes <- rep(NA,D)  # n boxes in each dimension
-    for( i in 1:D ){
-      n.boxes[i] <- ((delta[i]^(D-1))/prod(delta[-i]) * N)^(1/D)
-    }
-    
-    # compute J which gives something close to n
-    J <- round( log(n.boxes)/log(bases) )
-    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
-    n.boxes <- bases^J
-    
-  } else {
-    
-    J <- ifelse(J <= 0,1,J)  # ensure all J > 0
-    n.boxes <- bases^J
-    
-  }
+  n.boxes <- bases^J
   
   # Function to find the split points in each dimension 
   splitPoints <- function(givenBox, base, dimension) { # Remove arguments from function because everything is local?
@@ -93,23 +64,19 @@ hip.lattice.polygon <- function(box, J = NULL, bases, ...) {
     # gets length of x and y dimensions of givenBox to split
     deltaSplit <- apply(givenBox, 1, diff)
     
-    
     lengthCoor <- deltaSplit[dimension] / base # length of space from old coordinate to new coordinate in each dimension
     
-    
-    numboxes <- base # How many boxes are we returning as a list?
-    
     # Store coordinates of splits 
-    splits <- matrix(data = NA, nrow = (numboxes * 2), ncol = 2)
+    splits <- matrix(data = NA, nrow = (base * 2), ncol = 2)
     count <- 0
     if (dimension == 1) {
-      for(i in 1: (numsplits + 1)) {
+      for(i in 1:base) {
         splits[i+count,] <- c(givenBox[1,1] + (i-1)*lengthCoor, givenBox[2,1])
         splits[i+count+1,] <- c(givenBox[1,1] + i*lengthCoor, givenBox[2,2]) 
         count = count + 1
       }
     } else if (dimension == 2) {
-      for(i in 1: (numsplits + 1)) {
+      for(i in 1:base) {
         splits[i+count,] <- c(givenBox[1,1], givenBox[2,1] + (i-1)*lengthCoor)
         splits[i+count+1,] <- c(givenBox[1,2], givenBox[2,1] + i*lengthCoor) 
         count = count + 1
@@ -121,7 +88,7 @@ hip.lattice.polygon <- function(box, J = NULL, bases, ...) {
     # Return list of matrix objects, with each storing the coordinates of new boxes
     listSplit <- list()
     
-    for(i in 1:(numboxes)) {
+    for(i in 1:(base)) {
       listSplit[[i]] <- t(splits[(i*2 - 1):(i*2),])
     }
     
