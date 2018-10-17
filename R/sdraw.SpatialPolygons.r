@@ -9,12 +9,13 @@
 sdraw.SpatialPolygons <- function(x, n, type, ...){
   
   ans <- switch(type,
-    HAL = hal.polygon( x, n, ...), 
-    BAS = bas.polygon( x, n ), 
-    SSS = sss.polygon( x, n, ...),
-    SRS = srs.polygon( x, n, ...),
-    GRTS = grts.polygon( x, n, ...), 
-    stop(paste("Invalid SpatialPolygons sample type =", type))
+                HAL = hal.polygon( x, n, ...), 
+                BAS = bas.polygon( x, n ), 
+                SSS = sss.polygon( x, n, ...),
+                SRS = srs.polygon( x, n, ...),
+                GRTS = grts.polygon( x, n, ...), 
+                HIP = hip.polygon( x, n, ...),
+                stop(paste("Invalid SpatialPolygons sample type =", type))
   )
   
   ans

@@ -21,12 +21,13 @@
 #' and this number is the expected sample size (i.e., average over many repetitions). 
 #' @param type Character, naming the type of sample to draw. Valid \code{type}'s are:
 #' \itemize{
-#' \item \code{"HAL"}  : HAlton Lattice sampling (Robertson et al., (Forthcoming)) 
+#' \item \code{"HAL"}  : Halton Lattice sampling (Robertson et al., (Forthcoming)) 
 #' \item \code{"BAS"}  : Balanced Acceptance Sampling (Robertson et al., 2013) 
 #' \item \code{"SSS"}  : Simple Systematic (grid) Sampling, with random start and orientation 
 #' \item \code{"GRTS"} : Generalized Random Tessellation Stratified sampling 
 #'      (Stevens and Olsen, 2004) 
 #' \item \code{"SRS"}  : Simple Random Sampling 
+#' \item \code{"HIP"}  : Halton Iterative Partitioning (Robertson et al., 2017)
 #' }
 #'
 #' @param ... Optional arguments passed to underlying sample type method.  See DETAILS.
@@ -34,7 +35,7 @@
 #' @details This is a S4 generic method for types \code{SpatialPoints*}, \code{SpatialLines*}, 
 #' and \code{SpatialPolygons*} objects.  
 #'  
-#' \code{HAL, BAS, GRTS, SRS} are fixed-size designs (return exactly \code{n} points).
+#' \code{HAL, BAS, GRTS, SRS, HIP} are fixed-size designs (return exactly \code{n} points).
 #' The \code{SSS} algorithm applied to Line and Point is fixed-sized.  The \code{SSS} method
 #' applied to Polygon frames is variable-sized. 
 #'
