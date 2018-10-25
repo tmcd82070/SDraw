@@ -18,7 +18,7 @@ hip.part.along.d <- function(d, J, pnts, box, samp, bases){
   bounds <- quantile(pnts[,d], seq(1,bases[d]-1)/bases[d])  
   bounds <- c(box[d,1], bounds, box[d,2])
   
-  here!!! make this recursive
+  #here!!! make this recursive
   
   for( j in 1:(length(bounds)-1)){
     ind1 <- (bounds[j] <= pnts[,d]) & (pnts[,d] < bounds[j+1])
@@ -28,8 +28,4 @@ hip.part.along.d <- function(d, J, pnts, box, samp, bases){
     lowerBoxes <- hip.partition(pnts[ind1,], lowerBox, sample, lowerJ, bases)
     
   }
-}  
-}
-  
-  
-}
+} 

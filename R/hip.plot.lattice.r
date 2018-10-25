@@ -1,3 +1,6 @@
+#' @title Plot a Halton Lattice over a polygon resource
+#' @export
+
 hip.plot.lattice <- function(resource, bases=c(2,3), J=c(8,5), sample=NULL){
   # Only works for polygons right now
   box <- resource@bbox

@@ -50,7 +50,7 @@
 #' }
 #' 
 #' 
-hip.lattice.polygon <- function(box, J, bases) {
+hip.lattice.polygon <- function(box, J, bases = c(2,3)) {
   
   delta <- apply( box, 1, diff )   # size/extent of box in each dimension
   D <- nrow( box ) # number of dimensions

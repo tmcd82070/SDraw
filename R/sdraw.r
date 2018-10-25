@@ -21,7 +21,6 @@
 #' and this number is the expected sample size (i.e., average over many repetitions). 
 #' @param type Character, naming the type of sample to draw. Valid \code{type}'s are:
 #' \itemize{
-#' \item \code{"HAL"}  : Halton Lattice sampling (Robertson et al., (Forthcoming)) 
 #' \item \code{"BAS"}  : Balanced Acceptance Sampling (Robertson et al., 2013) 
 #' \item \code{"SSS"}  : Simple Systematic (grid) Sampling, with random start and orientation 
 #' \item \code{"GRTS"} : Generalized Random Tessellation Stratified sampling 
@@ -35,7 +34,7 @@
 #' @details This is a S4 generic method for types \code{SpatialPoints*}, \code{SpatialLines*}, 
 #' and \code{SpatialPolygons*} objects.  
 #'  
-#' \code{HAL, BAS, GRTS, SRS, HIP} are fixed-size designs (return exactly \code{n} points).
+#' \code{BAS, GRTS, SRS, HIP} are fixed-size designs (return exactly \code{n} points).
 #' The \code{SSS} algorithm applied to Line and Point is fixed-sized.  The \code{SSS} method
 #' applied to Polygon frames is variable-sized. 
 #'
@@ -43,9 +42,9 @@
 #' sample time are passed via \code{...}.  For example, 
 #' spacing and "shape" of the grid in \code{sss.*} are controlled via
 #' \code{spacing=} and \code{triangular=}, while the
-#' \code{J} and \code{eta} parameters (which determine box sizes) 
-#' are passed to \code{hal.*}.  See documentation for 
-#' \code{hal.*}, \code{bas.*}, \code{sss.*}, \code{grts.*}, and \code{sss.*} 
+#' \code{J} parameter (which determine box sizes) 
+#' is passed to \code{hip.*}.  See documentation for 
+#' \code{hip.*}, \code{bas.*}, \code{sss.*}, \code{grts.*}, and \code{sss.*} 
 #' for the full list of  
 #' parameters which determine sample characteristics.  
 #'  
@@ -73,13 +72,13 @@
 #'  
 #' @seealso 
 #'  \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}},
-#' \code{\link{hal.polygon}}, \code{\link{hal.line}}, \code{\link{hal.point}}, 
+#' \code{\link{hip.polygon}}, \code{\link{hip.line}}, \code{\link{hip.point}}, 
 #' \code{\link{sss.polygon}}, \code{\link{sss.line}},  \code{\link{sss.point}},
 #' \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 #'    
 #' @examples 
 #'  WA.sample <- sdraw(WA, 100, "BAS")
-#'  WA.sample <- sdraw(WA, 100, "HAL", J=c(6,4))
+#'  WA.sample <- sdraw(WA, 100, "HIP", J=c(6,4))
 #'  WA.sample <- sdraw(WA, 100, "SSS", spacing=c(1,2))
 #'  
 

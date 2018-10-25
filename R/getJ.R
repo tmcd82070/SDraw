@@ -31,9 +31,9 @@ getJ <- function(N, bases=c(2,3)){
     stop("HIP point currently implemented for 2-dimensional objects only.") 
   }
   
-  if(D != nrow(box)){
-    stop("Number of dimensions in bounding box must equal number of bases.")
-  }
+  #if(D != nrow(box)){
+  #  stop("Number of dimensions in bounding box must equal number of bases.")
+  #}
   
   if(N <= 62208 & all(bases == c(2,3))){
     # because I cannot figure out an algorithm, replicate web table 1.
@@ -41,8 +41,8 @@ getJ <- function(N, bases=c(2,3)){
     j1 <- c(1,2,3,2,3,4,3,5,4,5,6,5,7,6,5,7,8,7,8)
     j2 <- c(1,1,1,2,2,2,3,2,3,3,3,4,3,4,5,4,4,5,5)
     B  <- bases[1]^j1 * bases[2]^j2
-    NlessB <- min(which( N <= B ))
-    J <- cbind(j1,j2)[NlessB,]
+    BlessN <- max(which( B <= N ))
+    J <- cbind(j1,j2)[BlessN,]
   } else{
     # For bigger N, do something reasonable.  
   

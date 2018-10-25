@@ -24,7 +24,7 @@
 #' However, if you are interested in the Halton sequence alone,
 #' not the coefficients, call function \code{halton()}.
 #' 
-#' @author Trent McDonals
+#' @author Trent McDonald
 #' 
 #' @export
 

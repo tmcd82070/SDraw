@@ -20,7 +20,7 @@ Imports:
 Depends:
     sp
 LazyData: true
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0.9000
 Suggests: knitr
 VignetteBuilder: knitr
 Collate:
@@ -41,9 +41,6 @@ Collate:
     'grts.line.r'
     'grts.point.r'
     'grts.polygon.r'
-    'hal.line.r'
-    'hal.point.r'
-    'hal.polygon.r'
     'halton.frame.r'
     'halton.indicies.CRT.r'
     'halton.indicies.r'
@@ -51,6 +48,12 @@ Collate:
     'halton.lattice.polygon.r'
     'halton.lattice.r'
     'halton.r'
+    'getJ.R'
+    'halton.coefficients.R'
+    'hip.part.along.d.R'
+    'hip.partition.r'
+    'hip.plot.lattice.r'
+    'plotLattice.R'
     'plot.sdrawSample.R'
     'primes.r'
     'sss.point.r'

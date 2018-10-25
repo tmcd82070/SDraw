@@ -1,4 +1,4 @@
-#' @export hip.lattice.polygon
+#' @export hip.partition
 #' 
 #' @title Halton Iterative Partition lattice inside a \code{bbox} (bounding box) matrix object.
 #' 
@@ -50,10 +50,10 @@
 #' }
 #' 
 #' 
-hip.partition <- function(pnts, box, sample, J, bases=NULL, ...) {
+hip.partition <- function(pnts, box, samp, J, bases=NULL, ...) {
   
   # Note: all coords must plot inside box.
-
+  box <- t(box)
   delta <- apply( box, 1, diff )   # size/extent of box in each dimension
   
   D <- nrow( box ) # number of dimensions

@@ -1,0 +1,41 @@
+---
+title: "HIP Sampling on Polygon Example"
+author: "Aidan McDonald"
+date: "October 17, 2018"
+output: "html_document"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This document demonstrates the process for using SDraw to generate and plot a Halton Iterative Partitioning (HIP) sample from a SpatialPolygons object.
+
+```{r import, echo=TRUE}
+library(SDraw)
+```
+
+## HIP Sampling
+
+In this example, we will use HIP to draw a spatially balanced sample of 25 points from the state of Washington. Usually, it is recommended to use a fine Halton lattice with $J = (8,5)$, but for ease of visualization we will use a coarser lattice with $J = (3,2)$.
+
+```{r sampling}
+data("WA")
+n <- 25
+J <- c(3,2)
+S <- sdraw(WA, n, "HIP", J = J)
+```
+
+## Plotting
+
+For HIP sampling, SDraw has a special plotting function that overlays the Halton lattice on the polygon.
+```{r plot}
+hip.plot.lattice(WA, J = J, sample = S)
+```
+
+## References
+
+*Robertson BL, McDonald T, Price CJ, Brown JA (2017) Halton iterative partitioning: spatially balanced sampling via partitioning. Environ Ecol Stat 25:305-323*
+

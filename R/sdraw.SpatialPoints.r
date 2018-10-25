@@ -9,7 +9,7 @@
 sdraw.SpatialPoints <- function(x, n, type, ...){
   
   ans <- switch(type,
-                HAL = hal.point( x, n, ...), 
+                HIP = hip.point( x, n, ...), 
                 BAS = bas.point( x, n ), 
                 GRTS = grts.point( x, n, ...),
                 SSS = sss.point( x, n, ...),
