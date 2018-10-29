@@ -1,8 +1,12 @@
 ---
-title: "HIP Sampling on Polygon Example"
+title: "Halton Iterative Partitioning (HIP) Sampling for Polygons"
 author: "Aidan McDonald"
 date: "October 17, 2018"
-output: "html_document"
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{HIP for polygon resources explained}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This document demonstrates the process for using SDraw to generate and plot a Halton Iterative Partitioning (HIP) sample from a SpatialPolygons object.
+This vignette demonstrates basic Halton Iterative Partitioning (HIP) sampling from a polygon resource.
 
 ```{r import, echo=TRUE}
 library(SDraw)

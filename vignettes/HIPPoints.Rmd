@@ -1,0 +1,53 @@
+---
+title: "Halton Iterative Partitioning (HIP) Sampling for Points"
+author: "Aidan McDonald"
+date: "October 29, 2018"
+output: html_document
+vignette: >
+  %\VignetteIndexEntry{HIP for point resources explained}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This vignette demonstrates basic Halton Iterative Partitioning (HIP) sampling from a point resource.
+
+```{r import, echo=TRUE}
+library(SDraw)
+```
+
+## Small Sample
+
+First, we will draw a HIP sample of 5 points from a resource of 14 points. This simple example will help demonstrate how HIP sampling from point resources works.
+
+```{r smallSample}
+n <- 5
+N <- 14
+x <- rnorm(N,0,1)
+y <- rnorm(N,0,1)
+sp <- SpatialPoints(cbind(x,y))
+plot(sp, pch=1)
+```
+
+HIP sampling first constructs a Halton lattice arounds the points such that the inclusion probability inside each box is the same. In the case of equiprobable points, each box will contain the same number of points. To do this, some points may be discarded from the potential sample. Then, a sequence of n consecutive index Halton boxes is selected and a point is sampled from each. Note that in SDraw's built-in "plot.lattice" option for HIP sampling, sampled points are shown in red, the indices of the selected Halton boxes are displayed in the boxes, and discarded points are maked with an X. Also, it is possible that not all halton boxes will be drawn since calculating every box is often unnecessary and therefore computationally wasteful.
+
+
+```{r smallSampling, echo=TRUE}
+s <- sdraw(sp, n, "HIP", plot.lattice=TRUE)
+```
+
+## Larger Sample
+Now, we will use HIP sampling on a larger point resource, the cities in the state of Washington.
+```{r largeSampling, echo=TRUE}
+data(WA.cities)
+n <- 150
+s <- sdraw(WA.cities, n, "HIP")
+plot(WA)
+points(WA.cities)
+points(s, col="red", pch=19)
+```
