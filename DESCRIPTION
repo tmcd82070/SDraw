@@ -2,7 +2,7 @@ Package: SDraw
 Type: Package
 Title: Spatially Balanced Sample Draws for Spatial Objects 
 Version: 2.1.4
-Date: 2016-07-13
+Date: 2018-10-3
 Author: person("Trent", "McDonald")
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for drawing samples, focusing on spatially balanced algorithms. Draws Halton Lattice (HAL), Balanced Acceptance Samples (BAS), Generalized Random Tesselation Stratified (GRTS), Simple Systematic Samples (SSS) and Simple Random Samples (SRS) from point, line, and polygon resources.  Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' objects from package 'sp'. 
@@ -20,56 +20,6 @@ Imports:
 Depends:
     sp
 LazyData: true
-RoxygenNote: 6.1.0.9000
 Suggests: knitr
 VignetteBuilder: knitr
-Collate:
-    'HI.coast.r'
-    'WA.cities.r'
-    'WA.r'
-    'WY.r'
-    'SDraw-package.r'
-    'sdraw.SpatialPoints.r'
-    'sdraw.SpatialLines.r'
-    'sdraw.SpatialPolygons.r'
-    'sdraw.r'
-    'bas.line.r'
-    'bas.point.r'
-    'bas.polygon.r'
-    'extended.gcd.r'
-    'grts.equi.r'
-    'grts.line.r'
-    'grts.point.r'
-    'grts.polygon.r'
-    'halton.frame.r'
-    'halton.indicies.CRT.r'
-    'halton.indicies.r'
-    'halton.indicies.vector.r'
-    'halton.lattice.polygon.r'
-    'halton.lattice.r'
-    'halton.r'
-    'getJ.R'
-    'halton.coefficients.R'
-    'hip.part.along.d.R'
-    'hip.partition.r'
-    'hip.plot.lattice.r'
-    'plotLattice.R'
-    'plot.sdrawSample.R'
-    'primes.r'
-    'sss.point.r'
-    'sss.line.r'
-    'sss.polygon.r'
-    'srs.polygon.r'
-    'srs.line.r'
-    'srs.point.r'
-    'merge.lines.r'
-    'aprox.r'
-    'max.U.r'
-    'polygonArea.r'
-    'lineLength.r'
-    'voronoi.polygons.r'
-    'zzz.r'
-    'hip.lattice.point.r'
-    'hip.lattice.polygon.r'
-    'hip.point.r'
-    'hip.polygon.r'
+RoxygenNote: 6.1.0

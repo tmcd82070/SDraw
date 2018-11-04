@@ -17,6 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This vignette demonstrates basic Halton Iterative Partitioning (HIP) sampling from a polygon resource.
 
+```{r include=FALSE}
+set.seed(328342)
+```
+
 ```{r import, echo=TRUE}
 library(SDraw)
 ```
@@ -31,13 +35,32 @@ n <- 25
 J <- c(3,2)
 S <- sdraw(WA, n, "HIP", J = J)
 ```
+ 
+The sample is produced in HIP order. 
+
+```{r}
+S
+```
 
 ## Plotting
 
-For HIP sampling, SDraw has a special plotting function that overlays the Halton lattice on the polygon.
+For HIP sampling, SDraw has a special plotting function for overlaying the Halton lattice on the polygon.
 ```{r plot}
 hip.plot.lattice(WA, J = J, sample = S)
 ```
+
+Note that boxes completely outside the state of Washington polygon cannot contain points.  When the sample size (n = `r n` in this case) is substantially less than the number of boxes with area in the polygon (68 Halton boxes overlap the state of Washington), each Halton box that contains a point will only contain one point because the sequence does not "cycle". As the number of points increases, eventually some boxes will have more than one point and it is possible for some boxes to contain zero points. Some boxes have more than one point, or zero points, because the randomly selected point falls outside the polygon of interest, and the sequence goes on to the next box.  
+
+The next figure shows a sample of size 70. Note that some boxes have two points while some have zero. Squares with zero points tend to be those with little area inside the state of Washington.
+
+
+```{r}
+n <- 70
+J <- c(3,2)
+S <- sdraw(WA, n, "HIP", J = J)
+hip.plot.lattice(WA, J = J, sample = S)
+```
+
 
 ## References
 

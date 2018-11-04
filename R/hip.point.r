@@ -1,5 +1,3 @@
-#' @export hip.point
-#' 
 #' @title  hip.point - Halton Iterative Partition (HIP) of point resources. 
 #' 
 #' @description  Draws a Halton Iterative Partition (HIP) sample from a 
@@ -51,7 +49,8 @@
 #' }
 #' 
 #' 
-#' @author Michael J. Kleinsasser
+#' @author Michael Kleinsasser\cr
+#' Aidan McDonald
 #' 
 #' @seealso \code{\link{hip.line}}, \code{\link{hip.polygon}}, \code{\link{SDraw}}, 
 #' \code{\link{bas.point}}
@@ -64,6 +63,9 @@
 #'samp <- hip.point( WA.cities, 100 )
 #'   
 #' 
+#' @export
+#' 
+
 hip.point <- function( x, n, J = NULL, plot.lattice = FALSE ){
   
   ########################## Check inputs ###########################################

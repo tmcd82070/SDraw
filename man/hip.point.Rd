@@ -2,22 +2,23 @@
 % Please edit documentation in R/hip.point.r
 \name{hip.point}
 \alias{hip.point}
-\title{Draws a Halton Iterative Partition (HIP) sample from a discrete 
-2-dimensional (point) resource.}
+\title{hip.point - Halton Iterative Partition (HIP) of point resources.}
 \usage{
-hip.point(x, n)
+hip.point(x, n, J = NULL, plot.lattice = FALSE)
 }
 \arguments{
-\item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
-This object must contain at least 1 point. \code{x} is the 2-dimensional point resource
-from which samples are taken.}
+\item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object
+representing the 2-dimensional point resource
+from which samples are taken. 
+This object must contain at least 1 point.}
 
-\item{n}{Target sample size.  Target number of locations to draw from the set of points
+\item{n}{Sample size.  The number locations to draw from the set of points
 contained in \code{x}. If the sample size returned is less than the desired sample size,
 increase \code{n} until the desired sample size is reached.}
 }
 \value{
-A \code{SpatialPoints} containing locations in the HIP sample.
+A \code{SpatialPoints} objects containing locations in the 
+HIP sample, in HIP order.
 
 Additional attributes of the output object, beyond those which 
 make it a \code{SpatialPoints}, are:
@@ -43,14 +44,19 @@ Draws a Halton Iterative Partition (HIP) sample from a
 }
 \details{
 \bold{A brief description of Halton Iterative Partition (HIP) sampling for points:} 
-Given a set of Halton Iterative Partition parameters \code{x} (SpatialPoints* object) and \code{n} (sample size),
-a lattice of Halton boxes is constructed iteratively over the bounding box of the input points.  
-This results in enough Halton boxes on the bounding box to uniquely cover all points in the point resource (one box
-for each point in the point resource). 
-The Halton index of all boxes is computed and assigned to points that lie 
+Given a set of Halton Iterative Partition parameters
+\code{x} (SpatialPoints* object) and \code{n} (sample size),
+a lattice of Halton boxes is constructed iteratively over the bounding box 
+of \code{x}.  
+This results in enough Halton boxes on the bounding box to uniquely 
+cover the point resource.  That is, one and only one point per 
+box.   
+The Halton index (the inverse of the Halton sequence) of all boxes 
+is computed and assigned to points that lie 
 in each box. Finally, a random number between 0 and the largest Halton index is 
-drawn, and the next \code{n} coordinates in the mapped real numbers are taken as 
-the sample.
+drawn, and the next \code{n} points associated with the 
+next \code{n} Halton boxes are taken as 
+the sample, wrapping to the beginning if necessary.
 }
 \examples{
 
@@ -65,7 +71,8 @@ samp <- hip.point( WA.cities, 100 )
 \code{\link{bas.point}}
 }
 \author{
-Michael J. Kleinsasser
+Michael Kleinsasser\cr
+Aidan McDonald
 }
 \keyword{design}
 \keyword{survey}

@@ -1,5 +1,3 @@
-#' @export hip.polygon
-#' 
 #' @title  Draws a Halton Iterative Partition (HIP) sample from a continuous 
 #' 2-dimensional (polygon) resource. 
 #' 
@@ -66,11 +64,14 @@
 #' @keywords design survey
 #' @examples
 #' 
-#'# Draw sample of cities in the state of Washington
-#'data(WA)
-#'samp <- hip.polygon( WA, 100 )
+#' # Draw sample of cities in the state of Washington
+#' data(WA)
+#' samp <- hip.polygon( WA, 100 )
 #'   
+#'
+#' @export
 #' 
+
 hip.polygon <- function( x, n, bases=c(2,3), J=c(8,5)){
   
   ####################  Check inputs #################################################

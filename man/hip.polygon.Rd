@@ -5,7 +5,7 @@
 \title{Draws a Halton Iterative Partition (HIP) sample from a continuous 
 2-dimensional (polygon) resource.}
 \usage{
-hip.polygon(x, n, bases = c(2, 3), J = NULL)
+hip.polygon(x, n, bases = c(2, 3), J = c(8, 5))
 }
 \arguments{
 \item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
@@ -70,7 +70,7 @@ the sample.
 # Draw sample of cities in the state of Washington
 data(WA)
 samp <- hip.polygon( WA, 100 )
-
+  
 
 }
 \seealso{
@@ -78,7 +78,7 @@ samp <- hip.polygon( WA, 100 )
 \code{\link{bas.point}}
 }
 \author{
-Michael Kleinsasser
+Michael Kleinsasser, Aidan McDonald
 }
 \keyword{design}
 \keyword{survey}
