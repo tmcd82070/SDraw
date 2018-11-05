@@ -83,7 +83,7 @@ natural resources. Journal of the American Statistical Association 99,
 262-278.
 }
 \seealso{
-\code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hal.polygon}}, 
+\code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hip.polygon}}, 
 \code{\link{bas.polygon}}, \code{\link{sdraw}}
 }
 \author{

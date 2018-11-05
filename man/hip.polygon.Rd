@@ -74,7 +74,7 @@ samp <- hip.polygon( WA, 100 )
 
 }
 \seealso{
-\code{\link{hip.line}}, \code{\link{hip.point}}, \code{\link{SDraw}}, 
+\code{\link{hip.point}}, \code{\link{SDraw}}, 
 \code{\link{bas.point}}
 }
 \author{

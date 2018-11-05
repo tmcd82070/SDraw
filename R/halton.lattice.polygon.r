@@ -10,7 +10,7 @@
 #' 
 #' @param J A 2X1 vector of base powers which determines the size and shape 
 #' of the Halton boxes. See additional description in help for 
-#' \code{\link{hal.polygon}} function.  
+#' \code{\link{hip.polygon}} function.  
 #' 
 #' @param N Approximate number of points to place in the lattice.  If \code{J} 
 #' is specified, it takes precedence.  If \code{J} is NULL, the 
@@ -24,7 +24,7 @@
 #' horizontal dimension, \code{eta[2]} is for the vertical dimension. 
 #' 
 #' @param triangular boolean, if TRUE, construct a triangular grid. 
-#' If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.
+#' If FALSE, construct rectangular grid.  See help for \code{\link{hip.polygon}}.
 #' 
 #' @param bases A 2X1 vector of Halton bases.  These must be co-prime. 
 #' 
@@ -57,11 +57,11 @@
 #'      \code{bbox(x)}).
 #' }
 #' 
-#' @details This routine is called internally by \code{hal.polygon}, and is not 
+#' @details This routine is called internally by \code{hip.polygon}, and is not 
 #' normally called by the user. 
 #' 
 #' @author Trent McDonald
-#' @seealso \code{\link{hal.polygon}}, \code{\link{halton.lattice}}
+#' @seealso \code{\link{hip.polygon}}, \code{\link{halton.lattice}}
 #' @keywords design survey
 #' @examples
 #'

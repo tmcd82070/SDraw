@@ -24,7 +24,7 @@ using Halton boxes that are as close to square as possible.
 \item{J}{A DX1 vector of base powers which determines the size and shape 
 of the Halton boxes. Elements of \code{J} less than or equal 
 to 1 are re-set to 1. See additional description in help for 
-\code{\link{hal.polygon}} function.}
+\code{\link{hip.polygon}} function.}
 
 \item{eta}{A DX1 vector of the number of points to add inside each Halton box.
 e.g., if \code{eta} = \code{c(3,2)}, a small grid of 3 by 2 points is 
@@ -33,7 +33,7 @@ horizontal dimension, \code{eta[2]} is for the vertical dimension, etc for
 higher dimensions.}
 
 \item{triangular}{boolean, if TRUE, construct a triangular grid. 
-If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.}
+If FALSE, construct rectangular grid.  See help for \code{\link{hip.polygon}}.}
 
 \item{bases}{A DX1 vector of Halton bases.  These must be co-prime.}
 }
@@ -96,7 +96,7 @@ for(d in 1:ncol(hl)){
 hl <- halton.lattice( bbox(HI.coast), N=1000 )
 }
 \seealso{
-\code{\link{halton.lattice}}, \code{\link{hal.polygon}}
+\code{\link{halton.lattice}}, \code{\link{hip.polygon}}
 }
 \author{
 Trent McDonald

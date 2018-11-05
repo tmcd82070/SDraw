@@ -52,7 +52,7 @@
 #' @author Michael Kleinsasser\cr
 #' Aidan McDonald
 #' 
-#' @seealso \code{\link{hip.line}}, \code{\link{hip.polygon}}, \code{\link{SDraw}}, 
+#' @seealso \code{\link{hip.polygon}}, \code{\link{SDraw}}, 
 #' \code{\link{bas.point}}
 #' 
 #' @keywords design survey

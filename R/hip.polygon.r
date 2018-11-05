@@ -58,7 +58,7 @@
 #' 
 #' @author Michael Kleinsasser, Aidan McDonald
 #' 
-#' @seealso \code{\link{hip.line}}, \code{\link{hip.point}}, \code{\link{SDraw}}, 
+#' @seealso \code{\link{hip.point}}, \code{\link{SDraw}}, 
 #' \code{\link{bas.point}}
 #' 
 #' @keywords design survey

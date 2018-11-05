@@ -97,7 +97,7 @@ point in [1/8,2/8) have Halton index 4, points in [2/8,3/8) have index
 \code{range(halton(200)[} \code{(0:199)\%\%} \code{8 == 2])}  )
 }
 \examples{
-# The following is equivalent to hal.point(WA.cities,25,J=c(3,2))
+# The following is equivalent to hip.point(WA.cities,25,J=c(3,2))
 #
 # Add tiny amount to right and top of bounding box because Halton boxes are 
 # closed on the left and bottom.  This includes points exactly on the bounding lines.
@@ -119,7 +119,7 @@ samp <- frame[ind,]  # draw sample
 
 }
 \seealso{
-\code{\link{halton.frame}}, \code{\link{hal.point}}
+\code{\link{halton.frame}}, \code{\link{hip.point}}
 }
 \author{
 Trent McDonald

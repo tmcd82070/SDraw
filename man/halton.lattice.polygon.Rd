@@ -18,7 +18,7 @@ This \code{N} is not exact, but is a target.}
 
 \item{J}{A 2X1 vector of base powers which determines the size and shape 
 of the Halton boxes. See additional description in help for 
-\code{\link{hal.polygon}} function.}
+\code{\link{hip.polygon}} function.}
 
 \item{eta}{A 2X1 vector of the number of points to add inside each Halton box.
 e.g., if \code{eta} = \code{c(3,2)}, a small grid of 3 by 2 points is 
@@ -26,7 +26,7 @@ added inside each Halton box. \code{eta[1]} is for the
 horizontal dimension, \code{eta[2]} is for the vertical dimension.}
 
 \item{triangular}{boolean, if TRUE, construct a triangular grid. 
-If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.}
+If FALSE, construct rectangular grid.  See help for \code{\link{hip.polygon}}.}
 
 \item{bases}{A 2X1 vector of Halton bases.  These must be co-prime.}
 }
@@ -66,7 +66,7 @@ Constructs a lattice of Halton boxes (a Halton lattice) inside a
 \code{halton.lattice}, which does all the hard work.
 }
 \details{
-This routine is called internally by \code{hal.polygon}, and is not 
+This routine is called internally by \code{hip.polygon}, and is not 
 normally called by the user.
 }
 \examples{
@@ -93,7 +93,7 @@ for(d in 1:2){
 # To explore, re-run the above changing J, eta, and triangular, 
 }
 \seealso{
-\code{\link{hal.polygon}}, \code{\link{halton.lattice}}
+\code{\link{hip.polygon}}, \code{\link{halton.lattice}}
 }
 \author{
 Trent McDonald

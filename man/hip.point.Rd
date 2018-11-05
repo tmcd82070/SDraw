@@ -67,7 +67,7 @@ samp <- hip.point( WA.cities, 100 )
 
 }
 \seealso{
-\code{\link{hip.line}}, \code{\link{hip.polygon}}, \code{\link{SDraw}}, 
+\code{\link{hip.polygon}}, \code{\link{SDraw}}, 
 \code{\link{bas.point}}
 }
 \author{

@@ -38,7 +38,7 @@
 #' }
 #' 
 #' @author Trent McDonald
-#' @seealso \code{\link{grts.line}}, \code{\link{grts.polygon}}, \code{\link{hal.line}}
+#' @seealso \code{\link{grts.line}}, \code{\link{grts.polygon}}
 #' , \code{\link{spsample}}
 #' 
 #' @references Stevens, D. L. and A. R. Olsen (1999). Spatially restricted

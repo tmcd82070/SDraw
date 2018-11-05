@@ -46,7 +46,7 @@
 #'     
 #' @author Trent McDonald
 #' @seealso \code{\link{bas.polygon}}, \code{\link{sss.polygon}}, 
-#' \code{\link{hal.polygon}}, \code{\link{sdraw}}
+#' \code{\link{hip.polygon}}, \code{\link{sdraw}}
 #' @keywords design survey
 #' @examples
 #' 

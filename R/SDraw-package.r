@@ -33,7 +33,7 @@
 #' @author Trent McDonald \code{tmcdonald@@west-inc.com}. The GRTS routine comes from
 #' package \code{spsurvey}.  
 #' @seealso \code{\link{sdraw}}, \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}},
-#' \code{\link{hal.polygon}}, \code{\link{hal.line}}, \code{\link{hal.point}}, 
+#' \code{\link{hip.polygon}}, \code{\link{hip.point}}, 
 #' \code{\link{sss.line}}, \code{\link{sss.polygon}},
 #' \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 #' documentation for package \code{sp}.

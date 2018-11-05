@@ -23,7 +23,7 @@
 #' @param J A DX1 vector of base powers which determines the size and shape 
 #' of the Halton boxes. Elements of \code{J} less than or equal 
 #' to 1 are re-set to 1. See additional description in help for 
-#' \code{\link{hal.polygon}} function.  
+#' \code{\link{hip.polygon}} function.  
 #' 
 #' @param N Approximate number of points to place in the whole box.  If \code{J} 
 #' is specified, it takes precedence.  If \code{J} is NULL, the 
@@ -38,7 +38,7 @@
 #' higher dimensions. 
 #' 
 #' @param triangular boolean, if TRUE, construct a triangular grid. 
-#' If FALSE, construct rectangular grid.  See help for \code{\link{hal.polygon}}.
+#' If FALSE, construct rectangular grid.  See help for \code{\link{hip.polygon}}.
 #' 
 #' @param bases A DX1 vector of Halton bases.  These must be co-prime. 
 #' 
@@ -63,7 +63,7 @@
 #'
 #' @author Trent McDonald
 #' 
-#' @seealso \code{\link{halton.lattice}}, \code{\link{hal.polygon}}
+#' @seealso \code{\link{halton.lattice}}, \code{\link{hip.polygon}}
 #' 
 #' @examples 
 #' 

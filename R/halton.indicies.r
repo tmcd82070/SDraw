@@ -90,10 +90,10 @@
 #'   
 #' @author Trent McDonald
 #'   
-#' @seealso \code{\link{halton.frame}}, \code{\link{hal.point}}
+#' @seealso \code{\link{halton.frame}}, \code{\link{hip.point}}
 #'   
 #' @examples 
-#'# The following is equivalent to hal.point(WA.cities,25,J=c(3,2))
+#'# The following is equivalent to hip.point(WA.cities,25,J=c(3,2))
 #'#
 #'# Add tiny amount to right and top of bounding box because Halton boxes are 
 #'# closed on the left and bottom.  This includes points exactly on the bounding lines.

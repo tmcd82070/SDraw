@@ -93,7 +93,7 @@ Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) "BAS:
 }
 \seealso{
 \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}},
-\code{\link{hip.polygon}}, \code{\link{hip.line}}, \code{\link{hip.point}}, 
+\code{\link{hip.polygon}}, \code{\link{hip.point}}, 
 \code{\link{sss.polygon}}, \code{\link{sss.line}},  \code{\link{sss.point}},
 \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 }
