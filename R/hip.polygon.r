@@ -189,7 +189,9 @@ hip.polygon <- function( x, n, bases=c(2,3), J=c(8,5)){
   
   draws <- data.frame(matrix(data = unlist(draws), byrow = TRUE, ncol = 2))
   # Set up all the attributes and return statements
-  samp <- SpatialPoints(draws, proj4string = CRS(proj4string(x))) # Does this work?
+  # samp <- SpatialPointsDataFrame(draws, proj4string = CRS(proj4string(x)))
+  samp <- SpatialPointsDataFrame(draws, data=data.frame(sampleID=1:nrow(draws)), proj4string = CRS(proj4string(x)))
+  samp@data <- cbind(samp@data, data.frame(over(samp,x)))
 
   #############################   Returns   ######################################
   

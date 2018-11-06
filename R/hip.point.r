@@ -329,6 +329,7 @@ hip.point <- function( x, n, J = NULL, plot.lattice = FALSE ){
   
   # draws
   samp <- SpatialPoints(samp.coords, proj4string = CRS(proj4string(x)))
+  samp <- SpatialPointsDataFrame(samp.coords, data=data.frame(sampleID=1:nrow(samp.coords)), proj4string = CRS(proj4string(x)))
   
   #################################   Returns   ##############################################
   
