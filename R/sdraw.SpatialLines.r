@@ -7,7 +7,6 @@
 sdraw.SpatialLines <- function(x, n, type, ...){
   
   ans <- switch(type,
-                HIP = hip.line( x, n, ...), 
                 BAS = bas.line( x, n, ...), 
                 SSS = sss.line( x, n, ...),
                 SRS = srs.line( x, n, ...),

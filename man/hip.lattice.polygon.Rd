@@ -33,7 +33,7 @@ normally called by the user. This should be avoided
 
 # Take a simple HIP lattice for illustration
 # nboxes = 2^3 * 3^2 = 72 
-lat1 <- hip.lattice(box = matrix(data = c(0,1,0,1), nrow = 2, byrow = TRUE),
+lat1 <- hip.lattice.polygon(box = matrix(data = c(0,1,0,1), nrow = 2, byrow = TRUE),
                    J = c(3,2),
                    bases = c(2,3))
 
@@ -55,9 +55,6 @@ for(mat in trans) {
 }
 
 
-}
-\seealso{
-\code{\link{hip.polygon}}, \code{\link{hip.point}}, \code{\link{hip.lattice.point}}
 }
 \author{
 Michael J Kleinsasser

@@ -35,7 +35,7 @@ Plot the sample and optionally the frame, background image (terrain), and lattic
 }
 \examples{
 data(WY)
-samp <- sdraw(WY, 100, type="HAL", J=c(4,3))
+samp <- sdraw(WY, 100, type="HIP", J=c(4,3))
 plotSample( samp, WY )
 plotSample( samp, WY, lattice=TRUE )
 

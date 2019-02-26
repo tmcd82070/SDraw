@@ -19,8 +19,8 @@
 #' 
 #' @examples 
 #' 
-#' getJ( 3, 36 )  # should equal c(2,2); B=36
-#' getJ( 3, 37 )  # should equal c(3,2); B=72
+#' getJ(62208, c(2,3))  # should equal c(8,5)
+#' getJ(72, c(2,3))  # should equal c(3,2)
 #' 
 #' @export
 getJ <- function(N, bases=c(2,3)){

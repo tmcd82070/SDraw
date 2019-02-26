@@ -66,10 +66,10 @@
 #' 
 #' # Draw sample of cities in the state of Washington
 #' data(WA)
-#' samp <- hip.polygon( WA, 100 )
+#' samp <- hip.polygon( WA, 100, J = c(3,2))
 #'   
 #'
-#' @export
+#' @export hip.polygon
 #' 
 
 hip.polygon <- function( x, n, bases=c(2,3), J=c(8,5)){

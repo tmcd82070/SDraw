@@ -15,6 +15,18 @@ This object must contain at least 1 point.}
 \item{n}{Sample size.  The number locations to draw from the set of points
 contained in \code{x}. If the sample size returned is less than the desired sample size,
 increase \code{n} until the desired sample size is reached.}
+
+\item{J}{A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
+\code{J[2]} for vertical dimension. \code{J} determines the size and shape
+of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
+of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
+horizontal rows of Halton boxes over the bounding box, for a total 
+of \code{prod(bases^J)} boxes.  The dimension of each box is 
+\code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
+\code{J} is chosen so that Halton boxes are as square as possible.}
+
+\item{plot.lattice}{Boolean. If TRUE, plots the sample drawn with corresponding halton lattice.}
 }
 \value{
 A \code{SpatialPoints} objects containing locations in the 
@@ -64,7 +76,6 @@ the sample, wrapping to the beginning if necessary.
 data(WA.cities)
 samp <- hip.point( WA.cities, 100 )
   
-
 }
 \seealso{
 \code{\link{hip.polygon}}, \code{\link{SDraw}}, 

@@ -18,6 +18,18 @@
 #' \code{length(indices)} and \code{indices[i]} is the index of box \code{latt[[i]]}. 
 #' If missing or NULL, indices are not printed.
 #' 
+#' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
+#' \code{J[2]} for vertical dimension. \code{J} determines the size and shape
+#' of the smallest Halton boxes. There are \code{bases[1]^J[1]} vertical columns 
+#' of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]} 
+#' horizontal rows of Halton boxes over the bounding box, for a total 
+#' of \code{prod(bases^J)} boxes.  The dimension of each box is 
+#' \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
+#' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
+#' \code{J} is chosen so that Halton boxes are as square as possible.
+#' 
+#' @param bases 2X1 vector of Halton bases.  These must be co-prime.
+#' 
 #' @return NULL is returned invisibly.
 #' 
 #' @details Lines on the current plot are produced.  

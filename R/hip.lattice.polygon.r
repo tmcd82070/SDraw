@@ -22,13 +22,13 @@
 #' normally called by the user. This should be avoided
 #' 
 #' @author Michael J Kleinsasser
-#' @seealso \code{\link{hip.polygon}}, \code{\link{hip.point}}, \code{\link{hip.lattice.point}}
+#' @seealso \code{\link{hip.polygon}}, \code{\link{hip.point}}}
 #' @keywords design survey
 #' @examples
 #'
 #' # Take a simple HIP lattice for illustration
 #' # nboxes = 2^3 * 3^2 = 72 
-#' lat1 <- hip.lattice(box = matrix(data = c(0,1,0,1), nrow = 2, byrow = TRUE),
+#' lat1 <- hip.lattice.polygon(box = matrix(data = c(0,1,0,1), nrow = 2, byrow = TRUE),
 #'                    J = c(3,2),
 #'                    bases = c(2,3))
 #' 
@@ -138,7 +138,6 @@ hip.lattice.polygon <- function(box, J, bases = c(2,3)) {
   return(stList)
   
 }
-
 
 
 

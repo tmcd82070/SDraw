@@ -7,6 +7,15 @@
 hip.plot.lattice(resource, bases = c(2, 3), J = c(8, 5),
   sample = NULL)
 }
+\arguments{
+\item{resource}{\code{SpatialPolygons} object. The resource the halton lattice will be plotted over.}
+
+\item{bases}{The bases of the halton lattice. Should be equal to those used to draw the sample.}
+
+\item{J}{The orders of the halton lattice. Should be equal to those used to draw the sample.}
+
+\item{sample}{The HIP sample to be plotted with the lattice.}
+}
 \description{
-Plot a Halton Lattice over a polygon resource
+Plots a halton lattice over a polygon resource. Primarily for demonstation of HIP sampling theory.
 }
