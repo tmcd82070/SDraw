@@ -37,9 +37,9 @@ sp <- SpatialPoints(cbind(x,y))
 plot(sp, pch=1)
 ```
 
-HIP sampling first constructs a Halton lattice arounds the points such that the inclusion probability inside all boxes is the same. In this case, all points are equiprobable and each box in the lattice will contain the same number of points. To do this, some points may be randomly discarded from the potential sample if the total is not divisible by 2 and 3. Then, a sequence of n consecutive Halton indicies is selected and a point from each of the corresponding Halton boxes is sampled. 
+HIP sampling first constructs a Halton lattice around the points such that the inclusion probability inside all boxes is the same. In this case, all points are equiprobable and each box in the lattice will contain the same number of points. To do this, some points may be randomly discarded from the potential sample if the total is not divisible by 2 and 3. Then, a sequence of n consecutive Halton indices is selected and a point from each of the corresponding Halton boxes is sampled. 
 
-Note that in SDraw's built-in "plot.lattice" option for HIP sampling, sampled points are shown in red, the indices of the selected Halton boxes are displayed in the boxes, and discarded points are maked with an X. Also, it is possible that not all halton boxes will be drawn because it is often not necessary to delineate every box in the lattice. 
+Note that in SDraw's built-in "plot.lattice" option for HIP sampling, sampled points are shown in red, the indices of the selected Halton boxes are displayed in the boxes, and discarded points are marked with an X. Also, it is possible that not all halton boxes will be drawn because it is often not necessary to delineate every box in the lattice. 
 
 
 ```{r smallSampling, echo=TRUE}

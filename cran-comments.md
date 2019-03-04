@@ -1,9 +1,8 @@
-## Previous submission: SDraw 2.1.2
-* Expanded description to describe acronyms, as suggested by Hornig. -Thank you.
-* Removed dependencies on OpenStreetMap and rgdal
+## Previous submission: SDraw 2.1.4
+* Added Halton Iterative Partitioning (HIP) sampling capability.
 
 ## Test environments
-* local Windows 10 Pro, R 3.3.0
+* local Windows 10 Pro, R 3.5.2
 * passes devtools::build_win()
 * Linux (via travis)
 

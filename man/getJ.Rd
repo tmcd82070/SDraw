@@ -7,7 +7,7 @@
 getJ(N, bases = c(2, 3))
 }
 \arguments{
-\item{N}{Population or frame size (a scaler)}
+\item{N}{Population or frame size (a scalar)}
 
 \item{bases}{A vector of co-prime Halton bases of length D.}
 }

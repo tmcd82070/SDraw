@@ -59,7 +59,7 @@ are \eqn{N} units in the frame (\eqn{N} = \code{nrow(x)}), each line segment has
 \eqn{n/N}, where \eqn{n} is the input desired sample size.  
  \item Line segments are placed end-to-end, starting at 0, in the order in which their associated
  unit appears in the frame. 
- \item To start the systematic sample, the routine choses a random number between 0 and 1. 
+ \item To start the systematic sample, the routine chooses a random number between 0 and 1. 
 Let this random number be \eqn{m}.
  \item The sample units associated with the line segments containing the numbers \eqn{m + i} for 
 \eqn{i} = 0,1,...,(\eqn{n-1}), are selected for the sample.       

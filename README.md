@@ -3,7 +3,7 @@
 The author has found it best to install dependencies before attempting to install **SDraw**. To install dependencies, execute the following: 
 * `install.packages( c("spsurvey", "rgeos", "sp", "deldir"), repos="http://cran.r-project.org")`
 
-`rgeos` requires java. Java should be installed *a priori*.  On Unix systems, the libraries needed for `rgeos` are criptically named.  Google 'install rgeos unix'.   
+`rgeos` requires java. Java should be installed *a priori*.  On Unix systems, the libraries needed for `rgeos` are cryptically named.  Google 'install rgeos unix'.   
 
 # Installation
 

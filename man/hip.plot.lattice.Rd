@@ -17,5 +17,5 @@ hip.plot.lattice(resource, bases = c(2, 3), J = c(8, 5),
 \item{sample}{The HIP sample to be plotted with the lattice.}
 }
 \description{
-Plots a halton lattice over a polygon resource. Primarily for demonstation of HIP sampling theory.
+Plots a halton lattice over a polygon resource. Primarily for demonstration of HIP sampling theory.
 }

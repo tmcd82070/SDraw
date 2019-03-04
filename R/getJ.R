@@ -3,7 +3,7 @@
 #' @description Compute J, the depth of the Halton lattice, 
 #' given a population size . 
 #' 
-#' @param N Population or frame size (a scaler)
+#' @param N Population or frame size (a scalar)
 #' 
 #' @param bases A vector of co-prime Halton bases of length D.
 #' 

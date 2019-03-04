@@ -66,11 +66,11 @@
 #' @param spacing A vector of length 2 containing the RELATIVE spacing of grid
 #' points in the horizontal (X) and vertical (Y) directions.  See details.
 #' 
-#' @param triangular Boolean scaler specifying whether to produce a rectangular
+#' @param triangular Boolean scalar specifying whether to produce a rectangular
 #' (\code{triangular==FALSE}) or triangular (\code{triangular==TRUE}) grid. 
 #' See Details.
 #' 
-#' @param rand.dir Either a boolean scaler specifying whether to randomly 
+#' @param rand.dir Either a boolean scalar specifying whether to randomly 
 #' orient the
 #' grid's horizontal axis (\code{rand.dir==TRUE}) or not 
 #' (\code{rand.dir==FALSE}), or

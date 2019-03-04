@@ -7,7 +7,7 @@
 halton.coefficients(samp, J, bases = c(2, 3))
 }
 \arguments{
-\item{samp}{A vector of Halton indicies.}
+\item{samp}{A vector of Halton indices.}
 
 \item{J}{A vector of powers of the bases. This determines the 
 level of hierarchy in the Halton boxes and the number of boxes.}
@@ -21,7 +21,7 @@ for the kth dimension of the ith index in \code{samp}.
 }
 \description{
 Return the coefficients in the Halton equation 
-for a list of Halton indicies (boxes).
+for a list of Halton indices (boxes).
 }
 \details{
 Let \code{digits = halton.coefficients(samp,J,bases)},

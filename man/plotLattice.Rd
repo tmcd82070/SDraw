@@ -49,6 +49,6 @@ Lines on the current plot are produced.
 Trent McDonald
 
   @examples 
-latt <- hip.lattice.polygon( box = matrix(c(0,0,1,1),2), J = c(2,2) bases = c(2,3) )
-plotLattice(latt)
+lattice <- hip.lattice.polygon( box = matrix(c(0,0,1,1),2), J = c(2,2) bases = c(2,3) )
+plotLattice(lattice)
 }

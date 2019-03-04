@@ -1,9 +1,9 @@
 #' @title halton.coefficients
 #' 
 #' @description Return the coefficients in the Halton equation 
-#' for a list of Halton indicies (boxes).  
+#' for a list of Halton indices (boxes).  
 #' 
-#' @param samp A vector of Halton indicies.
+#' @param samp A vector of Halton indices.
 #' 
 #' @param J A vector of powers of the bases. This determines the 
 #' level of hierarchy in the Halton boxes and the number of boxes.

@@ -20,7 +20,7 @@ are "1D" or "2D".
 Under "1D" all lines in \code{x} are stretched straight 
 and laid end-to-end in the order they appear in \code{x} and a 1-dimensional 
 BAS sample is taken from the amalgamated line.  1D sample locations on the 
-amalgomated line are  
+amalgamated line are  
 mapped back to two dimensional space for output and 
 appear on the original lines.  This
 method maintains 1D spatial balance, but not necessarily 2D balance.  Spatially 
@@ -39,10 +39,10 @@ scalar controlling the number of points to
 place on the lines before drawing the 2D BAS sample.  
 Number of points created on the line is
 \code{n*init.n.factor}, so this number can grow quickly.  On average, this
-is the number of unselected points between each selected point.  See
+is the number of un-selected points between each selected point.  See
 Details.
 
-If one desires an underlying grid spaced \emph{w} meters appart, set 
+If one desires an underlying grid spaced \emph{w} meters apart, set 
 \code{init.n.factor} to \emph{L/(w*n)}, where \emph{L} is total length 
 of all lines in \code{x} and \emph{n} is sample size.}
 }
@@ -106,7 +106,7 @@ If a "2D" BAS sample is requested, spatial balance is maintained
 in 2 dimensions.  Points are well balance on a 2D map.  This is 
 done by discretization of lines with a dense systematic 
 sample of points (with 
-random start) where density of the systematic points is controled 
+random start) where density of the systematic points is controlled 
 by \code{init.n.factor}.  After
 discretization of the line, points are selected 
 using \code{\link{bas.point}}.  The BAS method for points places

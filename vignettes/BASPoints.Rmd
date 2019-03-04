@@ -8,8 +8,8 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
-This vigette demonstrates basic Balanced Acceptance Sampling (BAS) of a point resource.
-BAS will sample a simple point resouce consisting of a 10 X 10 grid of points evenly spaced on a square study area with width 100. The following code creates the example population.  
+This vignette demonstrates basic Balanced Acceptance Sampling (BAS) of a point resource.
+BAS will sample a simple point resource consisting of a 10 X 10 grid of points evenly spaced on a square study area with width 100. The following code creates the example population.  
 
 ```{r}
 library(sp)
@@ -84,7 +84,7 @@ points(halt.seq[,1], halt.seq[,2], pch=3, col="black", cex=1.5)
 
 
 
-The cyclic property of the Halton sequence extends to larger cyles, and it is this property that ensures spatial balance of BAS samples.  The first cyle equating to the largest Halton boxes is the product of bases, i.e., 2(3) = 6 here.  Larger cycles are any higher power of 6, like 36, 216, etc.  The second cycle equating to the next size smaller Halton boxes is 36 = 6*6.  Any sequence of 36 Halton points will have exactly one point in each of the 36 Halton boxes. Any sequence of 2(36) = 72 Halton points will have exactly 2 points in each of the 36 Halton boxes.  This is illustrated in the next plot.    
+The cyclic property of the Halton sequence extends to larger cycles, and it is this property that ensures spatial balance of BAS samples.  The first cycle equating to the largest Halton boxes is the product of bases, i.e., 2(3) = 6 here.  Larger cycles are any higher power of 6, like 36, 216, etc.  The second cycle equating to the next size smaller Halton boxes is 36 = 6*6.  Any sequence of 36 Halton points will have exactly one point in each of the 36 Halton boxes. Any sequence of 2(36) = 72 Halton points will have exactly 2 points in each of the 36 Halton boxes.  This is illustrated in the next plot.    
 
 ```{r echo=F,fig.width=6.5,fig.height=6.5,fig.cap="Study area with 72 Halton points. Exactly 2 Halton points appear in each of the 36 Halton boxes."}
 plot(popln.pixels, what="image", axes=TRUE, xaxt="n",yaxt="n")
