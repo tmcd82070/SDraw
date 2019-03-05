@@ -22,7 +22,7 @@
 #' normally called by the user. This should be avoided
 #' 
 #' @author Michael J Kleinsasser
-#' @seealso \code{\link{hip.polygon}}, \code{\link{hip.point}}}
+#' @seealso \code{\link{hip.polygon}}, \code{\link{hip.point}}
 #' @keywords design survey
 #' @examples
 #'

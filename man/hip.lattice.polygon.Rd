@@ -56,6 +56,9 @@ for(mat in trans) {
 
 
 }
+\seealso{
+\code{\link{hip.polygon}}, \code{\link{hip.point}}
+}
 \author{
 Michael J Kleinsasser
 }

@@ -1,8 +1,8 @@
 Package: SDraw
 Type: Package
 Title: Spatially Balanced Sample Draws for Spatial Objects 
-Version: 2.1.5
-Date: 2019-03-04
+Version: 2.1.6
+Date: 2019-03-05
 Author: person("Trent", "McDonald")
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Description: Routines for drawing samples, focusing on spatially balanced algorithms. Draws Halton Lattice (HAL), Balanced Acceptance Samples (BAS), Generalized Random Tessellation Stratified (GRTS), Simple Systematic Samples (SSS) and Simple Random Samples (SRS) from point, line, and polygon resources.  Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' objects from package 'sp'. 
@@ -18,7 +18,8 @@ Imports:
     deldir,
     stats
 Depends:
-    sp
+    sp,
+    R (>= 2.10)
 LazyData: true
 Suggests: knitr
 VignetteBuilder: knitr

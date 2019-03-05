@@ -79,9 +79,11 @@ for the full list of
 parameters which determine sample characteristics.
 }
 \examples{
+ \dontrun{
  WA.sample <- sdraw(WA, 50, "BAS")
  WA.sample <- sdraw(WA, 50, "HIP", J=c(4,3))
  WA.sample <- sdraw(WA, 50, "SSS", spacing=c(1,2))
+ }
  
 }
 \references{
@@ -93,9 +95,9 @@ Robertson, B.L., J. A. Brown,  T. L. McDonald, and P. Jaksons (2013) "BAS:
 }
 \seealso{
 \code{\link{bas.polygon}}, \code{\link{bas.line}}, \code{\link{bas.point}},
-\code{\link{hip.polygon}}, \code{\link{hip.point}}, 
-\code{\link{sss.polygon}}, \code{\link{sss.line}},  \code{\link{sss.point}},
-\code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
+ \code{\link{hip.polygon}}, \code{\link{hip.point}}, 
+ \code{\link{sss.polygon}}, \code{\link{sss.line}},  \code{\link{sss.point}},
+ \code{\link{grts.polygon}}, \code{\link{grts.line}}, \code{\link{grts.point}}
 }
 \author{
 Trent McDonald
