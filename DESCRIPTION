@@ -1,11 +1,21 @@
 Package: SDraw
 Type: Package
-Title: Spatially Balanced Sample Draws for Spatial Objects 
-Version: 2.1.6
-Date: 2019-03-05
-Author: person("Trent", "McDonald")
+Title: Spatially Balanced Samples of Spatial Objects 
+Version: 2.1.7
+Date: 2019-03-06
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
-Description: Routines for drawing samples, focusing on spatially balanced algorithms. Draws Halton Lattice (HAL), Balanced Acceptance Samples (BAS), Generalized Random Tessellation Stratified (GRTS), Simple Systematic Samples (SSS) and Simple Random Samples (SRS) from point, line, and polygon resources.  Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' objects from package 'sp'. 
+Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
+  person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"))
+Description: Routines for drawing samples from spatial objects, focused on spatially 
+  balanced algorithms. Draws Halton Iterative Partition (HIP) 
+  (Robertson et al., 2018; <doi:10.1007/s10651-018-0406-6>), 
+  Balanced Acceptance Samples (BAS) (Robertson et al., 2013; <doi:10.1111/biom.12059>), 
+  Generalized Random 
+  Tessellation Stratified (GRTS) (Stevens and Olsen, 2004; <doi:10.1198/01621450400000025>), 
+  Simple Systematic Samples (SSS) and 
+  Simple Random Samples (SRS) from point, line, and polygon resources.  
+  Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' 
+  objects from package 'sp'. 
 License: GNU General Public License
 URL: https://github.com/tmcd82070/SDraw/wiki/SDraw
 BugReports: https://github.com/tmcd82070/SDraw/issues
