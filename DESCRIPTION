@@ -3,10 +3,9 @@ Type: Package
 Title: Spatially Balanced Samples of Spatial Objects 
 Version: 2.1.8
 Date: 2019-03-07
-Maintainer: Trent McDonald <tmcdonald@west-inc.com>
-Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
-  person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"),
-  person("Michael", "Kleinsausser", role="ctb"))
+Maintainer: Stefan Emmons <stefanemmons@aol.com>
+Authors@R: person("Stefan", "Emmons", email = "stefanemmons@aol.com",
+    role = c("aut", "cre"))
 Description: Routines for drawing samples from spatial objects, focused on spatially 
   balanced algorithms. Draws Halton Iterative Partition (HIP) 
   (Robertson et al., 2018; <doi:10.1007/s10651-018-0406-6>), 
@@ -18,8 +17,8 @@ Description: Routines for drawing samples from spatial objects, focused on spati
   Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' 
   objects from package 'sp'. 
 License: GNU General Public License
-URL: https://github.com/tmcd82070/SDraw/wiki/SDraw
-BugReports: https://github.com/tmcd82070/SDraw/issues
+URL: https://github.com/semmons1/TEST-SDraw/SDraw
+BugReports: https://github.com/semmons1/TEST-SDraw/issues
 Imports:
     spsurvey,
     utils,
@@ -27,11 +26,16 @@ Imports:
     graphics,
     methods,
     deldir,
-    stats
+    stats,
+    covr
 Depends:
     sp,
     R (>= 2.10)
 LazyData: true
-Suggests: knitr
+Suggests:
+    knitr,
+    testthat,
+    devtools,
+    roxygen2
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
