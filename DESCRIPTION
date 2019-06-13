@@ -27,11 +27,16 @@ Imports:
     graphics,
     methods,
     deldir,
-    stats
+    stats,
+    covr
 Depends:
     sp,
     R (>= 2.10)
 LazyData: true
-Suggests: knitr
+Suggests:
+    knitr,
+    testthat,
+    devtools,
+    roxygen2
 VignetteBuilder: knitr
 RoxygenNote: 6.1.1
