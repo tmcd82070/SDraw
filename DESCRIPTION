@@ -1,0 +1,37 @@
+Package: SDraw
+Type: Package
+Title: Spatially Balanced Samples of Spatial Objects 
+Version: 2.1.8
+Date: 2019-03-07
+Maintainer: Trent McDonald <tmcdonald@west-inc.com>
+Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
+  person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"),
+  person("Michael", "Kleinsausser", role="ctb"))
+Description: Routines for drawing samples from spatial objects, focused on spatially 
+  balanced algorithms. Draws Halton Iterative Partition (HIP) 
+  (Robertson et al., 2018; <doi:10.1007/s10651-018-0406-6>), 
+  Balanced Acceptance Samples (BAS) (Robertson et al., 2013; <doi:10.1111/biom.12059>), 
+  Generalized Random 
+  Tessellation Stratified (GRTS) (Stevens and Olsen, 2004; <doi:10.1198/016214504000000250>), 
+  Simple Systematic Samples (SSS) and 
+  Simple Random Samples (SRS) from point, line, and polygon resources.  
+  Frames are 'SpatialPoints', 'SpatialLines', or 'SpatialPolygons' 
+  objects from package 'sp'. 
+License: GNU General Public License
+URL: https://github.com/tmcd82070/SDraw/wiki/SDraw
+BugReports: https://github.com/tmcd82070/SDraw/issues
+Imports:
+    spsurvey,
+    utils,
+    rgeos,
+    graphics,
+    methods,
+    deldir,
+    stats
+Depends:
+    sp,
+    R (>= 2.10)
+LazyData: true
+Suggests: knitr
+VignetteBuilder: knitr
+RoxygenNote: 6.1.1
