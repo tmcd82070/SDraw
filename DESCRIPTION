@@ -6,7 +6,8 @@ Date: 2019-03-07
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
   person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"),
-  person("Michael", "Kleinsausser", role="ctb"))
+  person("Michael", "Kleinsausser", role="ctb"), 
+  person("Stefan", "Emmons", role="ctb", email="semmons@west-inc.com", comment="Auto testing and Travis"))
 Description: Routines for drawing samples from spatial objects, focused on spatially 
   balanced algorithms. Draws Halton Iterative Partition (HIP) 
   (Robertson et al., 2018; <doi:10.1007/s10651-018-0406-6>), 

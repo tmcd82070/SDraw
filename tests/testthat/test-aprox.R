@@ -21,4 +21,3 @@ test_that("aprox() operates appropriately", {
   expect_equal(aprox(c(1,2,3), 2, c(1,2,3)), c(2, NA, 2))
   expect_equal(aprox(c(1,2,3), c(20,22,24,26,28), c(1,2,3,4,5,6)), c(20, 22, 28, 28, 28, 28))
 })
-
