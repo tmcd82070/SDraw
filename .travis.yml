@@ -1,25 +1,42 @@
-# Sample .travis.yml for R projects from https://github.com/craigcitro/r-travis
-
-
-sudo: required
-
-language: c
-
-before_install:
-  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
-  - ./travis-tool.sh bootstrap
-
-install:
-  - ./travis-tool.sh install_deps
-
-script: ./travis-tool.sh run_tests
-
-after_failure:
-  - ./travis-tool.sh dump_logs
+#This YML file is to be used specificially for the SDraw package. Other packages will require different YML file contents.
+#Use R language
+language: r
+sudo: true
+cache: packages
+warnings_are_errors: false
 
 env:
- 
+  global:
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual"
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings" #don't build the vignettes or manual
+    - _R_CHECK_TIMINGS_="0" #Allows for timing information for the examples of all functions
+    - CODECOV_TOKEN="a7023b50-77e8-4f7a-97e0-6efdf8620a87" #test token to ensure this service actually works
+
+r:
+  - release
+
+#install external dependencies, such as rgeos
+before_install:
+  - sudo apt-get install r-cran-rgeos
+
+install:
+  - R -e 'install.packages("devtools")'
+  - R -e 'devtools::install_deps(dependencies = TRUE)'
+#This will catch installation issues
+  - R -e 'devtools::install_github("semmons1/TEST-SDraw")'
+  - R -e 'install.packages("sp")'
+  - R -e 'install.packages("spsurvey")' #deldir is a dependency that should be installed with spsurvey
+  - R -e 'install.packages("covr")' #specifically for codecovr feature
+
+#Avoid building vignettes, they take too much time and will often time out the Travis CI  
+script:
+  - R CMD build --no-build-vignettes --no-manual .
+  - R CMD check --no-build-vignettes --no-manual --timings *tar.gz
+
+#report coverage for release version
+after_success:
+  - test $TRAVIS_R_VERSION_STRING = 'release' && Rscript -e 'covr::codecov()'
+  - Rscript -e 'devtools::install();devtools::test()'
 
 notifications:
   email:
