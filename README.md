@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/tmcd82070/SDraw.svg?branch=master)](https://travis-ci.org/tmcd82070/SDraw)
+
+
+
 # Dependencies
 
 The author has found it best to install dependencies before attempting to install **SDraw**. To install dependencies, execute the following: 
