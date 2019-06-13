@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/tmcd82070/SDraw.svg?branch=master)](https://travis-ci.org/tmcd82070/SDraw)
+TravisCI: [![Build Status](https://travis-ci.org/tmcd82070/SDraw.svg?branch=master)](https://travis-ci.org/tmcd82070/SDraw)
 
-
+Codecov: [![codecov](https://codecov.io/gh/tmcd82070/SDraw/branch/master/graph/badge.svg)](https://codecov.io/gh/tmcd82070/SDraw)
 
 # Dependencies
 
