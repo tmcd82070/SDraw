@@ -23,7 +23,7 @@ install:
   - R -e 'install.packages("devtools")'
   - R -e 'devtools::install_deps(dependencies = TRUE)'
 #This will catch installation issues
-  - R -e 'devtools::install_github("semmons1/TEST-SDraw")'
+  - R -e 'devtools::install_github("semmons1/SDraw")'
   - R -e 'install.packages("sp")'
   - R -e 'install.packages("spsurvey")' #deldir is a dependency that should be installed with spsurvey
   - R -e 'install.packages("covr")' #specifically for codecovr feature
