@@ -10,7 +10,7 @@ env:
     - R_BUILD_ARGS="--no-build-vignettes --no-manual"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings" #don't build the vignettes or manual
     - _R_CHECK_TIMINGS_="0" #Allows for timing information for the examples of all functions
-    - CODECOV_TOKEN="a7023b50-77e8-4f7a-97e0-6efdf8620a87" #test token to ensure this service actually works
+    - CODECOV_TOKEN="06809799-3be1-4394-aa1e-938a82568cde" #test token to ensure this service actually works
 
 r:
   - release
