@@ -1,10 +1,3 @@
-library(testthat)
-library(SDraw)
-library(sp)
-library(rgeos)
-source("bas.point.r")
-#source("aprox.r")
-#source("merge.lines.r")
 context("Test the bas.line function")
 
 ##Load pre-built dataset
