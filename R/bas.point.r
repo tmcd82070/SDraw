@@ -97,6 +97,13 @@ bas.point <- function(x, n){
   #   This is expensive, but necessary. 
   #   Use dist from stats package. Keep in mind this is decimal degrees if x is lat long.
   d <- min(stats::dist( pts ))  # minimum distance.  
+  
+  # check for duplicate coordinates
+  # minimum distance between points is 0
+  if(d == 0) {
+    
+    warning("minimum distance between points is zero: are there duplicate coordinates?")
+  }
 
   #   Make pixels around points 
   d <- d / (2*sqrt(2))   # reduce minimum so no pixels over lap
