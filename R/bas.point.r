@@ -100,7 +100,7 @@ bas.point <- function(x, n){
   
   # error trap: check for duplicate coordinates 
   # if duplicates exist: pixels won't draw correctly
-  if(d == (.Machine$double.eps * 10) | d == 0) {
+  if(d < (.Machine$double.eps * 10)) {
     
     stop("Minimum distance between points is zero: are there duplicate coordinates?")
   
