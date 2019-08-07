@@ -1,4 +1,4 @@
-context("Test the bas.line function")
+context("Test the bas.point function")
 
 ##Load pre-built dataset
 data(meuse)
