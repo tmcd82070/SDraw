@@ -1,8 +1,3 @@
-library(testthat)
-library(SDraw)
-source("grts.line.r")
-source("grts.equi.r")
-
 ##Create spatial lines object
 
 ##Create some arbitrary lines
