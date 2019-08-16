@@ -48,3 +48,5 @@ test_that("bas.point() operates appropriately", {
   
   expect_error(bas.point(8,50), "Must call bas.point with a SpatialPoints* object.", fixed=TRUE)
 })
+
+
