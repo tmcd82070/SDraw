@@ -1,4 +1,4 @@
-context("Test the bas.line function")
+context("Test the bas.point function")
 
 ##Load pre-built dataset
 data(meuse)
@@ -48,3 +48,5 @@ test_that("bas.point() operates appropriately", {
   
   expect_error(bas.point(8,50), "Must call bas.point with a SpatialPoints* object.", fixed=TRUE)
 })
+
+
