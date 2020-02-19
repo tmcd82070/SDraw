@@ -62,7 +62,8 @@ voronoi.polygons <- function(x, bounding.polygon) {
     stop("Must pass a SpatialPoints* object to voronoi.polygons.")
   }
   crds = coordinates(x)
-  z = deldir::deldir(crds[,1], crds[,2])
+  bbox = c(t(bbox(x)))
+  z = deldir::deldir(crds[,1], crds[,2], rw = bbox)
   w = deldir::tile.list(z)
   polys = vector(mode='list', length=length(w))
   for (i in seq(along=polys)) {
