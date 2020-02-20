@@ -15,10 +15,12 @@ env:
 r:
   - release
 
-#install external dependencies, such as rgeos. With the newest Travis-CI update, it would
-#appear that the binary "libudunits2-dev" is now necessary to test R software packages.
+#Install external dependencies, such as rgeos. With the newest Travis-CI update that utilizes the Ubuntu 18 distro, 
+#it would appear that the binaries "libudunits2-dev, and libgdal-dev" 
+#are now necessary to test R software packages.
 before_install:
   - sudo apt-get install libudunits2-dev
+  - sudo apt-get install libgdal-dev
   - sudo apt-get install r-cran-rgeos
 
 install:
