@@ -15,8 +15,10 @@ env:
 r:
   - release
 
-#install external dependencies, such as rgeos
+#install external dependencies, such as rgeos. With the newest Travis-CI update, it would
+#appear that the binary "libudunits2-dev" is now necessary to test R software packages.
 before_install:
+  - sudo apt-get install libudunits2-dev
   - sudo apt-get install r-cran-rgeos
 
 install:
