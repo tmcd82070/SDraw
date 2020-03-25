@@ -11,6 +11,7 @@ env:
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings" #don't build the vignettes or manual
     - _R_CHECK_TIMINGS_="0" #Allows for timing information for the examples of all functions
     - CODECOV_TOKEN="4326e078-039a-4eb4-9afe-a18423ea35f1" #test token to ensure this service actually works
+    - R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE
 
 r:
   - release
@@ -24,6 +25,7 @@ before_install:
   - sudo apt-get install r-cran-rgeos
 
 install:
+#  - R -e 'install.packages(c("deldir", "Hmisc","rgeos"))
   - R -e 'install.packages("devtools")'
   - R -e 'devtools::install_deps(dependencies = TRUE)'
 #This will catch installation issues
