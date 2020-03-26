@@ -68,6 +68,7 @@
 #'rel.balance <- var(WA.bas.tess$area)/var(WA.srs.tess$area)
 #'
 #'# Example clipping to fixed polygon (from @paul-vdb)
+#'\dontrun{
 #'set.seed(101)
 #'pts <- SpatialPoints(cbind(runif(1000), runif(1000)))
 #'smp <- pts[sample(1:length(pts), 10),]
@@ -85,6 +86,7 @@
 #'points(pts, pch = 20)
 #'points(smp, col = "red", pch = 20, cex=2)
 #'plot(bounding.poly, border="blue", lwd=2, add=T)
+#'}
 #'
 voronoi.polygons <- function(x, bounding.polygon = NULL, range.expand = 0.1) {
   if( !inherits(x,"SpatialPoints") ){
