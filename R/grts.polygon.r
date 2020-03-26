@@ -61,7 +61,7 @@
 #' @examples
 #' 
 #' #   Draw sample
-#' WA.sample <- grts.polygon(WA,100,50)
+#' WA.sample <- grts.polygon(WA,10,5)
 #' 
 #' #   Plot
 #' plot( WA )

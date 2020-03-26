@@ -11,7 +11,7 @@ test_that("halton.indices.CRT() operates appropriately", {
   expect_error(halton.indices.CRT(df, 16),
                "number of boxes in one or more dimensions is not an integer power of bases. Check n.boxes and b.")
 
-  expect_vector(halton.indices.CRT(df, c(16, 9)))
+  expect_length(halton.indices.CRT(df, c(16, 9)), 101)
   expect_type(halton.indices.CRT(df, c(16, 9)), "double")
   
   ##Verify that output structure is the same as what is given in the original example

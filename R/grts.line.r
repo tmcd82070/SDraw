@@ -57,7 +57,7 @@
 #' @examples
 #' 
 #' # Draw sample
-#' HI.sample <- grts.line(HI.coast,100,50)
+#' HI.sample <- grts.line(HI.coast,10,5)
 #' 
 #' # Plot
 #' plot( HI.coast )

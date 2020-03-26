@@ -4,19 +4,31 @@
 \alias{voronoi.polygons}
 \title{Calculate Voronoi polygons for a set of points}
 \usage{
-voronoi.polygons(x, bounding.polygon)
+voronoi.polygons(x, bounding.polygon = NULL, range.expand = 0.1)
 }
 \arguments{
 \item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object}
 
 \item{bounding.polygon}{If present, this is a \code{SpatialPolygons*} object specifying the 
 bounding polygon(s) for the Voronoi polygons.  If present, the 
-Voronoi polygons from points in \code{x} are clipped to the outside 
+Voronoi polygons are clipped to the outside 
 bounding polygon of \code{bounding.polygon}.  The outside bounding polygon
 is the union of all polygons 
 in \code{bounding.polygon}.  If this is not present, the Voronoi polygons
-extend to a rectangle outside the range of the input points in all directions
-by 10 percent.}
+extend to a rectangle that is \code{range.expand} beyond the 
+bounding box ofinput points in all directions.}
+
+\item{range.expand}{A length-one or length-two vector of expansion 
+factors for the bounding box 
+of points in \code{x} in the horizontal and vertical directions. If length 
+one, it is replicated to length two.  Element one is the fraction of the 
+bounding box's horizontal width that is added and subtracted to the 
+horizontal extent 
+of the output polygons. Element two is the fraction of the 
+bounding box's vertical height that is added and subtracted to the vertical extent 
+of the output polygons.  Only this parameter's 
+absolute value is used (i.e., all values are made positive). If
+\code{bounding.polygon} is present, this parameter is ignored.}
 }
 \value{
 A \code{SpatialPolygonsDataFrame} containing the Voronoi polygons
@@ -34,12 +46,12 @@ Calculate Voronoi polygons (or tessellations) from a
 }
 \details{
 This is a convenience routine for the 
-\code{deldir} function.  The hard work, computing the Voronoi polygons,
+\code{deldir::deldir} function.  The hard work, computing the Voronoi polygons,
 is done by the \code{deldir::deldir} and \code{deldir::tile.list} functions. 
 See documentation for those functions for details of computations.
 
 This function is convenient because it takes a \code{SpatialPoints*} 
-object and returns a \code{Spatial} \code{Polygons} \code{DataFrame} object.
+object and returns a \code{SpatialPolygonsDataFrame} object.
 }
 \examples{
 
@@ -62,5 +74,24 @@ WA.srs <- srs.polygon(WA, 100)
 WA.bas.tess <- voronoi.polygons(WA.bas)
 WA.srs.tess <- voronoi.polygons(WA.srs)
 rel.balance <- var(WA.bas.tess$area)/var(WA.srs.tess$area)
+
+# Example clipping to fixed polygon (from @paul-vdb)
+set.seed(101)
+pts <- SpatialPoints(cbind(runif(1000), runif(1000)))
+smp <- pts[sample(1:length(pts), 10),]
+bound.pts <- cbind(c(0.2503111693,  0.5215198166,  0.8074680642,
+                    0.9312807075,  0.9047494268,  0.7750409433,
+                    0.3033737308,  0.0000000000,  0.0321650835,
+                    0.0321650835),
+                  c(0.03098592, 0.14595480, 0.03688176,
+                    0.25502784, 0.89472650, 1.00000000,
+                    0.80334098, 0.52918441, 0.14005896,
+                    0.14005896))
+bounding.poly <- SpatialPolygons(list(Polygons(list(Polygon(bound.pts)), "b")), as.integer(1))
+vor <- SDraw::voronoi.polygons(smp, bounding.poly)
+plot(vor)
+points(pts, pch = 20)
+points(smp, col = "red", pch = 20, cex=2)
+plot(bounding.poly, border="blue", lwd=2, add=T)
 
 }

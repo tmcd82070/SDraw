@@ -10,7 +10,7 @@
 
     v <- utils::packageVersion("SDraw") 
 
-    packageStartupMessage( paste("SDraw - Sample Draws (vers ", v ,")", sep=""))  
+    packageStartupMessage( paste("SDraw - Sample Draws (v ", v ,")", sep=""))  
 
     
 
