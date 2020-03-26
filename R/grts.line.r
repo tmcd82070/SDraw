@@ -56,6 +56,9 @@
 # 
 #' @examples
 #' 
+#' \dontrun{
+#' ## The following take > 5s to execute
+#' 
 #' # Draw sample
 #' HI.sample <- grts.line(HI.coast,10,5)
 #' 
@@ -67,7 +70,7 @@
 #' 
 #' # Plot 'over sample' locations
 #' plot( HI.sample[ HI.sample$pointType == "OverSample", ], pch=1, add=TRUE, col="blue" )  
-#' 
+#' }
 #' 
 #'
 grts.line <- function( x, n, over.n=0 ){
