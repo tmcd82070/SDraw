@@ -21,7 +21,7 @@ either a \code{SpatialPoints*}, \code{SpatialLines*}, or \code{SpatialPolygons*}
 has a bounding box attribute. This generally means \code{x} 
 is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.}
 
-\item{add}{Logical. Whether to add to an existig plot.  See Examples.}
+\item{add}{Logical. Whether to add to an existing plot.  See Examples.}
 
 \item{poly.fill}{Logical. Whether to fill polygons (TRUE) or leave them transparent (FALSE). 
 Only applies to \code{SpatialPolygon*} frames.}
