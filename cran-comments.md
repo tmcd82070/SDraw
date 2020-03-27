@@ -30,6 +30,12 @@ R 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 *No ERRORs.  
 *No WARNINGs: 
 
+## Spell Check
+
+* via devtools::spell_check()
+* All miss-spellings are part of a url, variable names, 
+acceptable abbreviations, or are in fact correct.
+
 ## Downstream dependencies
 spatialfusion
 

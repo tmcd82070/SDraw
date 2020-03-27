@@ -18,7 +18,7 @@
 #' has a bounding box attribute. This generally means \code{x} 
 #' is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.
 #' 
-#' @param add Logical. Whether to add to an existig plot.  See Examples.
+#' @param add Logical. Whether to add to an existing plot.  See Examples.
 #' 
 #' @param poly.fill Logical. Whether to fill polygons (TRUE) or leave them transparent (FALSE). 
 #' Only applies to \code{SpatialPolygon*} frames. 
