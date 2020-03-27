@@ -1,11 +1,28 @@
-## Current version: SDraw 2.1.8
+## Current version: SDraw 2.1.9
 
-## Previous submission: SDraw 2.1.7
-* DOI reference in DESCRIPTION was incomplete (missing a final "0" on the end).
-DOI reference updated and corrected to doi:10.1198/016214504000000250
+## Previous submission: SDraw 2.1.8
+* On about 25-mar-2020, grts.lines and grts.polygon examples 
+began timing out on linux builds.  I noticed this, 
+and I recieved emails from 
+Kurt Hornik and Brian Ripley to this effect.  Window builds
+work.  Issue seems to be udate of the Debian system 
+to proj7. 
+
+The time-out occurred in spsurvey::grts.  
+I am not the author of spsurvey.  I note that 
+spsurvey::grts creates a temporary directory, and that 
+I have had issues with that on Linux before.  I was able 
+to reduce sample size and both grts samples now run; but, 
+they take > 5s each. I wrapped the grts.line and 
+grts.polygon examples in \dontrun{} and noted 
+why.
+
+
+## R version 
+R 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 
 ## Test environments
-* local Windows 10 Pro, R 3.5.2
+* local Windows 10 Pro
 * passes devtools::check_win_devel()
 * Linux (via travis)
 
@@ -14,7 +31,7 @@ DOI reference updated and corrected to doi:10.1198/016214504000000250
 *No WARNINGs: 
 
 ## Downstream dependencies
-None known
+spatialfusion
 
 ## Thank you!
-Thank you to the R Core team for their service to the R community. 
+Thank you to the R team for their service to the R community. 

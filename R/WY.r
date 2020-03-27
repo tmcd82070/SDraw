@@ -7,9 +7,10 @@
 #' 
 #' @format
 #' A \code{SpatialPolygonsDataFrame} containing 23 polygons whose union outline 
-#' boundaries of the state of Wyoming. Source of the Shapefile containing all US 
-#' counties in 2015 was 
-#' \url{https://www.census.gov/geo/maps-data/data/cbf/cbf_counties.html}.
+#' boundaries of the state of Wyoming. Source shapefile was from the Census Bureau
+#' in 2015; but, that shapefile has been taken down.  A secondary source of the Wyoming
+#' counties shapefile, with different attributes, is here: 
+#' \url{https://www.arcgis.com/home/item.html?id=65b84d3d0c59441596c900d24196d4fd}
 #' 
 #' Attributes of the polygons are:
 #' \enumerate{
@@ -21,7 +22,7 @@
 #' The proj4string is \code{"+init=epsg:26912} \code{+proj=utm} \code{+zone=12} \code{+datum=NAD83} 
 #' \code{+units=m} \code{+no_defs} \code{+ellps=GRS80} \code{+towgs84=0,0,0"}, 
 #' meaning among other things that the coordinates are projected zone 12 UTM's in meters. 
-
+#' 
 #' The rectangular bounding box of all polygons is
 #'  
 #' \tabular{lrr}{
