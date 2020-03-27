@@ -60,7 +60,7 @@
 #' @keywords design survey
 #' @examples
 #' 
-#' #' \dontrun{
+#' \dontrun{
 #' ## The following take > 5s to execute
 #' 
 #' #   Draw sample

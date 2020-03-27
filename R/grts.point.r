@@ -46,12 +46,9 @@
 #' Stevens, D. L. and A. R. Olsen (2004). Spatially balanced sampling of
 #' natural resources. Journal of the American Statistical Association 99,
 #' 262-278.
+#' 
 #' @keywords design survey
-#
-# # Sometimes, spsurvey::grts stops because it cannot create a temporary 
-# # shapefile. This seems to be machine specific.  If this happens, 
-# # surround these examples with \dontrun
-#
+#' 
 #' @examples
 #'
 #' 
@@ -68,6 +65,11 @@
 #' plot( WA.city.samp[ WA.city.samp$pointType == "OverSample", ], pch=2, add=TRUE, col="blue" )  
 #' 
 #'
+#
+# # Sometimes, spsurvey::grts stops because it cannot create a temporary 
+# # shapefile. This seems to be machine specific.  If this happens, 
+# # surround the examples with \dontrun
+#
 
 
 grts.point <- function( x, n, over.n=0 ){

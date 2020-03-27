@@ -49,9 +49,8 @@ complicated designs (e.g., variable probability, stratification), call
 \examples{
 
 \dontrun{
-## The following take > 5s to execute
-
 # Draw sample
+## The following take > 5s 
 HI.sample <- grts.line(HI.coast,10,5)
 
 # Plot

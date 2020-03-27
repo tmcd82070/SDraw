@@ -58,7 +58,7 @@ complicated designs (e.g., variable probability, stratification), call
 }
 \examples{
 
-#' \dontrun{
+\dontrun{
 ## The following take > 5s to execute
 
 #   Draw sample
