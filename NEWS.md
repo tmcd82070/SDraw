@@ -1,4 +1,11 @@
-SDraw 2.1.10 (Released: 2020-03-27)
+SDraw 2.1.11 (Published: 2020-03-31)
+==============
+
+Changes:
+
+* Resolved 'stringsAsFactors' issue
+
+SDraw 2.1.10 (Unpublished: 2020-03-27)
 ==============
 
 Changes:

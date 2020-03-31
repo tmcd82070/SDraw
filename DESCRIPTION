@@ -1,8 +1,8 @@
 Package: SDraw
 Type: Package
 Title: Spatially Balanced Samples of Spatial Objects 
-Version: 2.1.10
-Date: 2020-03-27  
+Version: 2.1.11
+Date: 2020-03-31  
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
   person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"),

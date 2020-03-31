@@ -1,8 +1,18 @@
-## Current version: SDraw 2.1.9
+## Current submission: SDraw 2.1.11
 
-## Previous submission: SDraw 2.1.8
+## Current version on CRAN: SDraw 2.1.8
+
+## Previous submission: SDraw 2.1.10
+
+* Version 2.1.10 failed incoming CRAN tests on 
+'stringsAsFactors = TRUE'. After investigation and feedback
+from Uwe, Duncan, and Neal, I am resubmitting the 
+same version.  Hopefully, the incoming tests pass now.
+
+## Comments on need for changes
+
 * On about 25-mar-2020, grts.lines and grts.polygon examples 
-began timing out on linux builds.  I noticed this, 
+in version 2.1.8 began timing out on linux builds.  I noticed this, 
 and I recieved emails from 
 Kurt Hornik and Brian Ripley to this effect.  Window builds
 work.  Issue seems to be udate of the Debian system 
@@ -24,6 +34,7 @@ R 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
 ## Test environments
 * local Windows 10 Pro
 * passes devtools::check_win_devel()
+* passes devtools::check_rhub()
 * Linux (via travis)
 
 ## R CMD check --as-cran results
