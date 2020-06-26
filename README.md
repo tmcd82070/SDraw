@@ -1,6 +1,10 @@
-TravisCI: [![Build Status](https://travis-ci.org/tmcd82070/SDraw.svg?branch=master)](https://travis-ci.org/tmcd82070/SDraw)
+![CRAN/METACRAN](https://img.shields.io/cran/v/SDraw)
+[![CRAN Total Downloads](http://cranlogs.r-pkg.org/badges/grand-total/SDraw)](http://www.r-pkg.org/pkg/SDraw)
+[![HitCount](http://hits.dwyl.com/tmcd82070/SDraw.svg)](http://hits.dwyl.com/tmcd82070/SDraw)
 
+TravisCI: [![Build Status](https://travis-ci.org/tmcd82070/SDraw.svg?branch=master)](https://travis-ci.org/tmcd82070/SDraw)
 Codecov: [![codecov](https://codecov.io/gh/tmcd82070/SDraw/branch/master/graph/badge.svg)](https://codecov.io/gh/tmcd82070/SDraw)
+
 
 # Dependencies
 
