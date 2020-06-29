@@ -19,11 +19,17 @@ S2 <- Lines(list(Sl2), ID = "b")
 ##Create a formal class SpatialLines object
 Sl <- SpatialLines(list(S1,S2))
 
-
 context("Test the srs.line function")
 
 test_that("srs.line() operates appropriately", {
   
-  expect_error(obj <- srs.line(1,1), "Must call srs.line with a SpatialLines* object.",fixed=TRUE)
+  expect_error(obj <- srs.line(1,5), "Must call srs.line with a SpatialLines* object.",fixed=TRUE)
   
+  expect_equal(length(srs.line(Sl,26)), length(letters))
+  
+  expect_equal(srs.line(Sl,0),NULL)
+  expect_type(srs.line(Sl,-3),'NULL')
+  
+  
+
 })

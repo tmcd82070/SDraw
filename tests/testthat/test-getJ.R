@@ -11,6 +11,8 @@ test_that("getJ() operates appropriately", {
   ##Test to see if normal values of N are handled
   expect_identical(getJ(3092, c(83, 26)), c(1, 2))
   expect_equal(getJ(4084, c(2, 3)), c(j1=7,j2=3))
+  expect_equal(getJ(72, c(2,3)), c(j1=3, j2=2))
   expect_true(is.atomic(getJ(1001, c(2,3))))
   expect_length(getJ(10, c(2, 3)), 2)
+
 })

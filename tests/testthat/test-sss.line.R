@@ -26,6 +26,9 @@ test_that("sss.line() operates appropriately", {
   
   expect_error(obj <- sss.line(1,1), "Must call sss.line with a SpatialLines* object.",fixed=TRUE)
   
+  expect_warning(sss.line(Sl,10,10),"n and spacing both specified in sss.line.  n is being used.")
+  
+  expect_equal(sss.line(Sl,0),NULL)
   #expect_warning(sss.line(x, n, spacing), "n and spacing both specified in sss.line.  n is being used.")
   
 })
