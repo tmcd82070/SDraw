@@ -32,3 +32,4 @@
 #'
 #'@name HI.coast
 NULL
+

@@ -16,7 +16,8 @@ spdf <- SpatialPointsDataFrame(coords = coords,
 
 test_that("bas.point() operates appropriately", {
   
-  expect_silent(testSamp<-bas.point(spdf,20))
+  #expect_silent(testSamp<-bas.point(spdf,20))
+  testSamp<-bas.point(spdf,20)
   expect_is(testSamp, "SpatialPointsDataFrame")
   
   ##These tests look at some individual facets of the base point function
