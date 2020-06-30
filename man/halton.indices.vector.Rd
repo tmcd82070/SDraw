@@ -4,8 +4,14 @@
 \alias{halton.indices.vector}
 \title{Halton indices for an entire vector of coordinates}
 \usage{
-halton.indices.vector(hl.coords, n.boxes, D = 2, b = c(2, 3),
-  delta = c(1, 1), ll.corner = c(0, 0))
+halton.indices.vector(
+  hl.coords,
+  n.boxes,
+  D = 2,
+  b = c(2, 3),
+  delta = c(1, 1),
+  ll.corner = c(0, 0)
+)
 }
 \arguments{
 \item{hl.coords}{nXD vector of coordinates for points}

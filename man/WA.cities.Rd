@@ -3,7 +3,8 @@
 \name{WA.cities}
 \alias{WA.cities}
 \title{SpatialPointsDataFrame of cities in Washington state, USA}
-\format{A SpatialPointsDataFrame containing one point for each of 815 cities in Washington state. Source
+\format{
+A SpatialPointsDataFrame containing one point for each of 815 cities in Washington state. Source
 of the Shapefile from which these cities were queried is
 \url{http://nationalmap.gov/small_scale/atlasftp.html}  (file 'citiesx010g.shp.tar.gz'). 
 
@@ -47,7 +48,8 @@ The rectangular bounding box containing all points is
 \tab       min  \tab      max \cr
 x \tab  377703.1  \tab 957996.8\cr
 y \tab  5047878.6 \tab   5438319.2 \cr
-}}
+}
+}
 \usage{
 data("WA.cities")
 }

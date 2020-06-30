@@ -16,7 +16,7 @@ bounding polygon of \code{bounding.polygon}.  The outside bounding polygon
 is the union of all polygons 
 in \code{bounding.polygon}.  If this is not present, the Voronoi polygons
 extend to a rectangle that is \code{range.expand} beyond the 
-bounding box ofinput points in all directions.}
+bounding box of input points in all directions.}
 
 \item{range.expand}{A length-one or length-two vector of expansion 
 factors for the bounding box 

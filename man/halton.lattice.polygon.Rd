@@ -4,8 +4,14 @@
 \alias{halton.lattice.polygon}
 \title{Halton lattice inside a \code{SpatialPolygon*} object.}
 \usage{
-halton.lattice.polygon(x, N = 10000, J = NULL, eta = c(1, 1),
-  triangular = FALSE, bases = c(2, 3))
+halton.lattice.polygon(
+  x,
+  N = 10000,
+  J = NULL,
+  eta = c(1, 1),
+  triangular = FALSE,
+  bases = c(2, 3)
+)
 }
 \arguments{
 \item{x}{A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object.}
