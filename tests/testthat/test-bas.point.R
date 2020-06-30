@@ -14,9 +14,7 @@ spdf <- SpatialPointsDataFrame(coords = coords,
                                data = data, 
                                proj4string = crs)
 
-test_that("no warnings", {
-  expect_silent(testSamp<-bas.point(spdf,20))
-})
+testSamp<-bas.point(spdf,20)
 
 test_that("returns SpatialPointsDataFrame", {
   expect_is(testSamp, "SpatialPointsDataFrame")
