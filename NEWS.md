@@ -1,3 +1,9 @@
+SDraw 2.1.12 (Published: 2020-06-30)
+==============
+
+Changes:
+* Fixed bug in test_that code
+
 SDraw 2.1.11 (Published: 2020-03-31)
 ==============
 
