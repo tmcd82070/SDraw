@@ -1,9 +1,5 @@
 ##Taken from the vignette of the sp package:
 
-##This section of code serves the purpose of creating a "mock"
-##SLDF in an effort to properly test the baseline function in a stand-alone
-##manner.
-
 ##Create some arbitrary lines
 l1 <- cbind(c(1, 2, 3), c(3, 2, 2))
 l2 <- cbind(c(1, 2, 3), c(1, 1.5, 1))
@@ -24,11 +20,13 @@ context("Test the sdraw.SpatialLines function")
 
 test_that("sdraw.SpatialLines() operates appropriately", {
   
+  # check if the function stops with message
   expect_error(sdraw.SpatialLines(Sl, 10, type="BTS"),"Invalid SpatialLines sample type = BTS",fixed=TRUE )
   expect_error(sdraw.SpatialLines(Sl, 10, type="SAS"),"Invalid SpatialLines sample type = SAS",fixed=TRUE )
   expect_error(sdraw.SpatialLines(Sl, 10, type="STS"),"Invalid SpatialLines sample type = STS",fixed=TRUE )
   expect_error(sdraw.SpatialLines(Sl, 10, type="AGRTS"),"Invalid SpatialLines sample type = AGRTS",fixed=TRUE )
   
+  # check the output and length
   expect_length(sdraw.SpatialLines(Sl,26, type ="BAS"),length(LETTERS))
   expect_length(sdraw.SpatialLines(Sl,10, type ="SSS"),length(1:10))
   expect_length(sdraw.SpatialLines(Sl,4, type ="SRS"),length(c(2,3,5,7)))

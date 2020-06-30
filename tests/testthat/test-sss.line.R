@@ -1,9 +1,5 @@
 ##Taken from the vignette of the sp package:
 
-##This section of code serves the purpose of creating a "mock"
-##SLDF in an effort to properly test the baseline function in a stand-alone
-##manner.
-
 ##Create some arbitrary lines
 l1 <- cbind(c(1, 2, 3), c(3, 2, 2))
 l2 <- cbind(c(1, 2, 3), c(1, 1.5, 1))
@@ -24,11 +20,13 @@ context("Test the sss.line function")
 
 test_that("sss.line() operates appropriately", {
   
+  # check if x is a SpatialLines* object
   expect_error(obj <- sss.line(1,1), "Must call sss.line with a SpatialLines* object.",fixed=TRUE)
   
+  #check if n or spacing is missing with message
   expect_warning(sss.line(Sl,10,10),"n and spacing both specified in sss.line.  n is being used.")
   
+  ## check input parameters
   expect_equal(sss.line(Sl,0),NULL)
-  #expect_warning(sss.line(x, n, spacing), "n and spacing both specified in sss.line.  n is being used.")
   
 })
