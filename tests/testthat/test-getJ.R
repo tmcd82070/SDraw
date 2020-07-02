@@ -7,6 +7,7 @@ test_that("getJ() operates appropriately", {
 
   ##Test to see if large values of N are handled
   expect_identical(getJ(63310, c(2,3)), c(8, 6))
+  expect_identical(getJ(165432, c(3,5)), c(6, 4))
 
   ##Test to see if normal values of N are handled
   expect_identical(getJ(3092, c(83, 26)), c(1, 2))
