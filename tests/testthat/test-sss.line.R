@@ -1,5 +1,7 @@
 library(rgeos)
-##Taken from the vignette of the sp package:
+##This section of code serves the purpose of creating a "mock"
+##SLDF in an effort to properly test the baseline function in a stand-alone
+##manner.
 
 ##Create some arbitrary lines
 l1 <- cbind(c(1, 2, 3), c(3, 2, 2))
@@ -24,21 +26,29 @@ rownames(df) <- sapply(1:length(Sl), function(i) Sl@lines[[i]]@ID)
 Sldf <- SpatialLinesDataFrame(Sl, data = df)
 
 
-context("Test the sss.line function")
+context("Testing sss.line()")
 
-test_that("sss.line() operates appropriately", {
-  
+test_that("x must be a a SpatialLines object", {
   # check if x is a SpatialLines* object
   expect_error(obj <- sss.line(1,1), "Must call sss.line with a SpatialLines* object.",fixed=TRUE)
   expect_is(sss.line(Sl,10), "SpatialPointsDataFrame")
   expect_is(Sldf,"SpatialLinesDataFrame")
   expect_type(Sldf, "S4")
-  
-  #check if n or spacing is missing with message
-  expect_warning(sss.line(Sl,10,10),"n and spacing both specified in sss.line.  n is being used.")
-  
-  ## check input parameters
-  expect_equal(sss.line(Sl,0),NULL)
-  expect_length(sss.line(Sldf,10, random.start = FALSE), length(primes(10)))
-  
 })
+
+test_that("both n and spacing specified needed ", {
+  # check if n or spacing is missing with message
+  expect_warning(sss.line(Sl,10,10),"n and spacing both specified in sss.line.  n is being used.")
+})
+
+test_that("n must be an integer and greater than 0", {
+  # check input parameters
+  expect_equal(sss.line(Sl,0),NULL)
+  expect_type(sss.line(Sl,-3),'NULL')
+})
+
+test_that("length sss.line(Sldf,10, random.start = FALSE) is 10", {
+  # check input parameters
+  expect_length(sss.line(Sldf,10, random.start = FALSE), length(primes(10)))
+})
+

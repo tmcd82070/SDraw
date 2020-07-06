@@ -3,7 +3,6 @@
 data(meuse)
 
 ##Prepare the coordinates
-
 coords <- meuse[ , c("x", "y")]
 
 ##Assign
@@ -40,16 +39,16 @@ S2 <- Lines(list(Sl2), ID = "b")
 Sl <- SpatialLines(list(S1,S2))
 
 
-context("Test the lineLength function")
+context("Testing lineLength()")
 
-
-test_that("lineLength() operates appropriately", {
-  
+test_that("x is a SpatialPoints", {
   expect_equal(lineLength(spObj), 0)
-  
+})
+
+test_that("lineLength(spatPoly) is 8",{
   expect_equal(lineLength(spatPoly), length(primes(8)))
-  
+})
+
+test_that("lineLength(Sl) is 4.650282",{
   expect_equal(round(lineLength(Sl),6), 4.650282)
-  
-  
 })

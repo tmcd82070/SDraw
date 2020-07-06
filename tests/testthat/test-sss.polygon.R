@@ -2,17 +2,39 @@
 data(WY)
 
 
-context("Test the sss.polygon function")
+context("Testing sss.polygon()")
 
-test_that("sss.polygon() operates appropriately", {
-  
+test_that("check for the column names when none specified", {
   expect_named(sss.polygon(WY, 30), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 25, spacing = c(2,3)), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME")) 
-  expect_named(sss.polygon(WY, 20, triangular = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 15, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 10, spacing = c(3,4), triangular = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 5, triangular = TRUE, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 5, spacing = c(3,5), rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  expect_named(sss.polygon(WY, 5, spacing = c(2,3),triangular = TRUE, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
-  
 })
+
+test_that("check for the column names when only spacing specified",{
+  expect_named(sss.polygon(WY, 25, spacing = c(2,3)), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+test_that("check for the column names when only triangular specified",{
+  expect_named(sss.polygon(WY, 20, triangular = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+test_that("check for the column names when obly rand.dir specified",{
+  expect_named(sss.polygon(WY, 15, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+test_that("check for the column names when both spacing and triangular specified",{
+  expect_named(sss.polygon(WY, 10, spacing = c(3,4), triangular = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+test_that("check for the column names when both triangular and rand.dir specified",{
+  expect_named(sss.polygon(WY, 5, triangular = TRUE, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+test_that("check for the column names when both spacing and rand.dirspecified",{
+  expect_named(sss.polygon(WY, 5, spacing = c(3,5), rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+}) 
+
+test_that("check for the column names when all specified",{
+  expect_named(sss.polygon(WY, 5, spacing = c(2,3),triangular = TRUE, rand.dir = TRUE), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+})
+
+
+
