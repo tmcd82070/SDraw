@@ -1,8 +1,4 @@
 library(rgeos)
-context("Test the bas.line function")
-
-##Taken from the vignette of the sp package:
-
 ##This section of code serves the purpose of creating a "mock"
 ##SLDF in an effort to properly test the baseline function in a stand-alone
 ##manner.
@@ -26,35 +22,44 @@ Sl <- SpatialLines(list(S1,S2))
 df <- data.frame(len = sapply(1:length(Sl), function(i) gLength(Sl[i, ])))
 rownames(df) <- sapply(1:length(Sl), function(i) Sl@lines[[i]]@ID)
 
-
 ##SpatialLines to SpatialLinesDataFrame
 Sldf <- SpatialLinesDataFrame(Sl, data = df)
 
-test_that("bas.line() operates appropriately", {
-  
-  
-  ##This is a basic test to ensure that testSamp object has been assigned 
-  ##data correctly from the baseline function
-  
-  expect_silent(testSamp<-bas.line(Sldf,10))
+testSamp<-bas.line(Sldf,10)
+
+
+context("Testing bas.line()")
+
+test_that("x is a SpatialLines* object", {
+  # This is a basic test to ensure that testSamp object has been assigned 
+  # data correctly from the baseline function
   expect_is(testSamp, "SpatialPointsDataFrame")
-  
-  ##These tests look at some individual facets of the base line function
-  ##This is to ensure that the baseline function has operated as it should
-  
+})
+
+test_that("x must be a SpatialLinesDataFrame object", {
+  # To ensure that this function will not accept anything other than a SLDF object
+  expect_error(bas.line(2,2), "Must call bas.line with a SpatialLines* object.", fixed=TRUE)
+})
+
+test_that("length bas.line(Sldf,10) is 10", {
+  # These tests look at some individual facets of the base line function
+  # This is to ensure that the baseline function has operated as it should
   expect_equal(length(bas.line(Sldf,10)$df), 10)
   expect_equal(bas.line(Sldf,10)$sampleID, rep(1:10))
-  
+})
+
+test_that("length bas.line(Sl,10) is 10", {
   expect_equal(length(bas.line(Sl,10)$geometryID), 10)
   expect_equal(bas.line(Sl,10)$sampleID, rep(1:10))
-  
-  ##An error is expected, as this should be a null object assignment
-  
+})
+
+test_that("error when x is NULL", {
+  # An error is expected, as this should be a null object assignment
   emptySearch <- testSamp
   expect_error(as.SpatialLines.SLDF(emptySearch), "no slot of name \"lines\" for this object of class \"SpatialPointsDataFrame\"")
-  
-  ##To ensure that this function will not accept anything other than a SLDF object
-  
-  expect_error(bas.line(2,2), "Must call bas.line with a SpatialLines* object.", fixed=TRUE)
+})
 
+test_that("x is a 2-dimensional BAS sample", {
+  expect_type(bas.line(Sl,10, balance = "2D"), "S4")
+  expect_is(bas.line(Sl,5, balance = "2D"), "SpatialPointsDataFrame")
 })
