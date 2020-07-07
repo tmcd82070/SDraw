@@ -14,7 +14,7 @@ spatPoly <- SpatialPolygons(list(
 ))
 
 
-context("Test the hip.plot.lattice function")
+context("Testing hip.plot.lattice()")
 
 test_that("hip.plot.lattice() operates appropriately", {
   

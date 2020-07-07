@@ -14,20 +14,19 @@ spatPoly <- SpatialPolygons(list(
 ))
 
 
-context("Test the sdraw.SpatialPolygons function")
+context("Testing sdraw.SpatialPolygons()")
 
-test_that("sdraw.SpatialPolygons() operates appropriately", {
-  
+test_that("invalid SpatialPolygons sample type", {
   # check if the function stops with message
   expect_error(sdraw.SpatialPolygons(spatPoly, 15, type="HOP"),"Invalid SpatialPolygons sample type = HOP",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 20, type="BTS"),"Invalid SpatialPolygons sample type = BTS",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 25, type="SAS"),"Invalid SpatialPolygons sample type = SAS",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 30, type="STS"),"Invalid SpatialPolygons sample type = STS",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 35, type="RTS"),"Invalid SpatialPolygons sample type = RTS",fixed=TRUE )
-  
-  # check the output and length
-  expect_length(sdraw.SpatialPolygons(spatPoly,10, type ="GRTS"),length(primes(10)))
-  
 })
 
+test_that("length sdraw.SpatialPolygons(spatPoly,10, type = GRTS is 10", {
+  # check the output and length
+  expect_length(sdraw.SpatialPolygons(spatPoly,10, type ="GRTS"),length(primes(10)))
+})
 

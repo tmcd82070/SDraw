@@ -1,6 +1,7 @@
 ##Create spatial points object
 ##Load pre-built dataset
 data(meuse)
+data(WY)
 
 ##Prepare the coordinates
 coords <- meuse[ , c("x", "y")]
@@ -15,6 +16,7 @@ test_that("x must be a SpatialPoints* object", {
   # check if the function stops with message
   expect_error(voronoi.polygons(1, 1), "Must pass a SpatialPoints* object to voronoi.polygons.",  fixed=TRUE)
 })
+
 
 
 # check the output and length
