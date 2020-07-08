@@ -9,6 +9,9 @@ coords <- meuse[ , c("x", "y")]
 ##Assign
 spObj <- SpatialPoints(coords)
 
+WY.samp <- srs.polygon(WY,50)
+WY.tess <- voronoi.polygons(WY.samp)
+
 
 context("Testing voronoi.polygons()")
 
@@ -17,14 +20,21 @@ test_that("x must be a SpatialPoints* object", {
   expect_error(voronoi.polygons(1, 1), "Must pass a SpatialPoints* object to voronoi.polygons.",  fixed=TRUE)
 })
 
+test_that("x is a SpatialPolygonsDataFrame", {
+  expect_is(WY.tess, "SpatialPolygonsDataFrame")
+  expect_type(WY.tess, "S4")
+})
 
+test_that("check for column name and length", {
+  # check the output and length
+  expect_named(WY.tess, c("x", "y", "area"))
+  expect_length(WY.tess, 50)
+})
 
-# check the output and length
-#expect_named(voronoi.polygons(spObj, 5), "sampleID")
-#expect_identical((voronoi.polygons(spObj, 10)$sampleID), 1:10)
+test_that("range.expand is greater than 2", {
+  expect_warning(voronoi.polygons(WY.samp, range.expand= c(2,3,5)), "Only first two elements of range.expand used in voronoi.polygons")
+})
 
-# check input parameters
-#expect_warning(voronoi.polygons(spObj,200), "Sample size is greater than points in the sample frame. 
-#                                       n has been reset to the total number of points 
-#                                       (i.e., drawing a census).")
-#expect_warning(voronoi.polygons(spObj,0), "Sample size less than one has been reset to 1")
+test_that("bounding.polygon} is present", {
+  expect_is(voronoi.polygons(WY.samp, range.expand=0)@bbox, "matrix")
+})

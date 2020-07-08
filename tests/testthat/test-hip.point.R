@@ -25,8 +25,4 @@ test_that("n will be assigned to 1 if n is less than 1",{
   expect_warning(hip.point(spObj,0), "Sample size less than one has been reset to 1")
 })
 
-# test_that("", {
-#   # check input parameters
-#   expect_warning(hip.point(spObj,200), "Sample size is greater than points in the sample frame.n has been reset to the total number of points (i.e., drawing a census).")
-# })
 
