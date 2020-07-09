@@ -24,11 +24,6 @@ test_that("x must be a SpatialPoints or data.frame object.", {
   expect_is(srs.point(spdf, 5), "SpatialPointsDataFrame")
 })
 
-test_that("length srs.point(coords, 15) is 3",{
-  # check the output and length
-  expect_length(srs.point(coords, 15), length(primes(3)))
-})
-
 test_that("n will be assigned to the number of the rows of the SpatialPoints or data.frame object",{
   # check input parameters
   expect_length(srs.point(spObj,200), 155)
@@ -37,4 +32,9 @@ test_that("n will be assigned to the number of the rows of the SpatialPoints or 
 test_that("n has to be greater than 0",{
   # check input parameters
   expect_equal(srs.point(spObj,0), NULL)
+})
+
+test_that("length srs.point(coords, 15) is 3",{
+  # check the output and length
+  expect_length(srs.point(coords, 15), length(primes(3)))
 })

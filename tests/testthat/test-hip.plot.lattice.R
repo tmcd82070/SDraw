@@ -1,3 +1,13 @@
+##Create spatial points object
+##Load pre-built dataset
+data(meuse)
+
+##Prepare the coordinates
+coords <- meuse[ , c("x", "y")]
+
+##Assign
+spObj <- SpatialPoints(coords)
+
 ##Create spatial polygons object
 ##Make "squares" with integer values rounded in a list
 square <- rbind( c(2, 4, 3, 4, 3, 5,
@@ -16,8 +26,7 @@ spatPoly <- SpatialPolygons(list(
 
 context("Testing hip.plot.lattice()")
 
-test_that("hip.plot.lattice() operates appropriately", {
-  
-  
-  
+test_that("return null", {
+  expect_null(hip.plot.lattice(spObj, sample = hip.point( spObj, 10 )))
 })
+

@@ -16,8 +16,16 @@ testSamp<-bas.point(spdf,20)
 
 context("bas.point")
 
+test_that("Throws error on non-SpatialPoints imput", {  
+  expect_error(bas.point(8,50), "Must call bas.point with a SpatialPoints* object.", fixed=TRUE)
+})
+
 test_that("returns SpatialPointsDataFrame", {
   expect_is(testSamp, "SpatialPointsDataFrame")
+})
+
+test_that("sample size is greater than frame size",{
+  expect_warning(bas.point(spdf, 200), "Sample size greater than frame size. Census taken.")
 })
 
 test_that("return contains sampleID", {
@@ -43,12 +51,4 @@ test_that("attributes are returned", {
 
 test_that("no empty header values", {
   expect_false(" " %in% names(testSamp))
-})
-
-test_that("Throws error on non-SpatialPoints imput", {  
-  expect_error(bas.point(8,50), "Must call bas.point with a SpatialPoints* object.", fixed=TRUE)
-})
-
-test_that("sample size is greater than frame size",{
-  expect_warning(bas.point(spdf, 200), "Sample size greater than frame size. Census taken.")
 })

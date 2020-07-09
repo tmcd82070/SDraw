@@ -51,4 +51,3 @@ test_that("length sss.line(Sldf,10, random.start = FALSE) is 10", {
   # check input parameters
   expect_length(sss.line(Sldf,10, random.start = FALSE), length(primes(10)))
 })
-

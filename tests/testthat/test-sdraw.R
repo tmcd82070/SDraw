@@ -64,12 +64,12 @@ context("Testing sdraw()")
 
 test_that("sdraw() operates appropriately", {
   # check the output and length
-  expect_type(basSample <- sdraw(WY, 10, type="BAS"), "S4")
-  expect_is(basSample, "SpatialPointsDataFrame")
-  
-  
-  
-
+  # expect_type(basSample <- sdraw(WY, 10, type="BAS"), "S4")
+  # expect_is(basSample, "SpatialPointsDataFrame")
+  # 
+  # expect_type(sdraw(Sl, 5, type = "SSS"), "S4")
+  # 
+  # expect_type(sdraw(spObj, 20, type = "SRS"), "S4")
 
 })
 
