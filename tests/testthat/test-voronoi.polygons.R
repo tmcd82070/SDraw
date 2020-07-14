@@ -1,22 +1,30 @@
-##Create spatial points object
-##Load pre-built dataset
+# test-voronoi.polygons.R
+context("Testing voronoi.polygons()")
+
+
+# create spatial points object
+# load pre-built dataset
 data(meuse)
 data(WY)
 
-##Prepare the coordinates
+# prepare the coordinates
 coords <- meuse[ , c("x", "y")]
 
-##Assign
+# assign
 spObj <- SpatialPoints(coords)
-
 WY.samp <- srs.polygon(WY,50)
 WY.tess <- voronoi.polygons(WY.samp)
 
 
-context("Testing voronoi.polygons()")
+# the first run always succeeds, but warns
+# subsequent runs will suceed only if the file is unchanged
+# this will fail the first time if the output changes
+test_that("voronoi.polygons(WY.samp) returns the equivalent obj as it did previously", {
+  expect_known_output(voronoi.polygons(WY.samp), "voronoi.polygons.rds")
+})
 
+# check if the function stops with message
 test_that("x must be a SpatialPoints* object", {
-  # check if the function stops with message
   expect_error(voronoi.polygons(1, 1), "Must pass a SpatialPoints* object to voronoi.polygons.",  fixed=TRUE)
 })
 
@@ -29,12 +37,11 @@ test_that("range.expand is greater than 2", {
   expect_warning(voronoi.polygons(WY.samp, range.expand= c(2,3,5)), "Only first two elements of range.expand used in voronoi.polygons")
 })
 
+# check the output and length
 test_that("check for column name and length", {
-  # check the output and length
   expect_named(WY.tess, c("x", "y", "area"))
   expect_length(WY.tess, 50)
 })
-
 
 test_that("bounding.polygon is present", {
   expect_is(voronoi.polygons(WY.samp, range.expand=0)@bbox, "matrix")

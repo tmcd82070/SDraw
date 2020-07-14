@@ -1,23 +1,33 @@
-##Create spatial polygons object
-##Make "squares" with integer values rounded in a list
+# test-sdraw.SpatialPolygons.R
+context("Testing sdraw.SpatialPolygons()")
+
+
+# create spatial polygons object
+# make "squares" with integer values rounded in a list
 square <- rbind( c(2, 4, 3, 4, 3, 5,
                    2, 5, 2, 4, 2, 4),
                  c(6, 9, 7, 9, 7, 8,
                    6, 8, 6, 9, 6, 9))
-##Give these "squares" an identification
+
+# give these "squares" an identification
 ID <- c("shape1", "shape2")
 
-##Create SpatialPolygon object from these squares 
+# create SpatialPolygon object from these squares 
 spatPoly <- SpatialPolygons(list(
   Polygons(list(Polygon(matrix(square[1, ], ncol = 2, byrow = TRUE))), ID[1]),
   Polygons(list(Polygon(matrix(square[2, ], ncol = 2, byrow = TRUE))), ID[2])
 ))
 
 
-context("Testing sdraw.SpatialPolygons()")
+# the first run always succeeds, but warns
+# subsequent runs will suceed only if the file is unchanged
+# this will fail the first time if the output changes
+test_that("sdraw.SpatialPolygons() returns equivalent obj as it did previously", {
+  expect_known_value(sdraw.SpatialPolygons(spObj, 15, type="BAS"), "sdraw.SpatialPolygons.rds")
+})
 
+# check if the function stops with message
 test_that("invalid SpatialPolygons sample type", {
-  # check if the function stops with message
   expect_error(sdraw.SpatialPolygons(spatPoly, 15, type="HOP"),"Invalid SpatialPolygons sample type = HOP",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 20, type="BTS"),"Invalid SpatialPolygons sample type = BTS",fixed=TRUE )
   expect_error(sdraw.SpatialPolygons(spatPoly, 25, type="SAS"),"Invalid SpatialPolygons sample type = SAS",fixed=TRUE )
@@ -25,8 +35,7 @@ test_that("invalid SpatialPolygons sample type", {
   expect_error(sdraw.SpatialPolygons(spatPoly, 35, type="RTS"),"Invalid SpatialPolygons sample type = RTS",fixed=TRUE )
 })
 
+# check the output and length
 test_that("length sdraw.SpatialPolygons(spatPoly,10, type = GRTS is 10", {
-  # check the output and length
   expect_length(sdraw.SpatialPolygons(spatPoly,10, type ="GRTS"),length(primes(10)))
 })
-

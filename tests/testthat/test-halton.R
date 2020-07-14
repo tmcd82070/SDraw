@@ -1,8 +1,16 @@
+# test-halton.R
 context("Testing halton()")
+
+
+# the first run always succeeds, but warns
+# subsequent runs will suceed only if the file is unchanged
+# this will fail the first time if the output changes
+test_that("halton(10, 2) returns equivalent obj as it did previously", {
+  expect_known_value(halton(10, 2), "halton.rds")
+})
 
 test_that("length dim equals to length primes(dim)",{
   expect_length(halton(n=1,dim= 101), length(primes(101)))
-  
 })
 
 test_that("length start not equals to dim", {
