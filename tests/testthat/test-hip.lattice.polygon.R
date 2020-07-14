@@ -13,7 +13,7 @@ dim(v) = c(3,2,4)
 test_that("hip.lattice.polygon returns equivalent obj as it did previously", {
   expect_known_value(hip.lattice.polygon(box = matrix(data = c(0,1,0,1), nrow = 2, byrow = TRUE),
                                           J = c(3,2),
-                                          bases = c(2,3)), tmp, print = TRUE)
+                                          bases = c(2,3)), "hip.lattice.polygon.rds")
 })
 
 # check if the function stops with message
