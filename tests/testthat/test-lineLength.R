@@ -43,6 +43,7 @@ spatPoly <- SpatialPolygons(list(
   Polygons(list(Polygon(matrix(square[2, ], ncol = 2, byrow = TRUE))), ID[2])
 ))
 
+
 # the first run always succeeds, but warns
 # subsequent runs will suceed only if the file is unchanged
 # this will fail the first time if the output changes

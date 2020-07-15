@@ -19,25 +19,20 @@ spdf <- SpatialPointsDataFrame(coords = coords,
                                data = data, 
                                proj4string = crs)
 
-# the first run always succeeds, but warns
-# subsequent runs will suceed only if the file is unchanged
-# this will fail the first time if the output changes
-test_that("halton.frame(spdf) returns equivalent obj as it did previously", {
-  expect_known_value(halton.frame(spdf), "halton.frame.rds")
+
+test_that("check if error is thrown when incorrect index name is given", {
+  # use pre-built dataframe, 'mtcars' being my favorite
+  expect_error(halton.frame(mtcars, "gears", "Lowest to Highest"), "gears column not found in data frame.")
 })
 
-test_that("halton.frame() operates appropriately", {
-  # use pre-built dataframe, 'mtcars' being my favorite
-  # check if error is thrown when incorrect index name is given
-  expect_error(halton.frame(mtcars, "gears", "Lowest to Highest"), "gears column not found in data frame.")
-  
-  # check if error is thrown with invalid dataframe
-  expect_error(halton.frame(550, "", ""))
-  
-  # make sure the frame output is correctly formatted
+test_that("make sure the frame output is correctly formatted", {
   expect_type(halton.frame(mtcars, "hp", "Lowest to Highest"), "list")
   expect_length((halton.frame(mtcars, "hp", "Lowest to Highest")$"Lowest to Highest"), 32)
   expect_s3_class(halton.frame(mtcars, "disp", "Ascending Order"), "data.frame")
+})
+
+test_that("check if error is thrown with invalid dataframe", {
+  expect_error(halton.frame(550, "", ""))
 })
 
 test_that("x is a SpatialPointsDataFrame",{

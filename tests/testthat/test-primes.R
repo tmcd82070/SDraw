@@ -1,4 +1,13 @@
+# test-primes.R
 context("Testing primes()")
+
+
+# the first run always succeeds, but warns
+# subsequent runs will suceed only if the file is unchanged
+# this will fail the first time if the output changes
+test_that("primes(15) returns equivalent obj as it did previously", {
+  expect_known_value(primes(15), "primes.rds")
+})
 
 test_that("errors when too many requested",{
   # check if the function stops with message

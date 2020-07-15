@@ -18,13 +18,6 @@ S2 <- Lines(list(Sl2), ID = "b")
 Sl <- SpatialLines(list(S1,S2))
 
 
-# the first run always succeeds, but warns
-# subsequent runs will suceed only if the file is unchanged
-# this will fail the first time if the output changes
-test_that("sdraw.SpatialLines() returns equivalent obj as it did previously", {
-  expect_known_value(sdraw.SpatialLines(spObj, 15, type="BAS"), "sdraw.SpatialLines.rds")
-})
-
 # check if the function stops with message
 test_that("invalid SpatialLines sample type", {
   expect_error(sdraw.SpatialLines(Sl, 10, type="BTS"),"Invalid SpatialLines sample type = BTS",fixed=TRUE )

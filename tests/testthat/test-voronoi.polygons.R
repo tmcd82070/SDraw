@@ -16,13 +16,6 @@ WY.samp <- srs.polygon(WY,50)
 WY.tess <- voronoi.polygons(WY.samp)
 
 
-# the first run always succeeds, but warns
-# subsequent runs will suceed only if the file is unchanged
-# this will fail the first time if the output changes
-test_that("voronoi.polygons(WY.samp) returns the equivalent obj as it did previously", {
-  expect_known_output(voronoi.polygons(WY.samp), "voronoi.polygons.rds")
-})
-
 # check if the function stops with message
 test_that("x must be a SpatialPoints* object", {
   expect_error(voronoi.polygons(1, 1), "Must pass a SpatialPoints* object to voronoi.polygons.",  fixed=TRUE)

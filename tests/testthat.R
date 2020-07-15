@@ -1,8 +1,9 @@
 ##load your dependencies
 library(testthat)
+library(rgeos)
 library(sp)
 library(SDraw)
-library(rgeos)
+
 
 ##test your package
 test_check('SDraw')

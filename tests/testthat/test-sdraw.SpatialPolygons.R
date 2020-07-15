@@ -19,13 +19,6 @@ spatPoly <- SpatialPolygons(list(
 ))
 
 
-# the first run always succeeds, but warns
-# subsequent runs will suceed only if the file is unchanged
-# this will fail the first time if the output changes
-test_that("sdraw.SpatialPolygons() returns equivalent obj as it did previously", {
-  expect_known_value(sdraw.SpatialPolygons(spObj, 15, type="BAS"), "sdraw.SpatialPolygons.rds")
-})
-
 # check if the function stops with message
 test_that("invalid SpatialPolygons sample type", {
   expect_error(sdraw.SpatialPolygons(spatPoly, 15, type="HOP"),"Invalid SpatialPolygons sample type = HOP",fixed=TRUE )
