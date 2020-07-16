@@ -16,7 +16,7 @@ WY.samp <- srs.polygon(WY,50)
 WY.tess <- voronoi.polygons(WY.samp)
 
 
-# check if the function stops with message
+#check if the function stops with message
 test_that("x must be a SpatialPoints* object", {
   expect_error(voronoi.polygons(1, 1), "Must pass a SpatialPoints* object to voronoi.polygons.",  fixed=TRUE)
 })

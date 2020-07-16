@@ -1,6 +1,7 @@
 # test-plot.sdrawSample.R
 context("Testing plotSample()")
 
+
 # create spatial points object
 # load pre-built dataset
 data(meuse)
