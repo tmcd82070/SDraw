@@ -1,4 +1,8 @@
-##Load pre-built dataset
+# test-bas.point.R
+context("Testing bas.point()")
+
+
+# load pre-built dataset
 data(meuse)
 
 # prepare the 3 components: coordinates, data, and proj4string
@@ -11,10 +15,9 @@ spdf <- SpatialPointsDataFrame(coords = coords,
                                data = data, 
                                proj4string = crs)
 
+# assign
 testSamp<-bas.point(spdf,20)
 
-
-context("bas.point")
 
 test_that("Throws error on non-SpatialPoints imput", {  
   expect_error(bas.point(8,50), "Must call bas.point with a SpatialPoints* object.", fixed=TRUE)

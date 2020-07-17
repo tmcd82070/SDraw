@@ -1,8 +1,10 @@
 # test-halton.lattice.polygon.R
 context("Testing halton.lattice.polygon()")
 
+
 # load data
 data(WY)
+
 
 # the first run always succeeds, but warns
 # subsequent runs will suceed only if the file is unchanged

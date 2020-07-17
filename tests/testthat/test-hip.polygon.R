@@ -1,8 +1,10 @@
-##Load pre-built dataset
+# test-hip.polygon.R
+context("Testing hip.polygon()")
+
+
+# load pre-built dataset
 data(WY)
 
-
-context("Testing hip.polygon()")
 
 test_that("error when dimensions is greater than 2", {
   expect_error(hip.polygon(WY, 5, bases=c(2,3,4), J=c(8,5)), "HIP polygon sampling not implemented for dimensions greater

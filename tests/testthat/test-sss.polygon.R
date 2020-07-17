@@ -1,8 +1,10 @@
-##Load pre-built dataset
+# test-sss.polygon.R
+context("Testing sss.polygon()")
+
+
+# load pre-built dataset
 data(WY)
 
-
-context("Testing sss.polygon()")
 
 test_that("check for the column names when none specified", {
   expect_named(sss.polygon(WY, 30), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
