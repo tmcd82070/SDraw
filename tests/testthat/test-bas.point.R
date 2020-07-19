@@ -17,6 +17,7 @@ spdf <- SpatialPointsDataFrame(coords = coords,
 
 # assign
 testSamp<-bas.point(spdf,20)
+spdfDuplicate <- rbind(spdf, spdf)
 
 
 test_that("Throws error on non-SpatialPoints imput", {  
@@ -29,6 +30,10 @@ test_that("returns SpatialPointsDataFrame", {
 
 test_that("sample size is greater than frame size",{
   expect_warning(bas.point(spdf, 200), "Sample size greater than frame size. Census taken.")
+})
+
+test_that("error trap: check for duplicate coordinates", {
+  expect_error(bas.point(spdfDuplicate, 10), "Minimum distance between points is zero: are there duplicate coordinates?")
 })
 
 test_that("return contains sampleID", {
