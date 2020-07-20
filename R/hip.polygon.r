@@ -30,8 +30,7 @@
 #' horizontal rows of Halton boxes over the bounding box, for a total 
 #' of \code{prod(bases^J)} boxes.  The dimension of each box is 
 #' \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
-#' vertical extents of \code{x}'s bounding box.  If \code{J=NULL},
-#' \code{J} is chosen so that Halton boxes are as square as possible.
+#' vertical extents of \code{x}'s bounding box.
 #' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
 #' 
