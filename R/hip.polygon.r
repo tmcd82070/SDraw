@@ -19,8 +19,8 @@
 #' contained in \code{x}. If the sample size returned is less than the desired sample size,
 #' increase \code{n} until the desired sample size is reached.
 #' 
-#' @param x A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
-#' This object must contain at least 1 point. \code{x} is the 2-dimensional point resource
+#' @param x A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object. 
+#' This object must contain at least 1 polygon. \code{x} is the 2-dimensional polygon resource
 #' from which samples are taken.
 #' 
 #' @param J A 2X1 vector of base powers.  \code{J[1]} is for horizontal,
@@ -30,7 +30,7 @@
 #' horizontal rows of Halton boxes over the bounding box, for a total 
 #' of \code{prod(bases^J)} boxes.  The dimension of each box is 
 #' \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
-#' vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
+#' vertical extents of \code{x}'s bounding box.  If \code{J=NULL},
 #' \code{J} is chosen so that Halton boxes are as square as possible.
 #' 
 #' @param bases 2X1 vector of Halton bases.  These must be co-prime.
@@ -58,8 +58,12 @@
 #' 
 #' @author Michael Kleinsasser, Aidan McDonald
 #' 
+#' @references
+#'  Robertson, B., McDonald, T., Price, C., and Brown, J. (2018) "Halton iterative partitioning: 
+#'  spatially balanced sampling via partitioning", Environmental and Ecological Statistics, v25, p. 305–323.
+#'  
 #' @seealso \code{\link{hip.point}}, \code{\link{SDraw}}, 
-#' \code{\link{bas.point}}
+#' \code{\link{bas.polygon}}
 #' 
 #' @keywords design survey
 #' @examples
@@ -67,7 +71,13 @@
 #' # Draw sample of cities in the state of Washington
 #' data(WA)
 #' samp <- hip.polygon( WA, 100, J = c(3,2))
-#'   
+#' attributes(samp)$frame
+#' attributes(samp)$frame.type
+#' attributes(samp)$sample.type
+#' attributes(samp)$bases
+#' attributes(samp)$J
+#' attributes(samp)$hl.bbox
+#'    
 #'
 #' @export hip.polygon
 #' 
@@ -210,7 +220,7 @@ hip.polygon <- function( x, n, bases=c(2,3), J=c(8,5)){
 }
 # ----- Some examples
 
-# samp<- hip.polygon(1000, WA)
+# samp<- hip.polygon(WA, 1000)
 # plot(WA)
 # points(samp)
 # points(draws[[1]][1],draws[[1]][2], col="red")
