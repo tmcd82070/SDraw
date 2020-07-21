@@ -4,8 +4,14 @@
 \alias{halton.lattice}
 \title{Halton lattice inside a rectangle}
 \usage{
-halton.lattice(box = matrix(c(0, 0, 1, 1), 2), N = 10000, J = NULL,
-  eta = rep(1, nrow(box)), triangular = FALSE, bases = NULL)
+halton.lattice(
+  box = matrix(c(0, 0, 1, 1), 2),
+  N = 10000,
+  J = NULL,
+  eta = rep(1, nrow(box)),
+  triangular = FALSE,
+  bases = NULL
+)
 }
 \arguments{
 \item{box}{A DX2 matrix containing coordinates of the box. 

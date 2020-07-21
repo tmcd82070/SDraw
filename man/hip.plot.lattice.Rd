@@ -4,8 +4,7 @@
 \alias{hip.plot.lattice}
 \title{Plot a Halton Lattice over a polygon resource}
 \usage{
-hip.plot.lattice(resource, bases = c(2, 3), J = c(8, 5),
-  sample = NULL)
+hip.plot.lattice(resource, bases = c(2, 3), J = c(8, 5), sample = NULL)
 }
 \arguments{
 \item{resource}{\code{SpatialPolygons} object. The resource the halton lattice will be plotted over.}

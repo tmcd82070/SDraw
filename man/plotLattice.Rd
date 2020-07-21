@@ -4,8 +4,7 @@
 \alias{plotLattice}
 \title{plotLattice}
 \usage{
-plotLattice(latt, indices = NULL, J = NULL, bases = c(2, 3),
-  box = NULL, ...)
+plotLattice(latt, indices = NULL, J = NULL, bases = c(2, 3), box = NULL, ...)
 }
 \arguments{
 \item{latt}{A list containing the Halton boxes in the lattice. 

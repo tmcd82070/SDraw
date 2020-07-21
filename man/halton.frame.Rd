@@ -4,8 +4,7 @@
 \alias{halton.frame}
 \title{Construct a Halton sampling frame.}
 \usage{
-halton.frame(x, index.name = attr(x, "index.name"),
-  order.name = "HaltonOrder")
+halton.frame(x, index.name = attr(x, "index.name"), order.name = "HaltonOrder")
 }
 \arguments{
 \item{x}{Either a data frame or a \code{SpatialPointsDataFrame} object.  In 

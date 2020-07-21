@@ -4,8 +4,7 @@
 \alias{sss.polygon}
 \title{Draws a Simple Systematic Sample (SSS) from an area resource (polygons).}
 \usage{
-sss.polygon(x, n, spacing = c(1, 1), triangular = FALSE,
-  rand.dir = FALSE)
+sss.polygon(x, n, spacing = c(1, 1), triangular = FALSE, rand.dir = FALSE)
 }
 \arguments{
 \item{x}{A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} 

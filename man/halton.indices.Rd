@@ -4,8 +4,14 @@
 \alias{halton.indices}
 \title{Halton indices}
 \usage{
-halton.indices(x, J = NULL, hl.bbox, bases = c(2, 3),
-  index.name = "HaltonIndex", use.CRT = FALSE)
+halton.indices(
+  x,
+  J = NULL,
+  hl.bbox,
+  bases = c(2, 3),
+  index.name = "HaltonIndex",
+  use.CRT = FALSE
+)
 }
 \arguments{
 \item{x}{Either a data frame or a \code{SpatialPoints*} object.

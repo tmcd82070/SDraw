@@ -3,7 +3,8 @@
 \name{WY}
 \alias{WY}
 \title{SpatialPolygonsDataFrame of counties in the state of Wyoming, USA}
-\format{A \code{SpatialPolygonsDataFrame} containing 23 polygons whose union outline 
+\format{
+A \code{SpatialPolygonsDataFrame} containing 23 polygons whose union outline 
 boundaries of the state of Wyoming. Source shapefile was from the Census Bureau
 in 2015; but, that shapefile has been taken down.  A secondary source of the Wyoming
 counties shapefile, with different attributes, is here: 
@@ -26,7 +27,8 @@ The rectangular bounding box of all polygons is
 \tab       min  \tab      max \cr
 x \tab  495506 \tab   1084419 \cr
 y \tab  4538294 \tab  5006162 \cr
-}}
+}
+}
 \usage{
 data("WY")
 }
