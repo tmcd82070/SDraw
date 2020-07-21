@@ -11,7 +11,7 @@ coords <- meuse[ , c("x", "y")]
 
 # assign
 spObj <- SpatialPoints(coords)
-
+spObj6 <- spObj[1:6,]
 
 # check if the function stops with message
 test_that("n must be a SpatialPoints* object", {
@@ -25,4 +25,9 @@ test_that("check the output and length",{
 
 test_that("n will be assigned to 1 if n is less than 1",{
   expect_warning(hip.point(spObj,0), "Sample size less than one has been reset to 1")
+})
+
+test_that("n is greater than length of sample frame", {
+  expect_warning(hip.point(spObj6,10), "Sample size is greater than points in the sample frame. 
+            n has been reset to the total number of points (i.e., drawing a census)." ,fixed=TRUE)
 })
