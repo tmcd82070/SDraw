@@ -53,4 +53,5 @@ source_all.r
 # NAMESPACE
 CRAN-RELEASE
 
-
+#ignore reference output files
+Rplots.pdf

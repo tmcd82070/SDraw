@@ -21,3 +21,4 @@ Testing
 .*\.dll$
 ^source_all.r$
 ^SDrawExFrames.RData$
+^codecov\.yml$
