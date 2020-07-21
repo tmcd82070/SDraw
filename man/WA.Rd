@@ -3,7 +3,8 @@
 \name{WA}
 \alias{WA}
 \title{SpatialPolygonsDataFrame for the state of Washington, USA}
-\format{A SpatialPolygonsDataFrame containing 50 polygons whose union outline 
+\format{
+A SpatialPolygonsDataFrame containing 50 polygons whose union outline 
 boundaries of the state of Washington. Source of the Shapefile from which these 
 polygons were queried is 
 \url{http://nationalmap.gov/small_scale/atlasftp.html}  (file 'statesp020.tar.gz').
@@ -30,7 +31,8 @@ The rectangular bounding box of all polygons is
 \tab       min  \tab      max \cr
 x \tab 369439 \tab   971361.3 \cr
 y \tab  5044642 \tab  5444677.5 \cr
-}}
+}
+}
 \usage{
 data("WA")
 }

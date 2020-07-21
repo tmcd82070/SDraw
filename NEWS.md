@@ -1,3 +1,21 @@
+SDraw 2.1.13 (Published: 2020-07-03)
+==============
+
+Changes: 
+* Added 'xz' compression of .RDA data frames
+
+
+SDraw 2.1.12 (Published: 2020-06-30)
+==============
+
+Changes:
+* Bug fix in test_that code. Version 2.1.11 failed on 
+Linux systems after change in GEOS package. 
+New version resolves: 1. Failure: bas.point() 
+operates appropriately (@test-bas.point.R#19)
+testSamp <- bas.point(spdf, 20) produced warnings.
+  
+
 SDraw 2.1.11 (Published: 2020-03-31)
 ==============
 

@@ -1,8 +1,8 @@
 Package: SDraw
 Type: Package
 Title: Spatially Balanced Samples of Spatial Objects 
-Version: 2.1.11
-Date: 2020-03-31  
+Version: 2.1.13
+Date: 2020-07-03  
 Maintainer: Trent McDonald <tmcdonald@west-inc.com>
 Authors@R: c(person("Trent", "McDonald", role=c("cre","aut"), email="tmcdonald@west-inc.com"), 
   person("Aidan", "McDonald", role="aut", email="amcdonald@west-inc.com", comment="HIP sampling methods"),
@@ -35,12 +35,14 @@ Imports:
     covr
 Depends:
     sp,
-    R (>= 2.10)
+    R (>= 3.5.0)
 LazyData: true
 Suggests:
     knitr,
     testthat,
     devtools,
-    roxygen2
+    roxygen2,
+    markdown
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.0
+Encoding: UTF-8

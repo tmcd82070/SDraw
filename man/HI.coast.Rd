@@ -3,7 +3,8 @@
 \name{HI.coast}
 \alias{HI.coast}
 \title{SpatialLinesDataFrame of the coastline of Hawaii, USA}
-\format{A SpatialLinesDataFrame containing 12 lines outlining the coastline of
+\format{
+A SpatialLinesDataFrame containing 12 lines outlining the coastline of
 Hawaii. The Shapefile from which this coastline was queried can be found at
 \url{http://nationalmap.gov/small_scale/atlasftp.html}  (file 'coastll010g.shp.tar.gz'). 
 
@@ -22,7 +23,8 @@ The rectangular bounding box of the polygon is
 \tab       min  \tab      max \cr
 x \tab 371155 \tab 940304.1 \cr
 y \tab  2094278 \tab  2458600.9 \cr
-}}
+}
+}
 \usage{
 data("HI.coast")
 }

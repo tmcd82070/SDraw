@@ -4,8 +4,14 @@
 \alias{plotSample}
 \title{Plot sample and frame}
 \usage{
-plotSample(x, frame, lattice = FALSE, bbox = FALSE, add = FALSE,
-  poly.fill = TRUE)
+plotSample(
+  x,
+  frame,
+  lattice = FALSE,
+  bbox = FALSE,
+  add = FALSE,
+  poly.fill = TRUE
+)
 }
 \arguments{
 \item{x}{A \code{SpatialPointsDataFrame} produced by an SDraw sampling function.  For example, 
