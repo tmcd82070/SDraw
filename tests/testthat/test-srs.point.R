@@ -33,10 +33,15 @@ test_that("n will be assigned to the number of the rows of the SpatialPoints or 
 
 # check input parameters
 test_that("n has to be greater than 0",{
-  expect_equal(srs.point(spObj,0), NULL)
+  expect_null(srs.point(spObj,0))
 })
 
 # check the output and length
 test_that("length srs.point(coords, 15) is 3",{
   expect_length(srs.point(coords, 15), length(primes(3)))
+})
+
+# check for output column name
+test_that("check for output column name", {
+  expect_named(srs.point(spObj, 5), c("sampleID", "geometryID"))
 })

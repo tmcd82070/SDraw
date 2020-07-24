@@ -30,12 +30,8 @@ test_that("range.expand is greater than 2", {
   expect_warning(voronoi.polygons(WY.samp, range.expand= c(2,3,5)), "Only first two elements of range.expand used in voronoi.polygons")
 })
 
-# check the output and length
+# # check the output and length
 test_that("check for column name and length", {
   expect_named(WY.tess, c("x", "y", "area"))
   expect_length(WY.tess, 50)
-})
-
-test_that("bounding.polygon is present", {
-  expect_is(voronoi.polygons(WY.samp, range.expand=0)@bbox, "matrix")
 })
