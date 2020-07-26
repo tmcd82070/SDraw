@@ -55,8 +55,8 @@ test_that("plotSample() returns equivalent obj as it did previously", {
   expect_known_value(plotSample(sdraw(HAL, 25, type="SRS"), WY, lattice=TRUE), "plotSample_case_1.rds")
 })
 
-test_that("sample type is SRS, lattice=TRUE", {
-  expect_known_value(plotSample(sdraw(HAL, 25, type="SRS"), WY, lattice=TRUE ), "plotSample_case_2.rds")
+test_that("sample type is BAS", {
+  expect_known_value(plotSample(sdraw(HAL, 25, type="BAS"), lattice=TRUE), "plotSample_case_2.rds")
 })
 
 test_that("sample type is SSS, poly.fill= FALSE", {
