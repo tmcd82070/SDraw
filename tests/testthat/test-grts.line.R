@@ -21,7 +21,7 @@ Sl <- SpatialLines(list(S1,S2))
 
 test_that("x must be a SpatialLines object", {
   # make sure error catch does it's job
-  expect_error(obj <- grts.line(1, 1, 1), "Must call grts.line with a SpatialLines object.")
+  expect_error(grts.line(1, 1, 1), "Must call grts.line with a SpatialLines object.")
 })
 
 test_that("check for output column name", {

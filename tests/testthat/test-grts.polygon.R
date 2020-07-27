@@ -21,7 +21,7 @@ spatPoly <- SpatialPolygons(list(
 
 test_that("x must be a SpatialPolygons object", {
   # make sure error catch does it's job
-  expect_error(obj <- grts.polygon(1, 1, 1), "Must call grts.polygon with a SpatialPolygons object.")
+  expect_error(grts.polygon(1, 1, 1), "Must call grts.polygon with a SpatialPolygons object.")
 })
 
 test_that("check for output column name", {
