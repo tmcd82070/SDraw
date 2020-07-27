@@ -5,7 +5,7 @@
 \alias{SDraw-package}
 \alias{_PACKAGE}
 \alias{BAS-package}
-\alias{HAL-package}
+\alias{HIP-package}
 \alias{GRTS}
 \alias{SSS-package}
 \alias{SDraw}
@@ -13,7 +13,7 @@
 \title{Selection of spatially balanced samples.}
 \description{
 SDraw provides a set of R functions that draw
-Halton-Lattice samples (HAL),
+Halton Iterative Partitioning samples (HIP),
 Balanced-Acceptance-Samples (BAS), 
 Generalized-Random-Tessellation-Stratified (GRTS) samples, 
 Simple-Systematic-Samples (SSS), and 
@@ -25,19 +25,22 @@ infinite).
 \tab SDraw\cr 
 Type: \tab Package\cr 
 License: \tab GNU General Public License\cr 
-Imports: \tab spsurvey,utils,rgdal,rgeos,graphics,
-methods,deldir,OpenStreetMap,stats \cr
+Imports: \tab spsurvey, utils, rgdal, rgeos, graphics, methods, 
+deldir, OpenStreetMap, stats, covr \cr
 Depends: \tab sp \cr
 } 
 
 
 The work-horse functions are named \code{???.point}, \code{???.line}, and 
-\code{???.polygon}, where '\code{???}' is either \code{hal}, \code{bas}, \code{grts}, 
+\code{???.polygon}, where '\code{???}' is either \code{hip}, \code{bas}, \code{grts}, 
 \code{sss}, or \code{srs}.  For simplicity, an S4 generic, 
 \code{sdraw}, is provided to handle all combinations of sample and frame types 
 (see \code{\link{sdraw}}).
 }
 \references{
+Robertson, B., McDonald, T., Price, C., and Brown, J. (2018) "Halton iterative partitioning: 
+spatially balanced sampling via partitioning", Environmental and Ecological Statistics, v25, p. 305–323.
+ 
 Manly, B. F. J. and Navarro-Alberto, J. A., editors, (2015), "Introduction to Ecological Sampling", 
 CRC Press, Boca Raton, FL. 
 
