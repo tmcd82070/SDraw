@@ -61,6 +61,7 @@ test_that("sample type is SSS, poly.fill= FALSE", {
 
 test_that("x is SpatialLines", {
   expect_known_value(plotSample(sdraw(Sl, 25, type="BAS"),Sl, lattice=TRUE), "plotSample_case_3.rds")
+  expect_warning(plotSample(sdraw(Sl, 25, type="BAS"),Sl, lattice=TRUE), "bbox not plotted. bbox is not 2-dimensional for 1D balanced line samples")
 })
 
 test_that("x is SpatialPoints", {
