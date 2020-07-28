@@ -23,7 +23,7 @@ case_1 <- halton.indices(spObj, J=c(3,2))
 case_2 <- halton.indices(coords, use.CRT=TRUE)
 
 # x is SpatialPointsDataFrame, missing hl.bbox
-#case_2 <- halton.indices(WA.cities, J=c(3,2))
+#case_3 <- halton.indices(WA.cities, J=c(3,2))
 
 # J is null
 #case_4 <- halton.indices(WA.cities, hl.bbox=bb)
@@ -33,7 +33,7 @@ case_2 <- halton.indices(coords, use.CRT=TRUE)
 # subsequent runs will suceed only if the file is unchanged
 # this will fail the first time if the output changes
 # x is SpatialPoints, missing hl.bbox
-test_that("halton.indices(case_3) returns equivalent obj as it did previously", {
+test_that("halton.indices(case_1) returns equivalent obj as it did previously", {
   expect_known_value(case_1, "halton.indices_case_1.rds")
 })
 
@@ -42,8 +42,8 @@ test_that("halton.indices(case_2) returns equivalent obj as it did previously", 
   expect_known_value(case_2, "halton.indices_case_2.rds")
 })
 
-# test_that("halton.indices(case_1) returns equivalent obj as it did previously", {
-#   expect_known_value(case_1, "halton.indices_case_1.rds")
+# test_that("halton.indices(case_3) returns equivalent obj as it did previously", {
+#   expect_known_value(case_3, "halton.indices_case_3.rds")
 # })
 
 # # J is null
