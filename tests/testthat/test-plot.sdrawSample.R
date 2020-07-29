@@ -52,7 +52,7 @@ HAL <- halton.lattice.polygon(WY, J=c(3,2), eta=c(3,2), triangular=TRUE )
 # subsequent runs will suceed only if the file is unchanged
 # this will fail the first time if the output changes
 test_that("plotSample() returns equivalent obj as it did previously", {
-  expect_known_value(plotSample(sdraw(HAL, 25, type="SRS"), WY, lattice=TRUE), "plotSample_case_1.rds")
+  expect_known_value(plotSample(sdraw(HAL, 25, type="HIP"), WY, lattice=TRUE), "plotSample_case_1.rds")
 })
 
 test_that("sample type is SSS, poly.fill= FALSE", {

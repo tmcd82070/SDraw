@@ -3,7 +3,7 @@
 #' @title Plot sample and frame
 #'  
 #' @description Plot the sample and optionally the frame, background image (terrain), and lattice 
-#'  (if HAL sample). 
+#'  (if HIP sample). 
 #'  
 #' @param x A \code{SpatialPointsDataFrame} produced by an SDraw sampling function.  For example, 
 #'  as produced by \code{sdraw(frame,n)}.  This object is a standard \code{Spatial} \code{Polygons}\code{DataFrame} object
@@ -12,11 +12,11 @@
 #' @param frame The sample frame used to draw the sample contained in \code{x}. This is 
 #' either a \code{SpatialPoints*}, \code{SpatialLines*}, or \code{SpatialPolygons*} object. 
 #' 
-#' @param lattice Logical. Whether to plot the Halton Lattice if \code{x} is a HAL sample. 
+#' @param lattice Logical. Whether to plot the Halton Lattice if \code{x} is a HIP sample. 
 #' 
 #' @param bbox Logical. Whether to plot the bounding box if the sample 
 #' has a bounding box attribute. This generally means \code{x} 
-#' is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.
+#' is a HIP or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.
 #' 
 #' @param add Logical. Whether to add to an existing plot.  See Examples.
 #' 
@@ -69,7 +69,7 @@ plotSample <- function(x, frame, lattice=FALSE, bbox=FALSE, add=FALSE, poly.fill
   ftype <- attr(x,"frame.type")
   
   
-  if( (bbox | lattice) & (stype == "HAL") & !((ftype=="line") & (baltype=="1d"))){
+  if( (bbox | lattice) & (stype == "HIP") & !((ftype=="line") & (baltype=="1d"))){
     bb <- attr(x,"hl.bbox")
   } else if ((bbox | lattice) & (stype == "BAS") & !((ftype=="line") & (baltype=="1d"))){
     bb <- attr(x,"bas.bbox")
@@ -101,7 +101,7 @@ plotSample <- function(x, frame, lattice=FALSE, bbox=FALSE, add=FALSE, poly.fill
       }
   }
   
-  if(stype == "HAL" & lattice ){
+  if(stype == "HIP" & lattice ){
     if( !(ftype =="line" & baltype == "1d")){
       bb <- attr(x,"hl.bbox")
       bases <- attr(x,"bases")
@@ -122,7 +122,7 @@ plotSample <- function(x, frame, lattice=FALSE, bbox=FALSE, add=FALSE, poly.fill
     }
   }
 
-  if( (bbox | lattice) & (stype=="HAL" | stype=="BAS") ){
+  if( (bbox | lattice) & (stype=="HIP" | stype=="BAS") ){
     if( !(ftype =="line" & baltype == "1d")){
       bb.col <- "#FF6D00FF"
       lines( rep(bb[1,1],2), bb[2,], col=bb.col )
