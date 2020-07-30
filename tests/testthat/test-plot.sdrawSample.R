@@ -52,18 +52,22 @@ HAL <- halton.lattice.polygon(WY, J=c(3,2), eta=c(3,2), triangular=TRUE )
 # subsequent runs will suceed only if the file is unchanged
 # this will fail the first time if the output changes
 test_that("plotSample() returns equivalent obj as it did previously", {
-  expect_known_value(plotSample(sdraw(HAL, 25, type="HIP"), WY, lattice=TRUE), "plotSample_case_1.rds")
+  expect_known_value(plotSample(sdraw(HAL, 25, type="HIP"), WY, lattice=TRUE), "plotSample_latticeTrue.rds")
 })
 
-test_that("sample type is SSS, poly.fill= FALSE", {
-  expect_known_value(plotSample(sdraw(WY, 10, type="SSS", spacing=c(1,1)), WY, lattice=TRUE, poly.fill= FALSE), "plotSample_case_2.rds")
+test_that("plotSample() returns equivalent obj as it did previously", {
+  expect_known_value(plotSample(sdraw(HAL, 25, type="SRS")), "plotSample_missingFrame.rds")
+})
+
+test_that("sample type is SRS, poly.fill= FALSE", {
+  expect_known_value(plotSample(sdraw(HAL, 10, type="SRS"), WY, lattice=TRUE, poly.fill= FALSE), "plotSample_polyfillFalse.rds")
 })
 
 test_that("x is SpatialLines", {
-  expect_known_value(plotSample(sdraw(Sl, 25, type="BAS"),Sl, lattice=TRUE), "plotSample_case_3.rds")
+  expect_known_value(plotSample(sdraw(Sl, 25, type="BAS"),Sl , lattice=TRUE), "plotSample_SpatialLines.rds")
   expect_warning(plotSample(sdraw(Sl, 25, type="BAS"),Sl, lattice=TRUE), "bbox not plotted. bbox is not 2-dimensional for 1D balanced line samples")
 })
 
 test_that("x is SpatialPoints", {
-  expect_known_value(plotSample(sdraw(spObj, 25, type="BAS"),spObj, lattice=TRUE ), "plotSample_case_4.rds")
+  expect_known_value(plotSample(sdraw(spObj, 25, type="BAS"),spObj, lattice=TRUE ), "plotSample_SpatialPoints.rds")
 })

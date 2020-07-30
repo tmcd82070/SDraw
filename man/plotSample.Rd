@@ -21,11 +21,11 @@ with additional attributes that record the sampling design.}
 \item{frame}{The sample frame used to draw the sample contained in \code{x}. This is 
 either a \code{SpatialPoints*}, \code{SpatialLines*}, or \code{SpatialPolygons*} object.}
 
-\item{lattice}{Logical. Whether to plot the Halton Lattice if \code{x} is a HAL sample.}
+\item{lattice}{Logical. Whether to plot the Halton Lattice if \code{x} is a HIP sample.}
 
 \item{bbox}{Logical. Whether to plot the bounding box if the sample 
 has a bounding box attribute. This generally means \code{x} 
-is a HAL or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.}
+is a HIP or BAS sample.  \code{lattice==TRUE} sets \code{bbox == TRUE}.}
 
 \item{add}{Logical. Whether to add to an existing plot.  See Examples.}
 
@@ -37,7 +37,7 @@ Nothing (NULL is invisibly returned)
 }
 \description{
 Plot the sample and optionally the frame, background image (terrain), and lattice 
- (if HAL sample).
+ (if HIP sample).
 }
 \examples{
 data(WY)
