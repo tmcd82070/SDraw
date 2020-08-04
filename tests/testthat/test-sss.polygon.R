@@ -39,8 +39,5 @@ test_that("check for the column names when all specified", {
 })
 
 test_that("check for the column names when rand.dir user-specified", {
-  expect_named(sss.polygon(WY, 15, rand.dir = c(3,5)), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
+  expect_warning(sss.polygon(WY, 15, rand.dir = c(3,5)), "the condition has length > 1 and only the first element will be used")
 })
-
-
-

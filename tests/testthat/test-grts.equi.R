@@ -21,7 +21,7 @@ spdf <- SpatialPointsDataFrame(coords = coords,
 test_that("grts.equi() operates on two different inheritance classes: integers and SPDF objects", {
   # this function operates on two different inheritance classes; integers and SPDF objects 
   # begin by testing when over.n == 0
-  expect_type(obj <- grts.equi(spdf, 20, 0), "S4")
+  expect_type(grts.equi(spdf, 20, 0), "S4")
   expect_visible(grts.equi(spdf, 20, 0), c("sampleID"))
 })
 
@@ -44,10 +44,4 @@ test_that("output formatted correctly", {
                                          'dist.m'))
   expect_identical((grts.equi(spdf, 1, 0)$sampleID), "Site-1")
   expect_identical((grts.equi(spdf, 1, 0)$pointType), "Sample")
-})
-
-test_that("check for bad data", {
-  # check for bad data
-  expect_error(grts.equi(mtcars, 5, 0))
-  expect_error(grts.equi(spdf, 158, 0))
 })

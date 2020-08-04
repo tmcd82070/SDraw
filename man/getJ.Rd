@@ -12,17 +12,17 @@ getJ(N, bases = c(2, 3))
 \item{bases}{A vector of co-prime Halton bases of length D.}
 }
 \value{
-A vector of length 2 containing the exponents 
-of bases that produce a Halton cycle of length B such 
+A vector of length 2 containing the exponents
+of bases that produce a Halton cycle of length B such
 that n <= B <= N.
 }
 \description{
-Compute J, the depth of the Halton lattice, 
+Compute J, the depth of the Halton lattice,
 given a population size .
 }
 \details{
-This routine returns a largest Halton cycle (i.e., B) 
-such that n <= B <= N.  The first few Halton cycles are in 
+This routine returns a largest Halton cycle (i.e., B)
+such that n <= B <= N.  The first few Halton cycles are in
 Robertson et al. (2018) Web table 1.
 }
 \examples{

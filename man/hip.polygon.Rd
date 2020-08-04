@@ -8,8 +8,8 @@
 hip.polygon(x, n, bases = c(2, 3), J = c(8, 5))
 }
 \arguments{
-\item{x}{A \code{SpatialPoints} or \code{SpatialPointsDataFrame} object. 
-This object must contain at least 1 point. \code{x} is the 2-dimensional point resource
+\item{x}{A \code{SpatialPolygons} or \code{SpatialPolygonsDataFrame} object. 
+This object must contain at least 1 polygon. \code{x} is the 2-dimensional polygon resource
 from which samples are taken.}
 
 \item{n}{Target sample size.  Target number of locations to draw from the set of points
@@ -25,8 +25,7 @@ of Halton boxes over \code{x}'s bounding box, and \code{bases[2]^J[2]}
 horizontal rows of Halton boxes over the bounding box, for a total 
 of \code{prod(bases^J)} boxes.  The dimension of each box is 
 \code{c(dx,dy)/} \code{(bases^J)}, where \code{c(dx,dy)} are the horizontal and 
-vertical extents of \code{x}'s bounding box.  If \code{J=NULL} (the default),
-\code{J} is chosen so that Halton boxes are as square as possible.}
+vertical extents of \code{x}'s bounding box.}
 }
 \value{
 A \code{SpatialPoints*} object containing locations in the HIP sample.
@@ -70,12 +69,22 @@ the sample.
 # Draw sample of cities in the state of Washington
 data(WA)
 samp <- hip.polygon( WA, 100, J = c(3,2))
-  
+attributes(samp)$frame
+attributes(samp)$frame.type
+attributes(samp)$sample.type
+attributes(samp)$bases
+attributes(samp)$J
+attributes(samp)$hl.bbox
+   
 
+}
+\references{
+Robertson, B., McDonald, T., Price, C., and Brown, J. (2018) "Halton iterative partitioning: 
+ spatially balanced sampling via partitioning", Environmental and Ecological Statistics, v25, p. 305–323.
 }
 \seealso{
 \code{\link{hip.point}}, \code{\link{SDraw}}, 
-\code{\link{bas.point}}
+\code{\link{bas.polygon}}
 }
 \author{
 Michael Kleinsasser, Aidan McDonald

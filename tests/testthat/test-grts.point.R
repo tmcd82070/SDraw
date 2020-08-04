@@ -15,7 +15,7 @@ spObj <- SpatialPoints(coords)
 
 test_that("x must be a SpatialPoints object", {
   # make sure error catch does it's job
-  expect_error(obj <- grts.point(1, 1, 1), "Must call grts.point with a SpatialPoints object.")
+  expect_error(grts.point(1, 1, 1), "Must call grts.point with a SpatialPoints object.")
 })
 
 test_that("check for output column name", {

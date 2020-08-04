@@ -6,7 +6,7 @@ context("Testing hip.plot.lattice()")
 data(WA.cities)
 
 # create a HIP sample
-samp <- hip.point(WA.cities, 100)
+samp <- hip.point(WA.cities, 50)
 
 
 # the first run always succeeds, but warns
