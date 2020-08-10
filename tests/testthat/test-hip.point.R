@@ -43,7 +43,7 @@ test_that("reset maxSampleSize", {
   N <- NULL
   J <- NULL
   maxSampleSize <- NULL
-  expect_warning(hip.point(WA.cities, 500, plot.lattice = TRUE), c("Sample size is greater than max sample size for HIP sampling.
+  expect_warning(expect_warning(hip.point(WA.cities, 500, plot.lattice = TRUE), c("Sample size is greater than max sample size for HIP sampling.
   HIP sampling discards some points while drawing Halton lattice.
-  n has been set to ", maxSampleSize, ", the largest possible sample for N = ", N, " and J = (", J[1], ",", J[2], ")"),fixed=TRUE)
+  n has been set to ", maxSampleSize, ", the largest possible sample for N = ", N, " and J = (", J[1], ",", J[2], ")"),fixed=TRUE))
 })
