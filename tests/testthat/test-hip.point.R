@@ -5,6 +5,7 @@ context("Testing hip.point()")
 # create spatial points object
 # load pre-built dataset
 data(meuse)
+data(WA.cities)
 
 # prepare the coordinates
 coords <- meuse[ , c("x", "y")]
@@ -36,9 +37,13 @@ test_that("n is greater than length of sample frame", {
 test_that("J results in more Halton boxes than there are points", {
   expect_warning(hip.point(spObj, 15, J=c(3,5)), "J results in more Halton boxes than there are points. J has been set to default value.", fixed=TRUE)
 })
-# 
-# test_that("", {
-#   expect_warning(hip.point(spObj2x, 300, J=c(4,2)), c("Sample size is greater than max sample size for HIP sampling.
-#   HIP sampling discards some points while drawing Halton lattice.
-#   n has been set to ", maxSampleSize, ", the largest possible sample for N = ", N, " and J = (", J[1], ",", J[2], ")"), ,fixed=TRUE)
-# })
+
+test_that("reset maxSampleSize", {
+  bases <- NULL
+  N <- NULL
+  J <- NULL
+  maxSampleSize <- NULL
+  expect_warning(hip.point(WA.cities, 500, plot.lattice = TRUE), c("Sample size is greater than max sample size for HIP sampling.
+  HIP sampling discards some points while drawing Halton lattice.
+  n has been set to ", maxSampleSize, ", the largest possible sample for N = ", N, " and J = (", J[1], ",", J[2], ")"),fixed=TRUE)
+})
