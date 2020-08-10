@@ -161,8 +161,8 @@ hip.point <- function( x, n, J = NULL, plot.lattice = FALSE ){
   
   for(k in 1:n){ # For each point we are sampling
     
-    #browser()
-    #print(k)
+    # browser()
+    # print(k)
     currentBox <- box # Start with bounding box
     if(plot.lattice){plot.box(currentBox)}
     pointsInCurrentBox <- pointsInbbox # Start with all points that haven't been discarded
@@ -264,7 +264,7 @@ hip.point <- function( x, n, J = NULL, plot.lattice = FALSE ){
       candidatePoint <- pointsInCurrentBox[[sample(1:length(pointsInCurrentBox), 1)]]
       pointIsNew <- TRUE
       for(i in 1:nrow(samp.coords)){
-        if(!all(is.na(samp.coords[i,])) && all(samp.coords[i,] == candidatePoint)){pointIsNew <- FALSE}
+        if(!all(is.na(samp.coords[i,])) && all(samp.coords[i,] == candidatePoint)){pointIsNew <- TRUE}
       }
     }
     if(plot.lattice){text(mean(c(currentBox[1,1],currentBox[1,2])),mean(c(currentBox[2,1],currentBox[2,2])), labels = Sk[k])}
