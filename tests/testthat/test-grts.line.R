@@ -21,15 +21,15 @@ Sl <- SpatialLines(list(S1,S2))
 
 test_that("x must be a SpatialLines object", {
   # make sure error catch does it's job
-  expect_error(grts.line(1, 1, 1), "Must call grts.line with a SpatialLines object.")
+  capture.output(expect_error(grts.line(1, 1, 1), "Must call grts.line with a SpatialLines object."))
 })
 
 test_that("check for output column name", {
   # run SpatialLines object through function, should also improve coverage in grts.equi()
-  expect_named(grts.line(Sl, 4, 1), c("sampleID", "pointType", "geometryID"))
+  capture.output(expect_named(grts.line(Sl, 4, 1), c("sampleID", "pointType", "geometryID")))
 })
 
 test_that("check for output", {
-  expect_identical((grts.line(Sl, 1, 0)$sampleID), "Site-1")
-  expect_identical((grts.line(Sl, 1, 0)$pointType), "Sample")
+  capture.output(expect_identical((grts.line(Sl, 1, 0)$sampleID), "Site-1"))
+  capture.output(expect_identical((grts.line(Sl, 1, 0)$pointType), "Sample"))
 })

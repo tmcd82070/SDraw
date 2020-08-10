@@ -21,15 +21,15 @@ spatPoly <- SpatialPolygons(list(
 
 test_that("x must be a SpatialPolygons object", {
   # make sure error catch does it's job
-  expect_error(grts.polygon(1, 1, 1), "Must call grts.polygon with a SpatialPolygons object.")
+  capture.output(expect_error(grts.polygon(1, 1, 1), "Must call grts.polygon with a SpatialPolygons object."))
 })
 
 test_that("check for output column name", {
   # run SpatialLines object through function, should also improve coverage in grts.equi()
-  expect_named(grts.polygon(spatPoly, 4, 1), c("sampleID", "pointType", "geometryID"))
+  capture.output(expect_named(grts.polygon(spatPoly, 4, 1), c("sampleID", "pointType", "geometryID")))
 })
 
 test_that("check for output", {
-  expect_identical((grts.polygon(spatPoly, 1, 0)$sampleID), "Site-1")
-  expect_identical((grts.polygon(spatPoly, 1, 0)$pointType), "Sample")
+  capture.output(expect_identical((grts.polygon(spatPoly, 1, 0)$sampleID), "Site-1"))
+  capture.output(expect_identical((grts.polygon(spatPoly, 1, 0)$pointType), "Sample"))
 })
