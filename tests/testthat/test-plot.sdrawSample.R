@@ -36,18 +36,15 @@ HAL <- halton.lattice.polygon(WY, J=c(3,2), eta=c(3,2), triangular=TRUE )
 # subsequent runs will suceed only if the file is unchanged
 # this will fail the first time if the output changes
 test_that("plotSample(latticeTrue) returns equivalent obj as it did previously", {
-  expect_warning(
-    expect_known_value(plotSample(sdraw(HAL, 25, type="HIP"), WY, lattice=TRUE), "plotSample_latticeTrue.rds"))
+  expect_known_value(plotSample(sdraw(HAL, 25, type="HIP"), WY, lattice=TRUE), "plotSample_latticeTrue.rds")
 })
 
 test_that("plotSample(missingFrame) returns equivalent obj as it did previously", {
-  expect_warning(
-    expect_known_value(plotSample(sdraw(HAL, 25, type="SRS")), "plotSample_missingFrame.rds"))
+  expect_known_value(plotSample(sdraw(HAL, 25, type="SRS")), "plotSample_missingFrame.rds")
 })
 
 test_that("sample type is SRS, poly.fill= FALSE", {
-  expect_warning(
-    expect_known_value(plotSample(sdraw(HAL, 10, type="SRS"), WY, lattice=TRUE, poly.fill= FALSE), "plotSample_polyfillFalse.rds"))
+  expect_known_value(plotSample(sdraw(HAL, 10, type="SRS"), WY, lattice=TRUE, poly.fill= FALSE), "plotSample_polyfillFalse.rds")
 })
 
 test_that("x is SpatialLines", {
