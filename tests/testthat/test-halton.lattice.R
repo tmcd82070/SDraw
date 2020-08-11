@@ -7,7 +7,8 @@ data(WY)
 
 
 test_that("returns equivalent obj as it did previously", {
-  expect_known_value(halton.lattice(box = matrix(1:6, ncol = 2, dimnames = list(c("X","Y","Z"), c("A","B"))), J=c(2,2), triangular = TRUE), "halton.lattice.rds")
+  expect_warning(
+    expect_known_value(halton.lattice(box = matrix(1:6, ncol = 2, dimnames = list(c("X","Y","Z"), c("A","B"))), J=c(2,2), triangular = TRUE), "halton.lattice.rds"))
 })
 
 test_that("stop when nrow(box) == length(bases)", {

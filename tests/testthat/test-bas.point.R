@@ -8,7 +8,7 @@ data(meuse)
 # prepare the 3 components: coordinates, data, and proj4string
 coords <- meuse[ , c("x", "y")]   # coordinates
 data   <- meuse[ , 3:14]          # data
-crs    <- CRS("+init=epsg:28992") # proj4string of coords
+crs    <- CRS("+init=epsg:28992") # proj4string of coords)
 
 # make the spatial points data frame object
 spdf <- SpatialPointsDataFrame(coords = coords,

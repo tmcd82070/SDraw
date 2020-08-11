@@ -26,5 +26,7 @@ test_that("make sure that the list structure that is given as output is formatte
 
 test_that("force check for negative gcd", {
   # force check for negative gcd
-  expect((extended.gcd( c(-35, -35), c(-31, -31))$gcd) >= c(0,0), "Failure, negative list elements not handled")
+  expect_warning(
+    expect((extended.gcd( c(-35, -35), c(-31, -31))$gcd) >= c(0,0), "Failure, negative list elements not handled"),
+    "the condition has length > 1 and only the first element will be used", fixed = TRUE)
 })

@@ -21,14 +21,14 @@ spatPoly <- SpatialPolygons(list(
 
 # check if the function stops with message
 test_that("invalid SpatialPolygons sample type", {
-  expect_error(sdraw.SpatialPolygons(spatPoly, 15, type="HOP"),"Invalid SpatialPolygons sample type = HOP",fixed=TRUE )
-  expect_error(sdraw.SpatialPolygons(spatPoly, 20, type="BTS"),"Invalid SpatialPolygons sample type = BTS",fixed=TRUE )
-  expect_error(sdraw.SpatialPolygons(spatPoly, 25, type="SAS"),"Invalid SpatialPolygons sample type = SAS",fixed=TRUE )
-  expect_error(sdraw.SpatialPolygons(spatPoly, 30, type="STS"),"Invalid SpatialPolygons sample type = STS",fixed=TRUE )
-  expect_error(sdraw.SpatialPolygons(spatPoly, 35, type="RTS"),"Invalid SpatialPolygons sample type = RTS",fixed=TRUE )
+  capture.output(expect_error(sdraw.SpatialPolygons(spatPoly, 15, type="HOP"),"Invalid SpatialPolygons sample type = HOP",fixed=TRUE))
+  capture.output(expect_error(sdraw.SpatialPolygons(spatPoly, 20, type="BTS"),"Invalid SpatialPolygons sample type = BTS",fixed=TRUE))
+  capture.output(expect_error(sdraw.SpatialPolygons(spatPoly, 25, type="SAS"),"Invalid SpatialPolygons sample type = SAS",fixed=TRUE))
+  capture.output(expect_error(sdraw.SpatialPolygons(spatPoly, 30, type="STS"),"Invalid SpatialPolygons sample type = STS",fixed=TRUE))
+  capture.output(expect_error(sdraw.SpatialPolygons(spatPoly, 35, type="RTS"),"Invalid SpatialPolygons sample type = RTS",fixed=TRUE))
 })
 
 # check the output and length
 test_that("length sdraw.SpatialPolygons(spatPoly,10, type = GRTS is 10", {
-  expect_length(sdraw.SpatialPolygons(spatPoly,10, type ="GRTS"),length(primes(10)))
+  capture.output(expect_length(sdraw.SpatialPolygons(spatPoly,10, type ="GRTS"),length(primes(10))))
 })
