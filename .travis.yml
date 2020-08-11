@@ -38,7 +38,8 @@ install:
 script:
   - R CMD build --no-build-vignettes --no-manual .
   - R CMD check --no-build-vignettes --no-manual --timings *tar.gz
-  - Rscript -e 'devtools::install();devtools::test_package()'
+  - Rscript -e 'covr::package_coverage()'
+  #- Rscript -e 'devtools::install();devtools::test(stop_on_failure = TRUE)'
 
 #report coverage for release version
 after_success:
