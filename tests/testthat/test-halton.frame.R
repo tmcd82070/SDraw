@@ -4,20 +4,24 @@ context("Testing halton.frame()")
 
 # create spatial points object
 # load pre-built dataset
-data(meuse)
+# data(meuse)
+data(WA.cities)
 
 # prepare the 3 components: coordinates, data, and proj4string
-coords <- meuse[ , c("x", "y")]   # coordinates
-data   <- meuse[ , 3:14]          # data
-crs    <- CRS("+init=epsg:28992") # proj4string of coords
+# coords <- meuse[ , c("x", "y")]   # coordinates
+# data   <- meuse[ , 3:14]          # data
+# crs    <- CRS("+init=epsg:28992") # proj4string of coords
 
 # assign
-spObj <- SpatialPoints(coords)
+# spObj <- SpatialPoints(coords)
+attr(WA.cities,"J") <- c(6,3)
+attr(WA.cities,"bases") <- c(2,3)
+attr(WA.cities,"hl.bbox") <- bbox(WA.cities) + c(0,0,1,1)
 
 # make the spatial points data frame object
-spdf <- SpatialPointsDataFrame(coords = coords,
-                               data = data, 
-                               proj4string = crs)
+# spdf <- SpatialPointsDataFrame(coords = coords,
+#                                data = data, 
+#                                proj4string = crs)
 
 
 test_that("check if error is thrown when incorrect index name is given", {
@@ -35,7 +39,12 @@ test_that("check if error is thrown with invalid dataframe", {
   expect_error(halton.frame(550, "", ""))
 })
 
+# test_that("x is a SpatialPointsDataFrame",{
+#   expect_type(halton.frame(spdf, "cadmium", "Lowest to Highest"), "S4")
+#   expect_is(halton.frame(spdf, "cadmium", "Lowest to Highest"), "SpatialPointsDataFrame")
+# })
+
 test_that("x is a SpatialPointsDataFrame",{
-  expect_type(halton.frame(spdf, "cadmium", "Lowest to Highest"), "S4")
-  expect_is(halton.frame(spdf, "cadmium", "Lowest to Highest"), "SpatialPointsDataFrame")
+  expect_type(halton.frame(WA.cities, "POP_2010", "Lowest to Highest"), "S4")
+  expect_is(halton.frame(WA.cities, "POP_2010", "Lowest to Highest"), "SpatialPointsDataFrame")
 })
