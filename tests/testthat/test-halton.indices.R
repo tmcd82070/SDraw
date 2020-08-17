@@ -5,16 +5,12 @@ context("Testing halton.indices()")
 # create spatial points object
 # load pre-built dataset
 data(meuse)
-data(WA.cities)
 
 # prepare the coordinates
 coords <- meuse[ , c("x", "y")]
-data   <- meuse[ , 3:14]          # data
-crs    <- CRS("+init=epsg:28992") # proj4string of coords
 
 # assign
 spObj <- SpatialPoints(coords)
-bb <- bbox(WA.cities) + c(0,0,1,1)
 
 # assign cases
 # x is SpatialPoints, missing hl.bbox
