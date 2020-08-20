@@ -58,10 +58,21 @@
 #' 
 srs.polygon <- function( x, n ){
 
-  #   Check n
+  # Check n
   if( n < 1 ){
     n <- 1
     warning("Sample size less than one has been reset to 1")
+  }
+  
+  # Function to convert SpatialPolygons to SpatialPolygonsDataFrame
+  makeSpatialPolygonsDataFrame <- function(x) {
+    x <- SpatialPolygonsDataFrame(x, data.frame(ID=1:length(x)), match.ID=FALSE)
+    return(x)
+  }
+  
+  # Check for SpatialPolygons and convert if needed
+  if(class(x) == "SpatialPolygons") {
+    x <- makeSpatialPolygonsDataFrame(x)
   }
     
   # Bounding box of shapefile
