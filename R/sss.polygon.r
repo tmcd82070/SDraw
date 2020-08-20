@@ -184,6 +184,16 @@
 #' 
 sss.polygon <- function( x, n, spacing=c(1,1), triangular=FALSE, rand.dir=FALSE ){
 
+# Function to convert SpatialPolygons to SpatialPolygonsDataFrame
+makeSpatialPolygonsDataFrame <- function(x) {
+  x <- SpatialPolygonsDataFrame(x, data.frame(ID=1:length(x)), match.ID=FALSE)
+  return(x)
+}
+  
+# Check for SpatialPolygons and convert if needed
+if(class(x) == "SpatialPolygons") {
+  x <- makeSpatialPolygonsDataFrame(x)
+}
 
 #   Bounding box of shapefile
 bb <- bbox( x )

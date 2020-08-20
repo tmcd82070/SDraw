@@ -5,6 +5,31 @@ context("Testing sss.polygon()")
 # load pre-built dataset
 data(WY)
 
+# create spatial polygons object
+# make "squares" with integer values rounded in a list
+square <- rbind( c(2, 4, 3, 4, 3, 5,
+                   2, 5, 2, 4, 2, 4),
+                 c(6, 9, 7, 9, 7, 8,
+                   6, 8, 6, 9, 6, 9))
+
+# give these "squares" an identification
+ID <- c("shape1", "shape2")
+
+# create SpatialPolygon object from these squares 
+spatPoly <- SpatialPolygons(list(
+  Polygons(list(Polygon(matrix(square[1, ], ncol = 2, byrow = TRUE))), ID[1]),
+  Polygons(list(Polygon(matrix(square[2, ], ncol = 2, byrow = TRUE))), ID[2])
+))
+
+
+test_that("check if x is SpatialPolygons", {
+  expect_is(sss.polygon(spatPoly,15), "SpatialPointsDataFrame")
+  expect_type(sss.polygon(spatPoly, 15), "S4")
+})
+
+test_that("check for the column names when none specified", {
+  expect_named(sss.polygon(spatPoly, 15), c("sampleID", "row", "col", "geometryID", "ID"))
+})
 
 test_that("check for the column names when none specified", {
   expect_named(sss.polygon(WY, 30), c("sampleID", "row", "col", "geometryID", "STATEFP", "COUNTYFP", "NAME"))
