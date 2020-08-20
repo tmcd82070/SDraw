@@ -26,6 +26,15 @@ test_that("warning when sample size less than 1",{
   expect_warning(srs.polygon(WY, 0), "Sample size less than one has been reset to 1")
 })
 
+test_that("check if x is SpatialPolygons", {
+  expect_is(srs.polygon(spatPoly,15), "SpatialPointsDataFrame")
+  expect_type(srs.polygon(spatPoly, 15), "S4")
+})
+
+test_that("check for the column names when none specified", {
+  expect_named(srs.polygon(spatPoly, 15), c("sampleID", "geometryID", "ID"))
+})
+
 test_that("x is a SpatialPointsDataFrame", {
   expect_is(srs.polygon(WY,25), "SpatialPointsDataFrame")
   expect_type(srs.polygon(WY, 20), "S4")
