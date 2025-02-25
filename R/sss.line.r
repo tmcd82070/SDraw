@@ -238,7 +238,7 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
     group_by(L1) %>% 
     summarise(x = aprox(cumLength, X, l.out)
               , y = aprox(cumLength, Y, l.out)
-              , lineVertex = ceiling(aprox(cumLength, rowID, l.out)))
+              , vertexWithinLine = ceiling(aprox(cumLength, rowID, l.out)))
 
   # Project back to 2-D ----
   samp <- sfheaders::sf_point(x.out
@@ -248,6 +248,11 @@ sss.line <- function(x, n, spacing, random.start=TRUE){
                         )
   sf::st_crs(samp) <- sf::st_crs(x)
 
+  # Add sampleID = order ----
+  samp <- samp %>% 
+    dplyr::mutate(sampleID = dplyr::row_number()) %>% 
+    dplyr::select(sampleID, dplyr::everything())
+  
   # Attach any attributes that came in with X ----
   samp <- samp %>% 
     dplyr::bind_cols(sf::st_drop_geometry(x)[samp$L1,])

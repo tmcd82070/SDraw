@@ -7,20 +7,20 @@
 sss.line(x, n, spacing, random.start = TRUE)
 }
 \arguments{
-\item{x}{A \code{SpatialLines} or \code{SpatialLinesDataFrame} object. 
-This object must contain at least 1 line.}
+\item{x}{A \code{sf} object containing \code{LINESTRING} or 
+\code{MULTILINESTRING} geometries, or both.}
 
 \item{n}{Sample size.  Number of points to draw from the set of all lines
 contained in \code{x}.  Specification of \code{n} takes precedence 
 over specification of \code{spacing}.}
 
-\item{spacing}{Assuming, \code{n} is not given, this is the distance 
+\item{spacing}{Assuming \code{n} is not given, this is the distance 
 between sample points on the amalgamated line 
 in \code{x}. For example, if \code{x} is projected 
 in UTM coordinates and \code{spacing=100}, the returned sample has one point 
 every 100 meters along the amalgamated line in \code{x}. Keep in mind that the start
-of line i+1 in \code{x} may not coincide with the end of line i in \code{x}, and that 
-lines in \code{x} may not be straight.  Thus, 2-dimensional distances between
+of line i+1 may not coincide with the end of line i.  2-dimensional 
+distances between
 sample points will not, in general, equal \code{spacing}.}
 
 \item{random.start}{Whether to start the sequence of points at a 
@@ -31,26 +31,26 @@ every \code{spacing} units along the lines.  If \code{random.start==FALSE},
 the first sample point occurs at 0 (first vertex of the lines).}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the SSS sample, in
-order along the amalgamated line.  Those on line 1 appear first, those on line 2 
-second, etc. Attributes of the sample points (in the 
-embedded data frame) are 
-as follows: 
+A \code{sf} data frame containing POINT geometries. 
+The \code{sf} POINT geometries are equally spaced along the 
+amalgamated line, except as noted above.  Points on line 1 
+appear first, those on line 2 
+second, etc. Attributes of the sample points are 
 \itemize{
   \item \code{sampleID}: A unique identifier for every sample point.  
   \code{sampleID} starts with 1 at the first point and 
   increments by one for each.  \code{sampleID} orders 
   sample points along the amalgamated line.
-  \item \code{geometryID}: The ID of the lines object in \code{x} on which each 
-  sample point falls.  The 
-  ID of lines in \code{x} are \code{row.names(geometry(x))}. 
+  \item \code{geometryID}: The ID of the geometries in \code{x} on which each 
+  sample point falls.  The geometry
+  IDs in \code{x} are \code{rownames(x)}. 
   \item Any attributes of the original lines (in \code{x}) on which each sample 
   point falls.
 }
 
 
-Additional attributes of the output object, beyond those which 
-make it a \code{SpatialPointsDataFrame}, are:
+The return has additional attributes that makes it 
+an \code{SDraw} sample.  The additional attributes are:
 \itemize{
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "line").
@@ -63,17 +63,16 @@ make it a \code{SpatialPointsDataFrame}, are:
 }
 }
 \description{
-Draws a systematic sample from a \code{SpatialLines*} object.  The 
-\code{SpatialLines*} object represents a 2-dimensional line resource, such as a
-river, highway, or coastline.
+Draws a systematic sample from a \code{LINESTRING} or 
+\code{MULTILINESTRING} objects.
 }
 \details{
 If \code{x} contains multiple lines, the lines are amalgamated before
-sampling.   Conceptually, under amalgamation the lines in \code{x} are 
-"stretched" straight and laid end-to-end in order of appearance in \code{x}.
-The simple systematic sample is then drawn from the amalgamated line. 
-Finally, sample points on the amalgamated line are mapped back to 2-dimensional 
-space to fall on the lines in \code{x}. 
+sampling.   Conceptually, the amalgamated line contains all lines in \code{x} 
+after "stretching" straight and laying them end-to-end in order 
+of appearance in \code{x}.
+The simple systematic sample is drawn from the amalgamated line
+and sample points are mapped back to the original 2-dimensional line. 
 
 Note that spacing between sample points is enforced on the amalgamated 
 line, and may not look correct if the lines loop back on themselves. 
@@ -82,6 +81,16 @@ the first and last sample point along the circle will not be the
 prescribed \code{spacing} because the circle starts between them. 
 Spacing of all other points (2 to n-1) will be as requested.
 }
+\section{Mixed Geometries}{
+
+Mixed geometries of MULTILINESTRING and LINESTRING are allowed; 
+however, all MULTILINESTRING geometries are laid at the end of the 
+amalgamated line and hence are out of order relative to the 
+order of \code{x}. If you desire the same order of lines in the 
+amalgamated line as in \code{x}, convert all MULTILINESTRING geometries
+to LINESTRING \emph{a priori}, prior to calling this routine.
+}
+
 \examples{
 
 # Draw fixed number of equi-distant points
