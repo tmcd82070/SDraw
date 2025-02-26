@@ -3,7 +3,6 @@
 \docType{package}
 \name{SDraw-package}
 \alias{SDraw-package}
-\alias{_PACKAGE}
 \alias{BAS-package}
 \alias{HIP-package}
 \alias{GRTS}

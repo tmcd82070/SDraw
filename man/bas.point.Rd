@@ -2,34 +2,37 @@
 % Please edit documentation in R/bas.point.r
 \name{bas.point}
 \alias{bas.point}
-\title{Draws a Balanced Acceptance Sample (BAS) from a discrete resource (points).}
+\title{bas.point - BAS of points}
 \usage{
-bas.point(x, n)
+bas.point(x, n, verbose = FALSE)
 }
 \arguments{
-\item{x}{A SpatialPoints or SpatialPointsDataFrame object. This object
-must contain at least 1 point.}
+\item{x}{A 'sf' object containing POINT geometries
+only. MULTIPOINT geometries are first converted to individual
+points (silently) and sampled as individuals.}
 
-\item{n}{Sample size.  Number of points to select from the set of points
-contained in \code{x}.}
+\item{n}{Sample size.  Number of points to select 
+from \code{x}.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the BAS sample, 
-in BAS order.
- Attributes of the sample points are: 
+A 'sf' object containing POINT geometries, 
+the selected points from \code{x}, in BAS order, with
+additional columns and attributes. The additional attributes are:
 \itemize{
-  \item \code{sampleID}: A unique identifier for every sample point.  This 
-  encodes the BAS order.   If BAS order is lost, \code{return[} \code{order(} 
+  \item \code{sampleID}: A unique identifier for every 
+  point in the sample.  This is
+  the BAS order.   If BAS order is lost, 
+  \code{return[} \code{order(} 
   \code{return$sampleID} \code{),]} will resort the 
-  returned object (i.e., \code{return}) into BAS order.
-  \item \code{geometryID}: The ID of the point in \code{x} that has been
-  selected. The 
-  ID of points in \code{x} are \code{row.names(x)}. 
-  \item Any attributes of the original lines (in \code{x}). 
+  returned object into BAS order.
+  
+  \item \code{geometryID}: The ID of the original point 
+  in \code{x}. The 
+  ID of original points are \code{row.names(x)}. 
 }
 
 Additional attributes of the output object, beyond those which 
-make it a \code{SpatialPointsDataFrame}, are:
+make it a 'sf' object, are:
 \itemize{
    \item \code{frame}: Name of the input sampling frame.
    \item \code{frame.type}: Type of resource in sampling frame. (i.e., "point").
@@ -37,51 +40,59 @@ make it a \code{SpatialPointsDataFrame}, are:
    \item \code{random.start}: The random seed of the random-start Halton sequence 
    that produced the sample.  This is a vector of length 2 whose elements are 
    random integers between 0 and \code{\link{maxU}}. 
-   This routine ensures that the point
-   associated with this index  
-   falls inside a polygon of interest.  i.e., 
-   that \code{halton(1,2,random.start)} scaled by a square bounding box
-   (see attribute \code{bas.bbox} below)
-   lies inside a polygon of \code{x}.  
+   The Halton point
+   associated with \code{random.start}   
+   falls inside one of the boxes (pixels) surrounding 
+   points in \code{x}. (i.e., 
+   \code{halton(1,2,random.start)} scaled by \code{x}'s square bounding box
+   falls inside one of the pixels constructed for \code{x}). 
+   The point associated with \code{random.start} is the 
+   first in BAS order. 
    
-   Note that \code{halton(1,2,random.start+i)}, for 
-   \code{i} > 0, is not guaranteed to fall inside a polygon of \code{x}
-   when scaled by \code{bas.bbox}. The sample consists of the point 
-   associated with \code{random.start} and the next \code{n-1}
-   Halton points in sequence that fall inside a polygon
+   Note that subsequent points in the Halton sequence
+   are  not guaranteed to fall inside a pixel surrounding
+   a point in \code{x} (after scaling by bounding box).
+   The BAS sample consists of points 
+   associated with \code{random.start} and the 
+   next \code{n-1} Halton points that fall inside a pixel
    of \code{x}. 
    
 
-   \item \code{bas.bbox}: The square bounding box surrounding \code{x}
-   used to scale Halton points.  A scaled Halton sequence of n points
-   is \code{bas.bbox[,"min"] +} \code{t(halton(n,2,random.start)) *} 
+   \item \code{bas.bbox}: The square bounding box surrounding
+    \code{x} used to scale Halton points.  A scaled Halton 
+    sequence of n points is \code{bas.bbox[,"min"] +} 
+    \code{t(halton(n,2,random.start)) *} 
    \code{rep( max(diff(t(bas.bbox))), 2)}.
    
    
 }
 }
 \description{
-Draws a BAS sample from a \code{SpatialPoints*} object.
+Draws a Balanced Acceptance Sample (BAS) 
+from a 'sf' data frame containing POINT objects.
 }
 \details{
-The BAS method for points computes the minimum distance between 
-any two points in
-\code{x} and places a small square (pixel) around each.  Size of the
-square around each point is d/sqrt(2) on a side, where d is the minimum
-distance between points. The BAS method for points then selects a BAS sample
-from the set of polygons (i.e., squares) surrounding each point (see
-\code{\link{bas.polygon}}).  The BAS method of polygons selects Halton
-points until \code{n} points are located inside the squares surrounding the
-points.  When a square contains a Halton point, the official sample location
-is the the original point (center of the square), not the Halton point.
+The BAS method for points computes the 
+minimum distance between any two points in
+\code{x} and places a small square (pixel) around each.  
+Size of the square around each point is d/sqrt(2) 
+on a side, where d is the minimum
+distance between points. The method then selects 
+a BAS sample from the set of polygons (i.e., squares) 
+surrounding each point (see \code{\link{bas.polygon}}).  
+The BAS method for polygons selects Halton
+points until \code{n} are located inside the 
+squares surrounding each point.  
+When a square contains a Halton point, 
+the official sample location
+is the original point (center of the square), 
+not the Halton point.
 }
 \examples{
 
 \dontrun{
 bas.point( WA.cities, 100)
 }
-
-
 
 }
 \seealso{

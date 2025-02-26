@@ -2,7 +2,7 @@
 % Please edit documentation in R/grts.line.r
 \name{grts.line}
 \alias{grts.line}
-\title{Draw a equi-probable GRTS sample from a linear (line) resource.}
+\title{grts.line - Equi-probable GRTS sample from line}
 \usage{
 grts.line(x, n, over.n = 0)
 }
@@ -16,8 +16,10 @@ from \code{x}.  The actual number of points drawn from \code{x} is
 \code{n + over.n}.}
 }
 \value{
-A \code{SpatialPointsDataFrame} containing locations in the GRTS sample, in
-order they are to be visited.  Attributes of the sample points (in the embedded data frame) are 
+A \code{SpatialPointsDataFrame} containing locations in the GRTS 
+sample, in
+order they are to be visited.  Attributes of the sample points (in the 
+embedded data frame) are 
 as follows: 
 \itemize{
   \item \code{sampleID}: A unique identifier for points in the sample. 
@@ -25,11 +27,14 @@ as follows:
   comes pre-sorted in GRTS order.  
   If the sample becomes un-GRTS-ordered, resort 
   by \code{sampleID} (i.e., \code{samp <- samp[order(samp$sampleID),]}). 
-  \item \code{pointType}: A string identifying regular sample points (\code{pointType=="Sample"})
+  \item \code{pointType}: A string identifying regular sample points 
+  (\code{pointType=="Sample"})
   and over-sample points (\code{pointType=="OverSample"}).
-  \item \code{geometryID}: The ID of the line in \code{x} onto which sample points fall.
+  \item \code{geometryID}: The ID of the line in \code{x} onto which 
+  sample points fall.
   The ID's of lines in \code{x} are \code{row.names(geometry(x))}.
-  \item Any attributes of the original lines (in \code{x}) onto which sample points 
+  \item Any attributes of the original lines (in \code{x}) onto which 
+  sample points 
   fall. 
 }
 }
@@ -38,9 +43,11 @@ Draws an equi-probable unstratified Generalized Random
 Tessellation Stratified (GRTS) sample from a \code{SpatialLines*} object
 }
 \details{
-This is a wrapper for the \code{grts} function in package \code{spsurvey}.
+This is a wrapper for the \code{grts} function in package 
+\code{spsurvey}.
 This simplifies calling \code{grts} when equi-probable samples are 
-desired. It extends the allowable input frame types to \code{SpatialLines} objects 
+desired. It extends the allowable input frame types to \code{SpatialLines} 
+objects 
 (i.e., no attributes),
 rather than just \code{SpatialLinesDataFrame} objects. For more 
 complicated designs (e.g., variable probability, stratification), call 
@@ -57,10 +64,12 @@ HI.sample <- grts.line(HI.coast,10,5)
 plot( HI.coast )
 
 # Plot 'sample' locations
-plot( HI.sample[ HI.sample$pointType == "Sample", ], pch=16, add=TRUE, col="red" )  
+plot( HI.sample[ HI.sample$pointType == "Sample", ], 
+pch=16, add=TRUE, col="red" )  
 
 # Plot 'over sample' locations
-plot( HI.sample[ HI.sample$pointType == "OverSample", ], pch=1, add=TRUE, col="blue" )  
+plot( HI.sample[ HI.sample$pointType == "OverSample", ], 
+pch=1, add=TRUE, col="blue" )  
 }
 
 
